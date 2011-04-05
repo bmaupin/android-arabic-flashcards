@@ -21,8 +21,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -417,12 +419,23 @@ public class ArabicFlashcards extends Activity {
     	loadViews();
 	}
 	*/
-
+	
+	private void handleKnownCheck() {
+		ImageView i = (ImageView) findViewById(R.id.knownCheck);
+		// if the current card is marked as "known"
+		if (currentCardRank == 1) {
+			i.setImageResource(R.drawable.btn_check_buttonless_on);
+		} else {
+			i.setImageResource(R.drawable.btn_check_buttonless_off);
+		}
+	}
+	
 	private void showFirstCard() {
 		currentWord = ch.nextCard();
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
+    	handleKnownCheck();
     	
 //
     	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
@@ -444,6 +457,7 @@ public class ArabicFlashcards extends Activity {
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
+    	handleKnownCheck();
     	
 //
     	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
@@ -461,6 +475,7 @@ public class ArabicFlashcards extends Activity {
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
+    	handleKnownCheck();
     	
 //
     	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
