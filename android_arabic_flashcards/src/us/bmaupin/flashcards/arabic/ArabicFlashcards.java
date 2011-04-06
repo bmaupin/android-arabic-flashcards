@@ -342,13 +342,6 @@ public class ArabicFlashcards extends Activity {
 		}
 	}
 	
-	/*
-	private void showWord(TextView thisView, Map<String, String> thisWord) {
-		Log.d(TAG, "showWord called, defaultLang: " + defaultLang);
-		showWord(thisView, thisWord, defaultLang);
-	}
-	*/
-	
 	private void showWord(Map<String, String> thisWord) {
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
@@ -360,7 +353,14 @@ public class ArabicFlashcards extends Activity {
     	currentView = (TextView) currentLayout.getChildAt(0);
     	
     	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
-    	handleKnownCheck(knownCheck);
+    	// if the current card is marked as "known"
+		if (currentCardRank == 1) {
+			// show the check
+			knownCheck.setImageResource(R.drawable.btn_check_buttonless_on);
+		} else {
+			// otherwise remove the check
+			knownCheck.setImageResource(R.drawable.btn_check_buttonless_off);
+		}
     	
     	showWord(currentView, currentWord, defaultLang);
 	}
@@ -437,35 +437,8 @@ public class ArabicFlashcards extends Activity {
 	}
 	*/
 	
-	private void handleKnownCheck(ImageView i) {
-//		ImageView i = (ImageView) findViewById(R.id.knownCheck);
-		// if the current card is marked as "known"
-		if (currentCardRank == 1) {
-			i.setImageResource(R.drawable.btn_check_buttonless_on);
-		} else {
-			i.setImageResource(R.drawable.btn_check_buttonless_off);
-		}
-	}
-	
 	private void showFirstCard() {
 		currentWord = ch.nextCard();
-		/*
-    	// store the ID and rank of the current Word
-    	currentCardId = currentWord.get("ID");
-    	currentCardRank = stringToInteger(currentWord.get("rank"));
-    	
-    	
-//
-    	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
-    	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
-    	currentView = (TextView) currentLayout.getChildAt(0);
-    	
-    	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
-    	handleKnownCheck(knownCheck);
-    	
-    	showWord(currentView, currentWord);
-    	*/
-		
 		showWord(currentWord);
 	}
 	
@@ -478,24 +451,6 @@ public class ArabicFlashcards extends Activity {
     	ch.updateRank(currentCardId, currentCardRank, direction);
     	// get the next one
     	currentWord = ch.nextCard();
-    	
-    	/*
-    	// store the ID and rank of the current Word
-    	currentCardId = currentWord.get("ID");
-    	currentCardRank = stringToInteger(currentWord.get("rank"));
-//    	handleKnownCheck();
-    	
-//
-    	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
-    	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
-    	currentView = (TextView) currentLayout.getChildAt(0);
-    	
-    	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
-    	handleKnownCheck(knownCheck);
-    	
-    	showWord(currentView, currentWord);
-    	*/
-    	
     	showWord(currentWord);
 	}
 	
@@ -504,25 +459,7 @@ public class ArabicFlashcards extends Activity {
         vf.setOutAnimation(slideRightOut);
     	vf.showPrevious();
     	
-    	currentWord = ch.prevCard();
-    	
-    	/*
-    	// store the ID and rank of the current Word
-    	currentCardId = currentWord.get("ID");
-    	currentCardRank = stringToInteger(currentWord.get("rank"));
-//    	handleKnownCheck();
-    	
-//
-    	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
-    	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
-    	currentView = (TextView) currentLayout.getChildAt(0);
-    	
-    	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
-    	handleKnownCheck(knownCheck);
-    	
-    	showWord(currentView, currentWord);
-    	*/
-    	
+    	currentWord = ch.prevCard();    	
     	showWord(currentWord);
 	}
 	
