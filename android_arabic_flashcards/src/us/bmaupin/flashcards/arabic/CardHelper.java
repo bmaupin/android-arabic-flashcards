@@ -188,7 +188,14 @@ public class CardHelper {
 		}
 	}
 	
-	private Map<String, String> getCard(int thisId) {
+	/***
+	 * Get a card given it's ID and a boolean value determining whether or not
+	 * it should be added to the card history
+	 * @param thisId
+	 * @param addToHistory
+	 * @return
+	 */
+	private Map<String, String> getCard(int thisId, boolean addToHistory) {
 		Log.d(TAG, "getCard: thisId=" + thisId);
 		
 		String[] columns = { "english", "arabic" };
@@ -208,8 +215,10 @@ public class CardHelper {
 		thisCard.put("english", english);
 		thisCard.put("arabic", arabic);
 		
-		// add word to the card history
-		cardHistory.add(thisId);
+		if (addToHistory) {
+			// add word to the card history
+			cardHistory.add(thisId);
+		}
 		
 		return thisCard;
 	}
@@ -235,7 +244,7 @@ public class CardHelper {
 			cardHistoryIndex --;
 			// get the next card in the card history
 			int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
-			Map<String, String> thisCard = getCard(thisId);
+			Map<String, String> thisCard = getCard(thisId, false);
 // TODO: this seems messy; most of the time getCard is called, we want the rank...
 			// update its rank
 			thisCard.put("rank", "" + getRank(thisCard.get("ID")));
@@ -247,7 +256,7 @@ public class CardHelper {
 		} else if (!currentUnrankedIds.isEmpty()) {
 			// remove the first element from the list
 			int thisId = currentUnrankedIds.remove(0);
-			Map<String, String> thisCard = getCard(thisId);
+			Map<String, String> thisCard = getCard(thisId, true);
 			thisCard.put("rank", "0");
 			return thisCard;
 
@@ -292,7 +301,7 @@ public class CardHelper {
 				}
 			}
 			
-			Map<String, String> thisCard = getCard(thisId);
+			Map<String, String> thisCard = getCard(thisId, true);
 			// get its rank
 			thisCard.put("rank", "" + getRank(thisCard.get("ID")));
 			// increment the counter of ranked cards shown
@@ -321,7 +330,7 @@ public class CardHelper {
 			cardHistoryIndex ++;
 			// get the previous card in the card history
 			int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
-			Map<String, String> thisCard = getCard(thisId);		
+			Map<String, String> thisCard = getCard(thisId, false);		
 			// update its rank
 			thisCard.put("rank", "" + getRank(thisCard.get("ID")));
 			// return it
