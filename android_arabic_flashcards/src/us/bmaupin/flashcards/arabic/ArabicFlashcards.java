@@ -21,7 +21,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -343,9 +342,27 @@ public class ArabicFlashcards extends Activity {
 		}
 	}
 	
+	/*
 	private void showWord(TextView thisView, Map<String, String> thisWord) {
 		Log.d(TAG, "showWord called, defaultLang: " + defaultLang);
 		showWord(thisView, thisWord, defaultLang);
+	}
+	*/
+	
+	private void showWord(Map<String, String> thisWord) {
+    	// store the ID and rank of the current Word
+    	currentCardId = currentWord.get("ID");
+    	currentCardRank = stringToInteger(currentWord.get("rank"));
+    	
+//
+    	Log.d(TAG, "showWord: currentWord=" + currentWord);
+    	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
+    	currentView = (TextView) currentLayout.getChildAt(0);
+    	
+    	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
+    	handleKnownCheck(knownCheck);
+    	
+    	showWord(currentView, currentWord, defaultLang);
 	}
 	
 	private void flipCard() {
@@ -432,6 +449,7 @@ public class ArabicFlashcards extends Activity {
 	
 	private void showFirstCard() {
 		currentWord = ch.nextCard();
+		/*
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
@@ -446,6 +464,9 @@ public class ArabicFlashcards extends Activity {
     	handleKnownCheck(knownCheck);
     	
     	showWord(currentView, currentWord);
+    	*/
+		
+		showWord(currentWord);
 	}
 	
 	private void showNextCard(String direction) {
@@ -458,6 +479,7 @@ public class ArabicFlashcards extends Activity {
     	// get the next one
     	currentWord = ch.nextCard();
     	
+    	/*
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
@@ -472,6 +494,9 @@ public class ArabicFlashcards extends Activity {
     	handleKnownCheck(knownCheck);
     	
     	showWord(currentView, currentWord);
+    	*/
+    	
+    	showWord(currentWord);
 	}
 	
 	private void showPrevCard() {
@@ -480,6 +505,8 @@ public class ArabicFlashcards extends Activity {
     	vf.showPrevious();
     	
     	currentWord = ch.prevCard();
+    	
+    	/*
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
@@ -494,6 +521,9 @@ public class ArabicFlashcards extends Activity {
     	handleKnownCheck(knownCheck);
     	
     	showWord(currentView, currentWord);
+    	*/
+    	
+    	showWord(currentWord);
 	}
 	
     class MyGestureDetector extends SimpleOnGestureListener {
