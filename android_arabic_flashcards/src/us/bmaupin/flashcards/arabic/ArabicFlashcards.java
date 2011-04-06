@@ -420,8 +420,8 @@ public class ArabicFlashcards extends Activity {
 	}
 	*/
 	
-	private void handleKnownCheck() {
-		ImageView i = (ImageView) findViewById(R.id.knownCheck);
+	private void handleKnownCheck(ImageView i) {
+//		ImageView i = (ImageView) findViewById(R.id.knownCheck);
 		// if the current card is marked as "known"
 		if (currentCardRank == 1) {
 			i.setImageResource(R.drawable.btn_check_buttonless_on);
@@ -435,12 +435,16 @@ public class ArabicFlashcards extends Activity {
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
-    	handleKnownCheck();
+    	
     	
 //
     	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
     	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
     	currentView = (TextView) currentLayout.getChildAt(0);
+    	
+    	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
+    	handleKnownCheck(knownCheck);
+    	
     	showWord(currentView, currentWord);
 	}
 	
@@ -457,12 +461,16 @@ public class ArabicFlashcards extends Activity {
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
-    	handleKnownCheck();
+//    	handleKnownCheck();
     	
 //
     	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
     	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
     	currentView = (TextView) currentLayout.getChildAt(0);
+    	
+    	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
+    	handleKnownCheck(knownCheck);
+    	
     	showWord(currentView, currentWord);
 	}
 	
@@ -475,12 +483,16 @@ public class ArabicFlashcards extends Activity {
     	// store the ID and rank of the current Word
     	currentCardId = currentWord.get("ID");
     	currentCardRank = stringToInteger(currentWord.get("rank"));
-    	handleKnownCheck();
+//    	handleKnownCheck();
     	
 //
     	Log.d(TAG, "showNextCard: currentWord=" + currentWord);
     	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
     	currentView = (TextView) currentLayout.getChildAt(0);
+    	
+    	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
+    	handleKnownCheck(knownCheck);
+    	
     	showWord(currentView, currentWord);
 	}
 	
