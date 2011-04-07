@@ -10,8 +10,8 @@
 		android:alphabeticShortcut="@string/menu_about_shortcut"
 		android:icon="@android:drawable/ic_menu_info_details" />
     <item android:id="@+id/menu_categories"
-        android:title="categories"
-        android:alphabeticShortcut="c"
+        android:title="@string/menu_categories_label"
+        android:alphabeticShortcut="@string/menu_categories_shortcut"
         android:icon="@drawable/ic_menu_database" />
 	<item android:id="@+id/menu_settings"
 		android:title="@string/menu_settings_label"
