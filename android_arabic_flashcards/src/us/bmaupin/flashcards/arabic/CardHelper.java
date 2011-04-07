@@ -238,10 +238,14 @@ public class CardHelper {
 		Log.d(TAG, "nextCard called");
 //		
 		Log.d(TAG, "nextCard: cardHistoryIndex=" + cardHistoryIndex);
+		Log.d(TAG, "nextCard: cardHistory=" + cardHistory);
+		Log.d(TAG, "nextCard: rankedCardsShown=" + rankedCardsShown);
 		
 		// if we're going forward through the card history
 		if (cardHistoryIndex > 0) {
 			cardHistoryIndex --;
+//
+			Log.d(TAG, "nextCard: new cardHistoryIndex=" + cardHistoryIndex);
 			// get the next card in the card history
 			int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
 			Map<String, String> thisCard = getCard(thisId, false);
@@ -262,7 +266,6 @@ public class CardHelper {
 
 		} else if (rankedCardsShown < currentRankedIds.size()) {
 //			
-			Log.d(TAG, "nextCard: rankedCardsShown=" + rankedCardsShown);
 			Log.d(TAG, "nextCard: currentRankedIds.size()=" + currentRankedIds.size());
 			Log.d(TAG, "nextCard: currentUnrankedIds.size()=" + currentUnrankedIds.size());
 			
@@ -317,17 +320,18 @@ public class CardHelper {
 			rankedCardsShown = 0;
 			return nextCard();
 		}
-		
-//		return thisCard;
 	}
 	
 	Map<String, String> prevCard() {
 //
 		Log.d(TAG, "prevCard: cardHistoryIndex=" + cardHistoryIndex);
+		Log.d(TAG, "prevCard: cardHistory=" + cardHistory);
 		
-		// if we have anything in card history
-		if (cardHistory.size() > 1) {
-			cardHistoryIndex ++;
+		// if we have anything in card history and we're not at the last card in the history
+		if (cardHistory.size() > 1 && cardHistoryIndex < cardHistory.size() - 1) {
+			cardHistoryIndex++;
+//
+			Log.d(TAG, "prevCard: new cardHistoryIndex=" + cardHistoryIndex);
 			// get the previous card in the card history
 			int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
 			Map<String, String> thisCard = getCard(thisId, false);		
@@ -336,12 +340,9 @@ public class CardHelper {
 			// return it
 			return thisCard;
 			
-		// if cardHistory is empty
+		// if cardHistory is empty or we're at the last card in the history
 		} else {
-// TODO: implement if cardHistory is empty
-			Map<String, String> thisCard = new HashMap<String, String>();
-			thisCard.put("error", "no previous cards");
-			return thisCard;
+			return new HashMap<String, String>();
 		}
 	}
 	
