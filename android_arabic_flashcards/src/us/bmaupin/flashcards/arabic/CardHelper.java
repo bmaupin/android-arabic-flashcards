@@ -372,23 +372,6 @@ public class CardHelper {
 	 * @param thisCardRank
 	 */
 	private void updateRankNormal(String thisCardId, int thisCardRank) {
-		/*
-		String sql = "UPDATE " + RankDatabaseHelper.DB_TABLE_NAME + " SET " + 
-				RankDatabaseHelper.RANK + " = " + RankDatabaseHelper.RANK + 
-				" + 1 WHERE _ID = " + thisId; 
-		
-		ranksDb.execSQL(sql);
-		
-		/*
-		String whereClause = "_ID = ?";
-		String[] whereArgs = {thisId};
-		
-		ContentValues cv=new ContentValues();
-		cv.put(RankDatabaseHelper.RANK, RankDatabaseHelper.RANK + "+ 1");
-		
-		ranksDb.update(RankDatabaseHelper.DB_TABLE_NAME, cv, whereClause, whereArgs);
-		*/
-		
 		int newCardRank;
 		
 		// don't go any lower than 2; 1 is reserved for cards we know
