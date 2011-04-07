@@ -26,6 +26,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 
@@ -455,12 +456,21 @@ public class ArabicFlashcards extends Activity {
 	}
 	
 	private void showPrevCard() {
-    	vf.setInAnimation(slideRightIn);
-        vf.setOutAnimation(slideRightOut);
-    	vf.showPrevious();
+    	currentWord = ch.prevCard();
     	
-    	currentWord = ch.prevCard();    	
-    	showWord(currentWord);
+    	// make sure there's a previous word to show
+    	if (currentWord.isEmpty()) {
+// TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
+// TODO: if card is clicked on when toast is showing, card will go blank
+    		Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
+    	} else {
+    		// only show the left animation if there's a previous word
+    		vf.setInAnimation(slideRightIn);
+            vf.setOutAnimation(slideRightOut);
+        	vf.showPrevious();
+        	
+    		showWord(currentWord);
+    	}
 	}
 	
     class MyGestureDetector extends SimpleOnGestureListener {
