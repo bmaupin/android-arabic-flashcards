@@ -9,6 +9,17 @@
     <string name="choose_aws_chapter_title">Please select a chapter:</string>
     <string name="hello_michelle">مرحباً، يا ميشيل</string>
     <string name="hello_michelle2">\\u0645\\u0631\\u062d\\u0628\\u0627\\u064b\\u060c \\u064a\\u0627 \\u0645\\u064a\\u0634\\u064a\\u0644</string>
+    <string name="help_title">Help</string>
+    <string name="help_text"><b>Navigation</b>\n
+&#8226; Tap the card/press the center button to see the other side of the card.\n
+&#8226; Swipe up if you know the card.\n
+&#8226; Swipe down if you don\'t know it.\n
+&#8226; Swipe right/press the right key to go to the next card.\n
+&#8226; Swipe left/press the left key to go to the previous card.\n
+\n
+<b>Other</b>\n
+&#8226; Go to Menu --> Categories to change the category.\n
+&#8226; Go to Menu --> Settings to change settings.</string>
     <string name="menu_about_label">About</string>
     <string name="menu_about_shortcut">a</string>
     <string name="menu_categories_label">Categories</string>
