@@ -215,6 +215,9 @@ public class ArabicFlashcards extends Activity {
     	case R.id.menu_exit:
     		finish();
     		return true;
+    	case R.id.menu_help:
+    		startActivity(new Intent(this, Help.class));
+    		return true;
     	case R.id.menu_settings:
     		startActivity(new Intent(this, Settings.class));
     		return true;

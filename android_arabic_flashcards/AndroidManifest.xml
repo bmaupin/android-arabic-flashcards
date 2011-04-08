@@ -23,6 +23,10 @@
                   android:label="@string/categories_title"
                   android:theme="@android:style/Theme">
         </activity>
+        <activity android:name=".Help"
+                  android:label="@string/help_title"
+                  android:theme="@android:style/Theme.Dialog">
+        </activity>
         <activity android:name=".Settings"
                   android:label="@string/settings_title"
                   android:theme="@android:style/Theme">
