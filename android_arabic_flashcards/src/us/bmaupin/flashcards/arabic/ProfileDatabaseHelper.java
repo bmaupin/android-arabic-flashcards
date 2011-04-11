@@ -21,21 +21,29 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
    
     // The name of each column in the database
     public static final String CARD_ID = "card_ID";
-    public static final String VALUE = "value";
+    public static final String PRIORITY = "priority";
     
     // SQL Statement to create a new database.
     String DB_TABLE_CREATE =
         "CREATE TABLE " + profileName + " (" +
         BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
         CARD_ID + " INTEGER, " +
-        VALUE + " INTEGER);";
+        PRIORITY + " INTEGER);";
     
     // The constructor method
     public ProfileDatabaseHelper(Context context, String profileName) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.profileName = profileName;
     }
-
+    
+    public ProfileDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+    
+    public String getProfileName() {
+    	return profileName;
+    }
+    
     /* Called when the super class getWritableDatabase (or getReadableDatabase)
      * method determines that the database doesn't exist yet and needs to be created
      */
