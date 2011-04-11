@@ -24,32 +24,90 @@ public class CardHelper {
 	private DatabaseHelper wordsHelper;
 	private SQLiteDatabase wordsDb;
 	private Cursor cursor = null;
-	private RankDatabaseHelper ranksHelper;
-	private SQLiteDatabase ranksDb;
+	private ProfileDatabaseHelper profileHelper;
+	private SQLiteDatabase profileDb;
 	private List<Integer> cardHistory = new ArrayList<Integer>();
 	private int cardHistoryIndex = 0;
 	private int rankedCardsShown = 0;
 	private String currentCategory = "All";
 	private String currentSubCategory;
-	private List<Integer> currentRankedIds = new ArrayList<Integer>();
-	private List<Integer> currentUnrankedIds = new ArrayList<Integer>();
-	private WeightedRandomGenerator weightedCardIds;
+	private List<Integer> currentKnownIds = new ArrayList<Integer>();
+	private List<Integer> currentSeenIds = new ArrayList<Integer>();
+	private List<Integer> currentUnknownIds = new ArrayList<Integer>();
+	private List<Integer> currentUnseenIds = new ArrayList<Integer>();
+//	private WeightedRandomGenerator weightedCardIds;
 	
 	public CardHelper(Context context) {
 		wordsHelper = new DatabaseHelper(context);
 		wordsDb = wordsHelper.getReadableDatabase();
 		
-		ranksHelper = new RankDatabaseHelper(context);
-		ranksDb = ranksHelper.getReadableDatabase();
+//		ranksHelper = new RankDatabaseHelper(context);
+//		ranksDb = ranksHelper.getReadableDatabase();
+		
+		profileHelper = new ProfileDatabaseHelper(context);
+		profileDb = profileHelper.getReadableDatabase();
 	}
 	
 	public void close() {
 		// clean up after ourselves
 		cursor.close();
-		ranksHelper.close();
+		profileHelper.close();
 		wordsHelper.close();
 	}
 	
+	// loadCards in arabicFlashcards should prob be called something like loadViews
+	private void loadCards(boolean categoryChanged) {
+		Log.d(TAG, "loadCards called");
+		List<Integer> currentCardIds = new ArrayList<Integer>();
+		
+		String[] columns = { "_ID" };
+		String selection = null;
+		
+		if (currentCategory.equals("Ahlan wa sahlan")) {
+			selection = "aws_chapter = " + currentSubCategory;
+		}
+		
+		cursor = wordsDb.query("words", columns, selection, null, null, null, null);
+		cursor.moveToFirst();
+		
+// TODO: for now, only get 5 cards
+		for (int i=1; i<6; i++) {
+//		while (cursor.moveToNext()) {
+			int thisId = cursor.getInt(0);
+			currentCardIds.add(thisId);
+// testing
+			cursor.moveToNext();
+		}
+		
+		cursor.close();
+		
+		loadCardPriorities(currentCardIds);
+	}
+	
+	private void loadCardPriorities(List<Integer> currentCardIds) {
+		// for each card ID in current cards
+		for (int thisId : currentCardIds) {
+			// get its priority
+			int thisPriority = getPriority(thisId);
+			
+			// if the rank for this particular card is 0
+			if (thisPriority == 0) {
+				// add it to the list of cards we haven't seen yet
+				currentUnseenIds.add(thisId);
+			} else if (thisPriority == 1) {
+				// if it's 1, add it to the list of cards marked as unknown
+				currentUnknownIds.add(thisId);
+			} else if (thisPriority == 2) {
+				// 2, add it to the list of seen cards
+				currentSeenIds.add(thisId);
+			} else if (thisPriority == 3) {
+				// 3, add it to the list of cards marked as known
+				currentKnownIds.add(thisId);
+			}
+		}
+	}
+	
+	/*
 	// loadCards in arabicFlashcards should prob be called something like loadViews
 	private void loadCards(boolean categoryChanged) {
 		Log.d(TAG, "loadCards called");
@@ -112,6 +170,7 @@ public class CardHelper {
 			Log.d(TAG, "" + thisID);
 		}
 	}
+	*/
 	
 	void loadCategory(String category) {
 		currentCategory = category;
@@ -124,6 +183,7 @@ public class CardHelper {
 		loadCards(true);
 	}	
 	
+	/*
 	private List<Integer> loadRanks(List<Integer> currentCardIds) {
 		Map<Integer, Integer> currentCardRanks = new HashMap<Integer, Integer>();
 		List<Integer> currentOrderedRanks = new ArrayList<Integer>();
@@ -187,6 +247,7 @@ public class CardHelper {
 			return idx;
 		}
 	}
+	*/
 	
 	/***
 	 * Get a card given it's ID and a boolean value determining whether or not
@@ -223,15 +284,16 @@ public class CardHelper {
 		return thisCard;
 	}
 	
-	private int getRank(String thisId) {
-		String[] columns = { RankDatabaseHelper.RANK };
-		String selection = "_ID = " + thisId;
-		// get its rank
-		Cursor thisCursor = ranksDb.query(RankDatabaseHelper.DB_TABLE_NAME, columns, selection, null, null, null, null);
+	private int getPriority(int thisId) {
+		String[] columns = { ProfileDatabaseHelper.PRIORITY };
+		String selection = ProfileDatabaseHelper.CARD_ID + "=" + thisId;
+		// get its priority
+		Cursor thisCursor = profileDb.query(profileHelper.getProfileName(), columns, selection, null, null, null, null);
 		thisCursor.moveToFirst();
-		int thisRank = thisCursor.getInt(0);
+		int thisPriority = thisCursor.getInt(0);
 		thisCursor.close();
-		return thisRank;
+		
+		return thisPriority;
 	}
 	
 	Map<String, String> nextCard() {
