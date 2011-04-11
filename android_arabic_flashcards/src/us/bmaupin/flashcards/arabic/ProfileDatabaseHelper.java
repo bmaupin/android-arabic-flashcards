@@ -17,14 +17,14 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
     // The version of your database (increment this every time you change something)
     public static final int DATABASE_VERSION = 1;
     // profile name; this will be used as the database table name
-    String profileName = "default";
+    private String profileName = "default";
    
     // The name of each column in the database
     public static final String CARD_ID = "card_ID";
     public static final String PRIORITY = "priority";
     
     // SQL Statement to create a new database.
-    String DB_TABLE_CREATE =
+    private String DB_TABLE_CREATE =
         "CREATE TABLE " + profileName + " (" +
         BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
         CARD_ID + " INTEGER, " +
