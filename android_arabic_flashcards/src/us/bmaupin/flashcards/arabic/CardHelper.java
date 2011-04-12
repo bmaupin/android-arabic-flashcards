@@ -481,7 +481,7 @@ public class CardHelper {
 	 * @param currentCardRank
 	 * @param direction
 	 */
-	void updateStatus(String currentCardId, int currentCardStatus, String direction) {
+	void updateCardStatus(String currentCardId, int currentCardStatus, String direction) {
 		// if we're not going through the card history
 		if (cardHistoryIndex < 1) {
 			// update the card's rank
