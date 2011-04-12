@@ -63,7 +63,7 @@ public class ArabicFlashcards extends Activity {
 //    private TextView rightView;
     
     private String currentCardId;
-    private int currentCardRank;
+    private int currentCardStatus;
     private TextView currentView;
     private Map<String, String> currentWord;
 
@@ -347,9 +347,9 @@ public class ArabicFlashcards extends Activity {
 	}
 	
 	private void showWord(Map<String, String> thisWord) {
-    	// store the ID and rank of the current Word
+    	// store the ID and status of the current Word
     	currentCardId = currentWord.get("ID");
-    	currentCardRank = stringToInteger(currentWord.get("rank"));
+    	currentCardStatus = stringToInteger(currentWord.get("status"));
     	
 //
     	Log.d(TAG, "showWord: currentWord=" + currentWord);
@@ -358,7 +358,7 @@ public class ArabicFlashcards extends Activity {
     	
     	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
     	// if the current card is marked as "known"
-		if (currentCardRank == 1) {
+		if (currentCardStatus == 3) {
 			// show the check
 			knownCheck.setImageResource(R.drawable.btn_check_buttonless_on);
 		} else {
@@ -451,8 +451,8 @@ public class ArabicFlashcards extends Activity {
         vf.setOutAnimation(slideLeftOut);
     	vf.showNext();
     	
-    	// update the rank of the current card
-    	ch.updateRank(currentCardId, currentCardRank, direction);
+    	// update the status of the current card
+    	ch.updateCardStatus(currentCardId, currentCardStatus, direction);
     	// get the next one
     	currentWord = ch.nextCard();
     	showWord(currentWord);
