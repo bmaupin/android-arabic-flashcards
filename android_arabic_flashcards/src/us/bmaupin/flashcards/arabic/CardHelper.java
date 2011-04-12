@@ -55,10 +55,14 @@ public class CardHelper {
 		wordsHelper.close();
 	}
 	
-	// loadCards in arabicFlashcards should prob be called something like loadViews
+// TODO: remove categoryChanged if we're not using it
 	private void loadCards(boolean categoryChanged) {
 		Log.d(TAG, "loadCards called");
 		List<Integer> currentCardIds = new ArrayList<Integer>();
+		
+		// these need to be emptied each time loadCards is called
+// TODO: do we need to clear anything here?
+//		currentRankedIds.clear();
 		
 		String[] columns = { "_ID" };
 		String selection = null;
@@ -87,20 +91,20 @@ public class CardHelper {
 	private void loadCardPriorities(List<Integer> currentCardIds) {
 		// for each card ID in current cards
 		for (int thisId : currentCardIds) {
-			// get its priority
-			int thisPriority = getPriority(thisId);
+			// get its status
+			int thisStatus = getCardStatus(thisId);
 			
 			// if the rank for this particular card is 0
-			if (thisPriority == 0) {
+			if (thisStatus == 0) {
 				// add it to the list of cards we haven't seen yet
 				currentUnseenIds.add(thisId);
-			} else if (thisPriority == 1) {
+			} else if (thisStatus == 1) {
 				// if it's 1, add it to the list of cards marked as unknown
 				currentUnknownIds.add(thisId);
-			} else if (thisPriority == 2) {
+			} else if (thisStatus == 2) {
 				// 2, add it to the list of seen cards
 				currentSeenIds.add(thisId);
-			} else if (thisPriority == 3) {
+			} else if (thisStatus == 3) {
 				// 3, add it to the list of cards marked as known
 				currentKnownIds.add(thisId);
 			}
@@ -284,19 +288,87 @@ public class CardHelper {
 		return thisCard;
 	}
 	
-	private int getPriority(int thisId) {
-		String[] columns = { ProfileDatabaseHelper.PRIORITY };
+	private int getCardStatus(int thisId) {
+		String[] columns = { ProfileDatabaseHelper.STATUS };
 		String selection = ProfileDatabaseHelper.CARD_ID + "=" + thisId;
-		// get its priority
+		// get its status
 		Cursor thisCursor = profileDb.query(profileHelper.getProfileName(), columns, selection, null, null, null, null);
 		thisCursor.moveToFirst();
-		int thisPriority = thisCursor.getInt(0);
+		int thisStatus = thisCursor.getInt(0);
 		thisCursor.close();
 		
-		return thisPriority;
+		return thisStatus;
+	}
+	
+	private int getCardStatus(String thisId) {
+		return getCardStatus("" + thisId);
 	}
 	
 	Map<String, String> nextCard() {
+//		
+		Log.d(TAG, "nextCard called");
+		Log.d(TAG, "nextCard: cardHistoryIndex=" + cardHistoryIndex);
+		Log.d(TAG, "nextCard: cardHistory=" + cardHistory);
+		Log.d(TAG, "nextCard: rankedCardsShown=" + rankedCardsShown);
+		
+		// if we're going forward through the card history
+		if (cardHistoryIndex > 0) {
+			cardHistoryIndex --;
+//
+			Log.d(TAG, "nextCard: new cardHistoryIndex=" + cardHistoryIndex);
+			// get the next card in the card history
+			int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
+			Map<String, String> thisCard = getCard(thisId, false);
+// TODO: this seems messy; most of the time getCard is called, we want the rank...
+			// update its status
+			thisCard.put("status", "" + getCardStatus(thisCard.get("ID")));
+			// return it
+			return thisCard;
+
+		// first show all the unseen cards
+		} else if (!currentUnseenIds.isEmpty()) {
+			// remove the first element from the list
+			int thisId = currentUnseenIds.remove(0);
+			Map<String, String> thisCard = getCard(thisId, true);
+			thisCard.put("status", "0");
+			return thisCard;
+		
+		// then show the unknown cards
+		} else if (!currentUnknownIds.isEmpty()) {
+			// remove the first element from the list
+			int thisId = currentUnknownIds.remove(0);
+			Map<String, String> thisCard = getCard(thisId, true);
+			thisCard.put("status", "1");
+			return thisCard;
+
+		// next show the seen cards
+		} else if (!currentSeenIds.isEmpty()) {
+			// remove the first element from the list
+			int thisId = currentSeenIds.remove(0);
+			Map<String, String> thisCard = getCard(thisId, true);
+			thisCard.put("status", "2");
+			return thisCard;
+
+// TODO: here, first ask the user if they want to see known cards
+		// lastly show the known cards
+		} else if (!currentKnownIds.isEmpty()) {
+			// remove the first element from the list
+			int thisId = currentKnownIds.remove(0);
+			Map<String, String> thisCard = getCard(thisId, true);
+			thisCard.put("status", "3");
+			return thisCard;
+
+		// if we've no more cards
+		} else {
+			// load more
+			loadCards(false);
+			return nextCard();
+		}
+		
+	}
+	
+	/*
+	Map<String, String> nextCardOld() {
 		Log.d(TAG, "nextCard called");
 //		
 		Log.d(TAG, "nextCard: cardHistoryIndex=" + cardHistoryIndex);
@@ -383,6 +455,7 @@ public class CardHelper {
 			return nextCard();
 		}
 	}
+	*/
 	
 	Map<String, String> prevCard() {
 //
@@ -397,8 +470,8 @@ public class CardHelper {
 			// get the previous card in the card history
 			int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
 			Map<String, String> thisCard = getCard(thisId, false);		
-			// update its rank
-			thisCard.put("rank", "" + getRank(thisCard.get("ID")));
+			// update its status
+			thisCard.put("status", "" + getCardStatus(thisCard.get("ID")));
 			// return it
 			return thisCard;
 			
@@ -409,11 +482,42 @@ public class CardHelper {
 	}
 	
 	/**
-	 * Update the rank of the current card
+	 * Update the status of the current card
 	 * @param currentCardId
 	 * @param currentCardRank
 	 * @param direction
 	 */
+	void updateStatus(String currentCardId, int currentCardStatus, String direction) {
+		// if we're not going through the card history
+		if (cardHistoryIndex < 1) {
+			// update the card's rank
+			if (direction == "right") {
+				// if a card's status is unseen
+				if (currentCardStatus == 0) {
+					// change the status to seen
+					changeCardStatus(currentCardId, 2);
+				}
+			} else if (direction == "up") {
+				// change the status to known
+				changeCardStatus(currentCardId, 3);
+			} else if (direction == "down") {
+				// change the status to unknown
+				changeCardStatus(currentCardId, 1);
+			}
+		}
+	}
+	
+	private void changeCardStatus(String thisCardId, int newStatus) {
+		String whereClause = ProfileDatabaseHelper.CARD_ID + " = ?";
+		String[] whereArgs = {thisCardId};
+		
+		ContentValues cv=new ContentValues();
+		cv.put(ProfileDatabaseHelper.STATUS, newStatus);
+		
+		profileDb.update(profileHelper.getProfileName(), cv, whereClause, whereArgs);
+	}
+	
+	/*
 	void updateRank(String currentCardId, int currentCardRank, String direction) {
 		// if we're not going through the card history
 		if (cardHistoryIndex < 1) {
@@ -428,11 +532,6 @@ public class CardHelper {
 		}
 	}
 	
-	/**
-	 * Updates the rank of a card during a normal (right) swipe
-	 * @param thisCardId
-	 * @param thisCardRank
-	 */
 	private void updateRankNormal(String thisCardId, int thisCardRank) {
 		int newCardRank;
 		
@@ -455,12 +554,7 @@ public class CardHelper {
 		
 		ranksDb.update(RankDatabaseHelper.DB_TABLE_NAME, cv, whereClause, whereArgs);
 	}
-	
-	/**
-	 * Updates the rank of a card marked as "known"
-	 * @param thisCardId
-	 * @param thisCardRank
-	 */
+
 	private void updateRankKnown(String thisCardId) {
 		String whereClause = "_ID = ?";
 		String[] whereArgs = {thisCardId};
@@ -471,12 +565,7 @@ public class CardHelper {
 		
 		ranksDb.update(RankDatabaseHelper.DB_TABLE_NAME, cv, whereClause, whereArgs);
 	}
-	
-	/**
-	 * Updates the rank of a card marked as "not known"
-	 * @param thisCardId
-	 * @param thisCardRank
-	 */
+
 	private void updateRankNotKnown(String thisCardId, int thisCardRank) {
 		// if a card is unranked, set the default starting rank to 20
 		if (thisCardRank == 0) {
@@ -511,4 +600,5 @@ public class CardHelper {
 	    }
 	    return result;
 	}
+	*/
 }
