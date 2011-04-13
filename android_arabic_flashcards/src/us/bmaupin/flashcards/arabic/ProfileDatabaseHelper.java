@@ -9,36 +9,39 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 public class ProfileDatabaseHelper extends SQLiteOpenHelper {
-	// The tag will be used for logging
-    public static final String TAG = "MyDatabase";
+	// tag for log messages
+	public static final String TAG = "ProfileDatabaseHelper";
 
     // The name of your database
-    public static final String DATABASE_NAME = "mydatabase.db";
+    public static final String DATABASE_NAME = "profiles.db";
     // The version of your database (increment this every time you change something)
     public static final int DATABASE_VERSION = 1;
-    // The name of the table in your database
-    public static final String DB_TABLE_NAME = "mytable";
+    // profile name; this will be used as the database table name
+    private String profileName = "default";
    
     // The name of each column in the database
-    public static final String CARD_ID = "title";
-    public static final String STATUS = "description";
-    public static final String TAGS = "tags";
-
+    public static final String CARD_ID = "card_ID";
+    public static final String STATUS = "status";
+    
     // SQL Statement to create a new database.
-    public static final String DB_TABLE_CREATE =
-        "CREATE TABLE " + DB_TABLE_NAME + " (" +
+    private String DB_TABLE_CREATE =
+        "CREATE TABLE " + profileName + " (" +
         BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
         CARD_ID + " INTEGER, " +
-        STATUS + " INTEGER, " +
-        TAGS + " TEXT);";
-   
+        STATUS + " INTEGER);";
+    
     // The constructor method
+    public ProfileDatabaseHelper(Context context, String profileName) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.profileName = profileName;
+    }
+    
     public ProfileDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
+    
     public String getProfileName() {
-    	return "mytable";
+    	return profileName;
     }
     
     /* Called when the super class getWritableDatabase (or getReadableDatabase)
@@ -46,7 +49,8 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DB_TABLE_CREATE);       
+    	Log.d(TAG, "onCreate called");
+        db.execSQL(DB_TABLE_CREATE);
     }
 
     /* Called when the super class getWritableDatabase (or getReadableDatabase)
@@ -57,7 +61,8 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                 + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
-        onCreate(db);
+//        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
+//        onCreate(db);
+// TODO: upgrade the db properly
     }
 }
