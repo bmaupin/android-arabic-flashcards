@@ -17,7 +17,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
     // The version of your database (increment this every time you change something)
     public static final int DATABASE_VERSION = 1;
     // profile name; this will be used as the database table name
-    private String profileName = "default";
+    private String profileName = "profile1";
    
     // The name of each column in the database
     public static final String CARD_ID = "card_ID";
