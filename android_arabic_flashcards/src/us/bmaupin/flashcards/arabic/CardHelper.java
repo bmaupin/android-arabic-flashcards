@@ -282,19 +282,27 @@ public class CardHelper {
 		return thisCard;
 	}
 	
-	private int getCardStatus(int thisId) {
+	private int getCardStatus(String thisId) {
 		String[] columns = { ProfileDatabaseHelper.STATUS };
 		String selection = ProfileDatabaseHelper.CARD_ID + "=" + thisId;
+		int thisStatus;
 		// get its status
 		Cursor thisCursor = profileDb.query(profileHelper.getProfileName(), columns, selection, null, null, null, null);
 		thisCursor.moveToFirst();
-		int thisStatus = thisCursor.getInt(0);
+		try {
+			thisStatus = thisCursor.getInt(0);
+		// if the status for this card isn't in the database
+		} catch (android.database.CursorIndexOutOfBoundsException e) {
+			Log.d(TAG, "CursorIndexOutOfBoundsException: " + e);
+			// set it to 0 (unseen)
+			thisStatus = 0;
+		}
 		thisCursor.close();
 		
 		return thisStatus;
 	}
 	
-	private int getCardStatus(String thisId) {
+	private int getCardStatus(int thisId) {
 		return getCardStatus("" + thisId);
 	}
 	
@@ -502,6 +510,10 @@ public class CardHelper {
 	}
 	
 	private void changeCardStatus(String thisCardId, int newStatus) {
+//
+		Log.d(TAG, "changeCardStatus: thisCardId=" + thisCardId);
+		Log.d(TAG, "changeCardStatus: newStatus=" + newStatus);
+		
 		String whereClause = ProfileDatabaseHelper.CARD_ID + " = ?";
 		String[] whereArgs = {thisCardId};
 		
