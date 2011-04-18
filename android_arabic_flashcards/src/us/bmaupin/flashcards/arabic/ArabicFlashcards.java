@@ -128,7 +128,7 @@ public class ArabicFlashcards extends Activity {
         TextView rightView = (TextView)vf.findViewById(R.id.rightView);
         leftView.setTypeface(face);
         centerView.setTypeface(face);
-        rightView.setTypeface(face);   
+        rightView.setTypeface(face);
     }
 
 	@Override
