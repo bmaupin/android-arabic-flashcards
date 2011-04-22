@@ -9,6 +9,7 @@ import org.amr.arabic.ArabicUtilities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,6 +73,13 @@ public class ArabicFlashcards extends Activity {
     public void onCreate(Bundle savedInstanceState) {
     	Log.d(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
+        
+        // get an instance of the profile db just to make sure it's initialized
+        ProfileDatabaseHelper profileHelper = new ProfileDatabaseHelper(this);
+        SQLiteDatabase profileDb = profileHelper.getReadableDatabase();
+        profileDb.close();
+        profileHelper.close();
+        
         setContentView(R.layout.main);
         
 //        test();
