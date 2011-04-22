@@ -2,6 +2,9 @@ package us.bmaupin.flashcards.arabic;
 
 //$Id$
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils.InsertHelper;
@@ -18,51 +21,62 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "profiles.db";
     // The version of your database (increment this every time you change something)
     public static final int DATABASE_VERSION = 1;
-// TODO: we never quite got this working...
     // profile name; this will be used as the database table name
-//    private String DB_TABLE_NAME;
-//    private static final String DEFAULT_PROFILE_NAME = "profile1";
-    public static final String DB_TABLE_NAME = "profile1";
+    private String profileTableName = "profile1";
     
     // The name of each column in the database
-//    public static final String CARD_ID = "card_ID";
     public static final String STATUS = "status";
     
     // SQL Statement to create a new database.
-    private String DB_TABLE_CREATE =
-        "CREATE TABLE " + DB_TABLE_NAME + " (" +
-    BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-    STATUS + " INTEGER);";
-    
-//    CARD_ID + " INTEGER, " +
+    private final String DB_TABLE_CREATE =
+        "CREATE TABLE %s (" +
+        BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        STATUS + " INTEGER);";
     
     private final Context context;
-    
-    /*
+
     // The constructor method
-    public ProfileDatabaseHelper(Context context, String DB_TABLE_NAME) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    //    ProfileDatabaseHelper.DB_TABLE_NAME = DB_TABLE_NAME;
-        this.context = context;
-    }
-    */
-    
     public ProfileDatabaseHelper(Context context) {
-//        this(context, DEFAULT_PROFILE_NAME);
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
     
-    /*
     @Override
     public synchronized SQLiteDatabase getReadableDatabase() {
-       // TODO Auto-generated method stub
-       return super.getReadableDatabase();
+        List<String> tables = new ArrayList<String>();
+        final String SQL_GET_ALL_TABLES = "SELECT name FROM " + 
+            "sqlite_master WHERE type='table' ORDER BY name";
+        
+        // fetch the database
+        SQLiteDatabase db = super.getReadableDatabase();
+        // get the list of tables in the db
+        Cursor cursor = db.rawQuery(SQL_GET_ALL_TABLES, null);
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            tables.add(cursor.getString(0));
+        }
+        cursor.close();
+        // if the table we want isn't in the db, create it
+        if (!tables.contains(profileTableName)) {
+            // create the profile table
+            db.execSQL(String.format(DB_TABLE_CREATE, profileTableName));
+            // initialize the profile table
+            initializeProfileTable(db, profileTableName);
+        }
+        
+        return db;
     }
-    */
     
-    public String getDB_TABLE_NAME() {
-        return DB_TABLE_NAME;
+    public synchronized SQLiteDatabase getReadableDatabase(String profileTableName) {
+        Log.d(TAG, "our getReadableDatabase called");
+        Log.d(TAG, "our getReadableDatabase: this.profileTableName=" + profileTableName);
+        this.profileTableName = profileTableName;
+        Log.d(TAG, "our getReadableDatabase: this.profileTableName=" + profileTableName);
+        return getReadableDatabase();
+    }
+    
+    public String getprofileTableName() {
+        return profileTableName;
     }
     
     /* Called when the super class getWritableDatabase (or getReadableDatabase)
@@ -70,10 +84,8 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+//
         Log.d(TAG, "onCreate called");
-        db.execSQL(DB_TABLE_CREATE);
-        
-        initializeDb(db);
     }
     
     /* Called when the super class getWritableDatabase (or getReadableDatabase)
@@ -87,10 +99,10 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
 //        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
 //        onCreate(db);
 //TODO: upgrade the db properly
-        initializeDb(db);
+//        initializeDb(db);
     }
     
-    void initializeDb (SQLiteDatabase db) {
+    void initializeProfileTable (SQLiteDatabase db, String profileTable) {
         String sql = "SELECT COALESCE(MAX(_ID), 0) FROM " + DatabaseHelper.DB_TABLE_NAME;
     
         // get the number of rows in the cards db
@@ -101,10 +113,11 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
         int cardsRows = cardsCursor.getInt(0);
         Log.d(TAG, "initializeDb: cardsRows=" + cardsRows );
         cardsCursor.close();
+        cardsDb.close();
         cardsHelper.close();
         
-        // get the number of rows in the cards db
-        sql = "SELECT COALESCE(MAX(_ID), 0) FROM " + DB_TABLE_NAME;
+        // get the number of rows in the profiles db
+        sql = "SELECT COALESCE(MAX(_ID), 0) FROM " + profileTable;
         Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
         int profileRows = cursor.getInt(0);
@@ -113,8 +126,9 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
         // get the difference, fill the profile db with that number of empty rows
         int rowsToAdd = cardsRows - profileRows;
         Log.d(TAG, "initializeDb: rowsToAdd=" + rowsToAdd );
-        
-        InsertHelper ih = new InsertHelper(db, DB_TABLE_NAME);
+
+// FIXME: using a non-static variable here adds 5 seconds to the process.  fix it!!
+        InsertHelper ih = new InsertHelper(db, profileTable);
         
         final int STATUS_COLUMN = ih.getColumnIndex(ProfileDatabaseHelper.STATUS);
         
@@ -131,6 +145,6 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "initializeDb: profileRows=" + profileRows );
         cursor.close();
     
-    //TODO: db fill takes way too long (>5 sec), need to do little by little, or show user progress
+// TODO: db fill takes way too long (>5 sec), need to do little by little, or show user progress
     }
 }
