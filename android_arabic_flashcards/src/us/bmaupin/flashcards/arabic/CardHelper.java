@@ -7,10 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import us.bmaupin.test.DatabaseHelper;
+import us.bmaupin.test.ProfileDatabaseHelper;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 public class CardHelper {
@@ -80,10 +84,22 @@ public class CardHelper {
         }
 
 //      cursor = wordsDb.query("words", columns, selection, null, null, null, null);
+        /*
         String sql = "SELECT _ID FROM " + DatabaseHelper.DB_TABLE_NAME +
             " WHERE _ID IN (SELECT _ID FROM " + PROFILE_DB + "." + 
             ProfileDatabaseHelper.DB_TABLE_NAME + " WHERE " + 
             ProfileDatabaseHelper.STATUS + " = %d);";
+        */
+        
+        String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
+                DatabaseHelper._ID +
+                " FROM " + DatabaseHelper.DB_TABLE_NAME +
+                " LEFT JOIN profileDb." + ProfileDatabaseHelper.DB_TABLE_NAME + 
+                " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+                + " = profileDb." + 
+                ProfileDatabaseHelper.DB_TABLE_NAME + "." + 
+                ProfileDatabaseHelper.CARD_ID + 
+                " WHERE " + ProfileDatabaseHelper.STATUS + " IS NULL;";
         
         // get all unread cards (where status == 0)
         Cursor cursor = db.rawQuery(String.format(sql, 0), null);
