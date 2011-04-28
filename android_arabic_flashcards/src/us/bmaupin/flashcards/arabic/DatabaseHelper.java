@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -20,6 +21,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 6;
 	public static final String DB_TABLE_NAME = "words";
 
+	// The name of each column in the database
+    public static final String _ID = BaseColumns._ID;
+	
 	// variable to tell us whether onCreate() or onUpgrade() has been called
 	boolean dbNeedsRefreshing = false;
 	
