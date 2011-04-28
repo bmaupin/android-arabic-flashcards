@@ -7,7 +7,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils.InsertHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -25,20 +24,22 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
     private String profileTableName = "profile1";
     
     // The name of each column in the database
+    public static final String CARD_ID = "card_ID";
     public static final String STATUS = "status";
     
     // SQL Statement to create a new database.
     private final String DB_TABLE_CREATE =
         "CREATE TABLE %s (" +
         BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        CARD_ID + " INTEGER, " +
         STATUS + " INTEGER);";
     
-    private final Context context;
+//    private final Context context;
 
     // The constructor method
     public ProfileDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
+//        this.context = context;
     }
     
     @Override
@@ -61,7 +62,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
             // create the profile table
             db.execSQL(String.format(DB_TABLE_CREATE, profileTableName));
             // initialize the profile table
-            initializeProfileTable(db, profileTableName);
+//            initializeProfileTable(db, profileTableName);
         }
         
         return db;
@@ -101,10 +102,13 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
 //TODO: upgrade the db properly
 //        initializeDb(db);
     }
-    
+
+// TODO: get rid of this function if we don't need it any more
     void initializeProfileTable (SQLiteDatabase db, String profileTable) {
+        
         String sql = "SELECT COALESCE(MAX(_ID), 0) FROM " + DatabaseHelper.DB_TABLE_NAME;
     
+        /*
         // get the number of rows in the cards db
         DatabaseHelper cardsHelper = new DatabaseHelper(context);
         SQLiteDatabase cardsDb = cardsHelper.getReadableDatabase();
@@ -128,7 +132,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "initializeDb: rowsToAdd=" + rowsToAdd );
 
 // FIXME: using a non-static variable here adds 5 seconds to the process.  fix it!!
-        InsertHelper ih = new InsertHelper(db, profileTable);
+        InsertHelper ih = new InsertHelper(db, DB_TABLE_NAME);
         
         final int STATUS_COLUMN = ih.getColumnIndex(ProfileDatabaseHelper.STATUS);
         
@@ -146,5 +150,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
     
 // TODO: db fill takes way too long (>5 sec), need to do little by little, or show user progress
+ * 
+ */
     }
 }
