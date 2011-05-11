@@ -42,6 +42,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
 //        this.context = context;
     }
     
+// TODO: maybe we should just create a separate method: verifyTableExists?    
     @Override
     public synchronized SQLiteDatabase getReadableDatabase() {
         List<String> tables = new ArrayList<String>();
@@ -52,7 +53,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = super.getReadableDatabase();
         // get the list of tables in the db
         Cursor cursor = db.rawQuery(SQL_GET_ALL_TABLES, null);
-        cursor.moveToFirst();
+//        cursor.moveToFirst();
         while (cursor.moveToNext()) {
             tables.add(cursor.getString(0));
         }
