@@ -121,7 +121,7 @@ public class CardHelper {
                 + " = profileDb." + 
                 profileName + "." + 
                 ProfileDatabaseHelper.CARD_ID + 
-                " WHERE " + ProfileDatabaseHelper.STATUS + " IS NULL;";
+                " WHERE " + ProfileDatabaseHelper.STATUS + " IS NULL";
         
         /*
          * 1. flag string to tell us what status we're showing
@@ -342,7 +342,7 @@ public class CardHelper {
 //        DatabaseHelper._ID +
         DatabaseHelper.ENGLISH + ", " +
         DatabaseHelper.ARABIC + ", " +
-        ProfileDatabaseHelper.STATUS + ", " +
+        ProfileDatabaseHelper.STATUS +
         " FROM " + DatabaseHelper.DB_TABLE_NAME +
         " LEFT JOIN profileDb." + profileName + 
         " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
@@ -363,7 +363,16 @@ public class CardHelper {
         thisCard.put("ID", "" + thisId);
         thisCard.put("english", thisCursor.getString(0));
         thisCard.put("arabic", thisCursor.getString(1));
-        thisCard.put("status", thisCursor.getString(2));
+        // card status might be null if the card hasn't been seen yet
+        if (thisCursor.getString(2) == null) {
+        	thisCard.put("status", "0");
+        } else {
+        	thisCard.put("status", thisCursor.getString(2));
+        }
+//        
+        Log.d(TAG, "getCard: english=" + thisCursor.getString(0));
+        Log.d(TAG, "getCard: arabic=" + thisCursor.getString(1));
+        Log.d(TAG, "getCard: status=" + thisCursor.getString(2));
         
         thisCursor.close();
         
@@ -622,10 +631,11 @@ public class CardHelper {
         Log.d(TAG, "changeCardStatus: thisCardId=" + thisCardId);
         Log.d(TAG, "changeCardStatus: newStatus=" + newStatus);
         
-        String whereClause = "_ID = ?";
-        String[] whereArgs = {thisCardId};
+//        String whereClause = "_ID = ?";
+//        String[] whereArgs = {thisCardId};
         
         ContentValues cv=new ContentValues();
+        cv.put(ProfileDatabaseHelper.CARD_ID, thisCardId);
         cv.put(ProfileDatabaseHelper.STATUS, newStatus);
         
 //        profileDb.update(profileHelper.getProfileName(), cv, whereClause, whereArgs);
@@ -636,7 +646,7 @@ public class CardHelper {
         	
         }
         */
-//        db.
+        db.replace(profileName, ProfileDatabaseHelper.CARD_ID, cv);
 //        db.replace(profileName, nullColumnHack, initialValues);
     }
     
