@@ -79,6 +79,7 @@ public class CardHelper {
         dbHelper.close();
     }
     
+/*
 // TODO: remove categoryChanged if we're not using it
     private void loadCards(boolean categoryChanged) {
         Log.d(TAG, "loadCards called");
@@ -103,7 +104,7 @@ public class CardHelper {
             ProfileDatabaseHelper.DB_TABLE_NAME + " WHERE " + 
             ProfileDatabaseHelper.STATUS + " = %d);";
         */
-        
+/*        
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
                 DatabaseHelper._ID +
                 " FROM " + DatabaseHelper.DB_TABLE_NAME +
@@ -121,7 +122,7 @@ public class CardHelper {
          * 2. get status when we get card
          *  why not?
          */
-        
+/*        
         // get all unread cards (where status == 0)
         Cursor cursor = db.rawQuery(String.format(sql, 0), null);
         cursor.moveToFirst();
@@ -137,6 +138,7 @@ public class CardHelper {
         
         cursor.close();
     }
+*/
     
     void loadCategory(String category) {
         currentCategory = category;
@@ -159,7 +161,67 @@ public class CardHelper {
     private Map<String, String> getCard(int thisId, boolean addToHistory) {
         Log.d(TAG, "getCard: thisId=" + thisId);
         Map<String, String> thisCard = new HashMap<String, String>();
-                
+        
+        /* 
+         * select words._id as _id,english,arabic,status from words 
+         * left join profiledb.profile1 on words._id = 
+         * profiledb.profile1.card_id where status is not null;"
+         */
+        
+        String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
+        DatabaseHelper._ID +
+        " FROM " + DatabaseHelper.DB_TABLE_NAME +
+        " LEFT JOIN profileDb." + profileName + 
+        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+        + " = profileDb." + 
+        profileName + "." + 
+        ProfileDatabaseHelper.CARD_ID + 
+        " WHERE " + ProfileDatabaseHelper.STATUS + " IS NULL";
+        
+        final String sql = "SELECT " +
+        	DatabaseHelper.ENGLISH + ", " +
+	        DatabaseHelper.ARABIC + ", " +
+	        ProfileDatabaseHelper.STATUS +
+	        " FROM " + DatabaseHelper.DB_TABLE_NAME +
+	        " LEFT JOIN " + PROFILE_DB + "." + profileName +
+	        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+	        + " = profileDb." + 
+	        profileName + "." + 
+	        ProfileDatabaseHelper.CARD_ID + 
+	        " WHERE " + DatabaseHelper.DB_TABLE_NAME + "." +
+	        DatabaseHelper._ID + " = %s";
+        
+        Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);
+        thisCursor.moveToFirst();
+        
+        thisCard.put("ID", "" + thisId);
+        thisCard.put("english", thisCursor.getString(0));
+        thisCard.put("arabic", thisCursor.getString(1));
+        // card status might be null if the card hasn't been seen yet
+        if (thisCursor.getString(2) == null) {
+        	thisCard.put("status", "0");
+        } else {
+        	thisCard.put("status", thisCursor.getString(2));
+        }
+//        
+        Log.d(TAG, "getCard: english=" + thisCursor.getString(0));
+        Log.d(TAG, "getCard: arabic=" + thisCursor.getString(1));
+        Log.d(TAG, "getCard: status=" + thisCursor.getString(2));
+        
+        thisCursor.close();
+        
+        if (addToHistory) {
+            // add word to the card history
+            cardHistory.add(thisId);
+        }
+        
+        return thisCard;
+    }
+    
+    private Map<String, String> getCardById(int thisId, boolean addToHistory) {
+        Log.d(TAG, "getCard: thisId=" + thisId);
+        Map<String, String> thisCard = new HashMap<String, String>();
+        
         final String sql = "SELECT " +
         	DatabaseHelper.ENGLISH + ", " +
 	        DatabaseHelper.ARABIC + ", " +
