@@ -37,6 +37,7 @@ public class CardHelper {
     private List<Integer> cardHistory = new ArrayList<Integer>();
     private int cardHistoryIndex = 0;
     private String currentCategory = "All";
+    private String currentStatus = "";
     private String currentSubCategory;
     private List<Integer> currentCardIds = new ArrayList<Integer>();
     private static final String PROFILE_DB = "profileDb";
@@ -140,17 +141,61 @@ public class CardHelper {
     }
 */
     
+    
     void loadCategory(String category) {
         currentCategory = category;
-        loadCards(true);
+//        loadCards(true);
     }
     
     void loadCategory(String category, String subCategory) {
         currentCategory = category;
         currentSubCategory = subCategory;
-        loadCards(true);
+//        loadCards(true);
     }    
-        
+
+// TODO: remove categoryChanged if we're not using it
+//    private void loadCards(boolean categoryChanged) {
+    void loadCardsCursor() {
+    	String[] sqlSelectionArgs = new String[1];
+
+// TODO: fix category selection, AGAIN
+    	
+        String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
+	        DatabaseHelper._ID +
+	    	DatabaseHelper.ENGLISH + ", " +
+	        DatabaseHelper.ARABIC + ", " +
+	        ProfileDatabaseHelper.STATUS +
+	        " FROM " + DatabaseHelper.DB_TABLE_NAME +
+	        " LEFT JOIN profileDb." + profileName + 
+	        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+	        + " = profileDb." + 
+	        profileName + "." + 
+	        ProfileDatabaseHelper.CARD_ID + 
+	        " WHERE " + ProfileDatabaseHelper.STATUS + " ?";
+	    
+	    if (currentStatus.equals("")) {
+	    	currentStatus = "unseen";
+	    	sqlSelectionArgs[0] = "IS NULL";
+	    } else if (currentStatus.equals("unseen")) {
+	    	currentStatus = "unknown";
+	    	sqlSelectionArgs[0] = "= 1";
+	    } else if (currentStatus.equals("unknown")) {
+	    	currentStatus = "seen";
+	    	sqlSelectionArgs[0] = "= 2";
+	    } else if (currentStatus.equals("seen")) {
+	    	currentStatus = "known";
+	    	sqlSelectionArgs[0] = "= 3";
+	    }
+	        
+	    cursor = db.rawQuery(sql, sqlSelectionArgs);
+	    
+	    cursor.moveToFirst();
+    }
+
+    Map<String, String> nextCard() {
+    	return nextCard(false);
+    }
+    
     /***
      * Get a card given it's ID and a boolean value determining whether or not
      * it should be added to the card history
@@ -158,8 +203,10 @@ public class CardHelper {
      * @param addToHistory
      * @return
      */
-    private Map<String, String> getCard(int thisId, boolean addToHistory) {
-        Log.d(TAG, "getCard: thisId=" + thisId);
+    Map<String, String> nextCard(boolean addToHistory) {
+//        Log.d(TAG, "getCard: thisId=" + thisId);
+    	Log.d(TAG, "getCard called");
+        
         Map<String, String> thisCard = new HashMap<String, String>();
         
         /* 
@@ -167,52 +214,58 @@ public class CardHelper {
          * left join profiledb.profile1 on words._id = 
          * profiledb.profile1.card_id where status is not null;"
          */
+
+/*
+        // create a new cursor if necessary
+//        if (categoryChanged || cursor == null || cursor.isClosed()) {
+//        if (cursor == null || cursor.isClosed()) {
+// TODO: in the future, do we want to put all this into some kind of list/array?        
+//            String[] columns = { "_ID", "english", "arabic" };
+//            String[] columns = { "_ID" };
+//            String selection = null;
+            
+            if (currentCategory.equals("Ahlan wa sahlan")) {
+                selection = "aws_chapter = " + currentSubCategory;
+            }
+
+        }
+*/
+
+// TODO: reimplement card history
         
-        String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
-        DatabaseHelper._ID +
-        " FROM " + DatabaseHelper.DB_TABLE_NAME +
-        " LEFT JOIN profileDb." + profileName + 
-        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
-        + " = profileDb." + 
-        profileName + "." + 
-        ProfileDatabaseHelper.CARD_ID + 
-        " WHERE " + ProfileDatabaseHelper.STATUS + " IS NULL";
+        if (cursor == null) {
+        	loadCardsCursor();
+        }
         
-        final String sql = "SELECT " +
-        	DatabaseHelper.ENGLISH + ", " +
-	        DatabaseHelper.ARABIC + ", " +
-	        ProfileDatabaseHelper.STATUS +
-	        " FROM " + DatabaseHelper.DB_TABLE_NAME +
-	        " LEFT JOIN " + PROFILE_DB + "." + profileName +
-	        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
-	        + " = profileDb." + 
-	        profileName + "." + 
-	        ProfileDatabaseHelper.CARD_ID + 
-	        " WHERE " + DatabaseHelper.DB_TABLE_NAME + "." +
-	        DatabaseHelper._ID + " = %s";
+        if (!cursor.isFirst()) {
+        	if (!cursor.isLast()) {
+        		cursor.moveToNext();
+        	} else {
+        		cursor.close();
+// TODO: here handle if status is seen (prompt user if he/she wants to see known)
+// TODO: here handle if status is known (end of known cards)
+        		loadCardsCursor();
+        	}
+        }
         
-        Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);
-        thisCursor.moveToFirst();
-        
-        thisCard.put("ID", "" + thisId);
-        thisCard.put("english", thisCursor.getString(0));
-        thisCard.put("arabic", thisCursor.getString(1));
+        thisCard.put("ID", "" + cursor.getString(0));
+        thisCard.put("english", cursor.getString(1));
+        thisCard.put("arabic", cursor.getString(2));
         // card status might be null if the card hasn't been seen yet
-        if (thisCursor.getString(2) == null) {
+        if (cursor.getString(3) == null) {
         	thisCard.put("status", "0");
         } else {
-        	thisCard.put("status", thisCursor.getString(2));
+        	thisCard.put("status", cursor.getString(3));
         }
 //        
-        Log.d(TAG, "getCard: english=" + thisCursor.getString(0));
-        Log.d(TAG, "getCard: arabic=" + thisCursor.getString(1));
-        Log.d(TAG, "getCard: status=" + thisCursor.getString(2));
-        
-        thisCursor.close();
+        Log.d(TAG, "getCard: _id=" + cursor.getString(0));
+        Log.d(TAG, "getCard: english=" + cursor.getString(1));
+        Log.d(TAG, "getCard: arabic=" + cursor.getString(2));
+        Log.d(TAG, "getCard: status=" + cursor.getString(3));
         
         if (addToHistory) {
             // add word to the card history
-            cardHistory.add(thisId);
+            cardHistory.add(cursor.getString(0));
         }
         
         return thisCard;
@@ -261,7 +314,8 @@ public class CardHelper {
         
         return thisCard;
     }
-       
+    
+/*    
     Map<String, String> nextCard() {
 //        
         Log.d(TAG, "nextCard called");
@@ -293,6 +347,7 @@ public class CardHelper {
         }
         
     }
+*/
     
     Map<String, String> prevCard() {
 //
