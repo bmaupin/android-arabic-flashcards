@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import us.bmaupin.test.DatabaseHelper;
-import us.bmaupin.test.ProfileDatabaseHelper;
+//import us.bmaupin.test.DatabaseHelper;
+//import us.bmaupin.test.ProfileDatabaseHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,24 +32,46 @@ public class CardHelper {
     private String currentCategory = "All";
     private String currentSubCategory;
     private List<Integer> currentCardIds = new ArrayList<Integer>();
-    private List<Integer> currentKnownIds = new ArrayList<Integer>();
-    private List<Integer> currentSeenIds = new ArrayList<Integer>();
-    private List<Integer> currentUnknownIds = new ArrayList<Integer>();
-    private List<Integer> currentUnseenIds = new ArrayList<Integer>();
+    //private List<Integer> currentKnownIds = new ArrayList<Integer>();
+    //private List<Integer> currentSeenIds = new ArrayList<Integer>();
+    //private List<Integer> currentUnknownIds = new ArrayList<Integer>();
+    //private List<Integer> currentUnseenIds = new ArrayList<Integer>();
     private static final String PROFILE_DB = "profileDb";
+    private String profileName = "";
 //    private WeightedRandomGenerator weightedCardIds;
     
     public CardHelper(Context context) {
+    	this(context, "");
+    }
+    
+    public CardHelper(Context context, String profileName) {
         /*
         wordsHelper = new DatabaseHelper(context);
         wordsDb = wordsHelper.getReadableDatabase();
         
 //        ranksHelper = new RankDatabaseHelper(context);
 //        ranksDb = ranksHelper.getReadableDatabase();
-        
-        profileHelper = new ProfileDatabaseHelper(context);
-        profileDb = profileHelper.getReadableDatabase();
         */
+
+// TODO: would this be better elsewhere?
+    	ProfileDatabaseHelper profileHelper = new ProfileDatabaseHelper(context);
+// TODO: could this be cleaner/better?
+/*
+ * create a constant in ProfileDatabaseHelper for the default profile name?
+ */
+    	if (profileName.equals("")) {
+    		// make sure the profile table exists
+    		SQLiteDatabase profileDb = profileHelper.getReadableDatabase();
+    		this.profileName = profileHelper.getprofileTableName();
+    		profileDb.close();
+    	} else {
+    		this.profileName = profileName;
+    		// make sure the profile table exists
+    		SQLiteDatabase profileDb = profileHelper.getReadableDatabase(profileName);
+    		profileDb.close();
+    	}
+    	profileHelper.close();
+        
         dbHelper = new DatabaseHelper(context);
         db = dbHelper.getReadableDatabase();
 // TODO: we need a way to make sure the profile db is initialized
@@ -94,12 +116,20 @@ public class CardHelper {
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
                 DatabaseHelper._ID +
                 " FROM " + DatabaseHelper.DB_TABLE_NAME +
-                " LEFT JOIN profileDb." + ProfileDatabaseHelper.DB_TABLE_NAME + 
+                " LEFT JOIN profileDb." + profileName + 
                 " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
                 + " = profileDb." + 
-                ProfileDatabaseHelper.DB_TABLE_NAME + "." + 
+                profileName + "." + 
                 ProfileDatabaseHelper.CARD_ID + 
                 " WHERE " + ProfileDatabaseHelper.STATUS + " IS NULL;";
+        
+        /*
+         * 1. flag string to tell us what status we're showing
+         * 	upside: don't have to get status
+         * 	downside: won't work with history
+         * 2. get status when we get card
+         *  why not?
+         */
         
         // get all unread cards (where status == 0)
         Cursor cursor = db.rawQuery(String.format(sql, 0), null);
@@ -296,22 +326,46 @@ public class CardHelper {
     private Map<String, String> getCard(int thisId, boolean addToHistory) {
         Log.d(TAG, "getCard: thisId=" + thisId);
         
-        String[] columns = { "english", "arabic" };
-        String selection = "_ID = ?";
-        String[] selectionArgs = new String[1];
+//        String[] columns = { "english", "arabic" };
+//        String[] columns = { DatabaseHelper.ENGLISH, DatabaseHelper.ARABIC, ProfileDatabaseHelper.STATUS };
+//        String selection = "_ID = ?";
+//        String[] selectionArgs = new String[1];
         Map<String, String> thisCard = new HashMap<String, String>();
         
+        /*
         selectionArgs[0] = "" + thisId;
         Cursor thisCursor = db.query("words", columns, selection, selectionArgs, null, null, null);
+        */
+        
+        String sql = "SELECT " +
+//        	+ DatabaseHelper.DB_TABLE_NAME + "." + 
+//        DatabaseHelper._ID +
+        DatabaseHelper.ENGLISH + ", " +
+        DatabaseHelper.ARABIC + ", " +
+        ProfileDatabaseHelper.STATUS + ", " +
+        " FROM " + DatabaseHelper.DB_TABLE_NAME +
+        " LEFT JOIN profileDb." + profileName + 
+        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+        + " = profileDb." + 
+        profileName + "." + 
+        ProfileDatabaseHelper.CARD_ID + 
+        " WHERE " + DatabaseHelper.DB_TABLE_NAME + "." +
+        DatabaseHelper._ID + " = %s";
+//        ProfileDatabaseHelper.STATUS + " IS NULL;";
+        
+        Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);
+        
         thisCursor.moveToFirst();
         
-        String english = thisCursor.getString(0);
-        String arabic = thisCursor.getString(1);
-        thisCursor.close();
+//        String english = thisCursor.getString(0);
+//        String arabic = thisCursor.getString(1);
         
         thisCard.put("ID", "" + thisId);
-        thisCard.put("english", english);
-        thisCard.put("arabic", arabic);
+        thisCard.put("english", thisCursor.getString(0));
+        thisCard.put("arabic", thisCursor.getString(1));
+        thisCard.put("status", thisCursor.getString(2));
+        
+        thisCursor.close();
         
         if (addToHistory) {
             // add word to the card history
@@ -321,6 +375,7 @@ public class CardHelper {
         return thisCard;
     }
     
+    /*
     private int getCardStatus(String thisId) {
         String[] columns = { ProfileDatabaseHelper.STATUS };
         String selection = "_ID =" + thisId;
@@ -346,6 +401,7 @@ public class CardHelper {
     private int getCardStatus(int thisId) {
         return getCardStatus("" + thisId);
     }
+    */
     
     Map<String, String> nextCard() {
 //        
@@ -361,13 +417,15 @@ public class CardHelper {
             Log.d(TAG, "nextCard: new cardHistoryIndex=" + cardHistoryIndex);
             // get the next card in the card history
             int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
-            Map<String, String> thisCard = getCard(thisId, false);
+//            Map<String, String> thisCard = getCard(thisId, false);
 // TODO: this seems messy; most of the time getCard is called, we want the rank...
             // update its status
-            thisCard.put("status", "" + getCardStatus(thisCard.get("ID")));
+//            thisCard.put("status", "" + getCardStatus(thisCard.get("ID")));
             // return it
-            return thisCard;
-        
+//            return thisCard;
+            
+            return getCard(thisId, false);
+            
         /*
         // first show all the unseen cards
         } else if (!currentUnseenIds.isEmpty()) {
@@ -406,9 +464,7 @@ public class CardHelper {
         } else if (!currentCardIds.isEmpty()) {
             // remove the first element from the list
             int thisId = currentCardIds.remove(0);
-            Map<String, String> thisCard = getCard(thisId, true);
-            thisCard.put("status", "0");
-            return thisCard;
+            return getCard(thisId, true);
             
 // TODO: here, first ask the user if they want to see known cards
         
@@ -523,11 +579,11 @@ public class CardHelper {
             Log.d(TAG, "prevCard: new cardHistoryIndex=" + cardHistoryIndex);
             // get the previous card in the card history
             int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
-            Map<String, String> thisCard = getCard(thisId, false);        
+            return getCard(thisId, false);
             // update its status
-            thisCard.put("status", "" + getCardStatus(thisCard.get("ID")));
+//            thisCard.put("status", "" + getCardStatus(thisCard.get("ID")));
             // return it
-            return thisCard;
+//            return thisCard;
             
         // if cardHistory is empty or we're at the last card in the history
         } else {
@@ -573,7 +629,15 @@ public class CardHelper {
         cv.put(ProfileDatabaseHelper.STATUS, newStatus);
         
 //        profileDb.update(profileHelper.getProfileName(), cv, whereClause, whereArgs);
-        db.update(ProfileDatabaseHelper.DB_TABLE_NAME, cv, whereClause, whereArgs);
+        /*
+        try {
+        	db.update(profileName, cv, whereClause, whereArgs);
+        } catch () {
+        	
+        }
+        */
+//        db.
+//        db.replace(profileName, nullColumnHack, initialValues);
     }
     
     /*

@@ -23,6 +23,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	// The name of each column in the database
     public static final String _ID = BaseColumns._ID;
+    public static final String ENGLISH = "english";
+    public static final String ARABIC = "arabic";
 	
 	// variable to tell us whether onCreate() or onUpgrade() has been called
 	boolean dbNeedsRefreshing = false;
