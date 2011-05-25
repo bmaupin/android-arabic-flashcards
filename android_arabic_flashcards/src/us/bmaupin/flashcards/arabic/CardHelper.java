@@ -34,12 +34,12 @@ public class CardHelper {
     private Cursor cursor = null;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;    
-    private List<Integer> cardHistory = new ArrayList<Integer>();
+    private List<String> cardHistory = new ArrayList<String>();
     private int cardHistoryIndex = 0;
     private String currentCategory = "All";
     private String currentStatus = "";
     private String currentSubCategory;
-    private List<Integer> currentCardIds = new ArrayList<Integer>();
+//    private List<Integer> currentCardIds = new ArrayList<Integer>();
     private static final String PROFILE_DB = "profileDb";
     private String profileName = "";
     
@@ -156,12 +156,12 @@ public class CardHelper {
 // TODO: remove categoryChanged if we're not using it
 //    private void loadCards(boolean categoryChanged) {
     void loadCardsCursor() {
-    	String[] sqlSelectionArgs = new String[1];
+        String sqlStatusQualifier = "";
 
 // TODO: fix category selection, AGAIN
     	
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
-	        DatabaseHelper._ID +
+	        DatabaseHelper._ID + ", " +
 	    	DatabaseHelper.ENGLISH + ", " +
 	        DatabaseHelper.ARABIC + ", " +
 	        ProfileDatabaseHelper.STATUS +
@@ -171,23 +171,23 @@ public class CardHelper {
 	        + " = profileDb." + 
 	        profileName + "." + 
 	        ProfileDatabaseHelper.CARD_ID + 
-	        " WHERE " + ProfileDatabaseHelper.STATUS + " ?";
+	        " WHERE " + ProfileDatabaseHelper.STATUS + "%s";
 	    
 	    if (currentStatus.equals("")) {
 	    	currentStatus = "unseen";
-	    	sqlSelectionArgs[0] = "IS NULL";
+	    	sqlStatusQualifier = " IS NULL";
 	    } else if (currentStatus.equals("unseen")) {
 	    	currentStatus = "unknown";
-	    	sqlSelectionArgs[0] = "= 1";
+	    	sqlStatusQualifier = " = 1";
 	    } else if (currentStatus.equals("unknown")) {
 	    	currentStatus = "seen";
-	    	sqlSelectionArgs[0] = "= 2";
+	    	sqlStatusQualifier = " = 2";
 	    } else if (currentStatus.equals("seen")) {
 	    	currentStatus = "known";
-	    	sqlSelectionArgs[0] = "= 3";
+	    	sqlStatusQualifier = " = 2";
 	    }
-	        
-	    cursor = db.rawQuery(sql, sqlSelectionArgs);
+	    
+	    cursor = db.rawQuery(String.format(sql, sqlStatusQualifier), null);
 	    
 	    cursor.moveToFirst();
     }
@@ -270,7 +270,8 @@ public class CardHelper {
         
         return thisCard;
     }
-    
+
+/*
     private Map<String, String> getCardById(int thisId, boolean addToHistory) {
         Log.d(TAG, "getCard: thisId=" + thisId);
         Map<String, String> thisCard = new HashMap<String, String>();
@@ -314,6 +315,7 @@ public class CardHelper {
         
         return thisCard;
     }
+*/
     
 /*    
     Map<String, String> nextCard() {
@@ -349,6 +351,7 @@ public class CardHelper {
     }
 */
     
+// TODO: prevCard needs to be fixed
     Map<String, String> prevCard() {
 //
         Log.d(TAG, "prevCard: cardHistoryIndex=" + cardHistoryIndex);
@@ -360,8 +363,9 @@ public class CardHelper {
 //
             Log.d(TAG, "prevCard: new cardHistoryIndex=" + cardHistoryIndex);
             // get the previous card in the card history
-            int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
-            return getCard(thisId, false);
+//            int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
+//            return getCard(thisId, false);
+            return new HashMap<String, String>();
             
         // if cardHistory is empty or we're at the last card in the history
         } else {
