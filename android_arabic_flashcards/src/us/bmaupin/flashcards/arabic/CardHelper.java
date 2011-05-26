@@ -205,7 +205,7 @@ public class CardHelper {
      */
     Map<String, String> nextCard(boolean addToHistory) {
 //        Log.d(TAG, "getCard: thisId=" + thisId);
-    	Log.d(TAG, "getCard called");
+    	Log.d(TAG, "nextCard called");
         
         Map<String, String> thisCard = new HashMap<String, String>();
         
@@ -235,9 +235,7 @@ public class CardHelper {
         
         if (cursor == null) {
         	loadCardsCursor();
-        }
-        
-        if (!cursor.isFirst()) {
+        } else {
         	if (!cursor.isLast()) {
         		cursor.moveToNext();
         	} else {
