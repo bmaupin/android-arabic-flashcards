@@ -36,9 +36,10 @@ public class CardHelper {
     private SQLiteDatabase db;    
     private List<String> cardHistory = new ArrayList<String>();
     private int cardHistoryIndex = 0;
+    private boolean categoryChanged = false;
     private String currentCategory = "All";
     private String currentStatus = "";
-    private String currentSubCategory;
+    private String currentSubCategory = "";
 //    private List<Integer> currentCardIds = new ArrayList<Integer>();
     private static final String PROFILE_DB = "profileDb";
     private String profileName = "";
@@ -144,20 +145,29 @@ public class CardHelper {
     
     void loadCategory(String category) {
         currentCategory = category;
-//        loadCards(true);
+        // set category changed flag so we know to reload the cards cursor
+        categoryChanged = true;
+//        loadCardsCursor();
     }
     
     void loadCategory(String category, String subCategory) {
         currentCategory = category;
         currentSubCategory = subCategory;
-//        loadCards(true);
+        // set category changed flag so we know to reload the cards cursor
+        categoryChanged = true;
+//        loadCardsCursor();
     }    
 
 // TODO: remove categoryChanged if we're not using it
 //    private void loadCards(boolean categoryChanged) {
     void loadCardsCursor() {
-        String sqlStatusQualifier = "";
-
+        String sqlCategorySelection = "";
+        String sqlStatusSelection = "";
+        
+        if (currentCategory.equals("Ahlan wa sahlan")) {
+            sqlCategorySelection = "AND aws_chapter = " + currentSubCategory;
+        }
+        
 // TODO: fix category selection, AGAIN
     	
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
@@ -171,29 +181,42 @@ public class CardHelper {
 	        + " = profileDb." + 
 	        profileName + "." + 
 	        ProfileDatabaseHelper.CARD_ID + 
-	        " WHERE " + ProfileDatabaseHelper.STATUS + "%s";
+	        " WHERE " + ProfileDatabaseHelper.STATUS + "%s %s";
 	    
-	    if (currentStatus.equals("")) {
-	    	currentStatus = "unseen";
-	    	sqlStatusQualifier = " IS NULL";
-	    } else if (currentStatus.equals("unseen")) {
-	    	currentStatus = "unknown";
-	    	sqlStatusQualifier = " = 1";
+	    if (currentStatus.equals("unseen")) {
+	    	sqlStatusSelection = " IS NULL";
 	    } else if (currentStatus.equals("unknown")) {
-	    	currentStatus = "seen";
-	    	sqlStatusQualifier = " = 2";
+	    	sqlStatusSelection = " = 1";
 	    } else if (currentStatus.equals("seen")) {
-	    	currentStatus = "known";
-	    	sqlStatusQualifier = " = 2";
-	    }
+	    	sqlStatusSelection = " = 2";
+	    } else if (currentStatus.equals("known")) {
+            sqlStatusSelection = " = 3";
+        }
 	    
-	    cursor = db.rawQuery(String.format(sql, sqlStatusQualifier), null);
+	    Log.d(TAG, "rawQuery=" + String.format(sql, sqlStatusSelection, 
+                sqlCategorySelection));
+	    
+	    cursor = db.rawQuery(String.format(sql, sqlStatusSelection, 
+	            sqlCategorySelection), null);
 	    
 	    cursor.moveToFirst();
+// TODO: I'm pretty sure we're not correctly handling queries that don't return any results.  need to either handle here or in next/prevCard
     }
 
     Map<String, String> nextCard() {
     	return nextCard(false);
+    }
+    
+    void nextStatus() {
+        if (currentStatus.equals("")) {
+            currentStatus = "unseen";
+        } else if (currentStatus.equals("unseen")) {
+            currentStatus = "unknown";
+        } else if (currentStatus.equals("unknown")) {
+            currentStatus = "seen";
+        } else if (currentStatus.equals("seen")) {
+            currentStatus = "known";
+        }
     }
     
     /***
@@ -232,9 +255,16 @@ public class CardHelper {
 */
 
 // TODO: reimplement card history
-        
+
+// TODO: I'm pretty sure we're not correctly handling queries that don't return any results.  need to either handle here or in loadCardsCursor
         if (cursor == null) {
+            nextStatus();
         	loadCardsCursor();
+        } else if (categoryChanged) {
+            // reset category changed flag
+            categoryChanged = false;
+            currentStatus = "unseen";
+            loadCardsCursor();
         } else {
         	if (!cursor.isLast()) {
         		cursor.moveToNext();
@@ -242,6 +272,7 @@ public class CardHelper {
         		cursor.close();
 // TODO: here handle if status is seen (prompt user if he/she wants to see known)
 // TODO: here handle if status is known (end of known cards)
+        		nextStatus();
         		loadCardsCursor();
         	}
         }
