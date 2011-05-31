@@ -4,23 +4,14 @@ package us.bmaupin.flashcards.arabic;
 
 /*
  * TODO
- * 1. rethink card getting paradigm
- * 		better just to create query, get unseen cards first, then...
- * 		that way we could just get next, and not have to create a new query...
- * 2. fix categories, AGAIN :)
- * 3. what to do when we get to X cards (100?)
- * 4. test getting status with card vs. setting string for current
- * status ("unkown", "unseen", etc.)
- * 		going through history would need a method for updating status
+ * - card statuses being added but not replaced, creating duplicates
+ * - pop up prompt the first time we see a known card per cursor
+ * - pop up prompt when we get to the end of the stack of cards
+ * 
  */
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-//import us.bmaupin.test.DatabaseHelper;
-//import us.bmaupin.test.ProfileDatabaseHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -34,13 +25,9 @@ public class CardHelper {
     private Cursor cursor = null;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;    
-//    private List<String> cardHistory = new ArrayList<String>();
-//    private int cardHistoryIndex = 0;
     private boolean categoryChanged = false;
     private String currentCategory = "All";
-//    private String currentStatus = "";
     private String currentSubCategory = "";
-//    private List<Integer> currentCardIds = new ArrayList<Integer>();
     private static final String PROFILE_DB = "profileDb";
     private String profileName = "";
     
@@ -79,69 +66,7 @@ public class CardHelper {
         cursor.close();
         db.close();
         dbHelper.close();
-    }
-    
-/*
-// TODO: remove categoryChanged if we're not using it
-    private void loadCards(boolean categoryChanged) {
-        Log.d(TAG, "loadCards called");
-//        List<Integer> currentCardIds = new ArrayList<Integer>();
-        
-        // these need to be emptied each time loadCards is called
-// TODO: do we need to clear anything here?
-//        currentRankedIds.clear();
-        
-// TODO: we need to fix category selection.  AGAIN        
-        String[] columns = { "_ID" };
-        String selection = null;
-        
-        if (currentCategory.equals("Ahlan wa sahlan")) {
-            selection = "aws_chapter = " + currentSubCategory;
-        }
-
-//      cursor = wordsDb.query("words", columns, selection, null, null, null, null);
-        /*
-        String sql = "SELECT _ID FROM " + DatabaseHelper.DB_TABLE_NAME +
-            " WHERE _ID IN (SELECT _ID FROM " + PROFILE_DB + "." + 
-            ProfileDatabaseHelper.DB_TABLE_NAME + " WHERE " + 
-            ProfileDatabaseHelper.STATUS + " = %d);";
-        */
-/*        
-        String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
-                DatabaseHelper._ID +
-                " FROM " + DatabaseHelper.DB_TABLE_NAME +
-                " LEFT JOIN profileDb." + profileName + 
-                " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
-                + " = profileDb." + 
-                profileName + "." + 
-                ProfileDatabaseHelper.CARD_ID + 
-                " WHERE " + ProfileDatabaseHelper.STATUS + " IS NULL";
-        
-        /*
-         * 1. flag string to tell us what status we're showing
-         * 	upside: don't have to get status
-         * 	downside: won't work with history
-         * 2. get status when we get card
-         *  why not?
-         */
-/*        
-        // get all unread cards (where status == 0)
-        Cursor cursor = db.rawQuery(String.format(sql, 0), null);
-        cursor.moveToFirst();
-        
-// TODO: for now, only get 5 cards
-        for (int i=1; i<6; i++) {
-//        while (cursor.moveToNext()) {
-            int thisId = cursor.getInt(0);
-            currentCardIds.add(thisId);
-// testing
-            cursor.moveToNext();
-        }
-        
-        cursor.close();
-    }
-*/
-    
+    }  
     
     void loadCategory(String category) {
         currentCategory = category;
@@ -184,14 +109,8 @@ public class CardHelper {
 	    cursor.moveToFirst();
     }
     
-    /***
-     * Get a card given its ID and a boolean value determining whether or not
-     * it should be added to the card history
-     * @param thisId
-     * @param addToHistory
-     * @return
-     */
     Map<String, String> nextCard() {
+//
     	Log.d(TAG, "nextCard called");
 
         if (cursor == null) {
@@ -199,7 +118,7 @@ public class CardHelper {
         } else if (categoryChanged) {
             // reset category changed flag
             categoryChanged = false;
-//            currentStatus = "unseen";
+            cursor.close();
             loadCardsCursor();
         } else {
         	if (!cursor.isLast()) {
@@ -230,7 +149,7 @@ public class CardHelper {
         return getCurrentCard();
     }
     
-    Map<String, String> getCurrentCard() {
+    private Map<String, String> getCurrentCard() {
         Map<String, String> thisCard = new HashMap<String, String>();
         
         thisCard.put("ID", "" + cursor.getString(0));
@@ -297,64 +216,27 @@ public class CardHelper {
     }
 */
     
-/*    
-    Map<String, String> nextCard() {
-//        
-        Log.d(TAG, "nextCard called");
-        Log.d(TAG, "nextCard: cardHistoryIndex=" + cardHistoryIndex);
-        Log.d(TAG, "nextCard: cardHistory=" + cardHistory);
-        
-        // if we're going forward through the card history
-        if (cardHistoryIndex > 0) {
-            cardHistoryIndex --;
-//
-            Log.d(TAG, "nextCard: new cardHistoryIndex=" + cardHistoryIndex);
-            // get the next card in the card history
-            int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
-            
-            return getCard(thisId, false);
-            
-        } else if (!currentCardIds.isEmpty()) {
-            // remove the first element from the list
-            int thisId = currentCardIds.remove(0);
-            return getCard(thisId, true);
-            
-// TODO: here, first ask the user if they want to see known cards
-        
-        // if we've no more cards
-        } else {
-            // load more
-            loadCards(false);
-            return nextCard();
-        }
-        
-    }
-*/
-    
     /**
      * Update the status of the current card
      * @param currentCardId
-     * @param currentCardRank
+     * @param currentCardStatus
      * @param direction
      */
     void updateCardStatus(String currentCardId, int currentCardStatus, String direction) {
-        // if we're not going through the card history
-//        if (cardHistoryIndex < 1) {
-            // update the card's rank
-            if (direction == "right") {
-                // if a card's status is unseen
-                if (currentCardStatus == 0) {
-                    // change the status to seen
-                    changeCardStatus(currentCardId, 2);
-                }
-            } else if (direction == "up") {
-                // change the status to known
-                changeCardStatus(currentCardId, 3);
-            } else if (direction == "down") {
-                // change the status to unknown
-                changeCardStatus(currentCardId, 1);
+        // update the card's rank
+        if (direction == "right") {
+            // if a card's status is unseen
+            if (currentCardStatus == 0) {
+                // change the status to seen
+                changeCardStatus(currentCardId, 2);
             }
-//        }
+        } else if (direction == "up") {
+            // change the status to known
+            changeCardStatus(currentCardId, 3);
+        } else if (direction == "down") {
+            // change the status to unknown
+            changeCardStatus(currentCardId, 1);
+        }
     }
     
     private void changeCardStatus(String thisCardId, int newStatus) {
@@ -365,7 +247,7 @@ public class CardHelper {
         ContentValues cv=new ContentValues();
         cv.put(ProfileDatabaseHelper.CARD_ID, thisCardId);
         cv.put(ProfileDatabaseHelper.STATUS, newStatus);
-        
+// TODO: for some reason, card statuses are being added but not replaced, creating duplicates        
         db.replace(profileName, ProfileDatabaseHelper.CARD_ID, cv);
     }
 }
