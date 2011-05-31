@@ -34,11 +34,11 @@ public class CardHelper {
     private Cursor cursor = null;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;    
-    private List<String> cardHistory = new ArrayList<String>();
-    private int cardHistoryIndex = 0;
+//    private List<String> cardHistory = new ArrayList<String>();
+//    private int cardHistoryIndex = 0;
     private boolean categoryChanged = false;
     private String currentCategory = "All";
-    private String currentStatus = "";
+//    private String currentStatus = "";
     private String currentSubCategory = "";
 //    private List<Integer> currentCardIds = new ArrayList<Integer>();
     private static final String PROFILE_DB = "profileDb";
@@ -183,10 +183,6 @@ public class CardHelper {
 	    
 	    cursor.moveToFirst();
     }
-
-    Map<String, String> nextCard() {
-    	return nextCard(false);
-    }
     
     /***
      * Get a card given its ID and a boolean value determining whether or not
@@ -195,42 +191,15 @@ public class CardHelper {
      * @param addToHistory
      * @return
      */
-    Map<String, String> nextCard(boolean addToHistory) {
-//        Log.d(TAG, "getCard: thisId=" + thisId);
+    Map<String, String> nextCard() {
     	Log.d(TAG, "nextCard called");
-        
-        Map<String, String> thisCard = new HashMap<String, String>();
-        
-        /* 
-         * select words._id as _id,english,arabic,status from words 
-         * left join profiledb.profile1 on words._id = 
-         * profiledb.profile1.card_id where status is not null;"
-         */
-
-/*
-        // create a new cursor if necessary
-//        if (categoryChanged || cursor == null || cursor.isClosed()) {
-//        if (cursor == null || cursor.isClosed()) {
-// TODO: in the future, do we want to put all this into some kind of list/array?        
-//            String[] columns = { "_ID", "english", "arabic" };
-//            String[] columns = { "_ID" };
-//            String selection = null;
-            
-            if (currentCategory.equals("Ahlan wa sahlan")) {
-                selection = "aws_chapter = " + currentSubCategory;
-            }
-
-        }
-*/
-
-// TODO: reimplement card history
 
         if (cursor == null) {
         	loadCardsCursor();
         } else if (categoryChanged) {
             // reset category changed flag
             categoryChanged = false;
-            currentStatus = "unseen";
+//            currentStatus = "unseen";
             loadCardsCursor();
         } else {
         	if (!cursor.isLast()) {
@@ -238,10 +207,31 @@ public class CardHelper {
         	} else {
         		cursor.close();
 // TODO: here handle if status is seen (prompt user if he/she wants to see known)
+//      NOTE: only do this once per cursor.  if we do it more than once, it might trigger when going back through history
 // TODO: here handle if status is known (end of known cards)
+//      prompt user to go through the same deck again, choose a new one, shuffle
         		loadCardsCursor();
         	}
         }
+        
+        return getCurrentCard();
+    }
+    
+    Map<String, String> prevCard() {
+        if (!cursor.isFirst()) {
+            cursor.moveToPrevious();
+        // if we're at the first card
+        } else {
+            // return a blank card so we can show the user a message that there
+            // aren't any previous cards
+            return new HashMap<String, String>();
+        }
+
+        return getCurrentCard();
+    }
+    
+    Map<String, String> getCurrentCard() {
+        Map<String, String> thisCard = new HashMap<String, String>();
         
         thisCard.put("ID", "" + cursor.getString(0));
         thisCard.put("english", cursor.getString(1));
@@ -253,15 +243,10 @@ public class CardHelper {
         	thisCard.put("status", cursor.getString(3));
         }
 //        
-        Log.d(TAG, "getCard: _id=" + cursor.getString(0));
-        Log.d(TAG, "getCard: english=" + cursor.getString(1));
-        Log.d(TAG, "getCard: arabic=" + cursor.getString(2));
-        Log.d(TAG, "getCard: status=" + cursor.getString(3));
-        
-        if (addToHistory) {
-            // add word to the card history
-            cardHistory.add(cursor.getString(0));
-        }
+        Log.d(TAG, "getCurrentCard: _id=" + cursor.getString(0));
+        Log.d(TAG, "getCurrentCard: english=" + cursor.getString(1));
+        Log.d(TAG, "getCurrentCard: arabic=" + cursor.getString(2));
+        Log.d(TAG, "getCurrentCard: status=" + cursor.getString(3));
         
         return thisCard;
     }
@@ -346,28 +331,6 @@ public class CardHelper {
     }
 */
     
-// TODO: prevCard needs to be fixed
-    Map<String, String> prevCard() {
-//
-        Log.d(TAG, "prevCard: cardHistoryIndex=" + cardHistoryIndex);
-        Log.d(TAG, "prevCard: cardHistory=" + cardHistory);
-        
-        // if we have anything in card history and we're not at the last card in the history
-        if (cardHistory.size() > 1 && cardHistoryIndex < cardHistory.size() - 1) {
-            cardHistoryIndex++;
-//
-            Log.d(TAG, "prevCard: new cardHistoryIndex=" + cardHistoryIndex);
-            // get the previous card in the card history
-//            int thisId = cardHistory.get(cardHistory.size() - (cardHistoryIndex + 1));
-//            return getCard(thisId, false);
-            return new HashMap<String, String>();
-            
-        // if cardHistory is empty or we're at the last card in the history
-        } else {
-            return new HashMap<String, String>();
-        }
-    }
-    
     /**
      * Update the status of the current card
      * @param currentCardId
@@ -376,7 +339,7 @@ public class CardHelper {
      */
     void updateCardStatus(String currentCardId, int currentCardStatus, String direction) {
         // if we're not going through the card history
-        if (cardHistoryIndex < 1) {
+//        if (cardHistoryIndex < 1) {
             // update the card's rank
             if (direction == "right") {
                 // if a card's status is unseen
@@ -391,7 +354,7 @@ public class CardHelper {
                 // change the status to unknown
                 changeCardStatus(currentCardId, 1);
             }
-        }
+//        }
     }
     
     private void changeCardStatus(String thisCardId, int newStatus) {
