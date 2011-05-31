@@ -158,18 +158,17 @@ public class CardHelper {
 //        loadCardsCursor();
     }    
 
-// TODO: remove categoryChanged if we're not using it
-//    private void loadCards(boolean categoryChanged) {
     void loadCardsCursor() {
         String sqlCategorySelection = "";
-        String sqlStatusSelection = "";
+//        String sqlStatusSelection = "";
         
         if (currentCategory.equals("Ahlan wa sahlan")) {
-            sqlCategorySelection = "AND aws_chapter = " + currentSubCategory;
+            sqlCategorySelection = "WHERE aws_chapter = " + currentSubCategory;
         }
         
 // TODO: fix category selection, AGAIN
     	
+/*
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
 	        DatabaseHelper._ID + ", " +
 	    	DatabaseHelper.ENGLISH + ", " +
@@ -198,6 +197,24 @@ public class CardHelper {
 	    
 	    cursor = db.rawQuery(String.format(sql, sqlStatusSelection, 
 	            sqlCategorySelection), null);
+*/
+        
+        String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
+        DatabaseHelper._ID + ", " +
+        DatabaseHelper.ENGLISH + ", " +
+        DatabaseHelper.ARABIC + ", " +
+        ProfileDatabaseHelper.STATUS +
+        " FROM " + DatabaseHelper.DB_TABLE_NAME +
+        " LEFT JOIN profileDb." + profileName + 
+        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+        + " = profileDb." + 
+        profileName + "." + 
+        ProfileDatabaseHelper.CARD_ID + " %s ORDER BY " + 
+        ProfileDatabaseHelper.STATUS;
+        
+        Log.d(TAG, "rawQuery=" + String.format(sql, sqlCategorySelection));
+        
+        cursor = db.rawQuery(String.format(sql, sqlCategorySelection), null);
 	    
 	    cursor.moveToFirst();
 // TODO: I'm pretty sure we're not correctly handling queries that don't return any results.  need to either handle here or in next/prevCard
@@ -206,7 +223,7 @@ public class CardHelper {
     Map<String, String> nextCard() {
     	return nextCard(false);
     }
-    
+/*
     void nextStatus() {
         if (currentStatus.equals("")) {
             currentStatus = "unseen";
@@ -218,9 +235,10 @@ public class CardHelper {
             currentStatus = "known";
         }
     }
+*/
     
     /***
-     * Get a card given it's ID and a boolean value determining whether or not
+     * Get a card given its ID and a boolean value determining whether or not
      * it should be added to the card history
      * @param thisId
      * @param addToHistory
@@ -258,7 +276,7 @@ public class CardHelper {
 
 // TODO: I'm pretty sure we're not correctly handling queries that don't return any results.  need to either handle here or in loadCardsCursor
         if (cursor == null) {
-            nextStatus();
+//            nextStatus();
         	loadCardsCursor();
         } else if (categoryChanged) {
             // reset category changed flag
@@ -272,7 +290,7 @@ public class CardHelper {
         		cursor.close();
 // TODO: here handle if status is seen (prompt user if he/she wants to see known)
 // TODO: here handle if status is known (end of known cards)
-        		nextStatus();
+//        		nextStatus();
         		loadCardsCursor();
         	}
         }
