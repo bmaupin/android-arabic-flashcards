@@ -7,6 +7,9 @@ import java.util.Map;
 import org.amr.arabic.ArabicUtilities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -32,20 +35,24 @@ import android.widget.ViewFlipper;
 
 
 public class ArabicFlashcards extends Activity {
+    // unique dialog id
+    private static final int DIALOG_NO_MORE_CARDS = 0;
+    private static final int GET_CATEGORY = 0;
+    public static final String PREFS_NAME = "FlashcardPrefsFile";
 	private static final String TAG = "ArabicFlashcards";
-	String selectedChapter;
-	public static final String PREFS_NAME = "FlashcardPrefsFile";
-	private static final int GET_CATEGORY = 0;
+	
 	private CardHelper ch;
+	private String currentLang;
+	private String defaultLang;
+	String selectedChapter;
+	private SharedPreferences settings;
+	
 //	private DatabaseHelper helper;
 //	private SQLiteDatabase db;
 // TODO: do we want to remember last card position?  card ID would probably be more
 //	universal than cursor position
 //	private int cursorPosition;
 //	private Cursor cursor;
-	private String currentLang;
-	private String defaultLang;
-	private SharedPreferences settings;
 	
 	// class variables for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
@@ -217,8 +224,7 @@ public class ArabicFlashcards extends Activity {
     		startActivity(new Intent(this, About.class));
     		return true;
     	case R.id.menu_categories:
-    		Intent intent = new Intent(this, Categories.class);
-    		startActivityForResult(intent, GET_CATEGORY);
+    		getCategory();
     		return true;
     	case R.id.menu_exit:
     		finish();
@@ -282,6 +288,41 @@ public class ArabicFlashcards extends Activity {
 		return true;
 	}
     
+	@Override
+	protected Dialog onCreateDialog(int id) {
+	    switch (id) {
+	        case DIALOG_NO_MORE_CARDS:
+	            return createNoMoreCardsDialog();
+	    }
+	    return null;
+	}
+	
+	private Dialog createNoMoreCardsDialog() {
+	    final CharSequence[] items = {"Start over", "Choose a new category", "Shuffle cards"};
+
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("No more cards");
+	    builder.setItems(items, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int item) {
+	            if (items[item].equals("Start over")) {
+                    ch.startOver();
+                    showFirstCard();
+                } else if (items[item].equals("Choose a new category")) {
+	                getCategory();
+	            } else if (items[item].equals("Shuffle cards")) {
+// TODO: do something here
+                }
+	        }
+	    });
+	    AlertDialog ad = builder.create();
+	    return ad;
+	}
+	
+	private void getCategory() {
+	    Intent intent = new Intent(this, Categories.class);
+        startActivityForResult(intent, GET_CATEGORY);
+	}
+	
 	/*
 	private void createCursor() {
 		// Perform a managed query. The Activity will handle closing
@@ -452,18 +493,26 @@ public class ArabicFlashcards extends Activity {
 	private void showFirstCard() {
 		currentWord = ch.nextCard();
 		showWord(currentWord);
+// TODO: if the user runs out of cards, chooses a category, and presses back,
+// currentWord will be empty, and we need to handle this.
 	}
 	
 	private void showNextCard(String direction) {
-    	vf.setInAnimation(slideLeftIn);
-        vf.setOutAnimation(slideLeftOut);
-    	vf.showNext();
-    	
     	// update the status of the current card
     	ch.updateCardStatus(currentCardId, currentCardStatus, direction);
     	// get the next one
     	currentWord = ch.nextCard();
-    	showWord(currentWord);
+    	
+    	if (currentWord.isEmpty()) {
+    	    showDialog(DIALOG_NO_MORE_CARDS);
+    	} else {
+    	    // only show the right animation if there's a next word
+    	    vf.setInAnimation(slideLeftIn);
+	        vf.setOutAnimation(slideLeftOut);
+	        vf.showNext();
+	        
+    	    showWord(currentWord);
+    	}
 	}
 	
 	private void showPrevCard() {
