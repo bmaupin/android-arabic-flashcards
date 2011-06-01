@@ -31,7 +31,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
     private final String DB_TABLE_CREATE =
         "CREATE TABLE %s (" +
         BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-        CARD_ID + " INTEGER, " +
+        CARD_ID + " INTEGER UNIQUE, " +
         STATUS + " INTEGER);";
 
     // The constructor method
