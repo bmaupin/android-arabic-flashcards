@@ -148,7 +148,6 @@ public class ArabicFlashcards extends Activity {
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 		
 		Log.d(TAG, "onStart called");
@@ -241,7 +240,6 @@ public class ArabicFlashcards extends Activity {
     
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		switch(requestCode) {
@@ -521,7 +519,7 @@ public class ArabicFlashcards extends Activity {
     	// make sure there's a previous word to show
     	if (currentWord.isEmpty()) {
 // TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
-// TODO: if card is clicked on when toast is showing, card will go blank
+// TODO: first card goes blank when clicked on after toast shows
     		Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
     	} else {
     		// only show the left animation if there's a previous word
@@ -561,12 +559,10 @@ public class ArabicFlashcards extends Activity {
                 }
                 // bottom to top
                 if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-//                	Toast.makeText(getApplicationContext(), "TODO: swiped up", Toast.LENGTH_SHORT).show();
                 	showNextCard("up");
                     return true;
                 // top to bottom
                 }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-//                	Toast.makeText(getApplicationContext(), "TODO: swiped down", Toast.LENGTH_SHORT).show();
                 	showNextCard("down");
                 	return true;
                 }
