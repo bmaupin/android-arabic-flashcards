@@ -9,8 +9,8 @@
     <string name="help_title">Help</string>
     <string name="help_text"><b>Navigation</b>\n
 &#8226; Tap the card/press the center button to see the other side of the card.\n
-&#8226; Swipe up if you know the card.\n
-&#8226; Swipe down if you don\'t know it.\n
+&#8226; Swipe up/press the up key if you know the card.\n
+&#8226; Swipe down/press the down key if you don\'t know it.\n
 &#8226; Swipe right/press the right key to go to the next card.\n
 &#8226; Swipe left/press the left key to go to the previous card.\n
 \n
