@@ -4,7 +4,6 @@ package us.bmaupin.flashcards.arabic;
 
 /*
  * TODO
- * - card statuses being added but not replaced, creating duplicates
  * - pop up prompt the first time we see a known card per cursor
  * - pop up prompt when we get to the end of the stack of cards
  * 
@@ -21,14 +20,15 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 public class CardHelper {
+    private static final String PROFILE_DB = "profileDb";
     private static final String TAG = "CardHelper";
-    private Cursor cursor = null;
-    private DatabaseHelper dbHelper;
-    private SQLiteDatabase db;    
+    
     private boolean categoryChanged = false;
     private String currentCategory = "All";
     private String currentSubCategory = "";
-    private static final String PROFILE_DB = "profileDb";
+    private Cursor cursor = null;
+    private DatabaseHelper dbHelper;
+    private SQLiteDatabase db;
     private String profileName = "";
     
     public CardHelper(Context context) {
@@ -66,7 +66,7 @@ public class CardHelper {
         cursor.close();
         db.close();
         dbHelper.close();
-    }  
+    }
     
     void loadCategory(String category) {
         currentCategory = category;
@@ -79,7 +79,12 @@ public class CardHelper {
         currentSubCategory = subCategory;
         // set category changed flag so we know to reload the cards cursor
         categoryChanged = true;
-    }    
+    }
+    
+    void startOver() {
+        // set category changed flag so we know to reload the cards cursor
+        categoryChanged = true;
+    }
 
     void loadCardsCursor() {
         String sqlCategorySelection = "";
@@ -121,29 +126,38 @@ public class CardHelper {
             cursor.close();
             loadCardsCursor();
         } else {
+            if (cursor.isLast()) {
+                // return a blank card so we can show the user a message that
+                // there aren't any more cards
+                return new HashMap<String, String>();
+            } else {
+                cursor.moveToNext();
+            }
+/*            
         	if (!cursor.isLast()) {
         		cursor.moveToNext();
         	} else {
-        		cursor.close();
+        	    return new HashMap<String, String>();
+//        		cursor.close();
 // TODO: here handle if status is seen (prompt user if he/she wants to see known)
 //      NOTE: only do this once per cursor.  if we do it more than once, it might trigger when going back through history
 // TODO: here handle if status is known (end of known cards)
 //      prompt user to go through the same deck again, choose a new one, shuffle
-        		loadCardsCursor();
+//        		loadCardsCursor();
         	}
+*/
         }
         
         return getCurrentCard();
     }
     
     Map<String, String> prevCard() {
-        if (!cursor.isFirst()) {
-            cursor.moveToPrevious();
-        // if we're at the first card
-        } else {
+        if (cursor.isFirst()) {
             // return a blank card so we can show the user a message that there
             // aren't any previous cards
             return new HashMap<String, String>();
+        } else {
+            cursor.moveToPrevious();
         }
 
         return getCurrentCard();
@@ -247,7 +261,7 @@ public class CardHelper {
         ContentValues cv=new ContentValues();
         cv.put(ProfileDatabaseHelper.CARD_ID, thisCardId);
         cv.put(ProfileDatabaseHelper.STATUS, newStatus);
-// TODO: for some reason, card statuses are being added but not replaced, creating duplicates        
+        
         db.replace(profileName, ProfileDatabaseHelper.CARD_ID, cv);
     }
 }
