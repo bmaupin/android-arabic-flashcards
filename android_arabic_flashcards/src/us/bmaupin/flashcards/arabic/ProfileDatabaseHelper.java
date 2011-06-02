@@ -21,7 +21,8 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
     // The version of your database (increment this every time you change something)
     public static final int DATABASE_VERSION = 1;
     // profile name; this will be used as the database table name
-    private String profileTableName = "profile1";
+    private static final String DEFAULT_PROFILE_TABLE_NAME = "profile1";
+    private String profileTableName = "";
     
     // The name of each column in the database
     public static final String CARD_ID = "card_ID";
@@ -39,9 +40,20 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     
-// TODO: maybe we should just create a separate method: verifyTableExists?    
-    @Override
-    public synchronized SQLiteDatabase getReadableDatabase() {
+    void setProfileTableName(String profileTableName) {
+        if (profileTableName.equals("")) {
+            this.profileTableName = DEFAULT_PROFILE_TABLE_NAME;
+        } else {
+            this.profileTableName = profileTableName;
+        }
+        verifyProfileTableExists(this.profileTableName);
+    }
+    
+    public String getProfileTableName() {
+        return profileTableName;
+    }
+    
+    private void verifyProfileTableExists(String profileTableName) {
         List<String> tables = new ArrayList<String>();
         final String SQL_GET_ALL_TABLES = "SELECT name FROM " + 
             "sqlite_master WHERE type='table' ORDER BY name";
@@ -59,16 +71,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(String.format(DB_TABLE_CREATE, profileTableName));
         }
         
-        return db;
-    }
-    
-    public synchronized SQLiteDatabase getReadableDatabase(String profileTableName) {
-        this.profileTableName = profileTableName;
-        return getReadableDatabase();
-    }
-    
-    public String getprofileTableName() {
-        return profileTableName;
+        db.close();
     }
     
     /* Called when the super class getWritableDatabase (or getReadableDatabase)
@@ -76,6 +79,7 @@ public class ProfileDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // don't do anything here because we'll create the profile tables manually
 //
         Log.d(TAG, "onCreate called");
     }
