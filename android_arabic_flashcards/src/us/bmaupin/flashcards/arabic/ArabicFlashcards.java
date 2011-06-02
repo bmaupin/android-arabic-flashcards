@@ -33,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-
 public class ArabicFlashcards extends Activity {
     // unique dialog id
     private static final int DIALOG_NO_MORE_CARDS = 0;
@@ -45,14 +44,8 @@ public class ArabicFlashcards extends Activity {
 	private String currentLang;
 	private String defaultLang;
 	String selectedChapter;
+// TODO: do we want to remember last card position? (would need card ID, category, etc.)
 	private SharedPreferences settings;
-	
-//	private DatabaseHelper helper;
-//	private SQLiteDatabase db;
-// TODO: do we want to remember last card position?  card ID would probably be more
-//	universal than cursor position
-//	private int cursorPosition;
-//	private Cursor cursor;
 	
 	// class variables for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
@@ -74,6 +67,7 @@ public class ArabicFlashcards extends Activity {
     private int currentCardStatus;
     private TextView currentView;
     private Map<String, String> currentWord;
+    private Map<String, String> nextWord;
 
 	/** Called when the activity is first created. */
     @Override
@@ -144,38 +138,31 @@ public class ArabicFlashcards extends Activity {
         leftView.setTypeface(face);
         centerView.setTypeface(face);
         rightView.setTypeface(face);
+        
+        showFirstCard();
     }
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+//		
 		Log.d(TAG, "onStart called");
 	}
     
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+//		
 		Log.d(TAG, "onResume called");
-		
-		// whenever settings activity is called, android closes the database
-		// cursor so it loses its position
-//		cursor.moveToPosition(cursorPosition);
-		
-//		ch.loadCards();
 		
 		// get the default card language again in case it's changed
 		defaultLang = Settings.getDefaultLang(this);
-		// show the first card (do it here in case default card language changed)
-//		loadViews();
-// TODO: show the last saved card instead of the next card?
-		showFirstCard();
+		// reshow the current card in case anything's changed
+		reshowCurrentCard();
 	}
     
     @Override
     protected void onStop(){
-    	// TODO Auto-generated method stub
     	super.onStop();
        
 		Log.d(TAG, "onStop called");
@@ -253,6 +240,7 @@ public class ArabicFlashcards extends Activity {
 						Log.d(TAG, "onActivityResult: chapter=" + chapter);
 
 						ch.loadCategory(category, chapter);
+						showFirstCard();
 					}
 				}
 				break;
@@ -488,22 +476,28 @@ public class ArabicFlashcards extends Activity {
 	}
 	*/
 	
+	/**
+	 * function to reload the current card in case any settings have changed
+	 */
+	private void reshowCurrentCard() {
+	    showWord(currentWord);
+	}
+	
 	private void showFirstCard() {
 		currentWord = ch.nextCard();
 		showWord(currentWord);
-// TODO: if the user runs out of cards, chooses a category, and presses back,
-// currentWord will be empty, and we need to handle this.
 	}
 	
 	private void showNextCard(String direction) {
     	// update the status of the current card
     	ch.updateCardStatus(currentCardId, currentCardStatus, direction);
     	// get the next one
-    	currentWord = ch.nextCard();
+    	nextWord = ch.nextCard();
     	
-    	if (currentWord.isEmpty()) {
+    	if (nextWord.isEmpty()) {
     	    showDialog(DIALOG_NO_MORE_CARDS);
     	} else {
+    	    currentWord = nextWord;
     	    // only show the right animation if there's a next word
     	    vf.setInAnimation(slideLeftIn);
 	        vf.setOutAnimation(slideLeftOut);
@@ -514,14 +508,14 @@ public class ArabicFlashcards extends Activity {
 	}
 	
 	private void showPrevCard() {
-    	currentWord = ch.prevCard();
+    	nextWord = ch.prevCard();
     	
     	// make sure there's a previous word to show
-    	if (currentWord.isEmpty()) {
+    	if (nextWord.isEmpty()) {
 // TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
-// TODO: first card goes blank when clicked on after toast shows
     		Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
     	} else {
+    	    currentWord = nextWord;
     		// only show the left animation if there's a previous word
     		vf.setInAnimation(slideRightIn);
             vf.setOutAnimation(slideRightOut);
