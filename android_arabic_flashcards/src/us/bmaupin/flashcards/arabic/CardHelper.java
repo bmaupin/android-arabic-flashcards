@@ -127,19 +127,8 @@ public class CardHelper {
             } else {
                 cursor.moveToNext();
             }
-/*            
-        	if (!cursor.isLast()) {
-        		cursor.moveToNext();
-        	} else {
-        	    return new HashMap<String, String>();
-//        		cursor.close();
-// TODO: here handle if status is seen (prompt user if he/she wants to see known)
-//      NOTE: only do this once per cursor.  if we do it more than once, it might trigger when going back through history
-// TODO: here handle if status is known (end of known cards)
-//      prompt user to go through the same deck again, choose a new one, shuffle
-//        		loadCardsCursor();
-        	}
-*/
+// TODO: somewhere in here, prompt user once we've seen all but the known cards
+//          NOTE: only do this once per cursor.  if we do it more than once, it might trigger when going back through history
         }
         
         return getCurrentCard();
