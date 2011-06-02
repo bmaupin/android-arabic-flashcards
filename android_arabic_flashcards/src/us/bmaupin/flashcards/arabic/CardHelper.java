@@ -36,23 +36,17 @@ public class CardHelper {
     }
     
     public CardHelper(Context context, String profileName) {
-// TODO: would this be better elsewhere?
     	ProfileDatabaseHelper profileHelper = new ProfileDatabaseHelper(context);
-// TODO: could this be cleaner/better?
-/*
- * create a constant in ProfileDatabaseHelper for the default profile name?
- */
+    	
+    	// set the profile table name, which will ensure the profile table exists
+    	profileHelper.setProfileTableName(profileName);
+
     	if (profileName.equals("")) {
-    		// make sure the profile table exists
-    		SQLiteDatabase profileDb = profileHelper.getReadableDatabase();
-    		this.profileName = profileHelper.getprofileTableName();
-    		profileDb.close();
+    	    this.profileName = profileHelper.getProfileTableName();
     	} else {
-    		this.profileName = profileName;
-    		// make sure the profile table exists
-    		SQLiteDatabase profileDb = profileHelper.getReadableDatabase(profileName);
-    		profileDb.close();
+    	    this.profileName = profileName;
     	}
+
     	profileHelper.close();
         
         dbHelper = new DatabaseHelper(context);
