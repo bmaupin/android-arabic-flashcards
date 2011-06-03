@@ -126,22 +126,8 @@ utilities, vowels: fatha faa damma raa sukkun space siin
 
 
 
-CREATE TABLE words (
-    "_ID" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "english" TEXT NOT NULL,
-    "arabic" TEXT NOT NULL,
-    "tags" TEXT NOT NULL
-);
-
-CREATE TABLE words (
-    "_ID" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "english" TEXT NOT NULL,
-    "arabic" TEXT NOT NULL,
-    "plural" TEXT,
-    "type" TEXT,
-    "gender" TEXT
-);
-
+drop table temp;
+drop table words;
 
 CREATE TABLE temp (
     "english" TEXT NOT NULL,
