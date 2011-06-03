@@ -3,7 +3,8 @@
 <resources>
     <string name="app_name">Arabic flashcards</string>
     <string name="about_title">About</string>
-    <string name="about_text">Written by bmaupin</string>
+    <string name="about_text">Written by bmaupin\n
+\nUses icons from www.androidicons.com, licensed under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.</string>
     <string name="categories_title">Categories</string>
     <string name="choose_aws_chapter_title">Please select a chapter:</string>
     <string name="help_title">Help</string>
