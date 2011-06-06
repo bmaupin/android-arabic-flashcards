@@ -149,6 +149,19 @@ public class CardHelper {
     private Map<String, String> getCurrentCard() {
         Map<String, String> thisCard = new HashMap<String, String>();
         
+/*
+ *  TODO: implement parent ID for dupe cards
+ *  that way we can update status of current card and parent
+ *      but what about other duplicates?
+ *          update status of parent and then update status where english = parent ID?
+ */
+        // if arabic is empty and english is an integer, it's a reference to 
+        // another card
+        if (cursor.getString(2).equals("") && ArabicFlashcards.stringToInteger(cursor.getString(1)) != 0) {
+            // so return the other card
+            return getCardById(ArabicFlashcards.stringToInteger(cursor.getString(1)));
+        }
+        
         thisCard.put("ID", "" + cursor.getString(0));
         thisCard.put("english", cursor.getString(1));
         thisCard.put("arabic", cursor.getString(2));
@@ -167,6 +180,46 @@ public class CardHelper {
         return thisCard;
     }
 
+// TODO: can we consolidate any of this with above code?
+    private Map<String, String> getCardById(int thisId) {
+        Log.d(TAG, "getCard: thisId=" + thisId);
+        Map<String, String> thisCard = new HashMap<String, String>();
+        
+        final String sql = "SELECT " +
+            DatabaseHelper.ENGLISH + ", " +
+            DatabaseHelper.ARABIC + ", " +
+            ProfileDatabaseHelper.STATUS +
+            " FROM " + DatabaseHelper.DB_TABLE_NAME +
+            " LEFT JOIN " + PROFILE_DB + "." + profileName +
+            " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+            + " = profileDb." + 
+            profileName + "." + 
+            ProfileDatabaseHelper.CARD_ID + 
+            " WHERE " + DatabaseHelper.DB_TABLE_NAME + "." +
+            DatabaseHelper._ID + " = %s";
+        
+        Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);
+        thisCursor.moveToFirst();
+        
+        thisCard.put("ID", "" + thisId);
+        thisCard.put("english", thisCursor.getString(0));
+        thisCard.put("arabic", thisCursor.getString(1));
+        // card status might be null if the card hasn't been seen yet
+        if (thisCursor.getString(2) == null) {
+            thisCard.put("status", "0");
+        } else {
+            thisCard.put("status", thisCursor.getString(2));
+        }
+//        
+        Log.d(TAG, "getCard: english=" + thisCursor.getString(0));
+        Log.d(TAG, "getCard: arabic=" + thisCursor.getString(1));
+        Log.d(TAG, "getCard: status=" + thisCursor.getString(2));
+        
+        thisCursor.close();
+        
+        return thisCard;
+    }
+    
 /*
     private Map<String, String> getCardById(int thisId, boolean addToHistory) {
         Log.d(TAG, "getCard: thisId=" + thisId);

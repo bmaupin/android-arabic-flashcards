@@ -584,7 +584,7 @@ public class ArabicFlashcards extends Activity {
 	    	return false;
     }
     
-    int stringToInteger(String s) {
+    static int stringToInteger(String s) {
     	try {
     		int i = Integer.parseInt(s.trim());
     		return i;
