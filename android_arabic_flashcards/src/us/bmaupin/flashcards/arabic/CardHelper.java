@@ -4,6 +4,7 @@ package us.bmaupin.flashcards.arabic;
 
 /*
  * TODO
+ * BUG!  forward, back, forward, forward, forward
  * - pop up prompt the first time we see a known card per cursor
  * - pop up prompt when we get to the end of the stack of cards
  * 
@@ -162,7 +163,7 @@ public class CardHelper {
             return getCardById(ArabicFlashcards.stringToInteger(cursor.getString(1)));
         }
         
-        thisCard.put("ID", "" + cursor.getString(0));
+        thisCard.put("ID", cursor.getString(0));
         thisCard.put("english", cursor.getString(1));
         thisCard.put("arabic", cursor.getString(2));
         // card status might be null if the card hasn't been seen yet
@@ -299,5 +300,22 @@ public class CardHelper {
         cv.put(ProfileDatabaseHelper.STATUS, newStatus);
         
         db.replace(profileName, ProfileDatabaseHelper.CARD_ID, cv);
+        
+        final String selection = DatabaseHelper.ENGLISH + " = ?";
+        String[] selectionArgs = {thisCardId};
+        
+        // get all duplicates with the same card ID
+        Cursor thisCursor = db.query(DatabaseHelper.DB_TABLE_NAME, new String[] {DatabaseHelper._ID}, selection, selectionArgs, null, null, null);
+        // if there are any
+        if (thisCursor.getCount() > 0) {
+            thisCursor.moveToFirst();
+            // update the status for each duplicate
+            while (cursor.moveToNext()) {
+                cv.put(ProfileDatabaseHelper.CARD_ID, thisCursor.getString(0));
+                db.replace(profileName, ProfileDatabaseHelper.CARD_ID, cv);
+            }
+        }
+        
+        thisCursor.close();
     }
 }
