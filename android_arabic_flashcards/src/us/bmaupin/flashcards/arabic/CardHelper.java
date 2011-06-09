@@ -23,7 +23,6 @@ public class CardHelper {
     private static final String PROFILE_DB = "profileDb";
     private static final String TAG = "CardHelper";
     
-    private boolean categoryChanged = false;
     private String currentCategory = "All";
     private String currentSubCategory = "";
     private Cursor cursor = null;
@@ -64,20 +63,20 @@ public class CardHelper {
     
     void loadCategory(String category) {
         currentCategory = category;
-        // set category changed flag so we know to reload the cards cursor
-        categoryChanged = true;
+        // close the cursor so we'll reload it with the new category
+        cursor.close();
     }
     
     void loadCategory(String category, String subCategory) {
         currentCategory = category;
         currentSubCategory = subCategory;
-        // set category changed flag so we know to reload the cards cursor
-        categoryChanged = true;
+        // close the cursor so we'll reload it with the new category
+        cursor.close();
     }
     
     void startOver() {
-        // set category changed flag so we know to reload the cards cursor
-        categoryChanged = true;
+        // close the cursor so we create a new one to start over
+        cursor.close();
     }
 
     void loadCardsCursor() {
@@ -104,32 +103,28 @@ public class CardHelper {
         Log.d(TAG, "rawQuery=" + String.format(sql, sqlCategorySelection));
         
         cursor = db.rawQuery(String.format(sql, sqlCategorySelection), null);
-	    
-	    cursor.moveToFirst();
     }
     
     Map<String, String> nextCard() {
 //
     	Log.d(TAG, "nextCard called");
 
-        if (cursor == null) {
-        	loadCardsCursor();
-        } else if (categoryChanged) {
-            // reset category changed flag
-            categoryChanged = false;
-            cursor.close();
-            loadCardsCursor();
-        } else {
-            if (cursor.isLast()) {
-                // return a blank card so we can show the user a message that
-                // there aren't any more cards
-                return new HashMap<String, String>();
-            } else {
-                cursor.moveToNext();
-            }
+    	// the cursor will be null if we haven't created one yet
+    	// it will be closed if we're changing categories or starting over
+    	if (cursor == null || cursor.isClosed()) {
+    	    loadCardsCursor();
+    	}
+    	
+    	if (cursor.isLast()) {
+    	    // return a blank card so we can show the user a message that
+            // there aren't any more cards
+    	    return new HashMap<String, String>();
+    	} else {
+    	    cursor.moveToNext();
+    	}
+
 // TODO: somewhere in here, prompt user once we've seen all but the known cards
-//          NOTE: only do this once per cursor.  if we do it more than once, it might trigger when going back through history
-        }
+//      NOTE: only do this once per cursor.  if we do it more than once, it might trigger when going back through history
         
         return getCurrentCard();
     }
@@ -149,17 +144,12 @@ public class CardHelper {
     private Map<String, String> getCurrentCard() {
         Map<String, String> thisCard = new HashMap<String, String>();
         
-/*
- *  TODO: implement parent ID for dupe cards
- *  that way we can update status of current card and parent
- *      but what about other duplicates?
- *          update status of parent and then update status where english = parent ID?
- */
         // if arabic is empty and english is an integer, it's a reference to 
         // another card
         if (cursor.getString(2).equals("") && ArabicFlashcards.stringToInteger(cursor.getString(1)) != 0) {
             // so return the other card
             return getCardById(ArabicFlashcards.stringToInteger(cursor.getString(1)));
+// TODO: implement duplicate/reference flag so we don't search for dupes on all cards when updating card status
         }
         
         thisCard.put("ID", cursor.getString(0));
@@ -305,7 +295,7 @@ public class CardHelper {
         
         // get all duplicates with the same card ID
         Cursor thisCursor = db.query(DatabaseHelper.DB_TABLE_NAME, new String[] {DatabaseHelper._ID}, selection, selectionArgs, null, null, null);
-        // if there are any
+        // if we find any
         if (thisCursor.getCount() > 0) {
             // update the status for each duplicate
             while (thisCursor.moveToNext()) {
