@@ -149,7 +149,6 @@ public class CardHelper {
         if (cursor.getString(2).equals("") && ArabicFlashcards.stringToInteger(cursor.getString(1)) != 0) {
             // so return the other card
             return getCardById(ArabicFlashcards.stringToInteger(cursor.getString(1)));
-// TODO: implement duplicate/reference flag so we don't search for dupes on all cards when updating card status
         }
         
         thisCard.put("ID", cursor.getString(0));
@@ -170,7 +169,6 @@ public class CardHelper {
         return thisCard;
     }
 
-// TODO: can we consolidate any of this with above code?
     private Map<String, String> getCardById(int thisId) {
         Log.d(TAG, "getCard: thisId=" + thisId);
         Map<String, String> thisCard = new HashMap<String, String>();
