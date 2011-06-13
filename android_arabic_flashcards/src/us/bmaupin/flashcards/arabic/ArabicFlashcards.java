@@ -296,7 +296,8 @@ public class ArabicFlashcards extends Activity {
                 } else if (items[item].equals("Choose a new category")) {
 	                getCategory();
 	            } else if (items[item].equals("Shuffle cards")) {
-// TODO: do something here
+	                ch.startOverShuffle();
+	                showFirstCard();
                 }
 	        }
 	    });

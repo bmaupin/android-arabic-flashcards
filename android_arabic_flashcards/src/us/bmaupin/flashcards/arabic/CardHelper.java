@@ -29,6 +29,7 @@ public class CardHelper {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private String profileName = "";
+    private boolean shuffleCards = false;
     
     public CardHelper(Context context) {
     	this(context, "");
@@ -78,6 +79,12 @@ public class CardHelper {
         // close the cursor so we create a new one to start over
         cursor.close();
     }
+    
+    void startOverShuffle() {
+        // close the cursor so we create a new one to start over
+        cursor.close();
+        shuffleCards = true;
+    }
 
     void loadCardsCursor() {
         String sqlCategorySelection = "";
@@ -97,8 +104,15 @@ public class CardHelper {
         " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
         + " = profileDb." + 
         profileName + "." + 
-        ProfileDatabaseHelper.CARD_ID + " %s ORDER BY " + 
-        ProfileDatabaseHelper.STATUS;
+        ProfileDatabaseHelper.CARD_ID + " %s ORDER BY ";
+        
+        if (shuffleCards) {
+            sql += "RANDOM()";
+            // reset the value so we don't shuffle every time
+            shuffleCards = false;            
+        } else {
+            sql += ProfileDatabaseHelper.STATUS;
+        }
         
         Log.d(TAG, "rawQuery=" + String.format(sql, sqlCategorySelection));
         
