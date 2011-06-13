@@ -29,8 +29,23 @@ public class CardHelper {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private String profileName = "";
-    private boolean shuffleCards = false;
     
+    public String cardOrder = "smart";
+    
+    /**
+     * @return the cardOrder
+     */
+    public String getCardOrder() {
+        return cardOrder;
+    }
+
+    /**
+     * @param cardOrder the cardOrder to set
+     */
+    public void setCardOrder(String cardOrder) {
+        this.cardOrder = cardOrder;
+    }
+
     public CardHelper(Context context) {
     	this(context, "");
     }
@@ -79,12 +94,6 @@ public class CardHelper {
         // close the cursor so we create a new one to start over
         cursor.close();
     }
-    
-    void startOverShuffle() {
-        // close the cursor so we create a new one to start over
-        cursor.close();
-        shuffleCards = true;
-    }
 
     void loadCardsCursor() {
         String sqlCategorySelection = "";
@@ -95,21 +104,26 @@ public class CardHelper {
 // TODO: finish implementing card category selection
     	
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
-        DatabaseHelper._ID + ", " +
-        DatabaseHelper.ENGLISH + ", " +
-        DatabaseHelper.ARABIC + ", " +
-        ProfileDatabaseHelper.STATUS +
-        " FROM " + DatabaseHelper.DB_TABLE_NAME +
-        " LEFT JOIN profileDb." + profileName + 
-        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
-        + " = profileDb." + 
-        profileName + "." + 
-        ProfileDatabaseHelper.CARD_ID + " %s ORDER BY ";
+            DatabaseHelper._ID + ", " +
+            DatabaseHelper.ENGLISH + ", " +
+            DatabaseHelper.ARABIC + ", " +
+            ProfileDatabaseHelper.STATUS +
+            " FROM " + DatabaseHelper.DB_TABLE_NAME +
+            " LEFT JOIN " + PROFILE_DB + "." + profileName + 
+            " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+            + " = " + PROFILE_DB + "." +
+            profileName + "." + 
+            ProfileDatabaseHelper.CARD_ID + " %s ORDER BY ";
         
-        if (shuffleCards) {
+        if (cardOrder.equals("random")) {
             sql += "RANDOM()";
             // reset the value so we don't shuffle every time
-            shuffleCards = false;            
+            cardOrder = "smart";
+        } else if (cardOrder.equals("in order")) {
+            sql += PROFILE_DB + "." + profileName + "." + 
+                ProfileDatabaseHelper._ID;
+            // reset the value so we don't go in order every time
+            cardOrder = "smart";
         } else {
             sql += ProfileDatabaseHelper.STATUS;
         }
@@ -187,14 +201,14 @@ public class CardHelper {
         Log.d(TAG, "getCard: thisId=" + thisId);
         Map<String, String> thisCard = new HashMap<String, String>();
         
-        final String sql = "SELECT " +
+        String sql = "SELECT " +
             DatabaseHelper.ENGLISH + ", " +
             DatabaseHelper.ARABIC + ", " +
             ProfileDatabaseHelper.STATUS +
             " FROM " + DatabaseHelper.DB_TABLE_NAME +
             " LEFT JOIN " + PROFILE_DB + "." + profileName +
             " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
-            + " = profileDb." + 
+            + " = " + PROFILE_DB + "." +
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + 
             " WHERE " + DatabaseHelper.DB_TABLE_NAME + "." +

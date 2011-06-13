@@ -36,6 +36,7 @@ import android.widget.ViewFlipper;
 public class ArabicFlashcards extends Activity {
     // unique dialog id
     private static final int DIALOG_NO_MORE_CARDS = 0;
+    private static final int DIALOG_SELECT_CARD_ORDER = 1;
     private static final int GET_CATEGORY = 0;
     public static final String PREFS_NAME = "FlashcardPrefsFile";
 	private static final String TAG = "ArabicFlashcards";
@@ -240,6 +241,8 @@ public class ArabicFlashcards extends Activity {
 						Log.d(TAG, "onActivityResult: chapter=" + chapter);
 
 						ch.loadCategory(category, chapter);
+// TODO: it seems the query has already been run at this point...						
+						showDialog(DIALOG_SELECT_CARD_ORDER);
 						showFirstCard();
 					}
 				}
@@ -279,12 +282,14 @@ public class ArabicFlashcards extends Activity {
 	    switch (id) {
 	        case DIALOG_NO_MORE_CARDS:
 	            return createNoMoreCardsDialog();
+	        case DIALOG_SELECT_CARD_ORDER:
+	            return createSelectCardOrderDialog();
 	    }
 	    return null;
 	}
 	
 	private Dialog createNoMoreCardsDialog() {
-	    final CharSequence[] items = {"Start over", "Choose a new category", "Shuffle cards"};
+	    final CharSequence[] items = {"Start over", "Choose a new category"};
 
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("No more cards");
@@ -292,18 +297,41 @@ public class ArabicFlashcards extends Activity {
 	        public void onClick(DialogInterface dialog, int item) {
 	            if (items[item].equals("Start over")) {
                     ch.startOver();
+                    showDialog(DIALOG_SELECT_CARD_ORDER);
                     showFirstCard();
                 } else if (items[item].equals("Choose a new category")) {
 	                getCategory();
-	            } else if (items[item].equals("Shuffle cards")) {
-	                ch.startOverShuffle();
-	                showFirstCard();
-                }
+	            }
 	        }
 	    });
 	    AlertDialog ad = builder.create();
 	    return ad;
 	}
+	
+    private Dialog createSelectCardOrderDialog() {
+        final CharSequence[] items = {"Smart mode (recommended)", "Random", "In order"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select card order");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Smart mode (recommended)")) {
+                    ch.startOver();
+                    showFirstCard();
+                } else if (items[item].equals("Random")) {
+                    ch.setCardOrder("random");
+                    ch.startOver();
+                    showFirstCard();
+                } else if (items[item].equals("In order")) {
+                    ch.setCardOrder("in order");
+                    ch.startOver();
+                    showFirstCard();
+                }
+            }
+        });
+        AlertDialog ad = builder.create();
+        return ad;
+    }
 	
 	private void getCategory() {
 	    Intent intent = new Intent(this, Categories.class);
