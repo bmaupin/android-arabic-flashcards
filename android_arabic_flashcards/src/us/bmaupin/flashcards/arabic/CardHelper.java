@@ -125,7 +125,8 @@ public class CardHelper {
             // reset the value so we don't go in order every time
             cardOrder = "smart";
         } else {
-            sql += ProfileDatabaseHelper.STATUS;
+            // secondary random sort so it's not always in the same order
+            sql += ProfileDatabaseHelper.STATUS + ", RANDOM()";
         }
         
         Log.d(TAG, "rawQuery=" + String.format(sql, sqlCategorySelection));
