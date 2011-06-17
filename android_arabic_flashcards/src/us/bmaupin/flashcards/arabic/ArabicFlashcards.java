@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +28,9 @@ import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -289,13 +292,13 @@ public class ArabicFlashcards extends Activity {
 	}
 	
 	private Dialog createNoMoreCardsDialog() {
-	    final CharSequence[] items = {"Start over", "Choose a new category"};
+	    final CharSequence[] items = {"See these cards again", "Choose a new category"};
 
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("No more cards");
 	    builder.setItems(items, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int item) {
-	            if (items[item].equals("Start over")) {
+	            if (items[item].equals("See these cards again")) {
                     ch.startOver();
                     showDialog(DIALOG_SELECT_CARD_ORDER);
                     showFirstCard();
@@ -303,7 +306,7 @@ public class ArabicFlashcards extends Activity {
 	                getCategory();
 	            }
 	        }
-	    });
+	    });    
 	    AlertDialog ad = builder.create();
 	    return ad;
 	}
@@ -329,6 +332,27 @@ public class ArabicFlashcards extends Activity {
                 }
             }
         });
+        
+        /*        
+        // Add an option to save the selection as default
+        LinearLayout linearLayout = new LinearLayout(this);
+        // This gets rid of the space around the android checkbox image
+        linearLayout.setPadding(0, -6, 0, -10);
+        CheckBox checkBox = new CheckBox(this);
+        TextView textView = new TextView(this);
+        textView.setText("Save as default");
+        linearLayout.addView(checkBox);
+        linearLayout.addView(textView);
+        builder.setView(linearLayout);
+*/
+        
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.card_order_dialog,
+                (ViewGroup) findViewById(R.id.card_order_dialog_layout));
+        // This gets rid of the space around the android checkbox image
+        layout.setPadding(0, -6, 0, -10);
+        builder.setView(layout);
+
         AlertDialog ad = builder.create();
         return ad;
     }
