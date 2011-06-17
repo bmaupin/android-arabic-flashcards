@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/card_order_dialog_layout"
+              android:orientation="horizontal"
+              >
+    <CheckBox android:id="@+id/card_order_dialog_checkbox"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              />
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              android:textColor="#FFF"
+              android:text="Save as default (don't ask me again)"
+              />
+</LinearLayout>
