@@ -28,7 +28,7 @@ public class CardHelper {
     private Cursor cursor = null;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
-    private String profileName = "";
+    String profileName = "";
     
     public String cardOrder = "smart";
     

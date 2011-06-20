@@ -41,13 +41,17 @@ public class ArabicFlashcards extends Activity {
     private static final int DIALOG_NO_MORE_CARDS = 0;
     private static final int DIALOG_SELECT_CARD_ORDER = 1;
     private static final int GET_CATEGORY = 0;
-    public static final String PREFS_NAME = "FlashcardPrefsFile";
 	private static final String TAG = "ArabicFlashcards";
 	
+	private boolean askCardOrder = true;
 	private CardHelper ch;
+	private String currentCardId;
+	private int currentCardStatus;
 	private String currentLang;
+	private TextView currentView;
+	private Map<String, String> currentWord;
 	private String defaultLang;
-	String selectedChapter;
+	private Map<String, String> nextWord;
 // TODO: do we want to remember last card position? (would need card ID, category, etc.)
 	private SharedPreferences settings;
 	
@@ -66,12 +70,6 @@ public class ArabicFlashcards extends Activity {
 //    private TextView leftView;
 //    private TextView centerView;
 //    private TextView rightView;
-    
-    private String currentCardId;
-    private int currentCardStatus;
-    private TextView currentView;
-    private Map<String, String> currentWord;
-    private Map<String, String> nextWord;
 
 	/** Called when the activity is first created. */
     @Override
@@ -111,7 +109,12 @@ public class ArabicFlashcards extends Activity {
 //        db = helper.getReadableDatabase();
         
 		// Restore preferences
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(ch.profileName, 0);
+        askCardOrder = settings.getBoolean("askCardOrder", true);
+// TODO: we need to implement a default card order, which will probably need another
+// value so we know whether or not to reset card order
+// TODO: implement card order settings in settings menu
+        
 //        cursorPosition = settings.getInt("cursorPosition", -2);
 //        Log.d(TAG, "onCreate, cursorPosition: " + cursorPosition);
         
@@ -180,8 +183,10 @@ public class ArabicFlashcards extends Activity {
 		
 		// We need an Editor object to make preference changes.
 		// All objects are from android.context.Context
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(ch.profileName, 0);
 		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("askCardOrder", askCardOrder);
+		editor.putString("cardOrder", ch.getCardOrder());
 //		editor.putInt("cursorPosition", cursorPosition);
 		
 		// Commit the edits!
@@ -245,7 +250,9 @@ public class ArabicFlashcards extends Activity {
 
 						ch.loadCategory(category, chapter);
 // TODO: it seems the query has already been run at this point...						
-						showDialog(DIALOG_SELECT_CARD_ORDER);
+						if (askCardOrder) {
+						    showDialog(DIALOG_SELECT_CARD_ORDER);
+						}
 						showFirstCard();
 					}
 				}
@@ -300,7 +307,9 @@ public class ArabicFlashcards extends Activity {
 	        public void onClick(DialogInterface dialog, int item) {
 	            if (items[item].equals("See these cards again")) {
                     ch.startOver();
-                    showDialog(DIALOG_SELECT_CARD_ORDER);
+                    if (askCardOrder) {
+                        showDialog(DIALOG_SELECT_CARD_ORDER);
+                    }
                     showFirstCard();
                 } else if (items[item].equals("Choose a new category")) {
 	                getCategory();
@@ -315,6 +324,16 @@ public class ArabicFlashcards extends Activity {
         final CharSequence[] items = {"Smart mode (recommended)", "Random", "In order"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.card_order_dialog,
+                (ViewGroup) findViewById(R.id.card_order_dialog_layout));
+        // This gets rid of the space around the android checkbox image
+        layout.setPadding(0, -6, 0, -10);
+        builder.setView(layout);
+        
+        final CheckBox checkBox = (CheckBox) layout.findViewById(R.id.card_order_dialog_checkbox);
+
         builder.setTitle("Select card order");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
@@ -330,10 +349,13 @@ public class ArabicFlashcards extends Activity {
                     ch.startOver();
                     showFirstCard();
                 }
+                if (checkBox.isChecked()) {
+                    askCardOrder = false;
+                }
             }
         });
         
-        /*        
+/*
         // Add an option to save the selection as default
         LinearLayout linearLayout = new LinearLayout(this);
         // This gets rid of the space around the android checkbox image
@@ -345,13 +367,6 @@ public class ArabicFlashcards extends Activity {
         linearLayout.addView(textView);
         builder.setView(linearLayout);
 */
-        
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.card_order_dialog,
-                (ViewGroup) findViewById(R.id.card_order_dialog_layout));
-        // This gets rid of the space around the android checkbox image
-        layout.setPadding(0, -6, 0, -10);
-        builder.setView(layout);
 
         AlertDialog ad = builder.create();
         return ad;
