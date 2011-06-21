@@ -20,9 +20,11 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 public class CardHelper {
+    static final String DEFAULT_CARD_ORDER = "smart";
     private static final String PROFILE_DB = "profileDb";
     private static final String TAG = "CardHelper";
     
+    private boolean askCardOrder = true;
     private String currentCategory = "All";
     private String currentSubCategory = "";
     private Cursor cursor = null;
@@ -30,7 +32,21 @@ public class CardHelper {
     private SQLiteDatabase db;
     String profileName = "";
     
-    public String cardOrder = "smart";
+    public String cardOrder = DEFAULT_CARD_ORDER;
+    
+    /**
+     * @return the askCardOrder
+     */
+    public boolean isAskCardOrder() {
+        return askCardOrder;
+    }
+
+    /**
+     * @param askCardOrder the askCardOrder to set
+     */
+    public void setAskCardOrder(boolean askCardOrder) {
+        this.askCardOrder = askCardOrder;
+    }
     
     /**
      * @return the cardOrder
@@ -117,13 +133,17 @@ public class CardHelper {
         
         if (cardOrder.equals("random")) {
             sql += "RANDOM()";
-            // reset the value so we don't shuffle every time
-            cardOrder = "smart";
+            if (askCardOrder) {
+                // reset the value so we don't shuffle every time
+                cardOrder = "smart";
+            }
         } else if (cardOrder.equals("in order")) {
             sql += PROFILE_DB + "." + profileName + "." + 
                 ProfileDatabaseHelper._ID;
-            // reset the value so we don't go in order every time
-            cardOrder = "smart";
+            if (askCardOrder) {
+                // reset the value so we don't go in order every time
+                cardOrder = "smart";
+            }
         } else {
             // secondary random sort so it's not always in the same order
             sql += ProfileDatabaseHelper.STATUS + ", RANDOM()";
