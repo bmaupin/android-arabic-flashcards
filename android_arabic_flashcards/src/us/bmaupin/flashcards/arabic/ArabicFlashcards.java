@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -107,13 +108,14 @@ public class ArabicFlashcards extends Activity {
         
 		// Restore preferences
         settings = getSharedPreferences(ch.profileName, 0);
-        ch.setAskCardOrder(settings.getBoolean("askCardOrder", true));
+//        ch.setAskCardOrder(settings.getBoolean("askCardOrder", true));
         ch.setCardOrder(settings.getString("cardOrder", CardHelper.DEFAULT_CARD_ORDER));
 // TODO: implement card order settings in settings menu
 // TODO: do we want to remember last card position? (would need card ID, category, etc.)
 //        cursorPosition = settings.getInt("cursorPosition", -2);
 //        Log.d(TAG, "onCreate, cursorPosition: " + cursorPosition);
         
+        ch.setAskCardOrder(Settings.getAskCardOrder(this));
         defaultLang = Settings.getDefaultLang(this);
         
 		if (currentLang == null || currentLang.equals("")) {
@@ -158,7 +160,8 @@ public class ArabicFlashcards extends Activity {
 //		
 		Log.d(TAG, "onResume called");
 		
-		// get the default card language again in case it's changed
+		// get any settings that may have changed
+		ch.setAskCardOrder(Settings.getAskCardOrder(this));
 		defaultLang = Settings.getDefaultLang(this);
 		// reshow the current card in case anything's changed
 		reshowCurrentCard();
@@ -181,11 +184,16 @@ public class ArabicFlashcards extends Activity {
 		// All objects are from android.context.Context
 		SharedPreferences settings = getSharedPreferences(ch.profileName, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
+//		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
 		editor.putString("cardOrder", ch.getCardOrder());
 //		editor.putInt("cursorPosition", cursorPosition);
 		
 		// Commit the edits!
+		editor.commit();
+		
+		settings = PreferenceManager.getDefaultSharedPreferences(this);
+		editor = settings.edit();
+		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
 		editor.commit();
 	}
 
