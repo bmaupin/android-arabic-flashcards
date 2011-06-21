@@ -9,14 +9,19 @@ import android.preference.PreferenceManager;
 
 public class Settings extends PreferenceActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.settings);
-	}
-	
-	public static String getDefaultLang(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context)
-		       .getString("defaultLang", "arabic");
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.settings);
+    }
+    
+    public static String getDefaultLang(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getString("defaultLang", "arabic");
+    }
+    
+    public static boolean getAskCardOrder(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean("askCardOrder", false);
+    }
 }
