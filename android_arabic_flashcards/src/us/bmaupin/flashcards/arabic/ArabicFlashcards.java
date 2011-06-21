@@ -30,7 +30,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +42,6 @@ public class ArabicFlashcards extends Activity {
     private static final int GET_CATEGORY = 0;
 	private static final String TAG = "ArabicFlashcards";
 	
-	private boolean askCardOrder = true;
 	private CardHelper ch;
 	private String currentCardId;
 	private int currentCardStatus;
@@ -52,7 +50,6 @@ public class ArabicFlashcards extends Activity {
 	private Map<String, String> currentWord;
 	private String defaultLang;
 	private Map<String, String> nextWord;
-// TODO: do we want to remember last card position? (would need card ID, category, etc.)
 	private SharedPreferences settings;
 	
 	// class variables for swipe
@@ -60,7 +57,7 @@ public class ArabicFlashcards extends Activity {
     private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
-	View.OnTouchListener gestureListener;
+	private View.OnTouchListener gestureListener;
 	private Animation slideLeftIn;
 	private Animation slideLeftOut;
 	private Animation slideRightIn;
@@ -110,11 +107,10 @@ public class ArabicFlashcards extends Activity {
         
 		// Restore preferences
         settings = getSharedPreferences(ch.profileName, 0);
-        askCardOrder = settings.getBoolean("askCardOrder", true);
-// TODO: we need to implement a default card order, which will probably need another
-// value so we know whether or not to reset card order
+        ch.setAskCardOrder(settings.getBoolean("askCardOrder", true));
+        ch.setCardOrder(settings.getString("cardOrder", CardHelper.DEFAULT_CARD_ORDER));
 // TODO: implement card order settings in settings menu
-        
+// TODO: do we want to remember last card position? (would need card ID, category, etc.)
 //        cursorPosition = settings.getInt("cursorPosition", -2);
 //        Log.d(TAG, "onCreate, cursorPosition: " + cursorPosition);
         
@@ -185,7 +181,7 @@ public class ArabicFlashcards extends Activity {
 		// All objects are from android.context.Context
 		SharedPreferences settings = getSharedPreferences(ch.profileName, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean("askCardOrder", askCardOrder);
+		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
 		editor.putString("cardOrder", ch.getCardOrder());
 //		editor.putInt("cursorPosition", cursorPosition);
 		
@@ -250,7 +246,7 @@ public class ArabicFlashcards extends Activity {
 
 						ch.loadCategory(category, chapter);
 // TODO: it seems the query has already been run at this point...						
-						if (askCardOrder) {
+						if (ch.isAskCardOrder()) {
 						    showDialog(DIALOG_SELECT_CARD_ORDER);
 						}
 						showFirstCard();
@@ -307,7 +303,7 @@ public class ArabicFlashcards extends Activity {
 	        public void onClick(DialogInterface dialog, int item) {
 	            if (items[item].equals("See these cards again")) {
                     ch.startOver();
-                    if (askCardOrder) {
+                    if (ch.isAskCardOrder()) {
                         showDialog(DIALOG_SELECT_CARD_ORDER);
                     }
                     showFirstCard();
@@ -350,7 +346,7 @@ public class ArabicFlashcards extends Activity {
                     showFirstCard();
                 }
                 if (checkBox.isChecked()) {
-                    askCardOrder = false;
+                    ch.setAskCardOrder(false);
                 }
             }
         });
