@@ -12,6 +12,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -40,7 +41,9 @@ public class ArabicFlashcards extends Activity {
     // unique dialog id
     private static final int DIALOG_NO_MORE_CARDS = 0;
     private static final int DIALOG_SELECT_CARD_ORDER = 1;
+    static final String EXTRA_PROFILE_NAME = "android.intent.extra.PROFILE_NAME";
     private static final int GET_CATEGORY = 0;
+    private static final int PREFERENCE_MANAGER_REQUEST = 1;
 	private static final String TAG = "ArabicFlashcards";
 	
 	private CardHelper ch;
@@ -51,6 +54,7 @@ public class ArabicFlashcards extends Activity {
 	private Map<String, String> currentWord;
 	private String defaultLang;
 	private Map<String, String> nextWord;
+	private Resources resources;
 	private SharedPreferences settings;
 	
 	// class variables for swipe
@@ -108,15 +112,17 @@ public class ArabicFlashcards extends Activity {
         
 		// Restore preferences
         settings = getSharedPreferences(ch.profileName, 0);
-//        ch.setAskCardOrder(settings.getBoolean("askCardOrder", true));
+        resources = getResources();
+        ch.setAskCardOrder(settings.getBoolean("askCardOrder", resources.getBoolean(R.bool.ask_card_order_default)));
         ch.setCardOrder(settings.getString("cardOrder", CardHelper.DEFAULT_CARD_ORDER));
 // TODO: implement card order settings in settings menu
 // TODO: do we want to remember last card position? (would need card ID, category, etc.)
 //        cursorPosition = settings.getInt("cursorPosition", -2);
 //        Log.d(TAG, "onCreate, cursorPosition: " + cursorPosition);
         
-        ch.setAskCardOrder(Settings.getAskCardOrder(this));
-        defaultLang = Settings.getDefaultLang(this);
+//        ch.setAskCardOrder(Settings.getAskCardOrder(this));
+//        defaultLang = Settings.getDefaultLang(this);
+        defaultLang = settings.getString("defaultLang", getString(R.string.default_lang_default));
         
 		if (currentLang == null || currentLang.equals("")) {
 			currentLang = defaultLang;
@@ -161,8 +167,9 @@ public class ArabicFlashcards extends Activity {
 		Log.d(TAG, "onResume called");
 		
 		// get any settings that may have changed
-		ch.setAskCardOrder(Settings.getAskCardOrder(this));
-		defaultLang = Settings.getDefaultLang(this);
+		ch.setAskCardOrder(settings.getBoolean("askCardOrder", resources.getBoolean(R.bool.ask_card_order_default)));
+		defaultLang = settings.getString("defaultLang", getString(R.string.default_lang_default));
+//		defaultLang = Settings.getDefaultLang(this);
 		// reshow the current card in case anything's changed
 		reshowCurrentCard();
 	}
@@ -186,15 +193,18 @@ public class ArabicFlashcards extends Activity {
 		SharedPreferences.Editor editor = settings.edit();
 //		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
 		editor.putString("cardOrder", ch.getCardOrder());
+		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
 //		editor.putInt("cursorPosition", cursorPosition);
 		
 		// Commit the edits!
 		editor.commit();
 		
+/*		
 		settings = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = settings.edit();
-		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
+		
 		editor.commit();
+*/
 	}
 
 	@Override
@@ -232,40 +242,43 @@ public class ArabicFlashcards extends Activity {
     		startActivity(new Intent(this, Help.class));
     		return true;
     	case R.id.menu_settings:
-    		startActivity(new Intent(this, Settings.class));
+//    		startActivity(new Intent(this, Settings.class));
+    	    Intent intent = new Intent(this, Settings.class);
+    	    intent.putExtra(EXTRA_PROFILE_NAME, ch.profileName);
+    	    startActivityForResult(intent, PREFERENCE_MANAGER_REQUEST);
     		return true;
     	}
     	return false;
     }
     
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		switch(requestCode) {
-			case (GET_CATEGORY) : {
-				if (resultCode == Activity.RESULT_OK) {
-					String category = data.getStringExtra("category");
-					Log.d(TAG, "onActivityResult: category=" + category);
-					
-					if (category.equals("Ahlan wa sahlan")) {
-						String chapter = data.getStringExtra("aws_chapter");
-						Log.d(TAG, "onActivityResult: chapter=" + chapter);
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	super.onActivityResult(requestCode, resultCode, data);
+	
+	switch(requestCode) {
+		case (GET_CATEGORY) : {
+			if (resultCode == Activity.RESULT_OK) {
+				String category = data.getStringExtra("category");
+				Log.d(TAG, "onActivityResult: category=" + category);
+				
+				if (category.equals("Ahlan wa sahlan")) {
+					String chapter = data.getStringExtra("aws_chapter");
+					Log.d(TAG, "onActivityResult: chapter=" + chapter);
 
-						ch.loadCategory(category, chapter);
+					ch.loadCategory(category, chapter);
 // TODO: it seems the query has already been run at this point...						
-						if (ch.isAskCardOrder()) {
-						    showDialog(DIALOG_SELECT_CARD_ORDER);
-						}
-						showFirstCard();
+					if (ch.isAskCardOrder()) {
+					    showDialog(DIALOG_SELECT_CARD_ORDER);
 					}
+					showFirstCard();
 				}
-				break;
 			}
+			break;
 		}
 	}
+}
 
-	@Override
+    @Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event="
 				+ event);
