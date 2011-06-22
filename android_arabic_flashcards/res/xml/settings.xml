@@ -8,12 +8,12 @@
         android:summary="Which language to show on front of cards"
         android:entries="@array/default_lang_entries"
         android:entryValues="@array/default_lang_values"
-        android:defaultValue="arabic" />
+        android:defaultValue="@string/default_lang_default" />
     <CheckBoxPreference
         android:key="askCardOrder"
         android:title="Ask for card order"
         android:summary="Ask for card order every time new cards are shown"
-        android:defaultValue="true" />
+        android:defaultValue="@bool/ask_card_order_default" />
     <!-- 
     <CheckBoxPreference
 		android:key="music"

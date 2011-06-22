@@ -7,6 +7,7 @@
 \nUses icons from www.androidicons.com, licensed under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.</string>
     <string name="categories_title">Categories</string>
     <string name="choose_aws_chapter_title">Please select a chapter:</string>
+    <string name="default_lang_default">arabic</string>
     <string name="help_title">Help</string>
     <string name="help_text"><b>Navigation</b>\n
 &#8226; Tap the card/press the center button to see the other side of the card.\n
