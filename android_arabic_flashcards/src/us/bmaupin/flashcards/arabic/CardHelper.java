@@ -30,8 +30,22 @@ public class CardHelper {
     private Cursor cursor = null;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
-    String profileName = "";
+    private String profileName = "";
     
+    /**
+     * @return the profileName
+     */
+    public String getProfileName() {
+        return profileName;
+    }
+
+    /**
+     * @param profileName the profileName to set
+     */
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
+
     public String cardOrder = DEFAULT_CARD_ORDER;
     
     /**

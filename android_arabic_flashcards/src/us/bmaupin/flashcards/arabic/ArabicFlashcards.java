@@ -16,7 +16,6 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -43,7 +42,6 @@ public class ArabicFlashcards extends Activity {
     private static final int DIALOG_SELECT_CARD_ORDER = 1;
     static final String EXTRA_PROFILE_NAME = "android.intent.extra.PROFILE_NAME";
     private static final int GET_CATEGORY = 0;
-    private static final int PREFERENCE_MANAGER_REQUEST = 1;
 	private static final String TAG = "ArabicFlashcards";
 	
 	private CardHelper ch;
@@ -110,20 +108,19 @@ public class ArabicFlashcards extends Activity {
 //        helper = new DatabaseHelper(this);
 //        db = helper.getReadableDatabase();
         
-		// Restore preferences
-        settings = getSharedPreferences(ch.profileName, 0);
+    	// create objects for shared preferences and resources
+        settings = getSharedPreferences(ch.getProfileName(), MODE_PRIVATE);
         resources = getResources();
-        ch.setAskCardOrder(settings.getBoolean("askCardOrder", resources.getBoolean(R.bool.ask_card_order_default)));
-        ch.setCardOrder(settings.getString("cardOrder", CardHelper.DEFAULT_CARD_ORDER));
+
+// TODO: it'd be better to put this in onResume, since we have to get it there anyway...
+        defaultLang = settings.getString("defaultLang", getString(R.string.default_lang_default));
+        
 // TODO: implement card order settings in settings menu
 // TODO: do we want to remember last card position? (would need card ID, category, etc.)
 //        cursorPosition = settings.getInt("cursorPosition", -2);
 //        Log.d(TAG, "onCreate, cursorPosition: " + cursorPosition);
         
-//        ch.setAskCardOrder(Settings.getAskCardOrder(this));
-//        defaultLang = Settings.getDefaultLang(this);
-        defaultLang = settings.getString("defaultLang", getString(R.string.default_lang_default));
-        
+// TODO: if we implement defaultLang in onResume, we'll need to move this too        
 		if (currentLang == null || currentLang.equals("")) {
 			currentLang = defaultLang;
 		}
@@ -150,6 +147,7 @@ public class ArabicFlashcards extends Activity {
         centerView.setTypeface(face);
         rightView.setTypeface(face);
         
+// TODO: I think we could somehow combine this and reshowCurrentCard, then put it in onResume to avoid code redundancy        
         showFirstCard();
     }
 
@@ -169,7 +167,7 @@ public class ArabicFlashcards extends Activity {
 		// get any settings that may have changed
 		ch.setAskCardOrder(settings.getBoolean("askCardOrder", resources.getBoolean(R.bool.ask_card_order_default)));
 		defaultLang = settings.getString("defaultLang", getString(R.string.default_lang_default));
-//		defaultLang = Settings.getDefaultLang(this);
+		
 		// reshow the current card in case anything's changed
 		reshowCurrentCard();
 	}
@@ -177,34 +175,24 @@ public class ArabicFlashcards extends Activity {
     @Override
     protected void onStop(){
     	super.onStop();
-       
+//       
 		Log.d(TAG, "onStop called");
     }
     
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
+//		
 		Log.d(TAG, "onPause called");
 		
-		// We need an Editor object to make preference changes.
-		// All objects are from android.context.Context
-		SharedPreferences settings = getSharedPreferences(ch.profileName, 0);
+		// save any preferences that can be changed outside the settings activity
 		SharedPreferences.Editor editor = settings.edit();
-//		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
-		editor.putString("cardOrder", ch.getCardOrder());
 		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
+		editor.putString("cardOrder", ch.getCardOrder());
 //		editor.putInt("cursorPosition", cursorPosition);
 		
 		// Commit the edits!
 		editor.commit();
-		
-/*		
-		settings = PreferenceManager.getDefaultSharedPreferences(this);
-		editor = settings.edit();
-		
-		editor.commit();
-*/
 	}
 
 	@Override
@@ -244,8 +232,8 @@ public class ArabicFlashcards extends Activity {
     	case R.id.menu_settings:
 //    		startActivity(new Intent(this, Settings.class));
     	    Intent intent = new Intent(this, Settings.class);
-    	    intent.putExtra(EXTRA_PROFILE_NAME, ch.profileName);
-    	    startActivityForResult(intent, PREFERENCE_MANAGER_REQUEST);
+    	    intent.putExtra(EXTRA_PROFILE_NAME, ch.getProfileName());
+    	    startActivity(intent);
     		return true;
     	}
     	return false;
