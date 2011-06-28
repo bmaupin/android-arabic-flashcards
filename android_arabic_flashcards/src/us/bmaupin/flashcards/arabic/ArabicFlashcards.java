@@ -86,8 +86,6 @@ public class ArabicFlashcards extends Activity {
         
         setContentView(R.layout.main);
         
-//        test();
-        
         vf = (ViewFlipper)findViewById(R.id.flipper);
         slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
         slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
@@ -106,27 +104,9 @@ public class ArabicFlashcards extends Activity {
         
     	ch = new CardHelper(this);
         
-//        helper = new DatabaseHelper(this);
-//        db = helper.getReadableDatabase();
-        
     	// create objects for shared preferences and resources
         preferences = getSharedPreferences(ch.getProfileName(), MODE_PRIVATE);
         resources = getResources();
-       
-// TODO: implement card order preferences in preferences menu
-// TODO: do we want to remember last card position? (would need card ID, category, etc.)
-//        cursorPosition = settings.getInt("cursorPosition", -2);
-//        Log.d(TAG, "onCreate, cursorPosition: " + cursorPosition);
-        
-//        createCursor();
-        
-        // cursorPosition will be -2 if it hasn't been stored yet
-//		if (cursorPosition == -2) {
-//			cursor.moveToFirst();
-//		} else {
-//			cursor.moveToPosition(cursorPosition);
-//		}
-//		cursorPosition = cursor.getPosition();
 		
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/sil-lateef/LateefRegOT.ttf");
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/tahoma.ttf");
@@ -157,7 +137,8 @@ public class ArabicFlashcards extends Activity {
 		// get any preferences that may have changed
 		ch.setAskCardOrder(preferences.getBoolean("askCardOrder", resources.getBoolean(R.bool.preferences_ask_card_order)));
 		defaultLang = preferences.getString("defaultLang", getString(R.string.preferences_default_lang));
-
+// TODO: implement card order preferences in preferences menu
+		
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
         }
@@ -187,7 +168,6 @@ public class ArabicFlashcards extends Activity {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
 		editor.putString("cardOrder", ch.getCardOrder());
-//		editor.putInt("cursorPosition", cursorPosition);
 		
 		// Commit the edits!
 		editor.commit();
@@ -378,61 +358,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    Intent intent = new Intent(this, Categories.class);
         startActivityForResult(intent, GET_CATEGORY);
 	}
-	
-	/*
-	private void createCursor() {
-		// Perform a managed query. The Activity will handle closing
-		// and re-querying the cursor when needed.
-//		SQLiteDatabase db = helper.getReadableDatabase();
-		String[] FROM = { "english", "arabic" };
-		cursor = db.query("words", FROM, null, null, null, null, null);
-		startManagingCursor(cursor);
-	}
-	*/
-	/*
-	private Map<String, String> getWord(int thisPosition, boolean updatePosition) {
-		Log.d(TAG, "getWord(position), cursorPosition: " + cursorPosition);
-
-		cursor.moveToPosition(thisPosition);
 		
-		if (cursor.isAfterLast()) {
-			cursor.moveToFirst();
-			Log.d(TAG, "cursor.moveToFirst() called, position: " + cursor.getPosition());
-		} else if (cursor.isBeforeFirst()) {
-			cursor.moveToLast();
-			Log.d(TAG, "cursor.moveToLast() called, position: " + cursor.getPosition());
-		}
-		// we don't want to update cursorPosition if we're getting the word for prev or next card
-		if (updatePosition) {
-			cursorPosition = cursor.getPosition();
-		}
-		
-		Log.d(TAG, "getWord, cursorPosition: " + cursorPosition);
-		
-		Log.d(TAG, "getWord getting string");
-		String english = cursor.getString(0);
-		String arabic = cursor.getString(1);
-		Log.d(TAG, "getWord got string");
-		
-		Map<String, String> thisWord = new HashMap<String, String>();
-		
-		thisWord.put("english", english);
-		thisWord.put("arabic", arabic);
-		
-		Log.d(TAG, "getWord returning thisWord");
-		return thisWord;
-	}
-	/*
-	private Map<String, String> getWordAtPosition(int thisPosition) {
-		return getWord(thisPosition, false);
-	}
-	*/
-	/*
-	private Map<String, String> getCurrentWord() {
-		return getWord(cursorPosition, true);
-	}
-	*/
-	
 	/**
 	 * Given a view, a word, and a language, shows the word in the view and 
 	 * formats it depending on the language
@@ -526,25 +452,6 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 /*
 	}
 */
-	/*
-	private void showNextCard() {
-    	vf.setInAnimation(slideLeftIn);
-        vf.setOutAnimation(slideLeftOut);
-    	vf.showNext();
-// TODO: get next card
-    	cursorPosition++;
-    	loadViews();
-	}
-	
-	private void showPrevCard() {
-    	vf.setInAnimation(slideRightIn);
-        vf.setOutAnimation(slideRightOut);
-    	vf.showPrevious();
-// TODO: get previous card    	
-    	cursorPosition--;
-    	loadViews();
-	}
-	*/
 	
 	/**
 	 * function to reload the current card in case any preferences have changed
