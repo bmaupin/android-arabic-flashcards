@@ -53,7 +53,7 @@ public class ArabicFlashcards extends Activity {
 	private String defaultLang;
 	private Map<String, String> nextWord;
 	private Resources resources;
-	private SharedPreferences settings;
+	private SharedPreferences preferences;
 	
 	// class variables for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
@@ -109,13 +109,13 @@ public class ArabicFlashcards extends Activity {
 //        db = helper.getReadableDatabase();
         
     	// create objects for shared preferences and resources
-        settings = getSharedPreferences(ch.getProfileName(), MODE_PRIVATE);
+        preferences = getSharedPreferences(ch.getProfileName(), MODE_PRIVATE);
         resources = getResources();
 
 // TODO: it'd be better to put this in onResume, since we have to get it there anyway...
-        defaultLang = settings.getString("defaultLang", getString(R.string.default_lang_default));
+        defaultLang = preferences.getString("defaultLang", getString(R.string.preferences_default_lang));
         
-// TODO: implement card order settings in settings menu
+// TODO: implement card order preferences in preferences menu
 // TODO: do we want to remember last card position? (would need card ID, category, etc.)
 //        cursorPosition = settings.getInt("cursorPosition", -2);
 //        Log.d(TAG, "onCreate, cursorPosition: " + cursorPosition);
@@ -164,9 +164,9 @@ public class ArabicFlashcards extends Activity {
 //		
 		Log.d(TAG, "onResume called");
 		
-		// get any settings that may have changed
-		ch.setAskCardOrder(settings.getBoolean("askCardOrder", resources.getBoolean(R.bool.ask_card_order_default)));
-		defaultLang = settings.getString("defaultLang", getString(R.string.default_lang_default));
+		// get any preferences that may have changed
+		ch.setAskCardOrder(preferences.getBoolean("askCardOrder", resources.getBoolean(R.bool.preferences_ask_card_order)));
+		defaultLang = preferences.getString("defaultLang", getString(R.string.preferences_default_lang));
 		
 		// reshow the current card in case anything's changed
 		reshowCurrentCard();
@@ -185,8 +185,8 @@ public class ArabicFlashcards extends Activity {
 //		
 		Log.d(TAG, "onPause called");
 		
-		// save any preferences that can be changed outside the settings activity
-		SharedPreferences.Editor editor = settings.edit();
+		// save any preferences that can be changed outside the preferences activity
+		SharedPreferences.Editor editor = preferences.edit();
 		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
 		editor.putString("cardOrder", ch.getCardOrder());
 //		editor.putInt("cursorPosition", cursorPosition);
@@ -231,7 +231,7 @@ public class ArabicFlashcards extends Activity {
     		return true;
     	case R.id.menu_settings:
 //    		startActivity(new Intent(this, Settings.class));
-    	    Intent intent = new Intent(this, Settings.class);
+    	    Intent intent = new Intent(this, Preferences.class);
     	    intent.putExtra(EXTRA_PROFILE_NAME, ch.getProfileName());
     	    startActivity(intent);
     		return true;
@@ -550,7 +550,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	*/
 	
 	/**
-	 * function to reload the current card in case any settings have changed
+	 * function to reload the current card in case any preferences have changed
 	 */
 	private void reshowCurrentCard() {
 	    showWord(currentWord);

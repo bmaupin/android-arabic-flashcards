@@ -5,7 +5,7 @@ package us.bmaupin.flashcards.arabic;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-public class Settings extends PreferenceActivity {
+public class Preferences extends PreferenceActivity {
     private String profileName = "";
 
     @Override
@@ -16,7 +16,7 @@ public class Settings extends PreferenceActivity {
         profileName = getIntent().getExtras().getString(ArabicFlashcards.EXTRA_PROFILE_NAME);
         // set the preferences file to one based on the profile name
         getPreferenceManager().setSharedPreferencesName(profileName);
-        // get the default settings from XML
-        addPreferencesFromResource(R.xml.settings);
+        // get the default preferences from XML
+        addPreferencesFromResource(R.xml.preferences);
     }
 }
