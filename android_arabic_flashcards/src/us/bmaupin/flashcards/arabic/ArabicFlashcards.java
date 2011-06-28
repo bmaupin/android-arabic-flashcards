@@ -2,6 +2,7 @@ package us.bmaupin.flashcards.arabic;
 
 // $Id$
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.amr.arabic.ArabicUtilities;
@@ -49,7 +50,7 @@ public class ArabicFlashcards extends Activity {
 	private int currentCardStatus;
 	private String currentLang;
 	private TextView currentView;
-	private Map<String, String> currentWord;
+	private Map<String, String> currentWord = new HashMap<String, String>();
 	private String defaultLang;
 	private Map<String, String> nextWord;
 	private Resources resources;
@@ -111,19 +112,11 @@ public class ArabicFlashcards extends Activity {
     	// create objects for shared preferences and resources
         preferences = getSharedPreferences(ch.getProfileName(), MODE_PRIVATE);
         resources = getResources();
-
-// TODO: it'd be better to put this in onResume, since we have to get it there anyway...
-        defaultLang = preferences.getString("defaultLang", getString(R.string.preferences_default_lang));
-        
+       
 // TODO: implement card order preferences in preferences menu
 // TODO: do we want to remember last card position? (would need card ID, category, etc.)
 //        cursorPosition = settings.getInt("cursorPosition", -2);
 //        Log.d(TAG, "onCreate, cursorPosition: " + cursorPosition);
-        
-// TODO: if we implement defaultLang in onResume, we'll need to move this too        
-		if (currentLang == null || currentLang.equals("")) {
-			currentLang = defaultLang;
-		}
         
 //        createCursor();
         
@@ -146,9 +139,6 @@ public class ArabicFlashcards extends Activity {
         leftView.setTypeface(face);
         centerView.setTypeface(face);
         rightView.setTypeface(face);
-        
-// TODO: I think we could somehow combine this and reshowCurrentCard, then put it in onResume to avoid code redundancy        
-        showFirstCard();
     }
 
 	@Override
@@ -167,9 +157,17 @@ public class ArabicFlashcards extends Activity {
 		// get any preferences that may have changed
 		ch.setAskCardOrder(preferences.getBoolean("askCardOrder", resources.getBoolean(R.bool.preferences_ask_card_order)));
 		defaultLang = preferences.getString("defaultLang", getString(R.string.preferences_default_lang));
+
+        if (currentLang == null || currentLang.equals("")) {
+            currentLang = defaultLang;
+        }
 		
-		// reshow the current card in case anything's changed
-		reshowCurrentCard();
+		if (currentWord.isEmpty()) {
+		    showFirstCard();
+		} else {
+	        // reshow the current card in case anything's changed
+	        reshowCurrentCard();
+		}
 	}
     
     @Override
@@ -230,7 +228,6 @@ public class ArabicFlashcards extends Activity {
     		startActivity(new Intent(this, Help.class));
     		return true;
     	case R.id.menu_settings:
-//    		startActivity(new Intent(this, Settings.class));
     	    Intent intent = new Intent(this, Preferences.class);
     	    intent.putExtra(EXTRA_PROFILE_NAME, ch.getProfileName());
     	    startActivity(intent);
