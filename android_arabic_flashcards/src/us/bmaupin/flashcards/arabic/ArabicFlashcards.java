@@ -25,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
@@ -58,10 +57,10 @@ public class ArabicFlashcards extends Activity {
 	
 	// class variables for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
-    private static final int SWIPE_MAX_OFF_PATH = 250;
+//    private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
-	private View.OnTouchListener gestureListener;
+//	private View.OnTouchListener gestureListener;
 	private Animation slideLeftIn;
 	private Animation slideLeftOut;
 	private Animation slideRightIn;
@@ -93,6 +92,7 @@ public class ArabicFlashcards extends Activity {
         slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
         
         gestureDetector = new GestureDetector(new MyGestureDetector());
+/*        
         gestureListener = new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 if (gestureDetector.onTouchEvent(event)) {
@@ -101,6 +101,7 @@ public class ArabicFlashcards extends Activity {
                 return false;
             }
         };
+*/
         
     	ch = new CardHelper(this);
         
