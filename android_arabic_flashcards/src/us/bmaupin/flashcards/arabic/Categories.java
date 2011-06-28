@@ -74,7 +74,7 @@ public class Categories extends Activity {
 		final String[] chapters = getChapters();
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.choose_aws_chapter_title);
+		builder.setTitle(R.string.dialog_choose_aws_chapter_title);
 		builder.setItems(chapters, new DialogInterface.OnClickListener() {
 		    public void onClick(DialogInterface dialog, int item) {
 				Log.d(TAG, "createAWSChapterDialog: int=" + item);

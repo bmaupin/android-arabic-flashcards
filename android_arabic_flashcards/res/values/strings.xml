@@ -2,12 +2,15 @@
 <!-- $Id$ -->
 <resources>
     <string name="app_name">Arabic flashcards</string>
+    
     <string name="about_title">About</string>
     <string name="about_text">Written by bmaupin\n
 \nUses icons from www.androidicons.com, licensed under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.</string>
+
     <string name="categories_title">Categories</string>
-    <string name="choose_aws_chapter_title">Please select a chapter:</string>
-    <string name="default_lang_default">arabic</string>
+    
+    <string name="dialog_choose_aws_chapter_title">Please select a chapter:</string>
+    
     <string name="help_title">Help</string>
     <string name="help_text"><b>Navigation</b>\n
 &#8226; Tap the card/press the center button to see the other side of the card.\n
@@ -19,6 +22,7 @@
 <b>Other</b>\n
 &#8226; Go to Menu --> Categories to change the category.\n
 &#8226; Go to Menu --> Settings to change settings.</string>
+
     <string name="menu_about_label">About</string>
     <string name="menu_about_shortcut">a</string>
     <string name="menu_categories_label">Categories</string>
@@ -29,5 +33,7 @@
     <string name="menu_help_shortcut">h</string>
     <string name="menu_settings_label">Settings</string>
     <string name="menu_settings_shortcut">s</string>
-    <string name="settings_title">Settings</string>
+    
+    <string name="preferences_default_lang">arabic</string>
+    <string name="preferences_title">Settings</string>
 </resources>

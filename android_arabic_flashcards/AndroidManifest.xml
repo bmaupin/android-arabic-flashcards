@@ -27,8 +27,8 @@
                   android:label="@string/help_title"
                   android:theme="@android:style/Theme.Dialog">
         </activity>
-        <activity android:name=".Settings"
-                  android:label="@string/settings_title"
+        <activity android:name=".Preferences"
+                  android:label="@string/preferences_title"
                   android:theme="@android:style/Theme">
         </activity>
 

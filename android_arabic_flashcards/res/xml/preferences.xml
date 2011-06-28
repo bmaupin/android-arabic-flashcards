@@ -6,14 +6,14 @@
         android:key="defaultLang"
         android:title="Default card language"
         android:summary="Which language to show on front of cards"
-        android:entries="@array/default_lang_entries"
-        android:entryValues="@array/default_lang_values"
-        android:defaultValue="@string/default_lang_default" />
+        android:entries="@array/preferences_default_lang_entries"
+        android:entryValues="@array/preferences_default_lang_values"
+        android:defaultValue="@string/preferences_default_lang" />
     <CheckBoxPreference
         android:key="askCardOrder"
         android:title="Ask for card order"
         android:summary="Ask for card order every time new cards are shown"
-        android:defaultValue="@bool/ask_card_order_default" />
+        android:defaultValue="@bool/preferences_ask_card_order" />
     <!-- 
     <CheckBoxPreference
 		android:key="music"
