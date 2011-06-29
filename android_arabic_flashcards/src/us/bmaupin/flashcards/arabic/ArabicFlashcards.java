@@ -139,14 +139,13 @@ public class ArabicFlashcards extends Activity {
 		// get any preferences that may have changed
 		ch.setAskCardOrder(preferences.getBoolean("askCardOrder", 
 		        resources.getBoolean(R.bool.preferences_ask_card_order)));
+		// if we're gonna ask for card order anyway, don't need to change it
 		if (!ch.isAskCardOrder()) {
 	        ch.setCardOrder(preferences.getString("defaultCardOrder", getString(
 	                R.string.preferences_default_card_order)));
 		}
 		defaultLang = preferences.getString("defaultLang", getString(
 		        R.string.preferences_default_lang));
-		
-// TODO: implement card order preferences in preferences menu
 		
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
