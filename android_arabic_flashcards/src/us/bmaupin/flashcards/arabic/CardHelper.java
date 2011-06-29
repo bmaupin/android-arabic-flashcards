@@ -20,11 +20,12 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 public class CardHelper {
-    static final String DEFAULT_CARD_ORDER = "smart";
     private static final String PROFILE_DB = "profileDb";
     private static final String TAG = "CardHelper";
     
     private boolean askCardOrder = true;
+    public String cardOrder;
+    private Context context;
     private String currentCategory = "All";
     private String currentSubCategory = "";
     private Cursor cursor = null;
@@ -45,8 +46,6 @@ public class CardHelper {
     public void setProfileName(String profileName) {
         this.profileName = profileName;
     }
-
-    public String cardOrder = DEFAULT_CARD_ORDER;
     
     /**
      * @return the askCardOrder
@@ -82,6 +81,11 @@ public class CardHelper {
     
     public CardHelper(Context context, String profileName) {
     	ProfileDatabaseHelper profileHelper = new ProfileDatabaseHelper(context);
+    	
+    	this.context = context;
+    	// set the default card order
+    	this.cardOrder = context.getString(
+    	        R.string.preferences_default_card_order);
     	
     	// set the profile table name, which will ensure the profile table exists
     	profileHelper.setProfileTableName(profileName);
@@ -145,18 +149,19 @@ public class CardHelper {
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + " %s ORDER BY ";
         
-        if (cardOrder.equals("random")) {
+        if (cardOrder.equals(context.getString(R.string.card_order_random))) {
             sql += "RANDOM()";
             if (askCardOrder) {
                 // reset the value so we don't shuffle every time
-                cardOrder = "smart";
+                cardOrder = context.getString(R.string.card_order_smart);
             }
-        } else if (cardOrder.equals("in order")) {
+        } else if (cardOrder.equals(context.getString(
+                R.string.card_order_in_order))) {
             sql += PROFILE_DB + "." + profileName + "." + 
                 ProfileDatabaseHelper._ID;
             if (askCardOrder) {
                 // reset the value so we don't go in order every time
-                cardOrder = "smart";
+                cardOrder = context.getString(R.string.card_order_smart);
             }
         } else {
             // secondary random sort so it's not always in the same order

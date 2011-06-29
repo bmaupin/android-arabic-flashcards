@@ -7,6 +7,13 @@
     <string name="about_text">Written by bmaupin\n
 \nUses icons from www.androidicons.com, licensed under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.</string>
 
+    <string name="card_order_smart">smart</string>
+    <string name="card_order_smart_label">Smart mode (recommended)</string>
+    <string name="card_order_random">random</string>
+    <string name="card_order_random_label">Random</string>
+    <string name="card_order_in_order">in order</string>
+    <string name="card_order_in_order_label">In order</string>
+
     <string name="categories_title">Categories</string>
     
     <string name="dialog_choose_aws_chapter_title">Please select a chapter:</string>
@@ -34,6 +41,7 @@
     <string name="menu_settings_label">Settings</string>
     <string name="menu_settings_shortcut">s</string>
     
+    <string name="preferences_default_card_order">@string/card_order_smart</string>
     <string name="preferences_default_lang">arabic</string>
     <string name="preferences_title">Settings</string>
 </resources>
