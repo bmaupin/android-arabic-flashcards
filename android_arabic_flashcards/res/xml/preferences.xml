@@ -9,6 +9,11 @@
         android:entries="@array/preferences_default_lang_entries"
         android:entryValues="@array/preferences_default_lang_values"
         android:defaultValue="@string/preferences_default_lang" />
+    <CheckBoxPreference
+        android:key="askCardOrder"
+        android:title="Ask for card order"
+        android:summary="Ask for card order every time new cards are shown"
+        android:defaultValue="@bool/preferences_ask_card_order" />
     <ListPreference
         android:key="defaultCardOrder"
         android:title="Default card order"
@@ -16,21 +21,4 @@
         android:entries="@array/preferences_default_card_order_entries"
         android:entryValues="@array/preferences_default_card_order_values"
         android:defaultValue="@string/preferences_default_card_order" />
-    <CheckBoxPreference
-        android:key="askCardOrder"
-        android:title="Ask for card order"
-        android:summary="Ask for card order every time new cards are shown"
-        android:defaultValue="@bool/preferences_ask_card_order" />
-    <!-- 
-    <CheckBoxPreference
-		android:key="music"
-		android:title="@string/music_title"
-		android:summary="@string/music_summary"
-		android:defaultValue="true" />
-	<CheckBoxPreference
-		android:key="hints"
-		android:title="@string/hints_title"
-		android:summary="@string/hints_summary"
-		android:defaultValue="true" />
-     -->
 </PreferenceScreen>
