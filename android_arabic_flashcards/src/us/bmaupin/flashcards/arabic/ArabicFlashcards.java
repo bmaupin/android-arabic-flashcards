@@ -40,7 +40,8 @@ public class ArabicFlashcards extends Activity {
     // unique dialog id
     private static final int DIALOG_NO_MORE_CARDS = 0;
     private static final int DIALOG_SELECT_CARD_ORDER = 1;
-    static final String EXTRA_PROFILE_NAME = "android.intent.extra.PROFILE_NAME";
+    static final String EXTRA_PROFILE_NAME = 
+        "android.intent.extra.PROFILE_NAME";
     private static final int GET_CATEGORY = 0;
 	private static final String TAG = "ArabicFlashcards";
 	
@@ -136,8 +137,15 @@ public class ArabicFlashcards extends Activity {
 		Log.d(TAG, "onResume called");
 		
 		// get any preferences that may have changed
-		ch.setAskCardOrder(preferences.getBoolean("askCardOrder", resources.getBoolean(R.bool.preferences_ask_card_order)));
-		defaultLang = preferences.getString("defaultLang", getString(R.string.preferences_default_lang));
+		ch.setAskCardOrder(preferences.getBoolean("askCardOrder", 
+		        resources.getBoolean(R.bool.preferences_ask_card_order)));
+		if (!ch.isAskCardOrder()) {
+	        ch.setCardOrder(preferences.getString("defaultCardOrder", getString(
+	                R.string.preferences_default_card_order)));
+		}
+		defaultLang = preferences.getString("defaultLang", getString(
+		        R.string.preferences_default_lang));
+		
 // TODO: implement card order preferences in preferences menu
 		
         if (currentLang == null || currentLang.equals("")) {
@@ -304,7 +312,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	}
 	
     private Dialog createSelectCardOrderDialog() {
-        final CharSequence[] items = {"Smart mode (recommended)", "Random", "In order"};
+        final CharSequence[] items = resources.getStringArray(
+                R.array.preferences_default_card_order_entries);
+//        {"Smart mode (recommended)", "Random", "In order"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         
@@ -315,20 +325,24 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         layout.setPadding(0, -6, 0, -10);
         builder.setView(layout);
         
-        final CheckBox checkBox = (CheckBox) layout.findViewById(R.id.card_order_dialog_checkbox);
+        final CheckBox checkBox = (CheckBox) layout.findViewById(
+                R.id.card_order_dialog_checkbox);
 
         builder.setTitle("Select card order");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Smart mode (recommended)")) {
+                if (items[item].equals(getString(
+                        R.string.card_order_smart_label))) {
                     ch.startOver();
                     showFirstCard();
-                } else if (items[item].equals("Random")) {
-                    ch.setCardOrder("random");
+                } else if (items[item].equals(getString(
+                        R.string.card_order_random_label))) {
+                    ch.setCardOrder(getString(R.string.card_order_random));
                     ch.startOver();
                     showFirstCard();
-                } else if (items[item].equals("In order")) {
-                    ch.setCardOrder("in order");
+                } else if (items[item].equals(getString(
+                        R.string.card_order_in_order_label))) {
+                    ch.setCardOrder(getString(R.string.card_order_in_order));
                     ch.startOver();
                     showFirstCard();
                 }
