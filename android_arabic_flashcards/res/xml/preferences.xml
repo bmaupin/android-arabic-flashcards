@@ -3,22 +3,22 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <ListPreference
-        android:key="defaultLang"
+        android:key="@string/preferences_default_lang"
         android:title="Default card language"
         android:summary="Language to show on front of cards"
         android:entries="@array/preferences_default_lang_entries"
         android:entryValues="@array/preferences_default_lang_values"
-        android:defaultValue="@string/preferences_default_lang" />
+        android:defaultValue="@string/preferences_default_lang_default" />
     <CheckBoxPreference
-        android:key="askCardOrder"
+        android:key="@string/preferences_ask_card_order"
         android:title="Ask for card order"
         android:summary="Ask for card order every time new cards are shown"
-        android:defaultValue="@bool/preferences_ask_card_order" />
+        android:defaultValue="@bool/preferences_ask_card_order_default" />
     <ListPreference
-        android:key="defaultCardOrder"
+        android:key="@string/preferences_default_card_order"
         android:title="Default card order"
         android:summary="Order in which to show the cards"
         android:entries="@array/preferences_default_card_order_entries"
         android:entryValues="@array/preferences_default_card_order_values"
-        android:defaultValue="@string/preferences_default_card_order" />
+        android:defaultValue="@string/preferences_default_card_order_default" />
 </PreferenceScreen>

@@ -41,7 +41,10 @@
     <string name="menu_settings_label">Settings</string>
     <string name="menu_settings_shortcut">s</string>
     
-    <string name="preferences_default_card_order">@string/card_order_smart</string>
-    <string name="preferences_default_lang">arabic</string>
+    <string name="preferences_ask_card_order">ask_card_order</string>
+    <string name="preferences_default_card_order">default_card_order</string>
+    <string name="preferences_default_card_order_default">@string/card_order_smart</string>
+    <string name="preferences_default_lang">default_lang</string>
+    <string name="preferences_default_lang_default">arabic</string>
     <string name="preferences_title">Settings</string>
 </resources>

@@ -137,15 +137,18 @@ public class ArabicFlashcards extends Activity {
 		Log.d(TAG, "onResume called");
 		
 		// get any preferences that may have changed
-		ch.setAskCardOrder(preferences.getBoolean("askCardOrder", 
-		        resources.getBoolean(R.bool.preferences_ask_card_order)));
+		ch.setAskCardOrder(preferences.getBoolean(
+		      getString(R.string.preferences_ask_card_order),
+		      resources.getBoolean(R.bool.preferences_ask_card_order_default)));
 		// if we're gonna ask for card order anyway, don't need to change it
 		if (!ch.isAskCardOrder()) {
-	        ch.setCardOrder(preferences.getString("defaultCardOrder", getString(
-	                R.string.preferences_default_card_order)));
+	        ch.setCardOrder(preferences.getString(
+	               getString(R.string.preferences_default_card_order), 
+	               getString(R.string.preferences_default_card_order_default)));
 		}
-		defaultLang = preferences.getString("defaultLang", getString(
-		        R.string.preferences_default_lang));
+		defaultLang = preferences.getString(
+		        getString(R.string.preferences_default_lang), 
+		        getString(R.string.preferences_default_lang_default));
 		
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
@@ -174,8 +177,10 @@ public class ArabicFlashcards extends Activity {
 		
 		// save any preferences that can be changed outside the preferences activity
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putBoolean("askCardOrder", ch.isAskCardOrder());
-		editor.putString("cardOrder", ch.getCardOrder());
+		editor.putBoolean(getString(R.string.preferences_ask_card_order), 
+		        ch.isAskCardOrder());
+		editor.putString(getString(R.string.preferences_default_card_order), 
+		        ch.getCardOrder());
 		
 		// Commit the edits!
 		editor.commit();
