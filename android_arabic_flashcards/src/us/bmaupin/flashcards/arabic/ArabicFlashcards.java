@@ -233,6 +233,8 @@ public class ArabicFlashcards extends Activity {
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	super.onActivityResult(requestCode, resultCode, data);
 	
+	Log.d(TAG, "onActivityResult called");
+	
 	switch(requestCode) {
 		case (GET_CATEGORY) : {
 			if (resultCode == Activity.RESULT_OK) {
@@ -244,11 +246,11 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 					Log.d(TAG, "onActivityResult: chapter=" + chapter);
 
 					ch.loadCategory(category, chapter);
-// TODO: it seems the query has already been run at this point...						
 					if (ch.isAskCardOrder()) {
 					    showDialog(DIALOG_SELECT_CARD_ORDER);
+					} else {
+					    showFirstCard();
 					}
-					showFirstCard();
 				}
 			}
 			break;
