@@ -18,25 +18,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class Categories extends Activity {
-	private static final String TAG = "Categories";
+public class ChooseCardSet extends Activity {
+	private static final String TAG = "ChooseCards";
 	//unique dialog id
 	private static final int DIALOG_AWS_CHAPTER_ID = 0;
 	String selectedChapter;
 	private DatabaseHelper helper;
 	private SQLiteDatabase db; 
 	
-	Context context = Categories.this;
+	Context context = ChooseCardSet.this;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.categories);
+		setContentView(R.layout.choose_cards);
 
 		int layoutID = android.R.layout.simple_list_item_1;
 		
 		final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.categories_main_items,
+				this, R.array.card_set_main_items,
 				layoutID);
 		
 		final ListView lv = (ListView)findViewById(R.id.myListView);
@@ -50,7 +50,8 @@ public class Categories extends Activity {
 				
 				CharSequence itemText = adapter.getItem(pos);
 				
-				if (itemText.equals("Ahlan wa sahlan")) {
+				if (itemText.equals(getString(
+				        R.string.card_set_ahlan_wa_sahlan))) {
 					Log.d(TAG, "chose AWS");
 					showDialog(DIALOG_AWS_CHAPTER_ID);
 				}
@@ -81,7 +82,8 @@ public class Categories extends Activity {
 				Log.d(TAG, "createAWSChapterDialog: chapter=" + chapters[item]);
 				
 				Intent result = new Intent();
-				result.putExtra("category", "Ahlan wa sahlan");
+				result.putExtra("card_set", 
+				        getString(R.string.card_set_ahlan_wa_sahlan));
 				result.putExtra("aws_chapter", chapters[item]);
 				
 				setResult(RESULT_OK, result);
