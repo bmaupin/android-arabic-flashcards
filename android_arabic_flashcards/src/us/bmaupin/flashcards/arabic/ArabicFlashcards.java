@@ -42,7 +42,7 @@ public class ArabicFlashcards extends Activity {
     private static final int DIALOG_SELECT_CARD_ORDER = 1;
     static final String EXTRA_PROFILE_NAME = 
         "android.intent.extra.PROFILE_NAME";
-    private static final int GET_CATEGORY = 0;
+    private static final int CHOOSE_CARD_SET = 0;
 	private static final String TAG = "ArabicFlashcards";
 	
 	private CardHelper ch;
@@ -211,8 +211,8 @@ public class ArabicFlashcards extends Activity {
     	case R.id.menu_about:
     		startActivity(new Intent(this, About.class));
     		return true;
-    	case R.id.menu_categories:
-    		getCategory();
+    	case R.id.menu_choose_cards:
+    		chooseCardSet();
     		return true;
     	case R.id.menu_exit:
     		finish();
@@ -236,16 +236,17 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	Log.d(TAG, "onActivityResult called");
 	
 	switch(requestCode) {
-		case (GET_CATEGORY) : {
+		case (CHOOSE_CARD_SET) : {
 			if (resultCode == Activity.RESULT_OK) {
-				String category = data.getStringExtra("category");
-				Log.d(TAG, "onActivityResult: category=" + category);
+				String cardSet = data.getStringExtra("card_set");
+				Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
 				
-				if (category.equals("Ahlan wa sahlan")) {
+				if (cardSet.equals(getString(
+				        R.string.card_set_ahlan_wa_sahlan))) {
 					String chapter = data.getStringExtra("aws_chapter");
 					Log.d(TAG, "onActivityResult: chapter=" + chapter);
 
-					ch.loadCategory(category, chapter);
+					ch.loadCardSet(cardSet, chapter);
 					if (ch.isAskCardOrder()) {
 					    showDialog(DIALOG_SELECT_CARD_ORDER);
 					} else {
@@ -296,7 +297,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	}
 	
 	private Dialog createNoMoreCardsDialog() {
-	    final CharSequence[] items = {"See these cards again", "Choose a new category"};
+	    final CharSequence[] items = {"See these cards again", 
+	            "Choose new cards"};
 
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle("No more cards");
@@ -308,8 +310,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                         showDialog(DIALOG_SELECT_CARD_ORDER);
                     }
                     showFirstCard();
-                } else if (items[item].equals("Choose a new category")) {
-	                getCategory();
+                } else if (items[item].equals("Choose new cards")) {
+	                chooseCardSet();
 	            }
 	        }
 	    });    
@@ -375,9 +377,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         return ad;
     }
 	
-	private void getCategory() {
-	    Intent intent = new Intent(this, Categories.class);
-        startActivityForResult(intent, GET_CATEGORY);
+	private void chooseCardSet() {
+	    Intent intent = new Intent(this, ChooseCardSet.class);
+        startActivityForResult(intent, CHOOSE_CARD_SET);
 	}
 		
 	/**

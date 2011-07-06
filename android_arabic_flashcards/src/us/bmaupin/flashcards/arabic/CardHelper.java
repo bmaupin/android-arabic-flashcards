@@ -26,8 +26,8 @@ public class CardHelper {
     private boolean askCardOrder = true;
     public String cardOrder;
     private Context context;
-    private String currentCategory = "All";
-    private String currentSubCategory = "";
+    private String currentCardSet = "All";
+    private String currentCardSubset = "";
     private Cursor cursor = null;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
@@ -111,16 +111,16 @@ public class CardHelper {
         dbHelper.close();
     }
     
-    void loadCategory(String category) {
-        currentCategory = category;
-        // close the cursor so we'll reload it with the new category
+    void loadCardSet(String cardSet) {
+        currentCardSet = cardSet;
+        // close the cursor so we'll reload it with the new card set
         cursor.close();
     }
     
-    void loadCategory(String category, String subCategory) {
-        currentCategory = category;
-        currentSubCategory = subCategory;
-        // close the cursor so we'll reload it with the new category
+    void loadCardSet(String cardSet, String cardSubset) {
+        currentCardSet = cardSet;
+        currentCardSubset = cardSubset;
+        // close the cursor so we'll reload it with the new card set
         cursor.close();
     }
     
@@ -130,12 +130,12 @@ public class CardHelper {
     }
 
     void loadCardsCursor() {
-        String sqlCategorySelection = "";
+        String sqlCardSetSelection = "";
         
-        if (currentCategory.equals("Ahlan wa sahlan")) {
-            sqlCategorySelection = "WHERE aws_chapter = " + currentSubCategory;
+        if (currentCardSet.equals("Ahlan wa sahlan")) {
+            sqlCardSetSelection = "WHERE aws_chapter = " + currentCardSubset;
         }
-// TODO: finish implementing card category selection
+// TODO: finish implementing card set selection
     	
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
             DatabaseHelper._ID + ", " +
@@ -168,9 +168,9 @@ public class CardHelper {
             sql += ProfileDatabaseHelper.STATUS + ", RANDOM()";
         }
         
-        Log.d(TAG, "rawQuery=" + String.format(sql, sqlCategorySelection));
+        Log.d(TAG, "rawQuery=" + String.format(sql, sqlCardSetSelection));
         
-        cursor = db.rawQuery(String.format(sql, sqlCategorySelection), null);
+        cursor = db.rawQuery(String.format(sql, sqlCardSetSelection), null);
     }
     
     Map<String, String> nextCard() {

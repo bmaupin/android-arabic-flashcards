@@ -14,8 +14,23 @@
     <string name="card_order_in_order">in order</string>
     <string name="card_order_in_order_label">In order</string>
 
-    <string name="categories_title">Categories</string>
-    
+    <string name="card_set_adjectives">Adjectives</string>
+    <string name="card_set_adverbs">Adverbs</string>
+    <string name="card_set_ahlan_wa_sahlan">Ahlan wa sahlan</string>
+    <string name="card_set_all">All</string>
+    <string name="card_set_categories">Categories</string>
+    <string name="card_set_conjunctions">Conjunctions</string>
+    <string name="card_set_interjections">Interjections</string>
+    <string name="card_set_nouns">Nouns</string>
+    <string name="card_set_parts_of_speech">Parts of speech</string>
+    <string name="card_set_phrases">Phrases</string>
+    <string name="card_set_prepositions">Prepositions</string>
+    <string name="card_set_pronouns">Pronouns</string>
+    <string name="card_set_unknown">Unknown</string>
+    <string name="card_set_verbs">Verbs</string>
+
+    <string name="choose_cards_title">Choose cards</string>
+
     <string name="dialog_choose_aws_chapter_title">Please select a chapter:</string>
     
     <string name="help_title">Help</string>
@@ -27,13 +42,13 @@
 &#8226; Swipe left/press the left key to go to the previous card.\n
 \n
 <b>Other</b>\n
-&#8226; Go to Menu --> Categories to change the category.\n
+&#8226; Go to Menu --> Choose cards to choose cards.\n
 &#8226; Go to Menu --> Settings to change settings.</string>
 
     <string name="menu_about_label">About</string>
     <string name="menu_about_shortcut">a</string>
-    <string name="menu_categories_label">Categories</string>
-    <string name="menu_categories_shortcut">c</string>
+    <string name="menu_choose_cards_label">Choose cards</string>
+    <string name="menu_choose_cards_shortcut">c</string>
     <string name="menu_exit_label">Exit</string>
     <string name="menu_exit_shortcut">x</string>
     <string name="menu_help_label">Help</string>
