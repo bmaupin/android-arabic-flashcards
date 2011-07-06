@@ -85,7 +85,7 @@ public class CardHelper {
     	this.context = context;
     	// set the default card order
     	this.cardOrder = context.getString(
-    	        R.string.preferences_default_card_order);
+    	        R.string.preferences_default_card_order_default);
     	
     	// set the profile table name, which will ensure the profile table exists
     	profileHelper.setProfileTableName(profileName);
