@@ -39,7 +39,8 @@ import android.widget.ViewFlipper;
 public class ArabicFlashcards extends Activity {
     // unique dialog id
     private static final int DIALOG_NO_MORE_CARDS = 0;
-    private static final int DIALOG_SELECT_CARD_ORDER = 1;
+    private static final int DIALOG_NO_UNKNOWN_CARDS = 1;
+    private static final int DIALOG_SELECT_CARD_ORDER = 2;
     static final String EXTRA_PROFILE_NAME = 
         "android.intent.extra.PROFILE_NAME";
     private static final int CHOOSE_CARD_SET = 0;
@@ -290,11 +291,29 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    switch (id) {
 	        case DIALOG_NO_MORE_CARDS:
 	            return createNoMoreCardsDialog();
+            case DIALOG_NO_UNKNOWN_CARDS:
+                return createNoUnkownCardsDialog();
 	        case DIALOG_SELECT_CARD_ORDER:
 	            return createSelectCardOrderDialog();
 	    }
 	    return null;
 	}
+	
+    private Dialog createNoUnkownCardsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("You haven't marked any cards as unknown yet, so " +
+        		"there aren't any unknown cards to show.  " +
+                "Please choose a different set of cards.")
+                .setCancelable(false)
+                .setPositiveButton("Choose new cards", 
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        chooseCardSet();
+                    }
+                });
+        AlertDialog ad = builder.create();
+        return ad;
+    }
 	
 	private Dialog createNoMoreCardsDialog() {
 	    final CharSequence[] items = {"See these cards again", 
@@ -485,7 +504,13 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	
 	private void showFirstCard() {
 		currentWord = ch.nextCard();
-		showWord(currentWord);
+		// the first card should only be empty if the user picked the set of
+		// unkown cards, and there aren't any cards marked as unkown yet
+		if (currentWord.isEmpty()) {
+		    showDialog(DIALOG_NO_UNKNOWN_CARDS);
+		} else {
+		    showWord(currentWord);
+		}
 	}
 	
 	private void showNextCard(String direction) {

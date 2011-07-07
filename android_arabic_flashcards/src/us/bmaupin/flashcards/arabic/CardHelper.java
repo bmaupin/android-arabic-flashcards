@@ -2,13 +2,6 @@ package us.bmaupin.flashcards.arabic;
 
 // $Id$
 
-/*
- * TODO
- * - pop up prompt the first time we see a known card per cursor
- * - pop up prompt when we get to the end of the stack of cards
- * 
- */
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -132,10 +125,19 @@ public class CardHelper {
     void loadCardsCursor() {
         String sqlCardSetSelection = "";
         
-            if (currentCardSet.equals(context.getString(
+        if (currentCardSet.equals(context.getString(
                 R.string.card_set_ahlan_wa_sahlan))) {
-            sqlCardSetSelection = "WHERE aws_chapter = " + currentCardSubset;
+            sqlCardSetSelection = " WHERE aws_chapter = " + currentCardSubset;
+
+        } else if (currentCardSet.equals(context.getString(
+                R.string.card_set_unknown))) {
+            sqlCardSetSelection = " WHERE " + ProfileDatabaseHelper.STATUS + 
+                " = 1 AND " +
+                // this avoids showing the duplicates
+                DatabaseHelper.ARABIC + " != '' ";
+            
         }
+
 // TODO: finish implementing card set selection
     	
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
@@ -184,9 +186,9 @@ public class CardHelper {
     	    loadCardsCursor();
     	}
     	
-    	if (cursor.isLast()) {
+    	if (cursor.isLast() || cursor.getCount() == 0) {
     	    // return a blank card so we can show the user a message that
-            // there aren't any more cards
+            // there aren't any more cards (or any cards at all)
     	    return new HashMap<String, String>();
     	} else {
     	    cursor.moveToNext();
@@ -215,9 +217,11 @@ public class CardHelper {
         
         // if arabic is empty and english is an integer, it's a reference to 
         // another card
-        if (cursor.getString(2).equals("") && ArabicFlashcards.stringToInteger(cursor.getString(1)) != 0) {
+        if (cursor.getString(2).equals("") && 
+                ArabicFlashcards.stringToInteger(cursor.getString(1)) != 0) {
             // so return the other card
-            return getCardById(ArabicFlashcards.stringToInteger(cursor.getString(1)));
+            return getCardById(ArabicFlashcards.stringToInteger(
+                    cursor.getString(1)));
         }
         
         thisCard.put("ID", cursor.getString(0));

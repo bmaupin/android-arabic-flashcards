@@ -19,12 +19,11 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ChooseCardSet extends Activity {
-	private static final String TAG = "ChooseCards";
 	//unique dialog id
 	private static final int DIALOG_CARD_SET_AHLAN_WA_SAHLAN = 0;
-	
 	static final String CARD_SET = "card_set";
 	static final String CARD_SUBSET = "card_subset";
+	private static final String TAG = "ChooseCards";
 	
 	String selectedChapter;
 	private DatabaseHelper helper;
@@ -72,7 +71,7 @@ public class ChooseCardSet extends Activity {
                     
                 } else if (itemText.equals(getString(
                         R.string.card_set_parts_of_speech))) {
-                 // TODO: implement this
+// TODO: implement this
 //                    showDialog(DIALOG_CARD_SET_PARTS_OF_SPEECH);
                     
                 } else if (itemText.equals(getString(
