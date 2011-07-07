@@ -21,7 +21,11 @@ import android.widget.AdapterView.OnItemClickListener;
 public class ChooseCardSet extends Activity {
 	private static final String TAG = "ChooseCards";
 	//unique dialog id
-	private static final int DIALOG_AWS_CHAPTER_ID = 0;
+	private static final int DIALOG_CARD_SET_AHLAN_WA_SAHLAN = 0;
+	
+	static final String CARD_SET = "card_set";
+	static final String CARD_SUBSET = "card_subset";
+	
 	String selectedChapter;
 	private DatabaseHelper helper;
 	private SQLiteDatabase db; 
@@ -50,20 +54,43 @@ public class ChooseCardSet extends Activity {
 				
 				CharSequence itemText = adapter.getItem(pos);
 				
-				if (itemText.equals(getString(
-				        R.string.card_set_ahlan_wa_sahlan))) {
-					Log.d(TAG, "chose AWS");
-					showDialog(DIALOG_AWS_CHAPTER_ID);
-				}
+                if (itemText.equals(getString(R.string.card_set_all))) {
+                    Intent result = new Intent();
+                    result.putExtra(CARD_SET, 
+                            getString(R.string.card_set_all));
+                    setResult(RESULT_OK, result);
+                    finish();
+                    
+                } else if (itemText.equals(getString(
+                        R.string.card_set_ahlan_wa_sahlan))) {
+					showDialog(DIALOG_CARD_SET_AHLAN_WA_SAHLAN);
+					
+                } else if (itemText.equals(getString(
+                        R.string.card_set_categories))) {
+// TODO: implement this
+//                    showDialog(DIALOG_CARD_SET_CATEGORIES);
+                    
+                } else if (itemText.equals(getString(
+                        R.string.card_set_parts_of_speech))) {
+                 // TODO: implement this
+//                    showDialog(DIALOG_CARD_SET_PARTS_OF_SPEECH);
+                    
+                } else if (itemText.equals(getString(
+                        R.string.card_set_unknown))) {
+                    Intent result = new Intent();
+                    result.putExtra(CARD_SET, 
+                            getString(R.string.card_set_unknown));
+                    setResult(RESULT_OK, result);
+                    finish();
+                }
 			}
-			});
-
+		});
 	}
 	
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-			case DIALOG_AWS_CHAPTER_ID:
+			case DIALOG_CARD_SET_AHLAN_WA_SAHLAN:
 				return createAWSChapterDialog();
 		}
 		return null;
@@ -82,9 +109,9 @@ public class ChooseCardSet extends Activity {
 				Log.d(TAG, "createAWSChapterDialog: chapter=" + chapters[item]);
 				
 				Intent result = new Intent();
-				result.putExtra("card_set", 
+				result.putExtra(CARD_SET, 
 				        getString(R.string.card_set_ahlan_wa_sahlan));
-				result.putExtra("aws_chapter", chapters[item]);
+				result.putExtra(CARD_SUBSET, chapters[item]);
 				
 				setResult(RESULT_OK, result);
 				finish();

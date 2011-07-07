@@ -132,7 +132,8 @@ public class CardHelper {
     void loadCardsCursor() {
         String sqlCardSetSelection = "";
         
-        if (currentCardSet.equals("Ahlan wa sahlan")) {
+            if (currentCardSet.equals(context.getString(
+                R.string.card_set_ahlan_wa_sahlan))) {
             sqlCardSetSelection = "WHERE aws_chapter = " + currentCardSubset;
         }
 // TODO: finish implementing card set selection

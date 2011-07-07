@@ -238,21 +238,21 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	switch(requestCode) {
 		case (CHOOSE_CARD_SET) : {
 			if (resultCode == Activity.RESULT_OK) {
-				String cardSet = data.getStringExtra("card_set");
+				String cardSet = data.getStringExtra(ChooseCardSet.CARD_SET);
 				Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
 				
-				if (cardSet.equals(getString(
-				        R.string.card_set_ahlan_wa_sahlan))) {
-					String chapter = data.getStringExtra("aws_chapter");
-					Log.d(TAG, "onActivityResult: chapter=" + chapter);
-
-					ch.loadCardSet(cardSet, chapter);
-					if (ch.isAskCardOrder()) {
-					    showDialog(DIALOG_SELECT_CARD_ORDER);
-					} else {
-					    showFirstCard();
-					}
+				if (data.getStringExtra(ChooseCardSet.CARD_SUBSET) == null) {
+				    ch.loadCardSet(cardSet);
+				} else {
+				    ch.loadCardSet(cardSet, data.getStringExtra(
+				            ChooseCardSet.CARD_SUBSET));
 				}
+                
+                if (ch.isAskCardOrder()) {
+                    showDialog(DIALOG_SELECT_CARD_ORDER);
+                } else {
+                    showFirstCard();
+                }
 			}
 			break;
 		}
