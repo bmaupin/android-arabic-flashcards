@@ -145,7 +145,7 @@ CREATE TABLE words (
     "arabic" TEXT NOT NULL,
     "plural" TEXT,
     "type" TEXT,
-    "category" TEXT,
+    "category" TEXT COLLATE NOCASE,
     "gender" TEXT,
     "aws_chapter" INTEGER
 );
