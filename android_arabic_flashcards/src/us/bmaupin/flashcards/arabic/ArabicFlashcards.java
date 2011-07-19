@@ -301,8 +301,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	
     private Dialog createNoUnkownCardsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("You haven't marked any cards as unknown yet, so " +
-        		"there aren't any unknown cards to show.  " +
+        builder.setMessage("You don't currently have any cards marked as " +
+        		"unkown, so there aren't any unknown cards to show.  " +
                 "Please choose a different set of cards.")
                 .setCancelable(false)
                 .setPositiveButton("Choose new cards", 
