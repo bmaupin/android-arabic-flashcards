@@ -21,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class ChooseCardSet extends Activity {
 	//unique dialog id
 	private static final int DIALOG_CARD_SET_AHLAN_WA_SAHLAN = 0;
+	private static final int DIALOG_CARD_SET_CATEGORIES = 1;
 	static final String CARD_SET = "card_set";
 	static final String CARD_SUBSET = "card_subset";
 	private static final String TAG = "ChooseCards";
@@ -66,8 +67,7 @@ public class ChooseCardSet extends Activity {
 					
                 } else if (itemText.equals(getString(
                         R.string.card_set_categories))) {
-// TODO: implement this
-//                    showDialog(DIALOG_CARD_SET_CATEGORIES);
+                    showDialog(DIALOG_CARD_SET_CATEGORIES);
                     
                 } else if (itemText.equals(getString(
                         R.string.card_set_parts_of_speech))) {
@@ -91,6 +91,8 @@ public class ChooseCardSet extends Activity {
 		switch (id) {
 			case DIALOG_CARD_SET_AHLAN_WA_SAHLAN:
 				return createAWSChapterDialog();
+            case DIALOG_CARD_SET_CATEGORIES:
+                return createChooseCategoryDialog();
 		}
 		return null;
 	}
@@ -98,7 +100,7 @@ public class ChooseCardSet extends Activity {
 	private Dialog createAWSChapterDialog() {
 		Log.d(TAG, "createAWSChapterDialog");
 		
-		final String[] chapters = getChapters();
+		final String[] chapters = getColumnValues("aws_chapter");
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.dialog_choose_aws_chapter_title);
@@ -120,34 +122,61 @@ public class ChooseCardSet extends Activity {
 		return ad;
 	}
 	
-	private String[] getChapters() {
-		Log.d(TAG, "getChapters called");
-		String[] chapters;
-	    
-	    String[] FROM = {"aws_chapter"};
-	    // as much fun as it'd be, let's not get null values
-	    String WHERE = "aws_chapter not NULL";
-	    
+    private Dialog createChooseCategoryDialog() {
+        Log.d(TAG, "createChooseCategoryDialog");
+        
+        final String[] categories = getColumnValues("category");
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_choose_card_category_title);
+        builder.setItems(categories, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Log.d(TAG, "createChooseCategoryDialog: int=" + item);
+                Log.d(TAG, "createChooseCategoryDialog: category=" + 
+                        categories[item]);
+                
+                Intent result = new Intent();
+                result.putExtra(CARD_SET, 
+                        getString(R.string.card_set_categories));
+                result.putExtra(CARD_SUBSET, categories[item]);
+                
+                setResult(RESULT_OK, result);
+                finish();
+            }
+        });
+        AlertDialog ad = builder.create();
+        return ad;
+    }
+    
+    private String[] getColumnValues(String column) {
+        Log.d(TAG, "getColumnValues called");
+        String[] columnValues;
+        
+        String[] FROM = {column};
+        // as much fun as it'd be, let's not get null or empty values
+        String WHERE = column + " not NULL and " + column + " != ''";
+        
         helper = new DatabaseHelper(this);
         db = helper.getReadableDatabase();
-	    
-	    Cursor mCursor = db.query(true, "words", FROM, WHERE, null, null, null, null, null);
-	    startManagingCursor(mCursor);
-	    
-	    // get the number of chapters since we're using an immutable array
-	    int chapterCount = mCursor.getCount();
-	    Log.d(TAG, "getChapters: chapterCount=" + chapterCount);
-	    
-	    chapters = new String[chapterCount];
-	    int chapterIndex = 0;
-	    while (mCursor.moveToNext()) {
-	    	chapters[chapterIndex] = mCursor.getString(0);
-	    	chapterIndex ++;   	
-	    }
-	    
-	    // close the database connection
-	    helper.close();
-	    Log.d(TAG, "getChapters: returning");
-	    return chapters;
-	}
+        
+        // do a query for unique/distinct rows only
+        Cursor mCursor = db.query(true, "words", FROM, WHERE, null, null, null, null, null);
+        startManagingCursor(mCursor);
+        
+        // get the number of columns since we're using an immutable array
+        int columnCount = mCursor.getCount();
+        Log.d(TAG, "getColumnValues: columnCount=" + columnCount);
+        
+        columnValues = new String[columnCount];
+        int columnIndex = 0;
+        while (mCursor.moveToNext()) {
+            columnValues[columnIndex] = mCursor.getString(0);
+            columnIndex ++;    
+        }
+        
+        // close the database connection
+        helper.close();
+        Log.d(TAG, "getColumnValues: returning");
+        return columnValues;
+    }
 }

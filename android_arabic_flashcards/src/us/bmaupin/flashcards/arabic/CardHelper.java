@@ -130,6 +130,11 @@ public class CardHelper {
             sqlCardSetSelection = " WHERE aws_chapter = " + currentCardSubset;
 
         } else if (currentCardSet.equals(context.getString(
+                R.string.card_set_categories))) {
+            sqlCardSetSelection = " WHERE category = '" + currentCardSubset + 
+            "'";
+            
+        } else if (currentCardSet.equals(context.getString(
                 R.string.card_set_unknown))) {
             sqlCardSetSelection = " WHERE " + ProfileDatabaseHelper.STATUS + 
                 " = 1 AND " +
