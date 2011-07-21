@@ -33,6 +33,7 @@
 
     <string name="dialog_choose_aws_chapter_title">Please select a chapter:</string>
     <string name="dialog_choose_card_category_title">Please select a category:</string>
+    <string name="dialog_choose_part_of_speech_title">Please select one:</string>
     
     <string name="help_title">Help</string>
     <string name="help_text"><b>Navigation</b>\n
