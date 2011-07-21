@@ -8,6 +8,7 @@
         <item>@string/card_set_parts_of_speech</item>
         <item>@string/card_set_unknown</item>
     </string-array>
+    
     <string-array name="dialog_parts_of_speech_entries">
         <item>@string/parts_of_speech_adj_entry</item>
         <item>@string/parts_of_speech_adv_entry</item>
@@ -20,6 +21,19 @@
         <item>@string/parts_of_speech_pronoun_entry</item>
         <item>@string/parts_of_speech_verb_entry</item>
     </string-array>
+    <string-array name="dialog_parts_of_speech_values">
+        <item>@string/parts_of_speech_adj_value</item>
+        <item>@string/parts_of_speech_adv_value</item>
+        <item>@string/parts_of_speech_conj_value</item>
+        <item>@string/parts_of_speech_noun_value</item>
+        <item>@string/parts_of_speech_participle_value</item>
+        <item>@string/parts_of_speech_particle_value</item>
+        <item>@string/parts_of_speech_phrase_value</item>
+        <item>@string/parts_of_speech_prep_value</item>
+        <item>@string/parts_of_speech_pronoun_value</item>
+        <item>@string/parts_of_speech_verb_value</item>
+    </string-array>
+    
     <string-array name="preferences_default_card_order_entries">
         <item>@string/card_order_smart_entry</item>
         <item>@string/card_order_random_entry</item>

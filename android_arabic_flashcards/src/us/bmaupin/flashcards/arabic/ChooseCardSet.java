@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class ChooseCardSet extends Activity {
 	//unique dialog id
 	private static final int DIALOG_CARD_SET_AHLAN_WA_SAHLAN = 0;
 	private static final int DIALOG_CARD_SET_CATEGORIES = 1;
+	private static final int DIALOG_CARD_SET_PARTS_OF_SPEECH = 2;
 	static final String CARD_SET = "card_set";
 	static final String CARD_SUBSET = "card_subset";
 	private static final String TAG = "ChooseCards";
@@ -71,8 +73,7 @@ public class ChooseCardSet extends Activity {
                     
                 } else if (itemText.equals(getString(
                         R.string.card_set_parts_of_speech))) {
-// TODO: implement this
-//                    showDialog(DIALOG_CARD_SET_PARTS_OF_SPEECH);
+                    showDialog(DIALOG_CARD_SET_PARTS_OF_SPEECH);
                     
                 } else if (itemText.equals(getString(
                         R.string.card_set_unknown))) {
@@ -90,14 +91,16 @@ public class ChooseCardSet extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 			case DIALOG_CARD_SET_AHLAN_WA_SAHLAN:
-				return createAWSChapterDialog();
+				return createChooseAWSChapterDialog();
             case DIALOG_CARD_SET_CATEGORIES:
                 return createChooseCategoryDialog();
+            case DIALOG_CARD_SET_PARTS_OF_SPEECH:
+                return createChoosePartOfSpeechDialog();
 		}
 		return null;
 	}
 	
-	private Dialog createAWSChapterDialog() {
+	private Dialog createChooseAWSChapterDialog() {
 		Log.d(TAG, "createAWSChapterDialog");
 		
 		final String[] chapters = getColumnValues("aws_chapter");
@@ -139,6 +142,37 @@ public class ChooseCardSet extends Activity {
                 result.putExtra(CARD_SET, 
                         getString(R.string.card_set_categories));
                 result.putExtra(CARD_SUBSET, categories[item]);
+                
+                setResult(RESULT_OK, result);
+                finish();
+            }
+        });
+        AlertDialog ad = builder.create();
+        return ad;
+    }
+    
+    private Dialog createChoosePartOfSpeechDialog() {
+        Log.d(TAG, "createChoosePartOfSpeechDialog");
+        
+        Resources res = getResources();
+        final String[] partsOfSpeechEntries = res.getStringArray(
+                R.array.dialog_parts_of_speech_entries);
+        final String[] partsOfSpeechValues = res.getStringArray(
+                R.array.dialog_parts_of_speech_values);
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_choose_part_of_speech_title);
+        builder.setItems(partsOfSpeechEntries, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Log.d(TAG, "createChoosePartOfSpeechDialog: int=" + item);
+                Log.d(TAG, "createChoosePartOfSpeechDialog: partOfSpeech=" + 
+                        partsOfSpeechEntries[item]);
+                
+                Intent result = new Intent();
+                result.putExtra(CARD_SET, 
+                        getString(R.string.card_set_parts_of_speech));
+                // make sure we put the part of speech value and not the entry
+                result.putExtra(CARD_SUBSET, partsOfSpeechValues[item]);
                 
                 setResult(RESULT_OK, result);
                 finish();

@@ -128,10 +128,15 @@ public class CardHelper {
         if (currentCardSet.equals(context.getString(
                 R.string.card_set_ahlan_wa_sahlan))) {
             sqlCardSetSelection = " WHERE aws_chapter = " + currentCardSubset;
-
+            
         } else if (currentCardSet.equals(context.getString(
                 R.string.card_set_categories))) {
             sqlCardSetSelection = " WHERE category = '" + currentCardSubset + 
+            "'";
+            
+        } else if (currentCardSet.equals(context.getString(
+                R.string.card_set_parts_of_speech))) {
+            sqlCardSetSelection = " WHERE type = '" + currentCardSubset + 
             "'";
             
         } else if (currentCardSet.equals(context.getString(
@@ -140,10 +145,7 @@ public class CardHelper {
                 " = 1 AND " +
                 // this avoids showing the duplicates
                 DatabaseHelper.ARABIC + " != '' ";
-            
         }
-
-// TODO: finish implementing card set selection
     	
         String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
             DatabaseHelper._ID + ", " +
