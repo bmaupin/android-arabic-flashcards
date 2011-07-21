@@ -359,16 +359,16 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals(getString(
-                        R.string.card_order_smart_label))) {
+                        R.string.card_order_smart_entry))) {
                     ch.startOver();
                     showFirstCard();
                 } else if (items[item].equals(getString(
-                        R.string.card_order_random_label))) {
+                        R.string.card_order_random_entry))) {
                     ch.setCardOrder(getString(R.string.card_order_random));
                     ch.startOver();
                     showFirstCard();
                 } else if (items[item].equals(getString(
-                        R.string.card_order_in_order_label))) {
+                        R.string.card_order_in_order_entry))) {
                     ch.setCardOrder(getString(R.string.card_order_in_order));
                     ch.startOver();
                     showFirstCard();

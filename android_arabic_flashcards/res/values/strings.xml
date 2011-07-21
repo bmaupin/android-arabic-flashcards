@@ -8,11 +8,11 @@
 \nUses icons from www.androidicons.com, licensed under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.</string>
 
     <string name="card_order_smart">smart</string>
-    <string name="card_order_smart_label">Smart mode (recommended)</string>
+    <string name="card_order_smart_entry">Smart mode (recommended)</string>
     <string name="card_order_random">random</string>
-    <string name="card_order_random_label">Random</string>
+    <string name="card_order_random_entry">Random</string>
     <string name="card_order_in_order">in order</string>
-    <string name="card_order_in_order_label">In order</string>
+    <string name="card_order_in_order_entry">In order</string>
 
     <string name="card_set_adjectives">Adjectives</string>
     <string name="card_set_adverbs">Adverbs</string>
@@ -56,6 +56,27 @@
     <string name="menu_help_shortcut">h</string>
     <string name="menu_settings_label">Settings</string>
     <string name="menu_settings_shortcut">s</string>
+    
+    <string name="parts_of_speech_adj_entry">adjectives</string>
+    <string name="parts_of_speech_adj_value">adj</string>
+    <string name="parts_of_speech_adv_entry">adverbs</string>
+    <string name="parts_of_speech_adv_value">adv</string>
+    <string name="parts_of_speech_conj_entry">conjunctions</string>
+    <string name="parts_of_speech_conj_value">conj</string>
+    <string name="parts_of_speech_noun_entry">nouns</string>
+    <string name="parts_of_speech_noun_value">noun</string>
+    <string name="parts_of_speech_participle_entry">participles</string>
+    <string name="parts_of_speech_participle_value">participle</string>
+    <string name="parts_of_speech_particle_entry">particles</string>
+    <string name="parts_of_speech_particle_value">particle</string>
+    <string name="parts_of_speech_phrase_entry">phrases</string>
+    <string name="parts_of_speech_phrase_value">phrase</string>
+    <string name="parts_of_speech_prep_entry">prepositions</string>
+    <string name="parts_of_speech_prep_value">prep</string>
+    <string name="parts_of_speech_pronoun_entry">pronouns</string>
+    <string name="parts_of_speech_pronoun_value">pronoun</string>
+    <string name="parts_of_speech_verb_entry">verbs</string>
+    <string name="parts_of_speech_verb_value">verb</string>
     
     <string name="preferences_ask_card_order">ask_card_order</string>
     <string name="preferences_default_card_order">default_card_order</string>
