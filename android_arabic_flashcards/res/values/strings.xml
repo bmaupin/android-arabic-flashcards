@@ -80,9 +80,18 @@
     <string name="parts_of_speech_verb_value">verb</string>
     
     <string name="preferences_ask_card_order">ask_card_order</string>
+    <string name="preferences_ask_card_order_summary">Ask for card order every time new cards are shown</string>
+    <string name="preferences_ask_card_order_title">Ask for card order</string>
     <string name="preferences_default_card_order">default_card_order</string>
+    <string name="preferences_default_card_order_summary">Order in which to show the cards</string>
+    <string name="preferences_default_card_order_title">Default card order</string>
     <string name="preferences_default_card_order_default">@string/card_order_smart</string>
     <string name="preferences_default_lang">default_lang</string>
     <string name="preferences_default_lang_default">arabic</string>
+    <string name="preferences_default_lang_summary">Language to show on front of cards</string>
+    <string name="preferences_default_lang_title">Default card language</string>
+    <string name="preferences_delete_profile">delete_profile</string>
+    <string name="preferences_delete_profile_summary">Delete the current profile</string>
+    <string name="preferences_delete_profile_title">Delete profile</string>
     <string name="preferences_title">Settings</string>
 </resources>
