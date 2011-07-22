@@ -2,15 +2,23 @@ package us.bmaupin.flashcards.arabic;
 
 // $Id$
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
+import android.widget.Toast;
 
-public class Preferences extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class Preferences extends PreferenceActivity 
+                                implements OnSharedPreferenceChangeListener {
+    private static final int DIALOG_CONFIRM_DELETE_PROFILE = 0;
+    
     private String profileName = "";
 
     @Override
@@ -28,6 +36,16 @@ public class Preferences extends PreferenceActivity implements OnSharedPreferenc
         toggleDefaultCardOrder();
         // set up a listener whenever a key changes            
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        
+        // handle when the delete profile option gets clicked
+        Preference deleteProfile = findPreference(getString(
+                R.string.preferences_delete_profile));
+        deleteProfile.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference p) {
+                showDialog(DIALOG_CONFIRM_DELETE_PROFILE);
+                return true;
+            }
+        });
     }
     
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -47,5 +65,34 @@ public class Preferences extends PreferenceActivity implements OnSharedPreferenc
             findPreference(getString(R.string.preferences_default_card_order));
         defaultCardOrder.setEnabled(!askCardOrder.isChecked());
     }
-
+    
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DIALOG_CONFIRM_DELETE_PROFILE:
+                return createConfirmDeleteProfileDialog(); 
+        }
+        return null;
+    }
+    
+    private Dialog createConfirmDeleteProfileDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("This will delete your profile containing all " +
+        		"cards marked as known and unkown.  Are you sure?")
+               .setCancelable(false)
+               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+// TODO: implement this
+                       Toast.makeText(getApplicationContext(), "TODO: implement this", Toast.LENGTH_SHORT).show();
+                       Toast.makeText(getApplicationContext(), "Profile deleted!", Toast.LENGTH_SHORT).show();
+                   }
+               })
+               .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                   }
+               });
+        AlertDialog ad = builder.create();
+        return ad;
+    }
 }
