@@ -436,7 +436,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			knownCheck.setImageResource(R.drawable.btn_check_buttonless_on);
 		} else {
 			// otherwise remove the check
-			knownCheck.setImageResource(R.drawable.btn_check_buttonless_off);
+			knownCheck.setImageResource(0);
 		}
     	
     	showWord(currentView, currentWord, defaultLang);
