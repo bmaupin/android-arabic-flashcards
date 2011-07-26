@@ -5,6 +5,7 @@ package us.bmaupin.flashcards.arabic;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 public class Preferences extends PreferenceActivity 
                                 implements OnSharedPreferenceChangeListener {
     private static final int DIALOG_CONFIRM_DELETE_PROFILE = 0;
+    static final String EXTRA_PROFILE_ACTION = 
+            "android.intent.extra.PROFILE_ACTION";
     
     private String profileName = "";
 
@@ -82,9 +85,13 @@ public class Preferences extends PreferenceActivity
                .setCancelable(false)
                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-// TODO: implement this
-                       Toast.makeText(getApplicationContext(), "TODO: implement this", Toast.LENGTH_SHORT).show();
-                       Toast.makeText(getApplicationContext(), "Profile deleted!", Toast.LENGTH_SHORT).show();
+                       Intent result = new Intent();
+                       result.putExtra(EXTRA_PROFILE_ACTION, "delete");
+                       setResult(RESULT_OK, result);
+                       // we actually delete the profile in the main activity,
+                       // but announcing it there might be confusing
+                       Toast.makeText(getApplicationContext(), 
+                               "Profile deleted!", Toast.LENGTH_SHORT).show();
                    }
                })
                .setNegativeButton("No", new DialogInterface.OnClickListener() {

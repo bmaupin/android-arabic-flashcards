@@ -384,4 +384,19 @@ public class CardHelper {
         
         thisCursor.close();
     }
+    
+    void deleteProfile() {
+        deleteProfile(profileName);
+    }
+    
+    void deleteProfile(String profileName) {
+        String sql = "DELETE FROM " + PROFILE_DB + "." + profileName;
+        db.execSQL(sql);
+        startOver();
+        ProfileDatabaseHelper profileHelper = new ProfileDatabaseHelper(context);
+        SQLiteDatabase profileDb = profileHelper.getReadableDatabase();
+        profileDb.execSQL("VACUUM");
+        profileDb.close();
+        profileHelper.close();
+    }
 }
