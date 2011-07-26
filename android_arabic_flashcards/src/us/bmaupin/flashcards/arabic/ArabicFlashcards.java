@@ -43,7 +43,8 @@ public class ArabicFlashcards extends Activity {
     private static final int DIALOG_SELECT_CARD_ORDER = 2;
     static final String EXTRA_PROFILE_NAME = 
         "android.intent.extra.PROFILE_NAME";
-    private static final int CHOOSE_CARD_SET = 0;
+    private static final int REQUEST_CARD_SET = 0;
+    private static final int REQUEST_PROFILE_ACTION = 1;
 	private static final String TAG = "ArabicFlashcards";
 	
 	private CardHelper ch;
@@ -209,23 +210,23 @@ public class ArabicFlashcards extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
-    	case R.id.menu_about:
-    		startActivity(new Intent(this, About.class));
-    		return true;
-    	case R.id.menu_choose_cards:
-    		chooseCardSet();
-    		return true;
-    	case R.id.menu_exit:
-    		finish();
-    		return true;
-    	case R.id.menu_help:
-    		startActivity(new Intent(this, Help.class));
-    		return true;
-    	case R.id.menu_settings:
-    	    Intent intent = new Intent(this, Preferences.class);
-    	    intent.putExtra(EXTRA_PROFILE_NAME, ch.getProfileName());
-    	    startActivity(intent);
-    		return true;
+        	case R.id.menu_about:
+        		startActivity(new Intent(this, About.class));
+        		return true;
+        	case R.id.menu_choose_cards:
+        		chooseCardSet();
+        		return true;
+        	case R.id.menu_exit:
+        		finish();
+        		return true;
+        	case R.id.menu_help:
+        		startActivity(new Intent(this, Help.class));
+        		return true;
+        	case R.id.menu_settings:
+        	    Intent intent = new Intent(this, Preferences.class);
+        	    intent.putExtra(EXTRA_PROFILE_NAME, ch.getProfileName());
+        	    startActivityForResult(intent, REQUEST_PROFILE_ACTION);
+        		return true;
     	}
     	return false;
     }
@@ -237,7 +238,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	Log.d(TAG, "onActivityResult called");
 	
 	switch(requestCode) {
-		case (CHOOSE_CARD_SET) : {
+		case (REQUEST_CARD_SET) :
 			if (resultCode == Activity.RESULT_OK) {
 				String cardSet = data.getStringExtra(ChooseCardSet.CARD_SET);
 				Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
@@ -256,7 +257,16 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                 }
 			}
 			break;
-		}
+		case (REQUEST_PROFILE_ACTION) :
+		    if (resultCode == Activity.RESULT_OK) {
+		        String profileAction = data.getStringExtra(
+		                Preferences.EXTRA_PROFILE_ACTION);
+		        if (profileAction.equals("delete")) {
+		            ch.deleteProfile();
+		            showFirstCard();
+		        }
+		    }
+		    break;
 	}
 }
 
@@ -398,7 +408,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	
 	private void chooseCardSet() {
 	    Intent intent = new Intent(this, ChooseCardSet.class);
-        startActivityForResult(intent, CHOOSE_CARD_SET);
+        startActivityForResult(intent, REQUEST_CARD_SET);
 	}
 		
 	/**
