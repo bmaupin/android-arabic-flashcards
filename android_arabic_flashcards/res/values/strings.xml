@@ -93,5 +93,8 @@
     <string name="preferences_delete_profile">delete_profile</string>
     <string name="preferences_delete_profile_summary">Delete the current profile</string>
     <string name="preferences_delete_profile_title">Delete profile</string>
+    <string name="preferences_hide_known_cards">show_known_cards</string>
+    <string name="preferences_hide_known_cards_summary">Hide cards marked as known</string>
+    <string name="preferences_hide_known_cards_title">Hide known cards</string>
     <string name="preferences_title">Settings</string>
 </resources>

@@ -2,4 +2,5 @@
 <!-- $Id$ -->
 <resources>
     <bool name="preferences_ask_card_order_default">true</bool>
+    <bool name="preferences_hide_known_cards_default">false</bool>
 </resources>

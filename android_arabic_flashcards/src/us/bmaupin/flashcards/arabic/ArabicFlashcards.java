@@ -151,7 +151,22 @@ public class ArabicFlashcards extends Activity {
 		defaultLang = preferences.getString(
 		        getString(R.string.preferences_default_lang), 
 		        getString(R.string.preferences_default_lang_default));
-		
+		// only change this if the values are different
+		if (ch.isHideKnownCards() != preferences.getBoolean(
+                getString(R.string.preferences_hide_known_cards),
+                resources.getBoolean(
+                        R.bool.preferences_hide_known_cards_default))) {
+		    Log.d(TAG, "onResume: isHideKnownCards is different");
+		    Log.d(TAG, "onResume: ch.isHideKnownCards()=" + ch.isHideKnownCards());
+	        ch.setHideKnownCards(preferences.getBoolean(
+	                getString(R.string.preferences_hide_known_cards),
+	                resources.getBoolean(
+	                        R.bool.preferences_hide_known_cards_default)));
+	        Log.d(TAG, "onResume: ch.isHideKnownCards()=" + ch.isHideKnownCards());
+	        // force a reload of the cards
+	        currentWord.clear();
+		}
+
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
         }
@@ -516,6 +531,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		currentWord = ch.nextCard();
 		// the first card should only be empty if the user picked the set of
 		// unkown cards, and there aren't any cards marked as unkown yet
+// TODO: need to add category verification here as well, cause it could also be
+// all cards are marked as known
 		if (currentWord.isEmpty()) {
 		    showDialog(DIALOG_NO_UNKNOWN_CARDS);
 		} else {
