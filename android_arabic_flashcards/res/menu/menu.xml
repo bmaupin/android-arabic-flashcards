@@ -18,7 +18,5 @@
 		android:alphabeticShortcut="@string/menu_settings_shortcut"
 		android:icon="@android:drawable/ic_menu_preferences" />
 	<item android:id="@+id/menu_exit"
-		android:title="@string/menu_exit_label"
-		android:alphabeticShortcut="@string/menu_exit_shortcut"
-		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+		android:title="exit" />
 </menu>
