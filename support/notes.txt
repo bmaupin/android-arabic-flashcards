@@ -150,6 +150,13 @@ CREATE TABLE words (
     "aws_chapter" INTEGER
 );
 
+CREATE TABLE aws_chapters (
+    "_ID" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "chapter" INTEGER NOT NULL,
+    "card_ID" INTEGER NOT NULL
+);
+
+
 insert into words (english, arabic, plural, type, category, gender, aws_chapter) select english, arabic, plural, type, category, gender, aws_chapter from temp;
 
 type: adj, adv, conj, interj, noun, prep, pronoun, verb, particle, phrase
