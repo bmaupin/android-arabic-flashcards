@@ -2,13 +2,12 @@
 
 # $Id$
 
-'''
+'''Find differences between file2 and file1
 '''
 
 
-infile1_name = '../words/arabic-words.csv'
+infile1_name = '../words/arabic-words-r61.csv'
 infile2_name = '/home/bmaupin/Desktop/arabic-words-michelle.csv'
-#outfile_name
 
 
 def main():
@@ -38,8 +37,8 @@ def main():
         '''
         
         count = 1
-        for item in list1:
-            if item not in list2:
+        for item in list2:
+            if item not in list1:
                 print '%s: %s' % (count, item) 
             count += 1
     
@@ -53,47 +52,9 @@ def main():
     print
     compare_lists(arabic1, arabic2)
     print
-    
-    
-#    words = {}
-    '''
-    english1 = []
-    arabic1 = []
-    plural1 = []
+    compare_lists(plural1, plural2)
+    print
 
-    infile1 = open(infile1_name)
-    index = 0
-    for line in infile1:
-        index += 1
-        line = line.strip()
-        english, arabic, plural, type, category, gender, aws_chapter = \
-            line.split('|')
-        if english != '':
-            english1.append(english)
-        if arabic != '':
-            arabic1.append(arabic)
-        if plural != '':
-            plural1.append(plural)
-#        words1[index] = {}
-#        words1[index]['english'] = english
-#        words1[index]['arabic'] = arabic
-#        words1[index]['plural'] = plural
-#        words1[index]['gender'] = gender
-
-        ''
-        for this_index in words:
-            if this_index == index:
-                continue
-            if (english != '' and english == words[this_index]['english']) or \
-                (arabic != '' and arabic == words[this_index]['arabic']) or \
-                (arabic2 != '' and arabic2 != '\xd9\x88\xd9\x86' and arabic2 != '\xd8\xa7\xd8\xaa' and \
-                arabic2 == words[this_index]['arabic2']):
-#                if (words[this_index]['gender'] == '' or gender == '') or \
-#                    words[this_index]['gender'] == gender:
-                print '%s possible duplicate of %s' % (index, this_index)
-        ''
-    infile1.close()
-    '''
 
 if __name__ == '__main__':
     main()
