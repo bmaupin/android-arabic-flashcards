@@ -818,7 +818,7 @@ mosque|مَسجِد|مَساجِد|noun|Islam|m|19
 theater, stage|مَسرَح|مَسارِح|noun|entertainment|m|19
 one who is longing, yearning|مُشْتاق|مُشْتاقون|noun|||19
 elevator, lift|مِصعَد|مَصاعِد|noun||m|19
-though, although|مَعَأنَّ||conj|||19
+though, although|مَعَ أنَّ||conj|||19
 coming, next, following|مُقبِل|مُقبِلون|noun|common|m|19
 616||||||19
 million|مِليون||noun|numbers|m|19
@@ -1188,3 +1188,7 @@ under|تَحْتَ||prep|common||
 over|فَوْقَ||prep|common||
 between|بَيْنَ||prep|common||
 in|في||prep|common||
+to take, to last (a certain time)|اِستغرق||verb|||
+surroundings, environment|بيئة (باء or بوء)||noun|||
+airline|خط|خطوط|noun|travel||
+FIXME: what is this?|عودة (عاد or عود)||noun|||
