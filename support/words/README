@@ -1,0 +1,7 @@
+$Id$
+
+Ahlan wa sahlan flashcards.doc - where we first started putting cards into
+arabic-words.txt - generated from Ahlan wa sahlan flashcards.doc
+arabic-words.csv - MASTER FILE
+arabic-novowels.csv - generated from arabic-words.csv using ../scripts/remove-vowels.py
+    -regenerate this file after every change to arabic-words.csv!
