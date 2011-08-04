@@ -126,6 +126,8 @@ utilities, vowels: fatha faa damma raa sukkun space siin
 
 
 
+DATABASE IMPORT PROCESS:
+
 drop table temp;
 drop table words;
 
@@ -135,8 +137,7 @@ CREATE TABLE temp (
     "plural" TEXT,
     "type" TEXT,
     "category" TEXT,
-    "gender" TEXT,
-    "aws_chapter" INTEGER
+    "gender" TEXT
 );
 
 CREATE TABLE words (
@@ -146,8 +147,22 @@ CREATE TABLE words (
     "plural" TEXT,
     "type" TEXT,
     "category" TEXT COLLATE NOCASE,
-    "gender" TEXT,
-    "aws_chapter" INTEGER
+    "gender" TEXT
+);
+
+
+insert into words (english, arabic, plural, type, category, gender) select english, arabic, plural, type, category, gender from temp;
+
+
+
+AWS CHAPTER DATA IMPORT PROCESS:
+
+drop table temp;
+drop table aws_chapters;
+
+CREATE TABLE temp (
+    "chapter" INTEGER NOT NULL,
+    "card_ID" INTEGER NOT NULL
 );
 
 CREATE TABLE aws_chapters (
@@ -157,7 +172,9 @@ CREATE TABLE aws_chapters (
 );
 
 
-insert into words (english, arabic, plural, type, category, gender, aws_chapter) select english, arabic, plural, type, category, gender, aws_chapter from temp;
+insert into aws_chapters (chapter, card_ID) select chapter, card_ID from temp;
+
+
 
 type: adj, adv, conj, interj, noun, prep, pronoun, verb, particle, phrase
 gender: m, f
