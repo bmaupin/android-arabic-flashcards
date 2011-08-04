@@ -2,6 +2,8 @@
 
 # $Id$
 
+'''Split out the aws chapter column from arabic-words.csv
+'''
 
 infile_name = '../words/arabic-words.csv'
 new_words_name = 'arabic-words.csv'
