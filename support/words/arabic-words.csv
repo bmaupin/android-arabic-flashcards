@@ -627,7 +627,7 @@ to send|أرْسَلَ (يُرسِلُ) إرْسال||verb|||17
 to receive (someone)|اِسْتَقبَلَ (يَسْتَقبِلُ) اِستِقبال||verb|||17
 to believe|اِعتَقَدَ (يَعتَقِدُ) اِعتِقاد||verb|||17
 inflammation, infection|اِلْتِهاب|اِلتِهابات|noun|medical|m|17
-pain|أبَم|آلآم|noun||m|17
+pain|ألَم|آلآم|noun||m|17
 to hurt|آلَمَ (يُؤلِمُ)||verb|||17
 as for, but, yet, however|أمّا||particle|||17
 to finish, to come to an end|اِنْتَهى (يَنْتَهي) اِنتِهاء||verb|||17
@@ -1189,6 +1189,6 @@ over|فَوْقَ||prep|common||
 between|بَيْنَ||prep|common||
 in|في||prep|common||
 to take, to last (a certain time)|اِستغرق||verb|||
-surroundings, environment|بيئة (باء or بوء)||noun|||
+surroundings, environment|بيئة (باء/بوء)||noun|||
 airline|خط|خطوط|noun|travel||
-FIXME: what is this?|عودة (عاد or عود)||noun|||
+return|عودة (عاد/عود)||noun|||
