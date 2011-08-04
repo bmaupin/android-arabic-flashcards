@@ -2,8 +2,7 @@
 
 # $Id$
 
-'''Use this script to find possible duplicates in the primary arabic words 
-source (currently arabic-words.csv)
+'''Find words with specific characters, less than a certain length, etc.
 '''
 
 
