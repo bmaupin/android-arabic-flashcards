@@ -391,7 +391,7 @@ public class CardHelper {
 //
         Log.d(TAG, "changeCardStatus: thisCardId=" + thisCardId);
         Log.d(TAG, "changeCardStatus: newStatus=" + newStatus);
-                
+        
         ContentValues cv=new ContentValues();
         cv.put(ProfileDatabaseHelper.CARD_ID, thisCardId);
         cv.put(ProfileDatabaseHelper.STATUS, newStatus);

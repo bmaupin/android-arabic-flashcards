@@ -451,7 +451,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	
 //
     	Log.d(TAG, "showWord: currentWord=" + currentWord);
+    	// get the current shown view out of all of the views in the ViewFlipper
     	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
+    	// get the child view (TextView)
     	currentView = (TextView) currentLayout.getChildAt(0);
     	
     	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
