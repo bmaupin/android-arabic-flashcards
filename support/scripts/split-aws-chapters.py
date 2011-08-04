@@ -25,8 +25,6 @@ def main():
                 return old_id - count
             count += 1
 #        return old_id - len(dupes)
-                
-            
     
     current_id = 1
 #    dupe_count = 0
@@ -49,12 +47,14 @@ def main():
 #                dupe_count += 1
             else:
                 aws_cards.append([values[6], current_id - len(dupes)])
-                new_words.write(line)
+                # write the line, dropping the last column
+                new_words.write('%s\n' % (line[:line.rfind('|')]))
 #                aws_cards.append([values[6], count - dupe_count])
 #                new_words.write(line)
         # we need to write the line even if there's no aws chapter value
         else:
-            new_words.write(line)
+            # write the line, dropping the last column
+            new_words.write('%s\n' % (line[:line.rfind('|')]))
         current_id += 1
         
     new_words.close()
