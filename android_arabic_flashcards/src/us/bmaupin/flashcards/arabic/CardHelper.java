@@ -167,9 +167,7 @@ public class CardHelper {
         } else if (currentCardSet.equals(context.getString(
                 R.string.card_set_unknown))) {
             sqlCardSetSelection = " WHERE " + ProfileDatabaseHelper.STATUS + 
-                " = 1 AND " +
-                // this avoids showing the duplicates
-                DatabaseHelper.WORDS_ARABIC + " != '' ";
+                " = 1";
         }
         
         if (hideKnownCards) {
@@ -256,15 +254,6 @@ public class CardHelper {
     
     private Map<String, String> getCurrentCard() {
         Map<String, String> thisCard = new HashMap<String, String>();
-        
-        // if arabic is empty and english is an integer, it's a reference to 
-        // another card
-        if (cursor.getString(2).equals("") && 
-                ArabicFlashcards.stringToInteger(cursor.getString(1)) != 0) {
-            // so return the other card
-            return getCardById(ArabicFlashcards.stringToInteger(
-                    cursor.getString(1)));
-        }
         
         thisCard.put("ID", cursor.getString(0));
         thisCard.put("english", cursor.getString(1));
@@ -402,22 +391,6 @@ public class CardHelper {
         cv.put(ProfileDatabaseHelper.STATUS, newStatus);
         
         db.replace(profileName, ProfileDatabaseHelper.CARD_ID, cv);
-        
-        final String selection = DatabaseHelper.WORDS_ENGLISH + " = ?";
-        String[] selectionArgs = {thisCardId};
-        
-        // get all duplicates with the same card ID
-        Cursor thisCursor = db.query(DatabaseHelper.WORDS_TABLE, new String[] {DatabaseHelper._ID}, selection, selectionArgs, null, null, null);
-        // if we find any
-        if (thisCursor.getCount() > 0) {
-            // update the status for each duplicate
-            while (thisCursor.moveToNext()) {
-                cv.put(ProfileDatabaseHelper.CARD_ID, thisCursor.getString(0));
-                db.replace(profileName, ProfileDatabaseHelper.CARD_ID, cv);
-            }
-        }
-        
-        thisCursor.close();
     }
     
     void deleteProfile() {
