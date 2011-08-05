@@ -147,7 +147,12 @@ public class CardHelper {
         
         if (currentCardSet.equals(context.getString(
                 R.string.card_set_ahlan_wa_sahlan))) {
-            sqlCardSetSelection = " WHERE aws_chapter = " + currentCardSubset;
+            sqlCardSetSelection = " WHERE " + DatabaseHelper.WORDS_TABLE + "." + 
+                    DatabaseHelper._ID + " IN (SELECT " + 
+                    DatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
+                    DatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
+                    DatabaseHelper.AWS_CHAPTERS_CHAPTER + " = " + 
+                    currentCardSubset + ") ";
             
         } else if (currentCardSet.equals(context.getString(
                 R.string.card_set_categories))) {
