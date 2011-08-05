@@ -164,7 +164,7 @@ public class CardHelper {
             sqlCardSetSelection = " WHERE " + ProfileDatabaseHelper.STATUS + 
                 " = 1 AND " +
                 // this avoids showing the duplicates
-                DatabaseHelper.ARABIC + " != '' ";
+                DatabaseHelper.WORDS_ARABIC + " != '' ";
         }
         
         if (hideKnownCards) {
@@ -177,14 +177,14 @@ public class CardHelper {
             }
         }
     	
-        String sql = "SELECT " + DatabaseHelper.DB_TABLE_NAME + "." + 
+        String sql = "SELECT " + DatabaseHelper.WORDS_TABLE + "." + 
             DatabaseHelper._ID + ", " +
-            DatabaseHelper.ENGLISH + ", " +
-            DatabaseHelper.ARABIC + ", " +
+            DatabaseHelper.WORDS_ENGLISH + ", " +
+            DatabaseHelper.WORDS_ARABIC + ", " +
             ProfileDatabaseHelper.STATUS +
-            " FROM " + DatabaseHelper.DB_TABLE_NAME +
+            " FROM " + DatabaseHelper.WORDS_TABLE +
             " LEFT JOIN " + PROFILE_DB + "." + profileName + 
-            " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+            " ON " + DatabaseHelper.WORDS_TABLE + "." + BaseColumns._ID
             + " = " + PROFILE_DB + "." +
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + " %s ORDER BY ";
@@ -284,16 +284,16 @@ public class CardHelper {
         Map<String, String> thisCard = new HashMap<String, String>();
         
         String sql = "SELECT " +
-            DatabaseHelper.ENGLISH + ", " +
-            DatabaseHelper.ARABIC + ", " +
+            DatabaseHelper.WORDS_ENGLISH + ", " +
+            DatabaseHelper.WORDS_ARABIC + ", " +
             ProfileDatabaseHelper.STATUS +
-            " FROM " + DatabaseHelper.DB_TABLE_NAME +
+            " FROM " + DatabaseHelper.WORDS_TABLE +
             " LEFT JOIN " + PROFILE_DB + "." + profileName +
-            " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+            " ON " + DatabaseHelper.WORDS_TABLE + "." + BaseColumns._ID
             + " = " + PROFILE_DB + "." +
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + 
-            " WHERE " + DatabaseHelper.DB_TABLE_NAME + "." +
+            " WHERE " + DatabaseHelper.WORDS_TABLE + "." +
             DatabaseHelper._ID + " = %s";
         
         Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);
@@ -324,16 +324,16 @@ public class CardHelper {
         Map<String, String> thisCard = new HashMap<String, String>();
         
         final String sql = "SELECT " +
-        	DatabaseHelper.ENGLISH + ", " +
-	        DatabaseHelper.ARABIC + ", " +
+        	DatabaseHelper.WORDS_ENGLISH + ", " +
+	        DatabaseHelper.WORDS_ARABIC + ", " +
 	        ProfileDatabaseHelper.STATUS +
-	        " FROM " + DatabaseHelper.DB_TABLE_NAME +
+	        " FROM " + DatabaseHelper.WORDS_TABLE +
 	        " LEFT JOIN " + PROFILE_DB + "." + profileName +
-	        " ON " + DatabaseHelper.DB_TABLE_NAME + "." + BaseColumns._ID
+	        " ON " + DatabaseHelper.WORDS_TABLE + "." + BaseColumns._ID
 	        + " = profileDb." + 
 	        profileName + "." + 
 	        ProfileDatabaseHelper.CARD_ID + 
-	        " WHERE " + DatabaseHelper.DB_TABLE_NAME + "." +
+	        " WHERE " + DatabaseHelper.WORDS_TABLE + "." +
 	        DatabaseHelper._ID + " = %s";
         
         Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);
@@ -398,11 +398,11 @@ public class CardHelper {
         
         db.replace(profileName, ProfileDatabaseHelper.CARD_ID, cv);
         
-        final String selection = DatabaseHelper.ENGLISH + " = ?";
+        final String selection = DatabaseHelper.WORDS_ENGLISH + " = ?";
         String[] selectionArgs = {thisCardId};
         
         // get all duplicates with the same card ID
-        Cursor thisCursor = db.query(DatabaseHelper.DB_TABLE_NAME, new String[] {DatabaseHelper._ID}, selection, selectionArgs, null, null, null);
+        Cursor thisCursor = db.query(DatabaseHelper.WORDS_TABLE, new String[] {DatabaseHelper._ID}, selection, selectionArgs, null, null, null);
         // if we find any
         if (thisCursor.getCount() > 0) {
             // update the status for each duplicate

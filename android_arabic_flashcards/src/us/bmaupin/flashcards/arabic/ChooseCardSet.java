@@ -103,7 +103,9 @@ public class ChooseCardSet extends Activity {
 	private Dialog createChooseAWSChapterDialog() {
 		Log.d(TAG, "createAWSChapterDialog");
 		
-		final String[] chapters = getColumnValues("aws_chapter");
+		final String[] chapters = getColumnValues(
+		        DatabaseHelper.AWS_CHAPTERS_TABLE, 
+		        DatabaseHelper.AWS_CHAPTERS_CHAPTER);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.dialog_choose_aws_chapter_title);
@@ -128,7 +130,8 @@ public class ChooseCardSet extends Activity {
     private Dialog createChooseCategoryDialog() {
         Log.d(TAG, "createChooseCategoryDialog");
         
-        final String[] categories = getColumnValues("category");
+        final String[] categories = getColumnValues(DatabaseHelper.WORDS_TABLE, 
+                DatabaseHelper.WORDS_CATEGORY);
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_choose_card_category_title);
@@ -182,7 +185,7 @@ public class ChooseCardSet extends Activity {
         return ad;
     }
     
-    private String[] getColumnValues(String column) {
+    private String[] getColumnValues(String table, String column) {
         Log.d(TAG, "getColumnValues called");
         String[] columnValues;
         
@@ -194,7 +197,8 @@ public class ChooseCardSet extends Activity {
         db = helper.getReadableDatabase();
         
         // do a query for unique/distinct rows only
-        Cursor mCursor = db.query(true, "words", FROM, WHERE, null, null, null, null, null);
+        Cursor mCursor = db.query(true, table, FROM, WHERE, null, null, null, 
+                null, null);
         startManagingCursor(mCursor);
         
         // get the number of columns since we're using an immutable array
