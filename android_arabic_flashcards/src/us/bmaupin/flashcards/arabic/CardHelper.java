@@ -273,6 +273,7 @@ public class CardHelper {
         return thisCard;
     }
 
+/*
     private Map<String, String> getCardById(int thisId) {
         Log.d(TAG, "getCard: thisId=" + thisId);
         Map<String, String> thisCard = new HashMap<String, String>();
@@ -308,51 +309,6 @@ public class CardHelper {
         Log.d(TAG, "getCard: status=" + thisCursor.getString(2));
         
         thisCursor.close();
-        
-        return thisCard;
-    }
-    
-/*
-    private Map<String, String> getCardById(int thisId, boolean addToHistory) {
-        Log.d(TAG, "getCard: thisId=" + thisId);
-        Map<String, String> thisCard = new HashMap<String, String>();
-        
-        final String sql = "SELECT " +
-        	DatabaseHelper.WORDS_ENGLISH + ", " +
-	        DatabaseHelper.WORDS_ARABIC + ", " +
-	        ProfileDatabaseHelper.STATUS +
-	        " FROM " + DatabaseHelper.WORDS_TABLE +
-	        " LEFT JOIN " + PROFILE_DB + "." + profileName +
-	        " ON " + DatabaseHelper.WORDS_TABLE + "." + BaseColumns._ID
-	        + " = profileDb." + 
-	        profileName + "." + 
-	        ProfileDatabaseHelper.CARD_ID + 
-	        " WHERE " + DatabaseHelper.WORDS_TABLE + "." +
-	        DatabaseHelper._ID + " = %s";
-        
-        Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);
-        thisCursor.moveToFirst();
-        
-        thisCard.put("ID", "" + thisId);
-        thisCard.put("english", thisCursor.getString(0));
-        thisCard.put("arabic", thisCursor.getString(1));
-        // card status might be null if the card hasn't been seen yet
-        if (thisCursor.getString(2) == null) {
-        	thisCard.put("status", "0");
-        } else {
-        	thisCard.put("status", thisCursor.getString(2));
-        }
-//        
-        Log.d(TAG, "getCard: english=" + thisCursor.getString(0));
-        Log.d(TAG, "getCard: arabic=" + thisCursor.getString(1));
-        Log.d(TAG, "getCard: status=" + thisCursor.getString(2));
-        
-        thisCursor.close();
-        
-        if (addToHistory) {
-            // add word to the card history
-            cardHistory.add(thisId);
-        }
         
         return thisCard;
     }
