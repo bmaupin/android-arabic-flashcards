@@ -18,13 +18,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String TAG = "DatabaseHelper";
 	
 	public static final String DATABASE_NAME = "words.db";
-	public static final int DATABASE_VERSION = 6;
-	public static final String DB_TABLE_NAME = "words";
+	public static final int DATABASE_VERSION = 7;
+	public static final String WORDS_TABLE = "words";
+	public static final String AWS_CHAPTERS_TABLE = "aws_chapters";
 
 	// The name of each column in the database
     public static final String _ID = BaseColumns._ID;
-    public static final String ENGLISH = "english";
-    public static final String ARABIC = "arabic";
+    
+    public static final String WORDS_ENGLISH = "english";
+    public static final String WORDS_ARABIC = "arabic";
+    public static final String WORDS_CATEGORY = "category";
+    
+    public static final String AWS_CHAPTERS_CHAPTER = "chapter";
+    public static final String AWS_CHAPTERS_CARD_ID = "card_ID";
 	
 	// variable to tell us whether onCreate() or onUpgrade() has been called
 	boolean dbNeedsRefreshing = false;
