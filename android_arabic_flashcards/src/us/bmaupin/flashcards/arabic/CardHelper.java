@@ -201,24 +201,28 @@ public class CardHelper {
         } else if (cardOrder.equals(context.getString(
                 R.string.card_order_in_order))) {
             Log.d(TAG, "before: " + sql);
-/*            
-            if (sqlCardSetSelection.equals("")) {
-                sqlCardSetSelection = sqlCardSetSelection + " WHERE ";
+            
+            if (currentCardSet.equals(context.getString(
+                    R.string.card_set_ahlan_wa_sahlan))) {
+                sqlCardSetSelection = " LEFT JOIN " + 
+                        DatabaseHelper.AWS_CHAPTERS_TABLE + " ON " + 
+                        DatabaseHelper.WORDS_TABLE + "." + DatabaseHelper._ID + 
+                        " = " + DatabaseHelper.AWS_CHAPTERS_TABLE + "." +
+                        DatabaseHelper.AWS_CHAPTERS_CARD_ID + " " +
+                        sqlCardSetSelection +
+                        " AND " + DatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
+                        DatabaseHelper._ID + " IN (SELECT " + 
+                        DatabaseHelper._ID +
+                        " FROM " + DatabaseHelper.AWS_CHAPTERS_TABLE + 
+                        " WHERE " +
+                        DatabaseHelper.AWS_CHAPTERS_CHAPTER + " = " +
+                        currentCardSubset + ") ";
+                sql += DatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
+                        DatabaseHelper._ID;
             } else {
-                sqlCardSetSelection = sqlCardSetSelection + " AND ";
+                sql += DatabaseHelper.WORDS_TABLE + "." + DatabaseHelper._ID;
             }
-            sqlCardSetSelection = " LEFT JOIN " + 
-                    DatabaseHelper.AWS_CHAPTERS_TABLE + " ON " + 
-                    DatabaseHelper.WORDS_TABLE + "." + DatabaseHelper._ID + 
-                    " = " + DatabaseHelper.AWS_CHAPTERS_TABLE + "." +
-                    DatabaseHelper.AWS_CHAPTERS_CARD_ID + " " +
-                    sqlCardSetSelection +
-                    DatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
-                    DatabaseHelper._ID + " IN (SELECT " + DatabaseHelper._ID +
-                    " FROM " + DatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " +
-                    DatabaseHelper.AWS_CHAPTERS_CHAPTER + " = "
-*/            
-            sql += DatabaseHelper.WORDS_TABLE + "." + DatabaseHelper._ID;
+            
             Log.d(TAG, "after: " + sql);
             if (askCardOrder) {
                 // reset the value so we don't go in order every time
