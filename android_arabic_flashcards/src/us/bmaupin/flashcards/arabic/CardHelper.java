@@ -200,8 +200,8 @@ public class CardHelper {
             }
         } else if (cardOrder.equals(context.getString(
                 R.string.card_order_in_order))) {
-            Log.d(TAG, "before: " + sql);
-            
+            // we have to massage query to maintain the same card order of the 
+            // separate table where we store the ahlan wa sahlan data 
             if (currentCardSet.equals(context.getString(
                     R.string.card_set_ahlan_wa_sahlan))) {
                 sqlCardSetSelection = " LEFT JOIN " + 
@@ -223,7 +223,6 @@ public class CardHelper {
                 sql += DatabaseHelper.WORDS_TABLE + "." + DatabaseHelper._ID;
             }
             
-            Log.d(TAG, "after: " + sql);
             if (askCardOrder) {
                 // reset the value so we don't go in order every time
                 cardOrder = context.getString(R.string.card_order_smart);
