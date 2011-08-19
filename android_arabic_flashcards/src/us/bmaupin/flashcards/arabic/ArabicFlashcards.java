@@ -2,9 +2,15 @@ package us.bmaupin.flashcards.arabic;
 
 // $Id$
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.amr.arabic.ArabicReshaper;
 import org.amr.arabic.ArabicUtilities;
 
 import android.app.Activity;
@@ -13,6 +19,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
@@ -25,11 +32,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,6 +50,7 @@ public class ArabicFlashcards extends Activity {
     private static final int DIALOG_NO_MORE_CARDS = 0;
     private static final int DIALOG_NO_UNKNOWN_CARDS = 1;
     private static final int DIALOG_SELECT_CARD_ORDER = 2;
+    private static final int DIALOG_REMOVE_CHOOSE_CARDS = 3;
     static final String EXTRA_PROFILE_NAME = 
         "android.intent.extra.PROFILE_NAME";
     private static final int REQUEST_CARD_SET = 0;
@@ -114,6 +124,7 @@ public class ArabicFlashcards extends Activity {
 		
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/sil-lateef/LateefRegOT.ttf");
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/tahoma.ttf");
+//      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/times.ttf");
 		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DejaVuSans.ttf");
 
 		// set the typeface for the three TextViews within the ViewFlipper
@@ -239,6 +250,9 @@ public class ArabicFlashcards extends Activity {
         	    intent.putExtra(EXTRA_PROFILE_NAME, ch.getProfileName());
         	    startActivityForResult(intent, REQUEST_PROFILE_ACTION);
         		return true;
+        	case R.id.menu_choose_card:
+        	    showDialog(DIALOG_REMOVE_CHOOSE_CARDS);
+        	    return true;
     	}
     	return false;
     }
@@ -317,8 +331,39 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                 return createNoUnkownCardsDialog();
 	        case DIALOG_SELECT_CARD_ORDER:
 	            return createSelectCardOrderDialog();
+	        case DIALOG_REMOVE_CHOOSE_CARDS:
+	            // This example shows how to add a custom layout to an AlertDialog
+//	            LayoutInflater factory = LayoutInflater.from(this);
+//	            final View textEntryView = factory.inflate(R.layout.alert_dialog_text_entry, null);
+	            final EditText tv = new EditText(this);
+	            return new AlertDialog.Builder(this)
+//	                .setIconAttribute(android.R.attr.alertDialogIcon)
+//	                .setTitle(R.string.alert_dialog_text_entry)
+	                .setView(tv)
+                   .setCancelable(false)
+                   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+//                           Toast.makeText(getApplicationContext(), tv.getText(), Toast.LENGTH_SHORT).show();
+                           showCardById(tv.getText().toString());
+                       }
+                   })
+                   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                       }
+                   })
+	                .create();
+
 	    }
 	    return null;
+	}
+	
+	private void showCardById(String cardId) {
+	    Log.d(TAG, "showCardById: cardId=" + cardId);
+	    Map<String, String> card = ch.getCardById(cardId);
+	    Log.d(TAG, "showCardById: card=" + card);
+	    currentWord = card;
+	    showWord(card);
 	}
 	
     private Dialog createNoUnkownCardsDialog() {
@@ -437,7 +482,16 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		} else if (thisLang.equals("arabic")) {
 			Log.d(TAG, "showWord, showing arabic");
 			thisView.setTextSize(56f);
-			thisView.setText(ArabicUtilities.reshape(thisWord.get(thisLang)));
+//			thisView.setText(ArabicUtilities.reshape(thisWord.get(thisLang)));
+			ArabicReshaper arabicReshaper = new ArabicReshaper(thisWord.get(thisLang));
+			
+			String arabicWord = arabicReshaper.getReshapedWord();
+			arabicWord += '\u200f';
+			
+			thisView.setText(arabicWord);
+			
+			Log.d(TAG, "UNICODE: " + splitString(arabicWord));
+			Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
 		}
 	}
 	
@@ -643,5 +697,92 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     		Log.d(TAG, "stringToInteger: error: " + e.getMessage());
     		return 0;
     	}
+    }
+    
+    String getUnicodeName(char c) {
+        String filename = "UnicodeDataRedacted.txt";
+        String unicodeValue = String.format ("%04x", (int)c);
+        unicodeValue = unicodeValue.toUpperCase();
+        try
+        {
+//            AssetFileDescriptor descriptor = getAssets().openFd("UnicodeData.jpg");
+          BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open(filename)));
+          String line;
+          while ((line = reader.readLine()) != null)
+          {
+             String[] split = line.split(";");
+             if (split[0].equals(unicodeValue)) {
+                 return split[1];
+             }
+          }
+          reader.close();
+        }
+        catch (Exception e)
+        {
+//          System.err.format("Exception occurred trying to read '%s'.", filename);
+          e.printStackTrace();
+        }
+        return null;
+    }
+    
+    String getUnicodeNames(String s) {
+        char[] charArray = s.toCharArray();
+        String unicodeString = "";
+        
+        for (char c : charArray) {
+            if (!unicodeString.equals("")) {
+                unicodeString += (", ");
+            }
+            unicodeString += getUnicodeName(c);
+        }
+        
+        return unicodeString;
+    }
+    
+    String getUnicodeCodes(String s) {
+        char[] charArray = s.toCharArray();
+        String unicodeString = "";
+        
+        for (char c : charArray) {
+            if (!unicodeString.equals("")) {
+                unicodeString += (", ");
+            }
+            unicodeString += String.format ("%04x", (int)c);
+        }
+        
+        return unicodeString;
+    }
+    
+    String splitString(String s) {
+        char[] controlCodes = {
+                '\u200e', // left-to-right mark
+                '\u200f', // right-to-left mark
+                '\u202a', // left-to-right-embedding
+                '\u202b', // right-to-left-embedding
+                '\u202c', // pop directional formatting
+                '\u202d', // left-to-right override
+                '\u202e', // right-to-left override
+        };
+        
+        char[] charArray = s.toCharArray();
+        String unicodeString = "";
+        
+        outerloop:
+        for (char c : charArray) {
+            if (!unicodeString.equals("")) {
+                unicodeString += (", ");
+            }
+            for (char code : controlCodes) {
+                if (c == code) {
+                    unicodeString += String.format ("%04x", (int)c);
+                    break outerloop;
+                }
+            }
+            unicodeString += c;
+        }
+        
+        unicodeString = '\u202d' + unicodeString + '\u202c';
+        
+        return unicodeString;
     }
 }

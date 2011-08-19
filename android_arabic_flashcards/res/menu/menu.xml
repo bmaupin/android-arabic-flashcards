@@ -17,4 +17,6 @@
 		android:title="@string/menu_settings_label"
 		android:alphabeticShortcut="@string/menu_settings_shortcut"
 		android:icon="@android:drawable/ic_menu_preferences" />
+    <item android:id="@+id/menu_choose_card"
+        android:title="choose card" />
 </menu>
