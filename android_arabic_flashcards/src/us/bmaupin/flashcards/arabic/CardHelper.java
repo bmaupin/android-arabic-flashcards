@@ -294,8 +294,7 @@ public class CardHelper {
         return thisCard;
     }
 
-/*
-    private Map<String, String> getCardById(int thisId) {
+    Map<String, String> getCardById(String thisId) {
         Log.d(TAG, "getCard: thisId=" + thisId);
         Map<String, String> thisCard = new HashMap<String, String>();
         
@@ -333,7 +332,6 @@ public class CardHelper {
         
         return thisCard;
     }
-*/
     
     /**
      * Update the status of the current card
