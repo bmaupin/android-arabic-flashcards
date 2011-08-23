@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.Bidi;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -482,18 +483,32 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		} else if (thisLang.equals("arabic")) {
 			Log.d(TAG, "showWord, showing arabic");
 			thisView.setTextSize(56f);
-//			thisView.setText(ArabicUtilities.reshape(thisWord.get(thisLang)));
-			ArabicReshaper arabicReshaper = new ArabicReshaper(thisWord.get(thisLang));
 			
-			String arabicWord = arabicReshaper.getReshapedWord();
-			arabicWord += '\u200f';
-			
+			// use ArabicUtilities
+			String arabicWord = ArabicUtilities.reshape(thisWord.get(thisLang));
 			thisView.setText(arabicWord);
-			
+/*			
+			// use ArabicReshaper only
+			ArabicReshaper arabicReshaper = new ArabicReshaper(thisWord.get(thisLang));
+			String arabicWord = arabicReshaper.getReshapedWord();
+//			arabicWord += '\u200f';
+			thisView.setText(arabicWord);
+*/			
+			// don't do any shaping
+//			thisView.setText(thisWord.get(thisLang));
+
+/*			
+			Bidi bidi = new Bidi(thisWord.get(thisLang), Bidi.DIRECTION_RIGHT_TO_LEFT );
+			if (bidi.isMixed()) {
+			    Toast.makeText(getApplicationContext(), "MIXED BIDI!", Toast.LENGTH_SHORT).show();
+			}
+			Log.d(TAG, "BIDI: isMixed()=" + bidi.isMixed());
+*/			
 			Log.d(TAG, "UNICODE: " + splitString(arabicWord));
 			Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
 		}
 	}
+// ****************************************************************************
 	
 	private void showWord(Map<String, String> thisWord) {
     	// store the ID and status of the current Word
@@ -763,6 +778,11 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                 '\u202d', // left-to-right override
                 '\u202e', // right-to-left override
         };
+        
+        Map<Character, String> miscCodes = new HashMap<Character, String>() {{
+            put('\u200e', "LRM");
+            put('\u0200', "SPACE");
+        }};
         
         char[] charArray = s.toCharArray();
         String unicodeString = "";
