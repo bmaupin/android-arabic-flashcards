@@ -175,7 +175,7 @@ public class ArabicUtilities {
 			String[] sentences = allText.split("\n");
 			for (int i = 0; i < sentences.length; i++) {
 				result.append(reshapeSentence(sentences[i]));
-				// don't append the separator to the final item
+				// don't append the line feed to the final sentence
 				if (i < sentences.length - 1) {
 				    result.append("\n");
 				}
@@ -234,7 +234,7 @@ public class ArabicUtilities {
 				reshapedText.append(words[i]);
 			}
 
-            // don't append the separator to the final item
+            // don't append the space to the final word
             if (i < words.length - 1) {
                 //Append the space to separate between words
                 reshapedText.append(" ");
