@@ -483,13 +483,19 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		} else if (thisLang.equals("arabic")) {
 			Log.d(TAG, "showWord, showing arabic");
 			thisView.setTextSize(56f);
-			
+
 			// use ArabicUtilities
 			String arabicWord = ArabicUtilities.reshape(thisWord.get(thisLang));
+			arabicWord += '\u200f';
 			thisView.setText(arabicWord);
+//			
+			LogStringDirectionality(arabicWord);
+			
 /*			
 			// use ArabicReshaper only
-			ArabicReshaper arabicReshaper = new ArabicReshaper(thisWord.get(thisLang));
+//			ArabicReshaper arabicReshaper = new ArabicReshaper(thisWord.get(thisLang));
+//			ArabicReshaper arabicReshaper = new ArabicReshaper("قَرَأَ (يَقرَأُ) قِراءة");
+//			ArabicReshaper arabicReshaper = new ArabicReshaper("قَرَأَ");
 			String arabicWord = arabicReshaper.getReshapedWord();
 //			arabicWord += '\u200f';
 			thisView.setText(arabicWord);
@@ -769,40 +775,56 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
     
     String splitString(String s) {
-        char[] controlCodes = {
-                '\u200e', // left-to-right mark
-                '\u200f', // right-to-left mark
-                '\u202a', // left-to-right-embedding
-                '\u202b', // right-to-left-embedding
-                '\u202c', // pop directional formatting
-                '\u202d', // left-to-right override
-                '\u202e', // right-to-left override
-        };
-        
         Map<Character, String> miscCodes = new HashMap<Character, String>() {{
-            put('\u200e', "LRM");
-            put('\u0200', "SPACE");
+            put('\u200e', "LTR");
+            put('\u200f', "RTL");
+            put('\u202a', "LTRE");
+            put('\u202b', "RTLE");
+            put('\u202c', "POP");
+            put('\u202d', "LTRO");
+            put('\u202e', "RTLO");
+            put(' ', "SPACE");
+            put('\n', "\\n");
         }};
         
         char[] charArray = s.toCharArray();
         String unicodeString = "";
         
-        outerloop:
+//        outerloop:
         for (char c : charArray) {
             if (!unicodeString.equals("")) {
                 unicodeString += (", ");
             }
+            if (miscCodes.containsKey(c)) {
+                unicodeString += miscCodes.get(c);
+            } else {
+                unicodeString += c;
+            }
+/*            
             for (char code : controlCodes) {
                 if (c == code) {
                     unicodeString += String.format ("%04x", (int)c);
                     break outerloop;
                 }
             }
-            unicodeString += c;
+*/
+            
         }
         
         unicodeString = '\u202d' + unicodeString + '\u202c';
         
         return unicodeString;
+    }
+    
+    void LogStringDirectionality(String s) {
+        String logMessage = "";
+        char[] charArray = s.toCharArray();
+        for (char c : charArray) {
+            if (!logMessage.equals("")) {
+                logMessage += (", ");
+            }
+            logMessage += Character.getDirectionality(c);
+        }
+        Log.d(TAG, "DIRECTIONALITY: " + logMessage);
     }
 }
