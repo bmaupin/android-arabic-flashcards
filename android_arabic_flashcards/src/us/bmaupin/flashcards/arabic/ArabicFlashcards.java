@@ -486,10 +486,13 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 			// use ArabicUtilities
 			String arabicWord = ArabicUtilities.reshape(thisWord.get(thisLang));
+			// this fixes issues with the final character having neutral 
+			// direction (diacritics, parentheses, etc.)
 			arabicWord += '\u200f';
 			thisView.setText(arabicWord);
+			
 //			
-			LogStringDirectionality(arabicWord);
+//			LogStringDirectionality(arabicWord);
 			
 /*			
 			// use ArabicReshaper only
