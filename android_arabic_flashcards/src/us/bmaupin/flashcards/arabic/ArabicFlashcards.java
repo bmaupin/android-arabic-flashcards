@@ -126,7 +126,10 @@ public class ArabicFlashcards extends Activity {
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/sil-lateef/LateefRegOT.ttf");
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/tahoma.ttf");
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/times.ttf");
-		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DejaVuSans.ttf");
+//		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DejaVuSans.ttf");
+      // works, a little hard to read, shows RTL character
+      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidSansArabic.ttf");
+//        Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidSerif-Regular.ttf");
 
 		// set the typeface for the three TextViews within the ViewFlipper
         TextView leftView = (TextView)vf.findViewById(R.id.leftView);
@@ -488,8 +491,11 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			String arabicWord = ArabicUtilities.reshape(thisWord.get(thisLang));
 			// this fixes issues with the final character having neutral 
 			// direction (diacritics, parentheses, etc.)
-			arabicWord += '\u200f';
+//			arabicWord += '\u200f';
+			arabicWord += '\u200f' + ' ';
+//			arabicWord = '\u202b' + arabicWord + '\u202c';
 			thisView.setText(arabicWord);
+//			thisView.setText(thisWord.get(thisLang));
 			
 //			
 //			LogStringDirectionality(arabicWord);
