@@ -123,11 +123,11 @@ public class ArabicFlashcards extends Activity {
         preferences = getSharedPreferences(ch.getProfileName(), MODE_PRIVATE);
         resources = getResources();
 		      
-		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DejaVuSans.ttf");
+//		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DejaVuSans.ttf");
       // works, a little hard to read, shows RTL character
-//      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidSansArabic2.ttf");
+//      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidSansArabic.ttf");
       // harakat misplaced, shows RTL, otherwise great font, stylish
-//      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidNaskh-Regular.ttf");
+      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidNaskh-Regular.ttf");
       // not bad, traditional  
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/KacstOne.ttf");
 
