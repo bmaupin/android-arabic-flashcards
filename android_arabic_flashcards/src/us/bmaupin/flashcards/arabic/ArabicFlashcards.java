@@ -124,12 +124,12 @@ public class ArabicFlashcards extends Activity {
         resources = getResources();
 		      
 //		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DejaVuSans.ttf");
-      // works, a little hard to read, shows RTL character
+      // works, a little hard to read
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidSansArabic.ttf");
-      // harakat misplaced, shows RTL, otherwise great font, stylish
-      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidNaskh-Regular.ttf");
+      // harakat misplaced, otherwise great font, stylish
+//      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidNaskh-Regular.ttf");
       // not bad, traditional  
-//      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/KacstOne.ttf");
+      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/KacstOne.ttf");
 
 		// set the typeface for the three TextViews within the ViewFlipper
         TextView leftView = (TextView)vf.findViewById(R.id.leftView);
