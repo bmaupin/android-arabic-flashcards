@@ -487,38 +487,12 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			Log.d(TAG, "showWord, showing arabic");
 			thisView.setTextSize(56f);
 
-			// use ArabicUtilities
 			String arabicWord = ArabicUtilities.reshape(thisWord.get(thisLang));
 			// this fixes issues with the final character having neutral 
 			// direction (diacritics, parentheses, etc.)
 			arabicWord += '\u200f';
-//			arabicWord += '\u200f' + ' ';
-//			arabicWord = '\u202b' + arabicWord + '\u202c';
 			thisView.setText(arabicWord);
-//			thisView.setText(thisWord.get(thisLang));
 			
-//			
-//			LogStringDirectionality(arabicWord);
-			
-/*			
-			// use ArabicReshaper only
-//			ArabicReshaper arabicReshaper = new ArabicReshaper(thisWord.get(thisLang));
-//			ArabicReshaper arabicReshaper = new ArabicReshaper("قَرَأَ (يَقرَأُ) قِراءة");
-//			ArabicReshaper arabicReshaper = new ArabicReshaper("قَرَأَ");
-			String arabicWord = arabicReshaper.getReshapedWord();
-//			arabicWord += '\u200f';
-			thisView.setText(arabicWord);
-*/			
-			// don't do any shaping
-//			thisView.setText(thisWord.get(thisLang));
-
-/*			
-			Bidi bidi = new Bidi(thisWord.get(thisLang), Bidi.DIRECTION_RIGHT_TO_LEFT );
-			if (bidi.isMixed()) {
-			    Toast.makeText(getApplicationContext(), "MIXED BIDI!", Toast.LENGTH_SHORT).show();
-			}
-			Log.d(TAG, "BIDI: isMixed()=" + bidi.isMixed());
-*/			
 			Log.d(TAG, "UNICODE: " + splitString(arabicWord));
 			Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
 		}
@@ -729,46 +703,6 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	}
     }
     
-    String getUnicodeName(char c) {
-        String filename = "UnicodeDataRedacted.txt";
-        String unicodeValue = String.format ("%04x", (int)c);
-        unicodeValue = unicodeValue.toUpperCase();
-        try
-        {
-//            AssetFileDescriptor descriptor = getAssets().openFd("UnicodeData.jpg");
-          BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open(filename)));
-          String line;
-          while ((line = reader.readLine()) != null)
-          {
-             String[] split = line.split(";");
-             if (split[0].equals(unicodeValue)) {
-                 return split[1];
-             }
-          }
-          reader.close();
-        }
-        catch (Exception e)
-        {
-//          System.err.format("Exception occurred trying to read '%s'.", filename);
-          e.printStackTrace();
-        }
-        return null;
-    }
-    
-    String getUnicodeNames(String s) {
-        char[] charArray = s.toCharArray();
-        String unicodeString = "";
-        
-        for (char c : charArray) {
-            if (!unicodeString.equals("")) {
-                unicodeString += (", ");
-            }
-            unicodeString += getUnicodeName(c);
-        }
-        
-        return unicodeString;
-    }
-    
     String getUnicodeCodes(String s) {
         char[] charArray = s.toCharArray();
         String unicodeString = "";
@@ -799,7 +733,6 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         char[] charArray = s.toCharArray();
         String unicodeString = "";
         
-//        outerloop:
         for (char c : charArray) {
             if (!unicodeString.equals("")) {
                 unicodeString += (", ");
@@ -809,31 +742,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             } else {
                 unicodeString += c;
             }
-/*            
-            for (char code : controlCodes) {
-                if (c == code) {
-                    unicodeString += String.format ("%04x", (int)c);
-                    break outerloop;
-                }
-            }
-*/
-            
         }
-        
         unicodeString = '\u202d' + unicodeString + '\u202c';
         
         return unicodeString;
-    }
-    
-    void LogStringDirectionality(String s) {
-        String logMessage = "";
-        char[] charArray = s.toCharArray();
-        for (char c : charArray) {
-            if (!logMessage.equals("")) {
-                logMessage += (", ");
-            }
-            logMessage += Character.getDirectionality(c);
-        }
-        Log.d(TAG, "DIRECTIONALITY: " + logMessage);
     }
 }
