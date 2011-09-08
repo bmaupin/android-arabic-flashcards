@@ -491,10 +491,17 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			// this fixes issues with the final character having neutral 
 			// direction (diacritics, parentheses, etc.)
 			arabicWord += '\u200f';
-			thisView.setText(arabicWord);
+//			thisView.setText(arabicWord);
 			
 			Log.d(TAG, "UNICODE: " + splitString(arabicWord));
 			Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
+			
+			arabicWord = fixSheddas(arabicWord);
+			
+			thisView.setText(arabicWord);
+            
+            Log.d(TAG, "UNICODE: " + splitString(arabicWord));
+            Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
 		}
 	}
 // ****************************************************************************
@@ -691,6 +698,47 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	        return true;
 	    else
 	    	return false;
+    }
+    
+    String fixSheddas(String s) {
+        char[] charArray = s.toCharArray();
+        String fixedString = "";
+        boolean prevShedda = false;
+        
+        for (char c : charArray) {
+            if (c == '\u0651') {
+                prevShedda = true;
+            } else {
+                // the previous character was a shedda
+                if (prevShedda) {
+                    // reset our flag
+                    prevShedda = false;
+                    // fathatan
+                    if (c == '\u064b') {
+                        fixedString += '\ufbc2';
+                    // dammatan
+                    } else if (c == '\u064c') {
+                        fixedString += '\ufbc3';
+                    // kasratan
+                    } else if (c == '\u064d') {
+                        fixedString += '\ufbc4';
+                    // fatha
+                    } else if (c == '\u064e') {
+                        fixedString += '\ufbc5';
+                    // damma
+                    } else if (c == '\u064f') {
+                        fixedString += '\ufbc6';
+                    // dammatan
+                    } else if (c == '\u0650') {
+                        fixedString += '\ufbc7';
+                    }
+                } else {
+                    fixedString += c;
+                }
+            }
+        }
+        
+        return fixedString;
     }
     
     static int stringToInteger(String s) {
