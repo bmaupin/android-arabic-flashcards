@@ -7,8 +7,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.Bidi;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.amr.arabic.ArabicReshaper;
@@ -68,6 +70,7 @@ public class ArabicFlashcards extends Activity {
 	private Map<String, String> nextWord;
 	private Resources resources;
 	private SharedPreferences preferences;
+	private boolean showVowels;
 	
 	// class variables for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
@@ -181,6 +184,9 @@ public class ArabicFlashcards extends Activity {
 	        // force a reload of the cards
 	        currentWord.clear();
 		}
+		showVowels = preferences.getBoolean(
+                getString(R.string.preferences_show_vowels),
+                resources.getBoolean(R.bool.preferences_show_vowels_default));
 
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
@@ -496,12 +502,16 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			Log.d(TAG, "UNICODE: " + splitString(arabicWord));
 			Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
 			
-			arabicWord = fixSheddas(arabicWord);
+//			arabicWord = fixSheddas(arabicWord);
 			
-			thisView.setText(arabicWord);
+			if (showVowels) {
+			    thisView.setText(fixSheddas(arabicWord));
+			} else {
+			    thisView.setText(removeVowels(arabicWord));
+			}
             
-            Log.d(TAG, "UNICODE: " + splitString(arabicWord));
-            Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
+//            Log.d(TAG, "UNICODE: " + splitString(arabicWord));
+//            Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
 		}
 	}
 // ****************************************************************************
@@ -700,6 +710,36 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    	return false;
     }
     
+    String removeVowels(String s) {
+    	Character[] vowels = {
+    			'\u064e',  // fatha, short a
+                '\u064b',  // double fatha
+                '\u0650',  // kasra, short i
+                '\u064d',  // double kasra
+                '\u064f',  // damma, short u
+                '\u064c',  // double damma
+                '\u0652',  // sukkun, nothing
+                '\u0651',  // shedda, double
+/*                '\ufbc2',  // our shedda + fathatan
+                '\ufbc3',  // our shedda + dammatan
+    			'\ufbc4',  // our shedda + kasratan
+    			'\ufbc5',  // our shedda + fatha
+    			'\ufbc6',  // our shedda + damma
+    			'\ufbc7',  // our shedda + kasra
+*/
+    	};
+    	List<Character> vowelList = java.util.Arrays.asList(vowels);
+    	
+    	String vowelsRemoved = "";
+    	for (char c : s.toCharArray()) {
+    	    if (!vowelList.contains(c)) {
+    	        vowelsRemoved += c;
+    	    }
+    	}
+    	
+    	return vowelsRemoved;
+    }
+    
     String fixSheddas(String s) {
         char[] charArray = s.toCharArray();
         String fixedString = "";
@@ -728,7 +768,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                     // damma
                     } else if (c == '\u064f') {
                         fixedString += '\ufbc6';
-                    // dammatan
+                    // kasra
                     } else if (c == '\u0650') {
                         fixedString += '\ufbc7';
                     }

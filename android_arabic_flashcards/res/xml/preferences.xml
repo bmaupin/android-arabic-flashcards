@@ -28,6 +28,11 @@
             android:title="@string/preferences_hide_known_cards_title"
             android:summary="@string/preferences_hide_known_cards_summary"
             android:defaultValue="@bool/preferences_hide_known_cards_default" />
+        <CheckBoxPreference
+            android:key="@string/preferences_show_vowels"
+            android:title="@string/preferences_show_vowels_title"
+            android:summary="@string/preferences_show_vowels_summary"
+            android:defaultValue="@bool/preferences_show_vowels_default" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Profiles">
