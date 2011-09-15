@@ -710,6 +710,12 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    	return false;
     }
     
+    /**
+     * Accepts a string, removes Arabic vowels from it, and returns the string
+     * with the vowels removed.
+     * @param s
+     * @return
+     */
     String removeVowels(String s) {
     	Character[] vowels = {
     			'\u064e',  // fatha, short a
@@ -720,13 +726,6 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                 '\u064c',  // double damma
                 '\u0652',  // sukkun, nothing
                 '\u0651',  // shedda, double
-/*                '\ufbc2',  // our shedda + fathatan
-                '\ufbc3',  // our shedda + dammatan
-    			'\ufbc4',  // our shedda + kasratan
-    			'\ufbc5',  // our shedda + fatha
-    			'\ufbc6',  // our shedda + damma
-    			'\ufbc7',  // our shedda + kasra
-*/
     	};
     	List<Character> vowelList = java.util.Arrays.asList(vowels);
     	
@@ -740,6 +739,14 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	return vowelsRemoved;
     }
     
+    /**
+     * Replaces certain combinations of shedda plus another haraka with custom
+     * unicode characters (requiring a font customized with these characters)
+     * and returns the string, since Android doesn't properly show the correct
+     * ligatures for these combinations.
+     * @param s
+     * @return
+     */
     String fixSheddas(String s) {
         char[] charArray = s.toCharArray();
         String fixedString = "";
