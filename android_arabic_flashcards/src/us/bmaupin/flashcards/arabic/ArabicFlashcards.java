@@ -778,6 +778,11 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                     // kasra
                     } else if (c == '\u0650') {
                         fixedString += '\ufbc7';
+                    } else {
+                        // add the shedda back
+                        fixedString += '\u0651';
+                        // add the current character
+                        fixedString += c;
                     }
                 } else {
                     fixedString += c;
