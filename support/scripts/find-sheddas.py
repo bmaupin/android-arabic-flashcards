@@ -23,8 +23,8 @@ def main():
             if after not in after_shedda:
                 after_shedda[after] = [0, []]
             after_shedda[after][0] += 1
-            if len(after_shedda[after][1]) < 5:
-                after_shedda[after][1].append(count)
+#            if len(after_shedda[after][1]) < 20:
+            after_shedda[after][1].append(count)
             
 #                after_shedda[after] = 0
 #            after_shedda[after] += 1
