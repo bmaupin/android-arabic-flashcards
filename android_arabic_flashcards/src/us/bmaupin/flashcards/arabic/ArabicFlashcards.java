@@ -53,7 +53,7 @@ public class ArabicFlashcards extends Activity {
     private static final int DIALOG_NO_MORE_CARDS = 0;
     private static final int DIALOG_NO_UNKNOWN_CARDS = 1;
     private static final int DIALOG_SELECT_CARD_ORDER = 2;
-    private static final int DIALOG_REMOVE_CHOOSE_CARDS = 3;
+    private static final int DIALOG_TESTING_CHOOSE_CARDS = 3;
     static final String EXTRA_PROFILE_NAME = 
         "android.intent.extra.PROFILE_NAME";
     private static final int REQUEST_CARD_SET = 0;
@@ -260,9 +260,12 @@ public class ArabicFlashcards extends Activity {
         	    intent.putExtra(EXTRA_PROFILE_NAME, ch.getProfileName());
         	    startActivityForResult(intent, REQUEST_PROFILE_ACTION);
         		return true;
+        	// uncomment this (and the res/menu/menu.xml entry) for testing
+        	/*
         	case R.id.menu_choose_card:
-        	    showDialog(DIALOG_REMOVE_CHOOSE_CARDS);
+        	    showDialog(DIALOG_TESTING_CHOOSE_CARDS);
         	    return true;
+        	*/
     	}
     	return false;
     }
@@ -341,29 +344,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                 return createNoUnkownCardsDialog();
 	        case DIALOG_SELECT_CARD_ORDER:
 	            return createSelectCardOrderDialog();
-	        case DIALOG_REMOVE_CHOOSE_CARDS:
-	            // This example shows how to add a custom layout to an AlertDialog
-//	            LayoutInflater factory = LayoutInflater.from(this);
-//	            final View textEntryView = factory.inflate(R.layout.alert_dialog_text_entry, null);
-	            final EditText tv = new EditText(this);
-	            return new AlertDialog.Builder(this)
-//	                .setIconAttribute(android.R.attr.alertDialogIcon)
-//	                .setTitle(R.string.alert_dialog_text_entry)
-	                .setView(tv)
-                   .setCancelable(false)
-                   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-//                           Toast.makeText(getApplicationContext(), tv.getText(), Toast.LENGTH_SHORT).show();
-                           showCardById(tv.getText().toString());
-                       }
-                   })
-                   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                       }
-                   })
-	                .create();
-
+	        case DIALOG_TESTING_CHOOSE_CARDS:
+	            return createTestingChooseCardsDialog();
 	    }
 	    return null;
 	}
@@ -418,7 +400,6 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     private Dialog createSelectCardOrderDialog() {
         final CharSequence[] items = resources.getStringArray(
                 R.array.preferences_default_card_order_entries);
-//        {"Smart mode (recommended)", "Random", "In order"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         
@@ -471,6 +452,24 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         AlertDialog ad = builder.create();
         return ad;
+    }
+    
+    private Dialog createTestingChooseCardsDialog() {
+        final EditText tv = new EditText(this);
+        return new AlertDialog.Builder(this)
+            .setView(tv)
+           .setCancelable(false)
+           .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog, int id) {
+                   showCardById(tv.getText().toString());
+               }
+           })
+           .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+               }
+           })
+            .create();
     }
 	
 	private void chooseCardSet() {
