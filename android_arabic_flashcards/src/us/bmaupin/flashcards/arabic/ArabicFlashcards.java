@@ -260,6 +260,9 @@ public class ArabicFlashcards extends Activity {
         	    intent.putExtra(EXTRA_PROFILE_NAME, ch.getProfileName());
         	    startActivityForResult(intent, REQUEST_PROFILE_ACTION);
         		return true;
+        	case R.id.menu_search:
+        	    onSearchRequested();
+        	    return true;
         	// uncomment this (and the res/menu/menu.xml entry) for testing
         	/*
         	case R.id.menu_choose_card:
@@ -329,6 +332,11 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		case KeyEvent.KEYCODE_DPAD_CENTER:
 			flipCard();
 			break;
+/*
+		case KeyEvent.KEYCODE_SEARCH:
+		    doSearch();
+		    break;
+*/
 		default:
 			return super.onKeyDown(keyCode, event);
 		}
@@ -707,6 +715,10 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	        return true;
 	    else
 	    	return false;
+    }
+    
+    void doSearch() {
+        Toast.makeText(getApplicationContext(), "debug: search!", Toast.LENGTH_SHORT).show();
     }
     
     /**
