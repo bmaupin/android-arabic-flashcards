@@ -53,6 +53,8 @@
     <string name="menu_choose_cards_shortcut">c</string>
     <string name="menu_help_label">Help</string>
     <string name="menu_help_shortcut">h</string>
+    <string name="menu_search_label">Search</string>
+    <string name="menu_search_shortcut">f</string>
     <string name="menu_settings_label">Settings</string>
     <string name="menu_settings_shortcut">s</string>
     
@@ -98,4 +100,6 @@
     <string name="preferences_show_vowels_summary">Show vowels and other diacritics</string>
     <string name="preferences_show_vowels_title">Show vowels</string>
     <string name="preferences_title">Settings</string>
+    
+    <string name="search_hint">Search cards</string>
 </resources>
