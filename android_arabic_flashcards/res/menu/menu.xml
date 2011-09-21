@@ -17,6 +17,9 @@
 		android:title="@string/menu_settings_label"
 		android:alphabeticShortcut="@string/menu_settings_shortcut"
 		android:icon="@android:drawable/ic_menu_preferences" />
+    <!-- uncomment this (and the ArabicFlashcards.java entry) for testing -->
+    <!-- 
     <item android:id="@+id/menu_choose_card"
         android:title="choose card" />
+     -->
 </menu>
