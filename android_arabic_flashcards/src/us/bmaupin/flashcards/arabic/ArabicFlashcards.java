@@ -26,6 +26,7 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -241,7 +242,18 @@ public class ArabicFlashcards extends Activity {
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
-    
+/*
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // if we are using SDK < 4
+        if (Integer.parseInt(Build.VERSION.SDK) < 4) {
+            // remove the search menu item
+            menu.findItem(R.id.menu_search).setVisible(false);
+        }
+        return true;
+    }
+*/    
     /* Handles menu selections */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
