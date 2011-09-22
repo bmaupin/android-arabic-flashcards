@@ -242,18 +242,7 @@ public class ArabicFlashcards extends Activity {
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
-/*
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        // if we are using SDK < 4
-        if (Integer.parseInt(Build.VERSION.SDK) < 4) {
-            // remove the search menu item
-            menu.findItem(R.id.menu_search).setVisible(false);
-        }
-        return true;
-    }
-*/    
+
     /* Handles menu selections */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
