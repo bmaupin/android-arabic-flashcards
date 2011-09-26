@@ -102,4 +102,5 @@
     <string name="preferences_title">Settings</string>
     
     <string name="search_hint">Search cards</string>
+    <string name="search_no_results">No results found</string>
 </resources>
