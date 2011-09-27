@@ -759,7 +759,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
      * @param s
      * @return
      */
-    String fixSheddas(String s) {
+    static String fixSheddas(String s) {
         char[] charArray = s.toCharArray();
         String fixedString = "";
         boolean prevShedda = false;
