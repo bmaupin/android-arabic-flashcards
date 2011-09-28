@@ -2,19 +2,8 @@ package us.bmaupin.flashcards.arabic;
 
 // $Id$
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.Bidi;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.amr.arabic.ArabicReshaper;
-import org.amr.arabic.ArabicUtilities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,11 +11,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -36,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
@@ -495,29 +481,10 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		} else if (thisLang.equals("arabic")) {
 			Log.d(TAG, "showWord, showing arabic");
 			thisView.setTextSize(56f);
-
-			String arabicWord = ArabicUtilities.reshape(thisWord.get(thisLang));
-			// this fixes issues with the final character having neutral 
-			// direction (diacritics, parentheses, etc.)
-			arabicWord += '\u200f';
-//			thisView.setText(arabicWord);
-			
-			Log.d(TAG, "UNICODE: " + splitString(arabicWord));
-			Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
-			
-//			arabicWord = fixSheddas(arabicWord);
-			
-			if (showVowels) {
-			    thisView.setText(HelperMethods.fixSheddas(arabicWord));
-			} else {
-			    thisView.setText(HelperMethods.removeVowels(arabicWord));
-			}
-            
-//            Log.d(TAG, "UNICODE: " + splitString(arabicWord));
-//            Log.d(TAG, "UNICODE: " + getUnicodeCodes(arabicWord));
+			thisView.setText(HelperMethods.fixArabic(thisWord.get(thisLang), 
+			        showVowels));
 		}
 	}
-// ****************************************************************************
 	
 	private void showWord(Map<String, String> thisWord) {
     	// store the ID and status of the current Word
@@ -711,50 +678,5 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	        return true;
 	    else
 	    	return false;
-    }
-    
-    String getUnicodeCodes(String s) {
-        char[] charArray = s.toCharArray();
-        String unicodeString = "";
-        
-        for (char c : charArray) {
-            if (!unicodeString.equals("")) {
-                unicodeString += (", ");
-            }
-            unicodeString += String.format ("%04x", (int)c);
-        }
-        
-        return unicodeString;
-    }
-    
-    String splitString(String s) {
-        Map<Character, String> miscCodes = new HashMap<Character, String>() {{
-            put('\u200e', "LTR");
-            put('\u200f', "RTL");
-            put('\u202a', "LTRE");
-            put('\u202b', "RTLE");
-            put('\u202c', "POP");
-            put('\u202d', "LTRO");
-            put('\u202e', "RTLO");
-            put(' ', "SPACE");
-            put('\n', "\\n");
-        }};
-        
-        char[] charArray = s.toCharArray();
-        String unicodeString = "";
-        
-        for (char c : charArray) {
-            if (!unicodeString.equals("")) {
-                unicodeString += (", ");
-            }
-            if (miscCodes.containsKey(c)) {
-                unicodeString += miscCodes.get(c);
-            } else {
-                unicodeString += c;
-            }
-        }
-        unicodeString = '\u202d' + unicodeString + '\u202c';
-        
-        return unicodeString;
     }
 }
