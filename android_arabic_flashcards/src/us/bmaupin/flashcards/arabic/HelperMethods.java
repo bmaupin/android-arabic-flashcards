@@ -2,7 +2,11 @@ package us.bmaupin.flashcards.arabic;
 
 //$Id$
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.amr.arabic.ArabicUtilities;
 
 import android.util.Log;
 
@@ -10,32 +14,26 @@ public class HelperMethods {
     private static final String TAG = "HelperMethods";
     
     /**
-     * Accepts a string, removes Arabic vowels from it, and returns the string
-     * with the vowels removed.
+     * apply a bunch of modifications to arabic text so it doesn't look terrible
      * @param s
+     * @param showVowels
      * @return
      */
-    static String removeVowels(String s) {
-        Character[] vowels = {
-                '\u064e',  // fatha, short a
-                '\u064b',  // double fatha
-                '\u0650',  // kasra, short i
-                '\u064d',  // double kasra
-                '\u064f',  // damma, short u
-                '\u064c',  // double damma
-                '\u0652',  // sukkun, nothing
-                '\u0651',  // shedda, double
-        };
-        List<Character> vowelList = java.util.Arrays.asList(vowels);
+    static String fixArabic(String s, boolean showVowels) {
+        // reshape the word
+        s = ArabicUtilities.reshape(s);
+        // this fixes issues with the final character having neutral 
+        // direction (diacritics, parentheses, etc.)
+        s += '\u200f';
         
-        String vowelsRemoved = "";
-        for (char c : s.toCharArray()) {
-            if (!vowelList.contains(c)) {
-                vowelsRemoved += c;
-            }
+        Log.d(TAG, "UNICODE: " + splitString(s));
+        Log.d(TAG, "UNICODE: " + getUnicodeCodes(s));
+        
+        if (showVowels) {
+            return HelperMethods.fixSheddas(s);
+        } else {
+            return HelperMethods.removeVowels(s);
         }
-        
-        return vowelsRemoved;
     }
     
     /**
@@ -92,6 +90,35 @@ public class HelperMethods {
         return fixedString;
     }
     
+    /**
+     * Accepts a string, removes Arabic vowels from it, and returns the string
+     * with the vowels removed.
+     * @param s
+     * @return
+     */
+    static String removeVowels(String s) {
+        Character[] vowels = {
+                '\u064e',  // fatha, short a
+                '\u064b',  // double fatha
+                '\u0650',  // kasra, short i
+                '\u064d',  // double kasra
+                '\u064f',  // damma, short u
+                '\u064c',  // double damma
+                '\u0652',  // sukkun, nothing
+                '\u0651',  // shedda, double
+        };
+        List<Character> vowelList = java.util.Arrays.asList(vowels);
+        
+        String vowelsRemoved = "";
+        for (char c : s.toCharArray()) {
+            if (!vowelList.contains(c)) {
+                vowelsRemoved += c;
+            }
+        }
+        
+        return vowelsRemoved;
+    }
+    
     static int stringToInteger(String s) {
         try {
             int i = Integer.parseInt(s.trim());
@@ -100,5 +127,52 @@ public class HelperMethods {
             Log.d(TAG, "stringToInteger: error: " + e.getMessage());
             return 0;
         }
+    }
+    
+//******************************************* DEBUGGING ************************    
+
+    static String getUnicodeCodes(String s) {
+        char[] charArray = s.toCharArray();
+        String unicodeString = "";
+        
+        for (char c : charArray) {
+            if (!unicodeString.equals("")) {
+                unicodeString += (", ");
+            }
+            unicodeString += String.format ("%04x", (int)c);
+        }
+        
+        return unicodeString;
+    }
+    
+    static String splitString(String s) {
+        Map<Character, String> miscCodes = new HashMap<Character, String>() {{
+            put('\u200e', "LTR");
+            put('\u200f', "RTL");
+            put('\u202a', "LTRE");
+            put('\u202b', "RTLE");
+            put('\u202c', "POP");
+            put('\u202d', "LTRO");
+            put('\u202e', "RTLO");
+            put(' ', "SPACE");
+            put('\n', "\\n");
+        }};
+        
+        char[] charArray = s.toCharArray();
+        String unicodeString = "";
+        
+        for (char c : charArray) {
+            if (!unicodeString.equals("")) {
+                unicodeString += (", ");
+            }
+            if (miscCodes.containsKey(c)) {
+                unicodeString += miscCodes.get(c);
+            } else {
+                unicodeString += c;
+            }
+        }
+        unicodeString = '\u202d' + unicodeString + '\u202c';
+        
+        return unicodeString;
     }
 }
