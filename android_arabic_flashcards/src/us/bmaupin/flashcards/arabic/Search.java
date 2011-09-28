@@ -16,10 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
 public class Search extends ListActivity {
-    private static final String TAG = "Search";
+//    private static final String TAG = "Search";
     
     private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
@@ -50,7 +51,7 @@ public class Search extends ListActivity {
                 selectionArgs, null, null, null);
         startManagingCursor(cursor);
         
-        ListAdapter adapter = new MySimpleCursorAdapter(
+        SimpleCursorAdapter adapter = new MySimpleCursorAdapter(
                 this,
 //                android.R.layout.simple_list_item_1,
 //                android.R.layout.two_line_list_item,
@@ -62,6 +63,21 @@ public class Search extends ListActivity {
 //                new int[] {android.R.id.list});
                 new int[] { android.R.id.text1, android.R.id.text2 });
 
+        // http://stackoverflow.com/questions/3609126/changing-values-from-cursor-using-simplecursoradapter
+        adapter.setViewBinder(new ViewBinder() {
+            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
+                if (aColumnIndex == 2) {
+                    String arabic = aCursor.getString(aColumnIndex);
+                    TextView tv = (TextView) aView;
+// TODO: it'd be cool if we could get the main activity's showVowels value and use it here instead of true                    
+                    tv.setText(HelperMethods.fixArabic(arabic, true));
+                    return true;
+                }
+                
+                return false;
+            }
+        });
+        
         // Bind to our new adapter.
         setListAdapter(adapter);
     }
