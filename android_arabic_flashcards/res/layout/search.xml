@@ -7,12 +7,18 @@
     >
     <ListView  
         android:id="@android:id/list"
-        android:layout_width="fill_parent" 
-        android:layout_height="fill_parent" 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         />
+    <!-- mostly from android's simple_list_item_1
+         http://www.netmite.com/android/mydroid/frameworks/base/core/res/res/layout/simple_list_item_1.xml -->
     <TextView android:id="@android:id/empty"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center_vertical"
+        android:paddingLeft="6dip"
+        android:minHeight="?android:attr/listPreferredItemHeight"
         android:text="@string/search_no_results"
         />
 </LinearLayout>
