@@ -2,8 +2,6 @@ package us.bmaupin.flashcards.arabic;
 
 // $Id$
 
-import org.amr.arabic.ArabicUtilities;
-
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -14,7 +12,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
@@ -24,19 +21,25 @@ public class Search extends ListActivity {
     
     private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
-    
+    private boolean showVowels;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String query = "";
         
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.search);
+        // we need to specify a layout to show a message when no results are 
+        // found
+        setContentView(R.layout.search);
         
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
+        }
+        Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
+        if (appData != null) {
+            showVowels = appData.getBoolean(ArabicFlashcards.EXTRA_SHOW_VOWELS);
         }
         
         dbHelper = new DatabaseHelper(this);
@@ -68,9 +71,8 @@ public class Search extends ListActivity {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
                 if (aColumnIndex == 2) {
                     String arabic = aCursor.getString(aColumnIndex);
-                    TextView tv = (TextView) aView;
-// TODO: it'd be cool if we could get the main activity's showVowels value and use it here instead of true                    
-                    tv.setText(HelperMethods.fixArabic(arabic, true));
+                    TextView tv = (TextView) aView;                    
+                    tv.setText(HelperMethods.fixArabic(arabic, showVowels));
                     return true;
                 }
                 
