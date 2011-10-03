@@ -33,6 +33,8 @@
                   android:label="@string/preferences_title"
                   android:theme="@android:style/Theme">
         </activity>
+        <activity android:name=".ShowSearchResult">
+        </activity>
         <activity android:name=".Search">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

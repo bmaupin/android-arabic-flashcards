@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class ProfileDatabaseHelper extends SQLiteOpenHelper {
 	// tag for log messages
-    public static final String TAG = "ProfileDatabaseHelper";
+    private static final String TAG = "ProfileDatabaseHelper";
 
     // The name of your database
     public static final String DATABASE_NAME = "profiles.db";

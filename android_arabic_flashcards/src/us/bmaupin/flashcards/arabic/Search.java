@@ -10,14 +10,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
 public class Search extends ListActivity {
-//    private static final String TAG = "Search";
+    static final String EXTRA_CARD_ID = "android.intent.extra.CARD_ID";
+    private static final String TAG = "Search";
     
     private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
@@ -25,6 +28,7 @@ public class Search extends ListActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         String query = "";
         
         super.onCreate(savedInstanceState);
@@ -84,26 +88,61 @@ public class Search extends ListActivity {
         setListAdapter(adapter);
     }
     
-/*    
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+
+        Cursor cursor = (Cursor) this.getListAdapter().getItem(position);
+        int cardId = cursor.getInt(cursor.getColumnIndex("_id"));
+        
+        Intent intent = new Intent(this, ShowSearchResult.class);
+        intent.putExtra(EXTRA_CARD_ID, cardId);
+        startActivity(intent);
+        
+        
+        
+        
+//        Toast.makeText(this, "You selected: " + cursor.getInt(cursor.getColumnIndex("_id")), Toast.LENGTH_LONG)
+//        .show();
+
+/*        
         // Get the item that was clicked
         Object o = this.getListAdapter().getItem(position);
         String keyword = o.toString();
         Toast.makeText(this, "You selected: " + keyword, Toast.LENGTH_LONG)
                 .show();
-    }
 */
+    }
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
         
         db.close();
         dbHelper.close();
     }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause");
+        super.onPause();
+        
+     // delete this method
+        int temp;
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume");
+        super.onResume();
+        
+// delete this method
+        int temp;
+    }
 }
+
+
 
 /**
  * http://stackoverflow.com/questions/5399781/change-text-color-in-listview/5399965#5399965
