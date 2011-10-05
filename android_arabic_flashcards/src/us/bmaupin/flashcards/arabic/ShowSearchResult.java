@@ -1,6 +1,6 @@
 package us.bmaupin.flashcards.arabic;
 
-//$Id$
+// $Id$
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -43,13 +43,11 @@ public class ShowSearchResult extends Activity {
                 flipCard();
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        Log.d(TAG, "onResume()");
-        super.onResume();
         
+        /* ordinarily we'd put all the db open code in onResume and close in 
+         * onPause, but we don't need to here since we're only accessing the db
+         * once
+         */
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getReadableDatabase();
         
@@ -60,11 +58,15 @@ public class ShowSearchResult extends Activity {
         
         Cursor cursor = db.query(DatabaseHelper.WORDS_TABLE, columns, selection, 
                 selectionArgs, null, null, null);
-        startManagingCursor(cursor);
         
         cursor.moveToFirst();
         english = cursor.getString(0);
         arabic = cursor.getString(1);
+        
+        // close the database connection
+        cursor.close();
+        db.close();
+        dbHelper.close();
         
         flipCard();
     }
@@ -101,12 +103,16 @@ public class ShowSearchResult extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume()");
+        super.onResume();
+    }
+    
+    @Override
     protected void onPause() {
         Log.d(TAG, "onPause()");
         super.onPause();
-        // close the database connection
-        db.close();
-        dbHelper.close();
+
     }
 
     @Override
