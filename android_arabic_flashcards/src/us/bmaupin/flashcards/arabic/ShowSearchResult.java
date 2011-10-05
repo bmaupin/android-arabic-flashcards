@@ -2,18 +2,14 @@ package us.bmaupin.flashcards.arabic;
 
 //$Id$
 
-import java.util.Map;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ShowSearchResult extends Activity {
 //    private static final String TAG = "ShowSearchResult";
@@ -24,15 +20,28 @@ public class ShowSearchResult extends Activity {
     private DatabaseHelper dbHelper;
     private String english = "";
     private String language = "";
+    private boolean showVowels = true;
     private TextView tv;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        cardId = getIntent().getExtras().getInt(Search.EXTRA_CARD_ID);
+        Bundle bundle = this.getIntent().getExtras();
+        cardId = bundle.getInt(Search.EXTRA_CARD_ID);
+        showVowels = bundle.getBoolean(ArabicFlashcards.EXTRA_SHOW_VOWELS);
         
         setContentView(R.layout.search_result);
+        
+        tv = (TextView) findViewById(R.id.textview);
+        HelperMethods.setArabicTypeface(this, tv);
+        
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flipCard();
+            }
+        });
     }
 
     @Override
@@ -46,7 +55,7 @@ public class ShowSearchResult extends Activity {
                 DatabaseHelper.WORDS_ARABIC};
         String selection = DatabaseHelper._ID + " = ?";
         String[] selectionArgs = new String[] {"" + cardId};
-
+        
         Cursor cursor = db.query(DatabaseHelper.WORDS_TABLE, columns, selection, 
                 selectionArgs, null, null, null);
         startManagingCursor(cursor);
@@ -55,18 +64,19 @@ public class ShowSearchResult extends Activity {
         english = cursor.getString(0);
         arabic = cursor.getString(1);
         
-        Toast.makeText(this, "english: " + english + "\tarabic: " + arabic, Toast.LENGTH_LONG)
-        .show();
-        
-        tv = (TextView) findViewById(R.id.textview);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flipCard();
-            }
-        });
-        
         flipCard();
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+        case KeyEvent.KEYCODE_DPAD_CENTER:
+            flipCard();
+            break;
+        default:
+            return super.onKeyDown(keyCode, event);
+        }
+        return true;
     }
     
     /**
@@ -80,7 +90,7 @@ public class ShowSearchResult extends Activity {
         if (language.equals("english") || language.equals("")) {
             tv.setTextSize(56f);
             language = "arabic";
-            tv.setText(HelperMethods.fixArabic(arabic));
+            tv.setText(HelperMethods.fixArabic(arabic, showVowels));
         } else if (language.equals("arabic")) {
             tv.setTextSize(42f);
             language = "english";

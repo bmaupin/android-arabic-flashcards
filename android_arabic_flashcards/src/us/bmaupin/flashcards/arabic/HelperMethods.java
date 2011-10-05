@@ -8,7 +8,10 @@ import java.util.Map;
 
 import org.amr.arabic.ArabicUtilities;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
+import android.widget.TextView;
 
 public class HelperMethods {
     private static final String TAG = "HelperMethods";
@@ -117,6 +120,17 @@ public class HelperMethods {
         }
         
         return vowelsRemoved;
+    }
+    
+    /**
+     * An attempt at eliminating redundancy and making sure we use the same 
+     * typeface everywhere.
+     * @param context
+     * @param tv
+     */
+    static void setArabicTypeface(Context context, TextView tv) {
+        Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/KacstOne.ttf");
+        tv.setTypeface(tf);
     }
     
     static int stringToInteger(String s) {

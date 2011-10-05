@@ -116,12 +116,12 @@ public class ArabicFlashcards extends Activity {
         resources = getResources();
 		      
 //		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DejaVuSans.ttf");
-      // works, a little hard to read
+        // works, a little hard to read
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidSansArabic.ttf");
-      // harakat misplaced, otherwise great font, stylish
+        // harakat misplaced, otherwise great font, stylish
 //      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DroidNaskh-Regular.ttf");
-      // not bad, traditional  
-      Typeface face=Typeface.createFromAsset(getAssets(), "fonts/KacstOne.ttf");
+        // not bad, traditional  
+        Typeface face=Typeface.createFromAsset(getAssets(), "fonts/KacstOne.ttf");
 
 		// set the typeface for the three TextViews within the ViewFlipper
         TextView leftView = (TextView)vf.findViewById(R.id.leftView);
@@ -262,44 +262,44 @@ public class ArabicFlashcards extends Activity {
     	return false;
     }
     
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	super.onActivityResult(requestCode, resultCode, data);
-	
-	Log.d(TAG, "onActivityResult called");
-	
-	switch(requestCode) {
-		case (REQUEST_CARD_SET) :
-			if (resultCode == Activity.RESULT_OK) {
-				String cardSet = data.getStringExtra(ChooseCardSet.CARD_SET);
-				Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
-				
-				if (data.getStringExtra(ChooseCardSet.CARD_SUBSET) == null) {
-				    ch.loadCardSet(cardSet);
-				} else {
-				    ch.loadCardSet(cardSet, data.getStringExtra(
-				            ChooseCardSet.CARD_SUBSET));
-				}
-                
-                if (ch.isAskCardOrder()) {
-                    showDialog(DIALOG_SELECT_CARD_ORDER);
-                } else {
-                    showFirstCard();
-                }
-			}
-			break;
-		case (REQUEST_PROFILE_ACTION) :
-		    if (resultCode == Activity.RESULT_OK) {
-		        String profileAction = data.getStringExtra(
-		                Preferences.EXTRA_PROFILE_ACTION);
-		        if (profileAction.equals("delete")) {
-		            ch.deleteProfile();
-		            showFirstCard();
-		        }
-		    }
-		    break;
-	}
-}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	
+    	Log.d(TAG, "onActivityResult called");
+    	
+    	switch(requestCode) {
+    		case (REQUEST_CARD_SET) :
+    			if (resultCode == Activity.RESULT_OK) {
+    				String cardSet = data.getStringExtra(ChooseCardSet.CARD_SET);
+    				Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
+    				
+    				if (data.getStringExtra(ChooseCardSet.CARD_SUBSET) == null) {
+    				    ch.loadCardSet(cardSet);
+    				} else {
+    				    ch.loadCardSet(cardSet, data.getStringExtra(
+    				            ChooseCardSet.CARD_SUBSET));
+    				}
+                    
+                    if (ch.isAskCardOrder()) {
+                        showDialog(DIALOG_SELECT_CARD_ORDER);
+                    } else {
+                        showFirstCard();
+                    }
+    			}
+    			break;
+    		case (REQUEST_PROFILE_ACTION) :
+    		    if (resultCode == Activity.RESULT_OK) {
+    		        String profileAction = data.getStringExtra(
+    		                Preferences.EXTRA_PROFILE_ACTION);
+    		        if (profileAction.equals("delete")) {
+    		            ch.deleteProfile();
+    		            showFirstCard();
+    		        }
+    		    }
+    		    break;
+    	}
+    }
 
     @Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
