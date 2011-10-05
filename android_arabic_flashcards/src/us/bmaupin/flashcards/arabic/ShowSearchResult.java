@@ -88,11 +88,11 @@ public class ShowSearchResult extends Activity {
  * in the future, show whichever language wasn't searched for
  */
         if (language.equals("english") || language.equals("")) {
-            tv.setTextSize(56f);
+            tv.setTextSize(ArabicFlashcards.ARABIC_CARD_TEXT_SIZE);
             language = "arabic";
             tv.setText(HelperMethods.fixArabic(arabic, showVowels));
         } else if (language.equals("arabic")) {
-            tv.setTextSize(42f);
+            tv.setTextSize(ArabicFlashcards.ENGLISH_CARD_TEXT_SIZE);
             language = "english";
             tv.setText(english);
         }
