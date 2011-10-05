@@ -28,7 +28,7 @@ public class Search extends ListActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
+        Log.d(TAG, "onCreate()");
         String query = "";
         
         super.onCreate(savedInstanceState);
@@ -117,7 +117,7 @@ public class Search extends ListActivity {
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestroy");
+        Log.d(TAG, "onDestroy()");
         super.onDestroy();
         
         db.close();
@@ -126,20 +126,14 @@ public class Search extends ListActivity {
 
     @Override
     protected void onPause() {
-        Log.d(TAG, "onPause");
+        Log.d(TAG, "onPause()");
         super.onPause();
-        
-     // delete this method
-        int temp;
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume");
+        Log.d(TAG, "onResume()");
         super.onResume();
-        
-// delete this method
-        int temp;
     }
 }
 
