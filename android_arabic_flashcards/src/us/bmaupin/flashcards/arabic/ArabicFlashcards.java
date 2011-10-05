@@ -36,6 +36,8 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class ArabicFlashcards extends Activity {
+    static final float ARABIC_CARD_TEXT_SIZE = 56f;
+    static final float ENGLISH_CARD_TEXT_SIZE = 42f;
     // unique dialog id
     private static final int DIALOG_NO_MORE_CARDS = 0;
     private static final int DIALOG_NO_UNKNOWN_CARDS = 1;
@@ -476,13 +478,16 @@ public class ArabicFlashcards extends Activity {
 	private void showWord(TextView thisView, Map<String, String> thisWord, String thisLang) {
 		Log.d(TAG, "showWord called, thisLang: " + thisLang);
 		currentLang = thisLang;
+		
+		
+		
 		if (thisLang.equals("english")) {
 			Log.d(TAG, "showWord, showing english");
-			thisView.setTextSize(42f);
+			thisView.setTextSize(ENGLISH_CARD_TEXT_SIZE);
 			thisView.setText(thisWord.get(thisLang));
 		} else if (thisLang.equals("arabic")) {
 			Log.d(TAG, "showWord, showing arabic");
-			thisView.setTextSize(56f);
+			thisView.setTextSize(ARABIC_CARD_TEXT_SIZE);
 			thisView.setText(HelperMethods.fixArabic(thisWord.get(thisLang), 
 			        showVowels));
 		}
