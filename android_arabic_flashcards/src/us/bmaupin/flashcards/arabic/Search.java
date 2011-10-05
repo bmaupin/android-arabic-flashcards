@@ -97,6 +97,7 @@ public class Search extends ListActivity {
         
         Intent intent = new Intent(this, ShowSearchResult.class);
         intent.putExtra(EXTRA_CARD_ID, cardId);
+        intent.putExtra(ArabicFlashcards.EXTRA_SHOW_VOWELS, showVowels);
         startActivity(intent);
         
         
@@ -142,8 +143,6 @@ public class Search extends ListActivity {
     }
 }
 
-
-
 /**
  * http://stackoverflow.com/questions/5399781/change-text-color-in-listview/5399965#5399965
  * @author bmaupin
@@ -162,9 +161,8 @@ class MySimpleCursorAdapter extends SimpleCursorAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = super.getView(position, convertView, parent);
         
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/KacstOne.ttf");
         TextView tv = (TextView)v.findViewById(android.R.id.text2);
-        tv.setTypeface(tf);
+        HelperMethods.setArabicTypeface(context, tv);
         
 //        String arabicWord = ArabicUtilities.reshape(thisWord.get(thisLang));
         
