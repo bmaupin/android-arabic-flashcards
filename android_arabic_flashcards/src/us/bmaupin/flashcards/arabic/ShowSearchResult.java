@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class ShowSearchResult extends Activity {
-//    private static final String TAG = "ShowSearchResult";
+    private static final String TAG = "ShowSearchResult";
     
     private String arabic = "";
     private int cardId;
@@ -25,6 +25,7 @@ public class ShowSearchResult extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         
         Bundle bundle = this.getIntent().getExtras();
@@ -46,6 +47,7 @@ public class ShowSearchResult extends Activity {
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume()");
         super.onResume();
         
         dbHelper = new DatabaseHelper(this);
@@ -100,9 +102,16 @@ public class ShowSearchResult extends Activity {
 
     @Override
     protected void onPause() {
+        Log.d(TAG, "onPause()");
         super.onPause();
         // close the database connection
         db.close();
         dbHelper.close();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy()");
+        super.onDestroy();
     }
 }
