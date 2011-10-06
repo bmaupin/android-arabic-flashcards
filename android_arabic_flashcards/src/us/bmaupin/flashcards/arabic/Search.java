@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,22 +21,39 @@ public class Search extends ListActivity {
     static final String EXTRA_CARD_ID = "android.intent.extra.CARD_ID";
     private static final String TAG = "Search";
     
+    private Cursor cursor;
     private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
+    private Intent intent;
     private boolean showVowels;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
-        String query = "";
         
         super.onCreate(savedInstanceState);
         // we need to specify a layout to show a message when no results are 
         // found
         setContentView(R.layout.search);
         
-        // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
+        this.intent = getIntent();
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "onNewIntent()");
+        super.onNewIntent(intent);
+        
+        this.intent = intent;
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume()");
+        super.onResume();
+        
+        String query = "";
+        
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
         }
@@ -54,9 +70,8 @@ public class Search extends ListActivity {
         String selection = DatabaseHelper.WORDS_ENGLISH + " LIKE ?";
         String[] selectionArgs = new String[] {"%" + query + "%"};
         
-        Cursor cursor = db.query(DatabaseHelper.WORDS_TABLE, columns, selection, 
+        cursor = db.query(DatabaseHelper.WORDS_TABLE, columns, selection, 
                 selectionArgs, null, null, null);
-        startManagingCursor(cursor);
         
         SimpleCursorAdapter adapter = new MySimpleCursorAdapter(
                 this,
@@ -87,7 +102,7 @@ public class Search extends ListActivity {
         // Bind to our new adapter.
         setListAdapter(adapter);
     }
-    
+
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -119,21 +134,17 @@ public class Search extends ListActivity {
     protected void onDestroy() {
         Log.d(TAG, "onDestroy()");
         super.onDestroy();
-        
-        db.close();
-        dbHelper.close();
     }
 
     @Override
     protected void onPause() {
         Log.d(TAG, "onPause()");
         super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        Log.d(TAG, "onResume()");
-        super.onResume();
+        
+        // clean up after ourselves
+        cursor.close();
+        db.close();
+        dbHelper.close();
     }
 }
 
