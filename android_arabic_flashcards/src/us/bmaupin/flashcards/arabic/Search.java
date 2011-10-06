@@ -75,14 +75,9 @@ public class Search extends ListActivity {
         
         SimpleCursorAdapter adapter = new MySimpleCursorAdapter(
                 this,
-//                android.R.layout.simple_list_item_1,
-//                android.R.layout.two_line_list_item,
                 android.R.layout.simple_list_item_2,
                 cursor,
-//                new String[] {DatabaseHelper.WORDS_ENGLISH},
-//                columns,
                 new String[] {DatabaseHelper.WORDS_ENGLISH, DatabaseHelper.WORDS_ARABIC},
-//                new int[] {android.R.id.list});
                 new int[] { android.R.id.text1, android.R.id.text2 });
 
         // http://stackoverflow.com/questions/3609126/changing-values-from-cursor-using-simplecursoradapter
@@ -114,20 +109,6 @@ public class Search extends ListActivity {
         intent.putExtra(EXTRA_CARD_ID, cardId);
         intent.putExtra(ArabicFlashcards.EXTRA_SHOW_VOWELS, showVowels);
         startActivity(intent);
-        
-        
-        
-        
-//        Toast.makeText(this, "You selected: " + cursor.getInt(cursor.getColumnIndex("_id")), Toast.LENGTH_LONG)
-//        .show();
-
-/*        
-        // Get the item that was clicked
-        Object o = this.getListAdapter().getItem(position);
-        String keyword = o.toString();
-        Toast.makeText(this, "You selected: " + keyword, Toast.LENGTH_LONG)
-                .show();
-*/
     }
 
     @Override
@@ -168,8 +149,6 @@ class MySimpleCursorAdapter extends SimpleCursorAdapter {
         
         TextView tv = (TextView)v.findViewById(android.R.id.text2);
         HelperMethods.setArabicTypeface(context, tv);
-        
-//        String arabicWord = ArabicUtilities.reshape(thisWord.get(thisLang));
         
         return v;
     }
