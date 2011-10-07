@@ -107,23 +107,6 @@ mention ahlan wa sahlan 2nd edition vocab, 1st book?
 mention al kitaab (edition) vocab
 
 
-Arabic shaping fix:
-cworking:
-6th of May 2010
-reshaper, no vowels: good
-reshaper, vowels: vowels good, disconnected btw 1 and 2
-
-utilities, no vowels: good
-utilities, vowels: fatha faa damma raa sukkun space siin
-
-cnot:
-Sunday 7th of February 2010 (reshaper)
-reshaper, no vowels: 1 and 2 disconnected in first word
-reshaper, vowels: 1 and 2 disconnected in first word
-
-utilities, no vowels: 1 and 2 disconnected in both
-utilities, vowels: fatha faa damma raa sukkun space siin
-
 
 
 DATABASE IMPORT PROCESS:
@@ -140,7 +123,7 @@ CREATE TABLE temp (
     "gender" TEXT
 );
 
-CREATE TABLE words (
+CREATE TABLE cards (
     "_ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "english" TEXT NOT NULL,
     "arabic" TEXT NOT NULL,
@@ -151,7 +134,7 @@ CREATE TABLE words (
 );
 
 
-insert into words (english, arabic, plural, type, category, gender) select english, arabic, plural, type, category, gender from temp;
+insert into cards (english, arabic, plural, type, category, gender) select english, arabic, plural, type, category, gender from temp;
 
 
 
