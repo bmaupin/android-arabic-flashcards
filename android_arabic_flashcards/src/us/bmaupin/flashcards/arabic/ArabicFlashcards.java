@@ -54,7 +54,8 @@ public class ArabicFlashcards extends Activity {
 	private CardHelper ch;
 	private String currentCardId;
 	private int currentCardStatus;
-	private String currentLang;
+	// which side of the card is currently showing
+	private String currentSide;
 	private TextView currentView;
 	private Map<String, String> currentCard = new HashMap<String, String>();
 	private String defaultLang;
@@ -179,8 +180,8 @@ public class ArabicFlashcards extends Activity {
                 getString(R.string.preferences_show_vowels),
                 resources.getBoolean(R.bool.preferences_show_vowels_default));
 
-        if (currentLang == null || currentLang.equals("")) {
-            currentLang = defaultLang;
+        if (currentSide == null || currentSide.equals("")) {
+            currentSide = defaultLang;
         }
 		
 		if (currentCard.isEmpty()) {
@@ -475,20 +476,18 @@ public class ArabicFlashcards extends Activity {
 	 * Given a view, a card, and a language, shows the card in the view and 
 	 * formats it depending on the language
 	 */
-	private void showCard(TextView thisView, Map<String, String> thisCard, String thisLang) {
-		Log.d(TAG, "showCard called, thisLang: " + thisLang);
-		currentLang = thisLang;
+	private void showCard(TextView thisView, Map<String, String> thisCard, String thisSide) {
+		Log.d(TAG, "showCard called, thisSide: " + thisSide);
+		currentSide = thisSide;
 		
-		
-		
-		if (thisLang.equals("english")) {
+		if (thisSide.equals("english")) {
 			Log.d(TAG, "showCard, showing english");
 			thisView.setTextSize(ENGLISH_CARD_TEXT_SIZE);
-			thisView.setText(thisCard.get(thisLang));
-		} else if (thisLang.equals("arabic")) {
+			thisView.setText(thisCard.get(thisSide));
+		} else if (thisSide.equals("arabic") || thisSide.equals("plural")) {
 			Log.d(TAG, "showCard, showing arabic");
 			thisView.setTextSize(ARABIC_CARD_TEXT_SIZE);
-			thisView.setText(HelperMethods.fixArabic(thisCard.get(thisLang), 
+			thisView.setText(HelperMethods.fixArabic(thisCard.get(thisSide), 
 			        showVowels));
 		}
 	}
@@ -519,10 +518,14 @@ public class ArabicFlashcards extends Activity {
 	}
 	
 	private void flipCard() {
-		if (currentLang.equals("english")) {
+		if (currentSide.equals("english")) {
 			showCard(currentView, currentCard, "arabic");
-		} else if (currentLang.equals("arabic")) {
-			showCard(currentView, currentCard, "english");
+		// only show plural if the current side is arabic and plural isn't empty
+		} else if (currentSide.equals("arabic") && 
+		        !currentCard.get("plural").equals("")) {
+	        showCard(currentView, currentCard, "plural");
+		} else {
+		    showCard(currentView, currentCard, "english");
 		}
 	}
 	
