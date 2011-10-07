@@ -184,6 +184,7 @@ public class CardHelper {
             DatabaseHelper._ID + ", " +
             DatabaseHelper.CARDS_ENGLISH + ", " +
             DatabaseHelper.CARDS_ARABIC + ", " +
+            DatabaseHelper.CARDS_PLURAL + ", " +
             ProfileDatabaseHelper.STATUS +
             " FROM " + DatabaseHelper.CARDS_TABLE +
             " LEFT JOIN " + PROFILE_DB + "." + profileName + 
@@ -279,17 +280,19 @@ public class CardHelper {
         thisCard.put("ID", cursor.getString(0));
         thisCard.put("english", cursor.getString(1));
         thisCard.put("arabic", cursor.getString(2));
+        thisCard.put("plural", cursor.getString(3));
         // card status might be null if the card hasn't been seen yet
-        if (cursor.getString(3) == null) {
+        if (cursor.getString(4) == null) {
         	thisCard.put("status", "0");
         } else {
-        	thisCard.put("status", cursor.getString(3));
+        	thisCard.put("status", cursor.getString(4));
         }
 //        
         Log.d(TAG, "getCurrentCard: _id=" + cursor.getString(0));
         Log.d(TAG, "getCurrentCard: english=" + cursor.getString(1));
         Log.d(TAG, "getCurrentCard: arabic=" + cursor.getString(2));
-        Log.d(TAG, "getCurrentCard: status=" + cursor.getString(3));
+        Log.d(TAG, "getCurrentCard: plural=" + cursor.getString(3));
+        Log.d(TAG, "getCurrentCard: status=" + cursor.getString(4));
         
         return thisCard;
     }
@@ -301,6 +304,7 @@ public class CardHelper {
         String sql = "SELECT " +
             DatabaseHelper.CARDS_ENGLISH + ", " +
             DatabaseHelper.CARDS_ARABIC + ", " +
+            DatabaseHelper.CARDS_PLURAL + ", " +
             ProfileDatabaseHelper.STATUS +
             " FROM " + DatabaseHelper.CARDS_TABLE +
             " LEFT JOIN " + PROFILE_DB + "." + profileName +
@@ -317,16 +321,18 @@ public class CardHelper {
         thisCard.put("ID", "" + thisId);
         thisCard.put("english", thisCursor.getString(0));
         thisCard.put("arabic", thisCursor.getString(1));
+        thisCard.put("plural", thisCursor.getString(2));
         // card status might be null if the card hasn't been seen yet
-        if (thisCursor.getString(2) == null) {
+        if (thisCursor.getString(3) == null) {
             thisCard.put("status", "0");
         } else {
-            thisCard.put("status", thisCursor.getString(2));
+            thisCard.put("status", thisCursor.getString(3));
         }
 //        
         Log.d(TAG, "getCard: english=" + thisCursor.getString(0));
         Log.d(TAG, "getCard: arabic=" + thisCursor.getString(1));
-        Log.d(TAG, "getCard: status=" + thisCursor.getString(2));
+        Log.d(TAG, "getCard: plural=" + thisCursor.getString(2));
+        Log.d(TAG, "getCard: status=" + thisCursor.getString(3));
         
         thisCursor.close();
         
