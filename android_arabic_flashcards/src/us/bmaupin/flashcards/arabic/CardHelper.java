@@ -147,7 +147,7 @@ public class CardHelper {
         
         if (currentCardSet.equals(context.getString(
                 R.string.card_set_ahlan_wa_sahlan))) {
-            sqlCardSetSelection = " WHERE " + DatabaseHelper.WORDS_TABLE + "." + 
+            sqlCardSetSelection = " WHERE " + DatabaseHelper.CARDS_TABLE + "." + 
                     DatabaseHelper._ID + " IN (SELECT " + 
                     DatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
                     DatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
@@ -180,14 +180,14 @@ public class CardHelper {
             }
         }
     	
-        String sql = "SELECT " + DatabaseHelper.WORDS_TABLE + "." + 
+        String sql = "SELECT " + DatabaseHelper.CARDS_TABLE + "." + 
             DatabaseHelper._ID + ", " +
-            DatabaseHelper.WORDS_ENGLISH + ", " +
-            DatabaseHelper.WORDS_ARABIC + ", " +
+            DatabaseHelper.CARDS_ENGLISH + ", " +
+            DatabaseHelper.CARDS_ARABIC + ", " +
             ProfileDatabaseHelper.STATUS +
-            " FROM " + DatabaseHelper.WORDS_TABLE +
+            " FROM " + DatabaseHelper.CARDS_TABLE +
             " LEFT JOIN " + PROFILE_DB + "." + profileName + 
-            " ON " + DatabaseHelper.WORDS_TABLE + "." + BaseColumns._ID
+            " ON " + DatabaseHelper.CARDS_TABLE + "." + BaseColumns._ID
             + " = " + PROFILE_DB + "." +
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + " %s ORDER BY ";
@@ -206,7 +206,7 @@ public class CardHelper {
                     R.string.card_set_ahlan_wa_sahlan))) {
                 sqlCardSetSelection = " LEFT JOIN " + 
                         DatabaseHelper.AWS_CHAPTERS_TABLE + " ON " + 
-                        DatabaseHelper.WORDS_TABLE + "." + DatabaseHelper._ID + 
+                        DatabaseHelper.CARDS_TABLE + "." + DatabaseHelper._ID + 
                         " = " + DatabaseHelper.AWS_CHAPTERS_TABLE + "." +
                         DatabaseHelper.AWS_CHAPTERS_CARD_ID + " " +
                         sqlCardSetSelection +
@@ -220,7 +220,7 @@ public class CardHelper {
                 sql += DatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
                         DatabaseHelper._ID;
             } else {
-                sql += DatabaseHelper.WORDS_TABLE + "." + DatabaseHelper._ID;
+                sql += DatabaseHelper.CARDS_TABLE + "." + DatabaseHelper._ID;
             }
             
             if (askCardOrder) {
@@ -299,16 +299,16 @@ public class CardHelper {
         Map<String, String> thisCard = new HashMap<String, String>();
         
         String sql = "SELECT " +
-            DatabaseHelper.WORDS_ENGLISH + ", " +
-            DatabaseHelper.WORDS_ARABIC + ", " +
+            DatabaseHelper.CARDS_ENGLISH + ", " +
+            DatabaseHelper.CARDS_ARABIC + ", " +
             ProfileDatabaseHelper.STATUS +
-            " FROM " + DatabaseHelper.WORDS_TABLE +
+            " FROM " + DatabaseHelper.CARDS_TABLE +
             " LEFT JOIN " + PROFILE_DB + "." + profileName +
-            " ON " + DatabaseHelper.WORDS_TABLE + "." + BaseColumns._ID
+            " ON " + DatabaseHelper.CARDS_TABLE + "." + BaseColumns._ID
             + " = " + PROFILE_DB + "." +
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + 
-            " WHERE " + DatabaseHelper.WORDS_TABLE + "." +
+            " WHERE " + DatabaseHelper.CARDS_TABLE + "." +
             DatabaseHelper._ID + " = %s";
         
         Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);

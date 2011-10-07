@@ -17,17 +17,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// tag for log messages
 	private static final String TAG = "DatabaseHelper";
 	
-	public static final String DATABASE_NAME = "words.db";
-	public static final int DATABASE_VERSION = 11;
-	public static final String WORDS_TABLE = "words";
+	public static final String DATABASE_NAME = "cards.db";
+	public static final int DATABASE_VERSION = 12;
+	public static final String CARDS_TABLE = "cards";
 	public static final String AWS_CHAPTERS_TABLE = "aws_chapters";
 
 	// The name of each column in the database
     public static final String _ID = BaseColumns._ID;
     
-    public static final String WORDS_ENGLISH = "english";
-    public static final String WORDS_ARABIC = "arabic";
-    public static final String WORDS_CATEGORY = "category";
+    public static final String CARDS_ENGLISH = "english";
+    public static final String CARDS_ARABIC = "arabic";
+    public static final String CARDS_CATEGORY = "category";
     
     public static final String AWS_CHAPTERS_CHAPTER = "chapter";
     public static final String AWS_CHAPTERS_CARD_ID = "card_ID";

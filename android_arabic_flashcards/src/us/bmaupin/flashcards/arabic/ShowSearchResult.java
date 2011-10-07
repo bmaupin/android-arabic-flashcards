@@ -51,12 +51,12 @@ public class ShowSearchResult extends Activity {
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getReadableDatabase();
         
-        String[] columns = new String[] {DatabaseHelper.WORDS_ENGLISH, 
-                DatabaseHelper.WORDS_ARABIC};
+        String[] columns = new String[] {DatabaseHelper.CARDS_ENGLISH, 
+                DatabaseHelper.CARDS_ARABIC};
         String selection = DatabaseHelper._ID + " = ?";
         String[] selectionArgs = new String[] {"" + cardId};
         
-        Cursor cursor = db.query(DatabaseHelper.WORDS_TABLE, columns, selection, 
+        Cursor cursor = db.query(DatabaseHelper.CARDS_TABLE, columns, selection, 
                 selectionArgs, null, null, null);
         
         cursor.moveToFirst();
