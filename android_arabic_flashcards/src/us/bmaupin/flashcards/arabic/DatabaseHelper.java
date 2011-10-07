@@ -25,9 +25,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// The name of each column in the database
     public static final String _ID = BaseColumns._ID;
     
-    public static final String CARDS_ENGLISH = "english";
     public static final String CARDS_ARABIC = "arabic";
     public static final String CARDS_CATEGORY = "category";
+    public static final String CARDS_ENGLISH = "english";
+    public static final String CARDS_PLURAL = "plural";
     
     public static final String AWS_CHAPTERS_CHAPTER = "chapter";
     public static final String AWS_CHAPTERS_CARD_ID = "card_ID";
