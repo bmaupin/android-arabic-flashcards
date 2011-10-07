@@ -130,8 +130,8 @@ public class ChooseCardSet extends Activity {
     private Dialog createChooseCategoryDialog() {
         Log.d(TAG, "createChooseCategoryDialog");
         
-        final String[] categories = getColumnValues(DatabaseHelper.WORDS_TABLE, 
-                DatabaseHelper.WORDS_CATEGORY);
+        final String[] categories = getColumnValues(DatabaseHelper.CARDS_TABLE, 
+                DatabaseHelper.CARDS_CATEGORY);
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_choose_card_category_title);

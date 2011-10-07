@@ -66,18 +66,18 @@ public class Search extends ListActivity {
         db = dbHelper.getReadableDatabase();
         
         String[] columns = new String[] {DatabaseHelper._ID, 
-                DatabaseHelper.WORDS_ENGLISH, DatabaseHelper.WORDS_ARABIC};
-        String selection = DatabaseHelper.WORDS_ENGLISH + " LIKE ?";
+                DatabaseHelper.CARDS_ENGLISH, DatabaseHelper.CARDS_ARABIC};
+        String selection = DatabaseHelper.CARDS_ENGLISH + " LIKE ?";
         String[] selectionArgs = new String[] {"%" + query + "%"};
         
-        cursor = db.query(DatabaseHelper.WORDS_TABLE, columns, selection, 
+        cursor = db.query(DatabaseHelper.CARDS_TABLE, columns, selection, 
                 selectionArgs, null, null, null);
         
         SimpleCursorAdapter adapter = new MySimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_2,
                 cursor,
-                new String[] {DatabaseHelper.WORDS_ENGLISH, DatabaseHelper.WORDS_ARABIC},
+                new String[] {DatabaseHelper.CARDS_ENGLISH, DatabaseHelper.CARDS_ARABIC},
                 new int[] { android.R.id.text1, android.R.id.text2 });
 
         // http://stackoverflow.com/questions/3609126/changing-values-from-cursor-using-simplecursoradapter
