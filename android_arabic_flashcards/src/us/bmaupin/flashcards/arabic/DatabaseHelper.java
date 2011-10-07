@@ -2,6 +2,7 @@ package us.bmaupin.flashcards.arabic;
 
 // $Id$
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -146,5 +147,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		dbNeedsRefreshing = true;
 		Log.d(TAG, "onUpgrade called");
+		
+		// in version 12 we renamed the db file; delete the old one
+		if (oldVersion < 12) {
+		    File oldDb = new File(myContext.getDatabasePath("words.db").getAbsolutePath());
+		    oldDb.delete();
+		}
 	}
 }
