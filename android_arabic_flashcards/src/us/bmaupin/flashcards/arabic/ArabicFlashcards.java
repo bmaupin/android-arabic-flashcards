@@ -56,9 +56,9 @@ public class ArabicFlashcards extends Activity {
 	private int currentCardStatus;
 	private String currentLang;
 	private TextView currentView;
-	private Map<String, String> currentWord = new HashMap<String, String>();
+	private Map<String, String> currentCard = new HashMap<String, String>();
 	private String defaultLang;
-	private Map<String, String> nextWord;
+	private Map<String, String> nextCard;
 	private Resources resources;
 	private SharedPreferences preferences;
 	private boolean showVowels;
@@ -173,7 +173,7 @@ public class ArabicFlashcards extends Activity {
 	                        R.bool.preferences_hide_known_cards_default)));
 	        Log.d(TAG, "onResume: ch.isHideKnownCards()=" + ch.isHideKnownCards());
 	        // force a reload of the cards
-	        currentWord.clear();
+	        currentCard.clear();
 		}
 		showVowels = preferences.getBoolean(
                 getString(R.string.preferences_show_vowels),
@@ -183,7 +183,7 @@ public class ArabicFlashcards extends Activity {
             currentLang = defaultLang;
         }
 		
-		if (currentWord.isEmpty()) {
+		if (currentCard.isEmpty()) {
 		    showFirstCard();
 		} else {
 	        // reshow the current card in case anything's changed
@@ -348,8 +348,8 @@ public class ArabicFlashcards extends Activity {
 	    Log.d(TAG, "showCardById: cardId=" + cardId);
 	    Map<String, String> card = ch.getCardById(cardId);
 	    Log.d(TAG, "showCardById: card=" + card);
-	    currentWord = card;
-	    showWord(card);
+	    currentCard = card;
+	    showCard(card);
 	}
 	
     private Dialog createNoUnkownCardsDialog() {
@@ -472,34 +472,34 @@ public class ArabicFlashcards extends Activity {
 	}
 		
 	/**
-	 * Given a view, a word, and a language, shows the word in the view and 
+	 * Given a view, a card, and a language, shows the card in the view and 
 	 * formats it depending on the language
 	 */
-	private void showWord(TextView thisView, Map<String, String> thisWord, String thisLang) {
-		Log.d(TAG, "showWord called, thisLang: " + thisLang);
+	private void showCard(TextView thisView, Map<String, String> thisCard, String thisLang) {
+		Log.d(TAG, "showCard called, thisLang: " + thisLang);
 		currentLang = thisLang;
 		
 		
 		
 		if (thisLang.equals("english")) {
-			Log.d(TAG, "showWord, showing english");
+			Log.d(TAG, "showCard, showing english");
 			thisView.setTextSize(ENGLISH_CARD_TEXT_SIZE);
-			thisView.setText(thisWord.get(thisLang));
+			thisView.setText(thisCard.get(thisLang));
 		} else if (thisLang.equals("arabic")) {
-			Log.d(TAG, "showWord, showing arabic");
+			Log.d(TAG, "showCard, showing arabic");
 			thisView.setTextSize(ARABIC_CARD_TEXT_SIZE);
-			thisView.setText(HelperMethods.fixArabic(thisWord.get(thisLang), 
+			thisView.setText(HelperMethods.fixArabic(thisCard.get(thisLang), 
 			        showVowels));
 		}
 	}
 	
-	private void showWord(Map<String, String> thisWord) {
-    	// store the ID and status of the current Word
-    	currentCardId = currentWord.get("ID");
-    	currentCardStatus = HelperMethods.stringToInteger(currentWord.get("status"));
+	private void showCard(Map<String, String> thisCard) {
+    	// store the ID and status of the current card
+    	currentCardId = currentCard.get("ID");
+    	currentCardStatus = HelperMethods.stringToInteger(currentCard.get("status"));
     	
 //
-    	Log.d(TAG, "showWord: currentWord=" + currentWord);
+    	Log.d(TAG, "showCard: currentCard=" + currentCard);
     	// get the current shown view out of all of the views in the ViewFlipper
     	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
     	// get the child view (TextView)
@@ -515,14 +515,14 @@ public class ArabicFlashcards extends Activity {
 			knownCheck.setImageResource(0);
 		}
     	
-    	showWord(currentView, currentWord, defaultLang);
+    	showCard(currentView, currentCard, defaultLang);
 	}
 	
 	private void flipCard() {
 		if (currentLang.equals("english")) {
-			showWord(currentView, currentWord, "arabic");
+			showCard(currentView, currentCard, "arabic");
 		} else if (currentLang.equals("arabic")) {
-			showWord(currentView, currentWord, "english");
+			showCard(currentView, currentCard, "english");
 		}
 	}
 	
@@ -537,20 +537,20 @@ public class ArabicFlashcards extends Activity {
 //		int currentLayoutId = currentLayout.getId();
 		currentView = (TextView) currentLayout.getChildAt(0);
 // TODO: get current (prob next) card
-		currentWord = getCurrentWord();
-		showWord(currentView, currentWord);
+		currentCard = getCurrentCard();
+		showCard(currentView, currentCard);
 
 		// TODO: pretty sure this won't work, but we'll need to figure it out at some point
 /*		
 		ViewGroup leftLayout = (RelativeLayout)findViewById(currentLayoutId - 1);
 		TextView leftView = (TextView)leftLayout.getChildAt(0);
-		Map<String, String> prevWord = getWordAtPosition(cursorPosition - 1);
-		showWord(leftView, prevWord);
+		Map<String, String> prevCard = getCardAtPosition(cursorPosition - 1);
+		showCard(leftView, prevCard);
 		
 		ViewGroup rightLayout = (RelativeLayout)findViewById(currentLayoutId + 1);
 		TextView rightView = (TextView)rightLayout.getChildAt(0);
-		Map<String, String> nextWord = getWordAtPosition(cursorPosition + 1);
-		showWord(rightView, nextWord);
+		Map<String, String> nextCard = getCardAtPosition(cursorPosition + 1);
+		showCard(rightView, nextCard);
 */
 		
 /*
@@ -575,19 +575,19 @@ public class ArabicFlashcards extends Activity {
 	 * function to reload the current card in case any preferences have changed
 	 */
 	private void reshowCurrentCard() {
-	    showWord(currentWord);
+	    showCard(currentCard);
 	}
 	
 	private void showFirstCard() {
-		currentWord = ch.nextCard();
+		currentCard = ch.nextCard();
 		// the first card should only be empty if the user picked the set of
 		// unkown cards, and there aren't any cards marked as unkown yet
 // TODO: need to add category verification here as well, cause it could also be
 // all cards are marked as known
-		if (currentWord.isEmpty()) {
+		if (currentCard.isEmpty()) {
 		    showDialog(DIALOG_NO_UNKNOWN_CARDS);
 		} else {
-		    showWord(currentWord);
+		    showCard(currentCard);
 		}
 	}
 	
@@ -595,36 +595,36 @@ public class ArabicFlashcards extends Activity {
     	// update the status of the current card
     	ch.updateCardStatus(currentCardId, currentCardStatus, direction);
     	// get the next one
-    	nextWord = ch.nextCard();
+    	nextCard = ch.nextCard();
     	
-    	if (nextWord.isEmpty()) {
+    	if (nextCard.isEmpty()) {
     	    showDialog(DIALOG_NO_MORE_CARDS);
     	} else {
-    	    currentWord = nextWord;
-    	    // only show the right animation if there's a next word
+    	    currentCard = nextCard;
+    	    // only show the right animation if there's a next card
     	    vf.setInAnimation(slideLeftIn);
 	        vf.setOutAnimation(slideLeftOut);
 	        vf.showNext();
 	        
-    	    showWord(currentWord);
+    	    showCard(currentCard);
     	}
 	}
 	
 	private void showPrevCard() {
-    	nextWord = ch.prevCard();
+    	nextCard = ch.prevCard();
     	
-    	// make sure there's a previous word to show
-    	if (nextWord.isEmpty()) {
+    	// make sure there's a previous card to show
+    	if (nextCard.isEmpty()) {
 // TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
     		Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
     	} else {
-    	    currentWord = nextWord;
-    		// only show the left animation if there's a previous word
+    	    currentCard = nextCard;
+    		// only show the left animation if there's a previous card
     		vf.setInAnimation(slideRightIn);
             vf.setOutAnimation(slideRightOut);
         	vf.showPrevious();
         	
-    		showWord(currentWord);
+    		showCard(currentCard);
     	}
 	}
 	
