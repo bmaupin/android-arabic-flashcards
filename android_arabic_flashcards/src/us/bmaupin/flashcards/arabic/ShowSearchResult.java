@@ -84,7 +84,7 @@ public class ShowSearchResult extends Activity {
     }
     
     /**
-     * Given a view, a word, and a language, shows the word in the view and 
+     * Given a view, a card, and a language, shows the card in the view and 
      * formats it depending on the language
      */
     private void flipCard() {
