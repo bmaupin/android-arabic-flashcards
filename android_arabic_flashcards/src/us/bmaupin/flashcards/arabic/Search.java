@@ -37,6 +37,9 @@ public class Search extends ListActivity {
         setContentView(R.layout.search);
         
         this.intent = getIntent();
+        
+        dbHelper = new DatabaseHelper(this);
+        db = dbHelper.getReadableDatabase();
     }
     
     @Override
@@ -62,9 +65,6 @@ public class Search extends ListActivity {
             showVowels = appData.getBoolean(ArabicFlashcards.EXTRA_SHOW_VOWELS);
         }
         
-        dbHelper = new DatabaseHelper(this);
-        db = dbHelper.getReadableDatabase();
-        
         String[] columns = new String[] {DatabaseHelper._ID, 
                 DatabaseHelper.CARDS_ENGLISH, DatabaseHelper.CARDS_ARABIC};
         String selection = DatabaseHelper.CARDS_ENGLISH + " LIKE ?";
@@ -72,6 +72,7 @@ public class Search extends ListActivity {
         
         cursor = db.query(DatabaseHelper.CARDS_TABLE, columns, selection, 
                 selectionArgs, null, null, null);
+        startManagingCursor(cursor);
         
         SimpleCursorAdapter adapter = new MySimpleCursorAdapter(
                 this,
@@ -115,17 +116,17 @@ public class Search extends ListActivity {
     protected void onDestroy() {
         Log.d(TAG, "onDestroy()");
         super.onDestroy();
+        
+        // clean up after ourselves
+        cursor.close();
+        db.close();
+        dbHelper.close();
     }
 
     @Override
     protected void onPause() {
         Log.d(TAG, "onPause()");
         super.onPause();
-        
-        // clean up after ourselves
-        cursor.close();
-        db.close();
-        dbHelper.close();
     }
 }
 
