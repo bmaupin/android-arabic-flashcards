@@ -96,6 +96,9 @@
     <string name="preferences_hide_known_cards">show_known_cards</string>
     <string name="preferences_hide_known_cards_summary">Hide cards marked as known</string>
     <string name="preferences_hide_known_cards_title">Hide known cards</string>
+    <string name="preferences_show_plurals">show_plurals</string>
+    <string name="preferences_show_plurals_summary">Show Arabic plurals when available</string>
+    <string name="preferences_show_plurals_title">Show Arabic plurals</string>
     <string name="preferences_show_vowels">show_vowels</string>
     <string name="preferences_show_vowels_summary">Show vowels and other diacritics</string>
     <string name="preferences_show_vowels_title">Show vowels</string>
