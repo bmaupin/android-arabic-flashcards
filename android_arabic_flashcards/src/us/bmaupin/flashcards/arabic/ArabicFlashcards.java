@@ -62,6 +62,8 @@ public class ArabicFlashcards extends Activity {
 	private Map<String, String> nextCard;
 	private Resources resources;
 	private SharedPreferences preferences;
+	// whether or not to show Arabic plurals
+	private boolean showPlurals;
 	private boolean showVowels;
 	
 	// class variables for swipe
@@ -176,6 +178,9 @@ public class ArabicFlashcards extends Activity {
 	        // force a reload of the cards
 	        currentCard.clear();
 		}
+        showPlurals = preferences.getBoolean(
+                getString(R.string.preferences_show_plurals),
+                resources.getBoolean(R.bool.preferences_show_plurals_default));
 		showVowels = preferences.getBoolean(
                 getString(R.string.preferences_show_vowels),
                 resources.getBoolean(R.bool.preferences_show_vowels_default));
@@ -521,7 +526,7 @@ public class ArabicFlashcards extends Activity {
 		if (currentSide.equals("english")) {
 			showCard(currentView, currentCard, "arabic");
 		// only show plural if the current side is arabic and plural isn't empty
-		} else if (currentSide.equals("arabic") && 
+		} else if (showPlurals && currentSide.equals("arabic") && 
 		        !currentCard.get("plural").equals("")) {
 	        showCard(currentView, currentCard, "plural");
 		} else {
