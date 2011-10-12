@@ -1,2 +1,4 @@
-bin/
-gen/
+android_arabic_flashcards/bin/
+android_arabic_flashcards/gen/
+android_test/bin/
+android_test/gen/
