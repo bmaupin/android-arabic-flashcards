@@ -34,12 +34,10 @@
     </string-array>
     
     <string-array name="preferences_default_card_order_entries">
-        <item>@string/card_order_smart_entry</item>
         <item>@string/card_order_random_entry</item>
         <item>@string/card_order_in_order_entry</item>
     </string-array>
     <string-array name="preferences_default_card_order_values">
-        <item>@string/card_order_smart</item>
         <item>@string/card_order_random</item>
         <item>@string/card_order_in_order</item>
     </string-array>
