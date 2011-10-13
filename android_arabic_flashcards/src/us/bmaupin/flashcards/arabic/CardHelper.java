@@ -1,7 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-// $Id$
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,8 +75,9 @@ public class CardHelper {
     	
     	this.context = context;
     	// set the default card order
-    	this.cardOrder = context.getString(
-    	        R.string.preferences_default_card_order_default);
+    	this.cardOrder = context.getString(R.string.card_order_in_order);
+    	
+    	Log.d(TAG, "1 cardOrder=" + cardOrder);
     	
     	// set the profile table name, which will ensure the profile table exists
     	profileHelper.setProfileTableName(profileName);
@@ -162,11 +161,16 @@ public class CardHelper {
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + " %s ORDER BY ";
         
+        Log.d(TAG, "2 cardOrder=" + cardOrder);
+        Log.d(TAG, "R.string.card_order_in_order=" + context.getString(R.string.card_order_in_order));
+        
+        
         if (cardOrder.equals(context.getString(R.string.card_order_random))) {
             sql += "RANDOM()";
             if (askCardOrder) {
                 // reset the value so we don't shuffle every time
-                cardOrder = context.getString(R.string.card_order_smart);
+                cardOrder = context.getString(
+                        R.string.preferences_default_card_order_default);
             }
         } else if (cardOrder.equals(context.getString(
                 R.string.card_order_in_order))) {
@@ -189,13 +193,18 @@ public class CardHelper {
                         currentCardSubset + ") ";
                 sql += DatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
                         DatabaseHelper._ID;
-            } else {
+                Log.d(TAG, "card order is in order");
+            }
+/* disable smart mode            
+            else {
                 sql += DatabaseHelper.CARDS_TABLE + "." + DatabaseHelper._ID;
             }
+*/
             
             if (askCardOrder) {
                 // reset the value so we don't go in order every time
-                cardOrder = context.getString(R.string.card_order_smart);
+                cardOrder = context.getString(
+                        R.string.preferences_default_card_order_default);
             }
         } else {
             // secondary random sort so it's not always in the same order
