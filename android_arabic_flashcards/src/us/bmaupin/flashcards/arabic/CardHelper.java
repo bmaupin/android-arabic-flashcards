@@ -164,10 +164,6 @@ public class CardHelper {
             sqlCardSetSelection = " WHERE type = '" + currentCardSubset + 
             "'";
             
-        } else if (currentCardSet.equals(context.getString(
-                R.string.card_set_unknown))) {
-            sqlCardSetSelection = " WHERE " + ProfileDatabaseHelper.STATUS + 
-                " = 1";
         }
         
         if (hideKnownCards) {
