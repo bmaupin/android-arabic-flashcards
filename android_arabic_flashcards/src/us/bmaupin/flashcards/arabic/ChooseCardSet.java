@@ -75,13 +75,6 @@ public class ChooseCardSet extends Activity {
                         R.string.card_set_parts_of_speech))) {
                     showDialog(DIALOG_CARD_SET_PARTS_OF_SPEECH);
                     
-                } else if (itemText.equals(getString(
-                        R.string.card_set_unknown))) {
-                    Intent result = new Intent();
-                    result.putExtra(CARD_SET, 
-                            getString(R.string.card_set_unknown));
-                    setResult(RESULT_OK, result);
-                    finish();
                 }
 			}
 		});

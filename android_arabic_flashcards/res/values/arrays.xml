@@ -6,7 +6,6 @@
         <item>@string/card_set_ahlan_wa_sahlan</item>
         <item>@string/card_set_categories</item>
         <item>@string/card_set_parts_of_speech</item>
-        <item>@string/card_set_unknown</item>
     </string-array>
     
     <string-array name="dialog_parts_of_speech_entries">
