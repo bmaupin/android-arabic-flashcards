@@ -29,7 +29,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -508,16 +507,6 @@ public class ArabicFlashcards extends Activity {
     	ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
     	// get the child view (TextView)
     	currentView = (TextView) currentLayout.getChildAt(0);
-    	
-    	ImageView knownCheck = (ImageView) currentLayout.getChildAt(1);
-    	// if the current card is marked as "known"
-		if (currentCardStatus == 3) {
-			// show the check
-			knownCheck.setImageResource(R.drawable.btn_check_buttonless_on);
-		} else {
-			// otherwise remove the check
-			knownCheck.setImageResource(0);
-		}
     	
     	showCard(currentView, currentCard, defaultLang);
 	}
