@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id$ -->
 <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/flipper"
     android:orientation="vertical"
@@ -20,7 +19,6 @@
             android:layout_margin="30dp"
             android:textColor="#000000"
             />
-        <ImageView android:layout_height="wrap_content" android:id="@+id/knownCheck" android:layout_width="wrap_content" android:layout_alignTop="@+id/leftView" android:layout_alignRight="@+id/leftView" android:layout_margin="10dp" />
     </RelativeLayout>
     <RelativeLayout 
         android:orientation="vertical"
@@ -36,7 +34,6 @@
             android:layout_margin="30dp"
             android:textColor="#000000"
             />
-        <ImageView android:layout_height="wrap_content" android:id="@+id/knownCheck" android:layout_width="wrap_content" android:layout_alignTop="@+id/centerView" android:layout_alignRight="@+id/centerView" android:layout_margin="10dp" />
     </RelativeLayout>
     <RelativeLayout 
         android:orientation="vertical"
@@ -52,7 +49,6 @@
             android:layout_margin="30dp"
             android:textColor="#000000"
             />
-        <ImageView android:layout_height="wrap_content" android:id="@+id/knownCheck" android:layout_width="wrap_content" android:layout_alignTop="@+id/rightView" android:layout_alignRight="@+id/rightView" android:layout_margin="10dp" />
     </RelativeLayout>
 </ViewFlipper>
 <!--
