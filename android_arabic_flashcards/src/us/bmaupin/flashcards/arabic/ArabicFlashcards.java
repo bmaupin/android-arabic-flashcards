@@ -1,7 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-// $Id$
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +65,7 @@ public class ArabicFlashcards extends Activity {
 	
 	// class variables for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
-//    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
 //	private View.OnTouchListener gestureListener;
@@ -614,18 +612,18 @@ public class ArabicFlashcards extends Activity {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
-            	/*
                 if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                     return false;
                 // right to left swipe
                 if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                	showNextCard();
+                	showNextCard("right");
                 	return true;
+                // left to right
                 }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 	showPrevCard();
                 	return true;
                 }
-                */
+                /*
             	// from http://stackoverflow.com/questions/4098198/adding-fling-gesture-to-an-image-view-android
             	// right to left
                 if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
@@ -645,6 +643,7 @@ public class ArabicFlashcards extends Activity {
                 	showNextCard("down");
                 	return true;
                 }
+                */
                 return false;
             } catch (Exception e) {
                 // nothing
