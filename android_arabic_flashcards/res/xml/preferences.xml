@@ -24,11 +24,6 @@
             android:entryValues="@array/preferences_default_card_order_values"
             android:defaultValue="@string/preferences_default_card_order_default" />
         <CheckBoxPreference
-            android:key="@string/preferences_hide_known_cards"
-            android:title="@string/preferences_hide_known_cards_title"
-            android:summary="@string/preferences_hide_known_cards_summary"
-            android:defaultValue="@bool/preferences_hide_known_cards_default" />
-        <CheckBoxPreference
             android:key="@string/preferences_show_vowels"
             android:title="@string/preferences_show_vowels_title"
             android:summary="@string/preferences_show_vowels_summary"

@@ -24,7 +24,6 @@ public class CardHelper {
     private Cursor cursor = null;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase db;
-    private boolean hideKnownCards = false;
     private String profileName = "";
     
     /**
@@ -53,22 +52,6 @@ public class CardHelper {
      */
     public void setCardOrder(String cardOrder) {
         this.cardOrder = cardOrder;
-    }
-    
-    /**
-     * @return the hideKnownCards
-     */
-    public boolean isHideKnownCards() {
-        return hideKnownCards;
-    }
-
-    /**
-     * @param hideKnownCards the hideKnownCards to set
-     */
-    public void setHideKnownCards(boolean hideKnownCards) {
-        this.hideKnownCards = hideKnownCards;
-        // this will only be called if hideKnownCards changes, so force a reload
-        startOver();
     }
     
     /**
@@ -164,16 +147,6 @@ public class CardHelper {
             sqlCardSetSelection = " WHERE type = '" + currentCardSubset + 
             "'";
             
-        }
-        
-        if (hideKnownCards) {
-            if (sqlCardSetSelection.equals("")) {
-                sqlCardSetSelection = " WHERE " + ProfileDatabaseHelper.STATUS + 
-                " != 3 ";
-            } else {
-                sqlCardSetSelection = sqlCardSetSelection + " AND " + 
-                ProfileDatabaseHelper.STATUS + " != 3 ";
-            }
         }
     	
         String sql = "SELECT " + DatabaseHelper.CARDS_TABLE + "." + 

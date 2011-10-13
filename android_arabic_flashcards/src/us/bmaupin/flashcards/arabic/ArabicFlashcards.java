@@ -162,21 +162,6 @@ public class ArabicFlashcards extends Activity {
 		defaultLang = preferences.getString(
 		        getString(R.string.preferences_default_lang), 
 		        getString(R.string.preferences_default_lang_default));
-		// only change this if the values are different
-		if (ch.isHideKnownCards() != preferences.getBoolean(
-                getString(R.string.preferences_hide_known_cards),
-                resources.getBoolean(
-                        R.bool.preferences_hide_known_cards_default))) {
-		    Log.d(TAG, "onResume: isHideKnownCards is different");
-		    Log.d(TAG, "onResume: ch.isHideKnownCards()=" + ch.isHideKnownCards());
-	        ch.setHideKnownCards(preferences.getBoolean(
-	                getString(R.string.preferences_hide_known_cards),
-	                resources.getBoolean(
-	                        R.bool.preferences_hide_known_cards_default)));
-	        Log.d(TAG, "onResume: ch.isHideKnownCards()=" + ch.isHideKnownCards());
-	        // force a reload of the cards
-	        currentCard.clear();
-		}
         showPlurals = preferences.getBoolean(
                 getString(R.string.preferences_show_plurals),
                 resources.getBoolean(R.bool.preferences_show_plurals_default));
