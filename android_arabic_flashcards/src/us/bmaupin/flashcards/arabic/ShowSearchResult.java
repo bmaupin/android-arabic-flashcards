@@ -1,7 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-// $Id$
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,7 +15,7 @@ public class ShowSearchResult extends Activity {
     private String arabic = "";
     private int cardId;
     private SQLiteDatabase db;
-    private DatabaseHelper dbHelper;
+    private CardDatabaseHelper dbHelper;
     private String english = "";
     private String language = "";
     private boolean showVowels = true;
@@ -48,15 +46,15 @@ public class ShowSearchResult extends Activity {
          * onPause, but we don't need to here since we're only accessing the db
          * once
          */
-        dbHelper = new DatabaseHelper(this);
+        dbHelper = new CardDatabaseHelper(this);
         db = dbHelper.getReadableDatabase();
         
-        String[] columns = new String[] {DatabaseHelper.CARDS_ENGLISH, 
-                DatabaseHelper.CARDS_ARABIC};
-        String selection = DatabaseHelper._ID + " = ?";
+        String[] columns = new String[] {CardDatabaseHelper.CARDS_ENGLISH, 
+                CardDatabaseHelper.CARDS_ARABIC};
+        String selection = CardDatabaseHelper._ID + " = ?";
         String[] selectionArgs = new String[] {"" + cardId};
         
-        Cursor cursor = db.query(DatabaseHelper.CARDS_TABLE, columns, selection, 
+        Cursor cursor = db.query(CardDatabaseHelper.CARDS_TABLE, columns, selection, 
                 selectionArgs, null, null, null);
         
         cursor.moveToFirst();

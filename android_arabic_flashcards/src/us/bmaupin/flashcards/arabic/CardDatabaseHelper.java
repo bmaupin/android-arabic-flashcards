@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class CardDatabaseHelper extends SQLiteOpenHelper {
 	// tag for log messages
 	private static final String TAG = "DatabaseHelper";
 	
@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private final Context myContext;
 	private SQLiteDatabase mDatabase;
 	
-	public DatabaseHelper(Context context) {
+	public CardDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.myContext = context;
 	}

@@ -23,7 +23,7 @@ public class Search extends ListActivity {
     
     private Cursor cursor;
     private SQLiteDatabase db;
-    private DatabaseHelper dbHelper;
+    private CardDatabaseHelper dbHelper;
     private Intent intent;
     private boolean showVowels;
     
@@ -38,7 +38,7 @@ public class Search extends ListActivity {
         
         this.intent = getIntent();
         
-        dbHelper = new DatabaseHelper(this);
+        dbHelper = new CardDatabaseHelper(this);
         db = dbHelper.getReadableDatabase();
     }
     
@@ -65,12 +65,12 @@ public class Search extends ListActivity {
             showVowels = appData.getBoolean(ArabicFlashcards.EXTRA_SHOW_VOWELS);
         }
         
-        String[] columns = new String[] {DatabaseHelper._ID, 
-                DatabaseHelper.CARDS_ENGLISH, DatabaseHelper.CARDS_ARABIC};
-        String selection = DatabaseHelper.CARDS_ENGLISH + " LIKE ?";
+        String[] columns = new String[] {CardDatabaseHelper._ID, 
+                CardDatabaseHelper.CARDS_ENGLISH, CardDatabaseHelper.CARDS_ARABIC};
+        String selection = CardDatabaseHelper.CARDS_ENGLISH + " LIKE ?";
         String[] selectionArgs = new String[] {"%" + query + "%"};
         
-        cursor = db.query(DatabaseHelper.CARDS_TABLE, columns, selection, 
+        cursor = db.query(CardDatabaseHelper.CARDS_TABLE, columns, selection, 
                 selectionArgs, null, null, null);
         startManagingCursor(cursor);
         
@@ -78,7 +78,7 @@ public class Search extends ListActivity {
                 this,
                 android.R.layout.simple_list_item_2,
                 cursor,
-                new String[] {DatabaseHelper.CARDS_ENGLISH, DatabaseHelper.CARDS_ARABIC},
+                new String[] {CardDatabaseHelper.CARDS_ENGLISH, CardDatabaseHelper.CARDS_ARABIC},
                 new int[] { android.R.id.text1, android.R.id.text2 });
 
         // http://stackoverflow.com/questions/3609126/changing-values-from-cursor-using-simplecursoradapter
