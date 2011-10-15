@@ -9,7 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-public class ShowSearchResult extends Activity {
+public class ShowOneCard extends Activity {
     private static final String TAG = "ShowSearchResult";
     
     private String arabic = "";

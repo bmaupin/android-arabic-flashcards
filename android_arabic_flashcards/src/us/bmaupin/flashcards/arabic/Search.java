@@ -106,7 +106,7 @@ public class Search extends ListActivity {
         Cursor cursor = (Cursor) this.getListAdapter().getItem(position);
         int cardId = cursor.getInt(cursor.getColumnIndex("_id"));
         
-        Intent intent = new Intent(this, ShowSearchResult.class);
+        Intent intent = new Intent(this, ShowOneCard.class);
         intent.putExtra(EXTRA_CARD_ID, cardId);
         intent.putExtra(ArabicFlashcards.EXTRA_SHOW_VOWELS, showVowels);
         startActivity(intent);
