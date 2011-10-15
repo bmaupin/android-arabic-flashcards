@@ -1,7 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-// $Id$
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,7 +27,7 @@ public class ChooseCardSet extends Activity {
 	private static final String TAG = "ChooseCards";
 	
 	String selectedChapter;
-	private DatabaseHelper helper;
+	private CardDatabaseHelper helper;
 	private SQLiteDatabase db; 
 	
 	Context context = ChooseCardSet.this;
@@ -97,8 +95,8 @@ public class ChooseCardSet extends Activity {
 		Log.d(TAG, "createAWSChapterDialog");
 		
 		final String[] chapters = getColumnValues(
-		        DatabaseHelper.AWS_CHAPTERS_TABLE, 
-		        DatabaseHelper.AWS_CHAPTERS_CHAPTER);
+		        CardDatabaseHelper.AWS_CHAPTERS_TABLE, 
+		        CardDatabaseHelper.AWS_CHAPTERS_CHAPTER);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.dialog_choose_aws_chapter_title);
@@ -123,8 +121,8 @@ public class ChooseCardSet extends Activity {
     private Dialog createChooseCategoryDialog() {
         Log.d(TAG, "createChooseCategoryDialog");
         
-        final String[] categories = getColumnValues(DatabaseHelper.CARDS_TABLE, 
-                DatabaseHelper.CARDS_CATEGORY);
+        final String[] categories = getColumnValues(CardDatabaseHelper.CARDS_TABLE, 
+                CardDatabaseHelper.CARDS_CATEGORY);
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_choose_card_category_title);
@@ -186,7 +184,7 @@ public class ChooseCardSet extends Activity {
         // as much fun as it'd be, let's not get null or empty values
         String WHERE = column + " not NULL and " + column + " != ''";
         
-        helper = new DatabaseHelper(this);
+        helper = new CardDatabaseHelper(this);
         db = helper.getReadableDatabase();
         
         // do a query for unique/distinct rows only

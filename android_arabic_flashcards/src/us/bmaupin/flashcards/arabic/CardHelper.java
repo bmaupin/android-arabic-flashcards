@@ -20,7 +20,7 @@ public class CardHelper {
     private String currentCardSet = "All";
     private String currentCardSubset = "";
     private Cursor cursor = null;
-    private DatabaseHelper dbHelper;
+    private CardDatabaseHelper dbHelper;
     private SQLiteDatabase db;
     private String profileName = "";
     
@@ -90,7 +90,7 @@ public class CardHelper {
 
     	profileHelper.close();
         
-        dbHelper = new DatabaseHelper(context);
+        dbHelper = new CardDatabaseHelper(context);
         db = dbHelper.getReadableDatabase();
         db.execSQL("attach database ? as " + PROFILE_DB, 
             new String[] {context.getDatabasePath(ProfileDatabaseHelper.DATABASE_NAME).getPath()});
@@ -129,11 +129,11 @@ public class CardHelper {
         
         if (currentCardSet.equals(context.getString(
                 R.string.card_set_ahlan_wa_sahlan))) {
-            sqlCardSetSelection = " WHERE " + DatabaseHelper.CARDS_TABLE + "." + 
-                    DatabaseHelper._ID + " IN (SELECT " + 
-                    DatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
-                    DatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
-                    DatabaseHelper.AWS_CHAPTERS_CHAPTER + " = " + 
+            sqlCardSetSelection = " WHERE " + CardDatabaseHelper.CARDS_TABLE + "." + 
+                    CardDatabaseHelper._ID + " IN (SELECT " + 
+                    CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
+                    CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
+                    CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = " + 
                     currentCardSubset + ") ";
             
         } else if (currentCardSet.equals(context.getString(
@@ -148,15 +148,15 @@ public class CardHelper {
             
         }
     	
-        String sql = "SELECT " + DatabaseHelper.CARDS_TABLE + "." + 
-            DatabaseHelper._ID + ", " +
-            DatabaseHelper.CARDS_ENGLISH + ", " +
-            DatabaseHelper.CARDS_ARABIC + ", " +
-            DatabaseHelper.CARDS_PLURAL + ", " +
+        String sql = "SELECT " + CardDatabaseHelper.CARDS_TABLE + "." + 
+            CardDatabaseHelper._ID + ", " +
+            CardDatabaseHelper.CARDS_ENGLISH + ", " +
+            CardDatabaseHelper.CARDS_ARABIC + ", " +
+            CardDatabaseHelper.CARDS_PLURAL + ", " +
             ProfileDatabaseHelper.STATUS +
-            " FROM " + DatabaseHelper.CARDS_TABLE +
+            " FROM " + CardDatabaseHelper.CARDS_TABLE +
             " LEFT JOIN " + PROFILE_DB + "." + profileName + 
-            " ON " + DatabaseHelper.CARDS_TABLE + "." + BaseColumns._ID
+            " ON " + CardDatabaseHelper.CARDS_TABLE + "." + BaseColumns._ID
             + " = " + PROFILE_DB + "." +
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + " %s ORDER BY ";
@@ -179,20 +179,20 @@ public class CardHelper {
             if (currentCardSet.equals(context.getString(
                     R.string.card_set_ahlan_wa_sahlan))) {
                 sqlCardSetSelection = " LEFT JOIN " + 
-                        DatabaseHelper.AWS_CHAPTERS_TABLE + " ON " + 
-                        DatabaseHelper.CARDS_TABLE + "." + DatabaseHelper._ID + 
-                        " = " + DatabaseHelper.AWS_CHAPTERS_TABLE + "." +
-                        DatabaseHelper.AWS_CHAPTERS_CARD_ID + " " +
+                        CardDatabaseHelper.AWS_CHAPTERS_TABLE + " ON " + 
+                        CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID + 
+                        " = " + CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." +
+                        CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " " +
                         sqlCardSetSelection +
-                        " AND " + DatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
-                        DatabaseHelper._ID + " IN (SELECT " + 
-                        DatabaseHelper._ID +
-                        " FROM " + DatabaseHelper.AWS_CHAPTERS_TABLE + 
+                        " AND " + CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
+                        CardDatabaseHelper._ID + " IN (SELECT " + 
+                        CardDatabaseHelper._ID +
+                        " FROM " + CardDatabaseHelper.AWS_CHAPTERS_TABLE + 
                         " WHERE " +
-                        DatabaseHelper.AWS_CHAPTERS_CHAPTER + " = " +
+                        CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = " +
                         currentCardSubset + ") ";
-                sql += DatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
-                        DatabaseHelper._ID;
+                sql += CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
+                        CardDatabaseHelper._ID;
                 Log.d(TAG, "card order is in order");
             }
 /* disable smart mode            
@@ -280,18 +280,18 @@ public class CardHelper {
         Map<String, String> thisCard = new HashMap<String, String>();
         
         String sql = "SELECT " +
-            DatabaseHelper.CARDS_ENGLISH + ", " +
-            DatabaseHelper.CARDS_ARABIC + ", " +
-            DatabaseHelper.CARDS_PLURAL + ", " +
+            CardDatabaseHelper.CARDS_ENGLISH + ", " +
+            CardDatabaseHelper.CARDS_ARABIC + ", " +
+            CardDatabaseHelper.CARDS_PLURAL + ", " +
             ProfileDatabaseHelper.STATUS +
-            " FROM " + DatabaseHelper.CARDS_TABLE +
+            " FROM " + CardDatabaseHelper.CARDS_TABLE +
             " LEFT JOIN " + PROFILE_DB + "." + profileName +
-            " ON " + DatabaseHelper.CARDS_TABLE + "." + BaseColumns._ID
+            " ON " + CardDatabaseHelper.CARDS_TABLE + "." + BaseColumns._ID
             + " = " + PROFILE_DB + "." +
             profileName + "." + 
             ProfileDatabaseHelper.CARD_ID + 
-            " WHERE " + DatabaseHelper.CARDS_TABLE + "." +
-            DatabaseHelper._ID + " = %s";
+            " WHERE " + CardDatabaseHelper.CARDS_TABLE + "." +
+            CardDatabaseHelper._ID + " = %s";
         
         Cursor thisCursor = db.rawQuery(String.format(sql, thisId), null);
         thisCursor.moveToFirst();
