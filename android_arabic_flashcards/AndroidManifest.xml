@@ -33,7 +33,7 @@
                   android:label="@string/preferences_title"
                   android:theme="@android:style/Theme" >
         </activity>
-        <activity android:name=".ShowSearchResult" >
+        <activity android:name=".ShowOneCard" >
         </activity>
         <activity android:name=".Search"
                   android:launchMode="singleTop" >
