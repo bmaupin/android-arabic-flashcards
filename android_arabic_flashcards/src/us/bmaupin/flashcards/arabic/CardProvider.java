@@ -1,13 +1,28 @@
 package us.bmaupin.flashcards.arabic;
 
+import java.util.HashMap;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.provider.BaseColumns;
 
 public class CardProvider extends ContentProvider {
-	private static final String AUTHORITY = "us.bmaupin.flashcards.arabic.cardprovider";
-	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    public static final class Cards implements BaseColumns {
+        public static final String AUTHORITY = "us.bmaupin.flashcards.arabic.cardprovider";
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    }
+    
+    private static final int CARDS = 1;
+    private static final String CARDS_BASE_PATH = "cards";
+    private static final int CARD_ID = 2;
+    
+    private CardDatabaseHelper cardDbHelper;
+    private static HashMap<String, String> sCardsProjectionMap;
+
 
 /*
 	private static final String AUTHORITY = "com.mamlambo.tutorial.tutlist.data.TutListProvider";
@@ -24,8 +39,39 @@ public class CardProvider extends ContentProvider {
 	        + "/mt-tutorial";
 */
 	
-	private CardDatabaseHelper cardDbHelper;
-	
+    private static final UriMatcher sUriMatcher;
+
+    static {
+        sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        sUriMatcher.addURI(Cards.AUTHORITY, CARDS_BASE_PATH, CARDS);
+        sUriMatcher.addURI(Cards.AUTHORITY, CARDS_BASE_PATH + "/#", CARD_ID);
+        
+        sCardsProjectionMap = new HashMap<String, String>();
+        sCardsProjectionMap = new HashMap<String, String>();
+
+    }
+    
+    @Override
+    public boolean onCreate() {
+        cardDbHelper = new CardDatabaseHelper(getContext());
+        
+        return true;
+    }
+    
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection,
+            String[] selectionArgs, String sort) {
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(CardDatabaseHelper.CARDS_TABLE);
+        
+        switch (sUriMatcher.match(uri)) {
+            case CARDS:
+                qb.setProjectionMap(sNotesProjectionMap);
+                break;
+        }
+
+        return null;
+    }
 	
 	
 	@Override
@@ -46,24 +92,15 @@ public class CardProvider extends ContentProvider {
 		return null;
 	}
 
-	@Override
-	public boolean onCreate() {
-		cardDbHelper = new CardDatabaseHelper(getContext());
-		
-		return true;
-	}
 
-	@Override
-	public Cursor query(Uri arg0, String[] arg1, String arg2, String[] arg3,
-			String arg4) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
 
 	@Override
 	public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 
 }
