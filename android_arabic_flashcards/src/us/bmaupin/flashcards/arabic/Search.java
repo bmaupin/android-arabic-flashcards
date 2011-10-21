@@ -1,7 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-// $Id$
-
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
