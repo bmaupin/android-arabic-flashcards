@@ -11,6 +11,8 @@ public class ChooseStudySet extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
+        
+        setContentView(R.layout.choose_study_set);
     }
     
     @Override
