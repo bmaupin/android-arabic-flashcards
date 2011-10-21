@@ -1,7 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-import java.util.HashMap;
-
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -10,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.text.TextUtils;
 
 public class CardProvider extends ContentProvider {
     public static final class Cards implements BaseColumns {
@@ -24,25 +21,12 @@ public class CardProvider extends ContentProvider {
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
+    // content provider mime type constants
+    public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.bmaupin.card";
+    public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.bmaupin.card";
     
     private CardDatabaseHelper cardDbHelper;
 
-
-/*
-	private static final String AUTHORITY = "com.mamlambo.tutorial.tutlist.data.TutListProvider";
-	public static final int TUTORIALS = 100;
-	public static final int TUTORIAL_ID = 110;
-	 
-	private static final String TUTORIALS_BASE_PATH = "tutorials";
-	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-	        + "/" + TUTORIALS_BASE_PATH);
-	 
-	public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-	        + "/mt-tutorial";
-	public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-	        + "/mt-tutorial";
-*/
-	
     private static final UriMatcher sUriMatcher;
 
     static {
@@ -125,8 +109,17 @@ public class CardProvider extends ContentProvider {
 	}
 
 	@Override
-	public String getType(Uri arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String getType(Uri uri) {
+       switch (sUriMatcher.match(uri)) {
+
+           case CARDS:
+               return CONTENT_TYPE;
+
+           case CARD_ID:
+               return CONTENT_ITEM_TYPE;
+
+           default:
+               throw new IllegalArgumentException("Unknown URI " + uri);
+       }
+    }
 }
