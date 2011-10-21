@@ -21,9 +21,11 @@
         	      android:label="@string/about_title"
         	      android:theme="@android:style/Theme.Dialog" >
         </activity>
-        <activity android:name="ChooseCardSet"
+        <activity android:name=".ChooseCardSet"
                   android:label="@string/choose_cards_title"
                   android:theme="@android:style/Theme" >
+        </activity>
+        <activity android:name=".ChooseStudySet" >
         </activity>
         <activity android:name=".Help"
                   android:label="@string/help_title"
