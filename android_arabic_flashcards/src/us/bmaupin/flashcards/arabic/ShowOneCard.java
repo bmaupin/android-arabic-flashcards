@@ -30,7 +30,7 @@ public class ShowOneCard extends Activity {
         cardId = bundle.getInt(Search.EXTRA_CARD_ID);
         showVowels = bundle.getBoolean(ArabicFlashcards.EXTRA_SHOW_VOWELS);
         
-        setContentView(R.layout.search_result);
+        setContentView(R.layout.show_one_card);
         
         tv = (TextView) findViewById(R.id.textview);
         HelperMethods.setArabicTypeface(this, tv);
