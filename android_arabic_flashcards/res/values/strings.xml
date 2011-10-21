@@ -100,4 +100,7 @@
     
     <string name="search_hint">Search cards</string>
     <string name="search_no_results">No results found</string>
+    
+    <string name="study_set_create_new">Create a new study set</string>
+    <string name="study_set_free_mode">Free mode</string>
 </resources>

@@ -111,10 +111,10 @@ public class ArabicFlashcards extends Activity {
         };
 */
         
-    	ch = new CardHelper(this);
+//    	ch = new CardHelper(this);
         
     	// create objects for shared preferences and resources
-        preferences = getSharedPreferences(ch.getProfileName(), MODE_PRIVATE);
+//        preferences = getSharedPreferences(ch.getProfileName(), MODE_PRIVATE);
         resources = getResources();
 		      
 //		Typeface face=Typeface.createFromAsset(getAssets(), "fonts/DejaVuSans.ttf");
@@ -137,16 +137,15 @@ public class ArabicFlashcards extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-//		
 		Log.d(TAG, "onStart called");
 	}
     
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		
 		Log.d(TAG, "onResume called");
 		
+/*		
 		// get any preferences that may have changed
 		ch.setAskCardOrder(preferences.getBoolean(
 		      getString(R.string.preferences_ask_card_order),
@@ -177,21 +176,22 @@ public class ArabicFlashcards extends Activity {
 	        // reshow the current card in case anything's changed
 	        reshowCurrentCard();
 		}
+*/
+		
+		startActivity(new Intent(this, ChooseStudySet.class));
 	}
     
     @Override
     protected void onStop(){
     	super.onStop();
-//       
 		Log.d(TAG, "onStop called");
     }
     
 	@Override
 	protected void onPause() {
 		super.onPause();
-//		
 		Log.d(TAG, "onPause called");
-		
+/*		
 		// save any preferences that can be changed outside the preferences activity
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putBoolean(getString(R.string.preferences_ask_card_order), 
@@ -201,6 +201,7 @@ public class ArabicFlashcards extends Activity {
 		
 		// Commit the edits!
 		editor.commit();
+*/
 	}
 
 	@Override
