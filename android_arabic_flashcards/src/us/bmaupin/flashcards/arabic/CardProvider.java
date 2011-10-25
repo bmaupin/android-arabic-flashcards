@@ -7,17 +7,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.provider.BaseColumns;
 
 public class CardProvider extends ContentProvider {
-    public static final class Cards implements BaseColumns {
-        public static final String AUTHORITY = "us.bmaupin.flashcards.arabic.cardprovider";
-        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-    }
-    
     // various constants
+    public static final String AUTHORITY = "us.bmaupin.flashcards.arabic.cardprovider";
     private static final String CARDS_BASE_PATH = "cards";
     private static final int CARD_ID_PATH_POSITION = 1;
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY 
+            + CARDS_BASE_PATH);
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
@@ -31,8 +28,8 @@ public class CardProvider extends ContentProvider {
 
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI(Cards.AUTHORITY, CARDS_BASE_PATH, CARDS);
-        sUriMatcher.addURI(Cards.AUTHORITY, CARDS_BASE_PATH + "/#", CARD_ID);
+        sUriMatcher.addURI(AUTHORITY, CARDS_BASE_PATH, CARDS);
+        sUriMatcher.addURI(AUTHORITY, CARDS_BASE_PATH + "/#", CARD_ID);
     }
     
     @Override
