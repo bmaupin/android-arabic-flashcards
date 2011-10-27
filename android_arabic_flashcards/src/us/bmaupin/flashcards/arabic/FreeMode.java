@@ -2,6 +2,8 @@ package us.bmaupin.flashcards.arabic;
 
 import us.bmaupin.flashcards.arabic.ArabicFlashcards.MyGestureDetector;
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,9 +11,11 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -29,8 +33,15 @@ public class FreeMode extends Activity {
         CardDatabaseHelper.CARDS_ARABIC,
     };
     
+    // current card language
+    private String currentLang;
     private Cursor cursor;
+    // default card language 
+    private String defaultLang;
     private GestureDetector gestureDetector;
+    private SharedPreferences preferences;
+    private Resources resources;
+    private boolean showVowels;
     private Animation slideLeftIn;
     private Animation slideLeftOut;
     private Animation slideRightIn;
@@ -52,6 +63,10 @@ public class FreeMode extends Activity {
         
         gestureDetector = new GestureDetector(new MyGestureDetector());
         
+        // create objects for shared preferences and resources
+      preferences = getPreferences(MODE_PRIVATE);
+      resources = getResources();
+        
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/KacstOne.ttf");
 
         // set the typeface for the three TextViews within the ViewFlipper
@@ -71,16 +86,6 @@ public class FreeMode extends Activity {
         
         String selection = "";
         String[] selectionArgs = new String[] {};
-        
-/*        
-        cursor = getContentResolver().query(
-                CardProvider.CONTENT_URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                null
-        );
-*/
         
         cursor = managedQuery(
                 CardProvider.CONTENT_URI,
@@ -125,6 +130,34 @@ public class FreeMode extends Activity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
+        
+        // get any preferences that may have changed
+/*        
+        ch.setAskCardOrder(preferences.getBoolean(
+              getString(R.string.preferences_ask_card_order),
+              resources.getBoolean(R.bool.preferences_ask_card_order_default)));
+        // if we're gonna ask for card order anyway, don't need to change it
+        if (!ch.isAskCardOrder()) {
+            ch.setCardOrder(preferences.getString(
+                   getString(R.string.preferences_default_card_order), 
+                   getString(R.string.preferences_default_card_order_default)));
+        }
+        showPlurals = preferences.getBoolean(
+                getString(R.string.preferences_show_plurals),
+                resources.getBoolean(R.bool.preferences_show_plurals_default));
+*/
+        defaultLang = preferences.getString(
+                getString(R.string.preferences_default_lang), 
+                getString(R.string.preferences_default_lang_default));
+        showVowels = preferences.getBoolean(
+                getString(R.string.preferences_show_vowels),
+                resources.getBoolean(R.bool.preferences_show_vowels_default));
+        
+        if (currentLang == null || currentLang.equals("")) {
+            currentLang = defaultLang;
+        }
+        
+        showFirstCard();
     }
 
     @Override
@@ -184,6 +217,22 @@ public class FreeMode extends Activity {
             return true;
         else
             return false;
+    }
+    
+    private void showFirstCard() {
+        ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
+        // get the child view (TextView)
+        TextView currentView = (TextView) currentLayout.getChildAt(0);
+        
+        if (currentLang.equals("english")) {
+            currentView.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
+            currentView.setText(cursor.getString(1));
+            
+        } else if (currentLang.equals("arabic")) {
+            currentView.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
+            currentView.setText(HelperMethods.fixArabic(cursor.getString(2), 
+                    showVowels));
+        }
     }
     
     private void showNextCard() {
