@@ -49,7 +49,9 @@
         </activity>
         <provider android:name=".CardProvider"
                   android:authorities="us.bmaupin.flashcards.arabic.cardprovider"
-                  android:exported="false" />
+                  android:exported="false" >
+                  <grant-uri-permission android:pathPattern=".*" />
+        </provider>
     </application>
     <uses-sdk android:minSdkVersion="4" />
 

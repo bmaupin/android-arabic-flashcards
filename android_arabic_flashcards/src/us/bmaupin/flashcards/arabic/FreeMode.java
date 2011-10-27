@@ -72,6 +72,16 @@ public class FreeMode extends Activity {
         String selection = "";
         String[] selectionArgs = new String[] {};
         
+/*        
+        cursor = getContentResolver().query(
+                CardProvider.CONTENT_URI,
+                PROJECTION,
+                selection,
+                selectionArgs,
+                null
+        );
+*/
+        
         cursor = managedQuery(
                 CardProvider.CONTENT_URI,
                 PROJECTION,
@@ -79,10 +89,13 @@ public class FreeMode extends Activity {
                 selectionArgs,
                 null
         );
+
         // make sure the cursor isn't empty
-//        if (cursor != null && cursor.getCount() != 0) {
+        if (cursor != null && cursor.getCount() != 0) {
             cursor.moveToFirst();
-//        }
+            
+            Toast.makeText(getApplicationContext(), cursor.getString(1), Toast.LENGTH_SHORT).show();
+        }
         
 /*        
         if (currentCardSet.equals(context.getString(
