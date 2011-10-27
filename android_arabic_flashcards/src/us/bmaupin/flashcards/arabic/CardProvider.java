@@ -7,14 +7,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 public class CardProvider extends ContentProvider {
     // various constants
     public static final String AUTHORITY = "us.bmaupin.flashcards.arabic.cardprovider";
-    private static final String CARDS_BASE_PATH = "cards";
     private static final int CARD_ID_PATH_POSITION = 1;
+    private static final String PATH_CARDS = "cards";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY 
-            + CARDS_BASE_PATH);
+            + "/" + PATH_CARDS);
+    private static final String TAG = "CardProvider";
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
@@ -28,12 +30,13 @@ public class CardProvider extends ContentProvider {
 
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI(AUTHORITY, CARDS_BASE_PATH, CARDS);
-        sUriMatcher.addURI(AUTHORITY, CARDS_BASE_PATH + "/#", CARD_ID);
+        sUriMatcher.addURI(AUTHORITY, PATH_CARDS, CARDS);
+        sUriMatcher.addURI(AUTHORITY, PATH_CARDS + "/#", CARD_ID);
     }
     
     @Override
     public boolean onCreate() {
+        Log.d(TAG, "onCreate()");
         cardDbHelper = new CardDatabaseHelper(getContext());
         
         return true;
@@ -42,6 +45,7 @@ public class CardProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
             String[] selectionArgs, String sortOrder) {
+        Log.d(TAG, "query()");
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(CardDatabaseHelper.CARDS_TABLE);
         
