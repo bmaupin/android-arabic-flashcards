@@ -7,7 +7,7 @@
     >
     <TextView
         android:id="@+id/textview"
-        android:background="@layout/card"
+        android:background="@layout/card_background"
         android:gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
