@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import us.bmaupin.flashcards.arabic.ArabicFlashcards.MyGestureDetector;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -29,6 +32,9 @@ import android.widget.ViewFlipper;
 
 public class FreeMode extends Activity {
     private static final String TAG = "ShowCards";
+    // dialog id constants
+    private static final int DIALOG_NO_CARDS = 0;
+    private static final int DIALOG_NO_MORE_CARDS = 1;
     // constants for swipe
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_MIN_DISTANCE = 120;
@@ -136,11 +142,9 @@ public class FreeMode extends Activity {
         );
 
         // make sure the cursor isn't empty
+        // if it is empty, we take care of that in onResume
         if (cursor != null && cursor.getCount() != 0) {
             cursor.moveToFirst();
-        } else {
-// TODO: handle if cursor contains no cards
-            int doSomethingHere;
         }
     }
     
@@ -179,7 +183,11 @@ public class FreeMode extends Activity {
         	cursor.moveToPosition(cursorPosition);
         }
         
-        showFirstCard();
+        if (cursor == null || cursor.getCount() == 0) {
+        	showDialog(DIALOG_NO_CARDS);
+        } else {
+        	showFirstCard();
+        }
     }
     
 	/* Inflates the menu */
@@ -273,7 +281,7 @@ public class FreeMode extends Activity {
     }
     
     private void showFirstCard() {
-    	setCurrentCardText();
+		setCurrentCardText();
     }
     
     private void setCardText(int layoutIndexToShow) {
@@ -355,6 +363,32 @@ public class FreeMode extends Activity {
         }
         // update the text of the current card
         setCurrentCardText();
+    }
+    
+	@Override
+	protected Dialog onCreateDialog(int id) {
+	    switch (id) {
+        case DIALOG_NO_CARDS:
+            return createNoCardsDialog();
+	    case DIALOG_NO_MORE_CARDS:
+//	        return createNoMoreCardsDialog();
+	    }
+	    return null;
+	}
+	
+    private Dialog createNoCardsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Sorry, the set of cards you selected is empty.  " +
+        		"Please choose a different set of cards.")
+                .setCancelable(false)
+                .setPositiveButton("Choose new cards", 
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+        AlertDialog ad = builder.create();
+        return ad;
     }
     
     @Override
