@@ -223,7 +223,7 @@ public class FreeMode extends Activity {
     }
     
     private void showFirstCard() {
-        setCardText(vf.getDisplayedChild());
+    	setCurrentCardText();
     }
     
     private void setCardText(int layoutIndexToShow) {
@@ -239,6 +239,10 @@ public class FreeMode extends Activity {
             tv.setText(HelperMethods.fixArabic(cursor.getString(2), 
                     showVowels));
         }
+    }
+    
+    private void setCurrentCardText() {
+    	setCardText(vf.getDisplayedChild());
     }
     
     /*
@@ -266,6 +270,8 @@ public class FreeMode extends Activity {
 //            showDialog(DIALOG_NO_MORE_CARDS);
         } else {
             cursor.moveToNext();
+            // reset the card language that will show first
+            currentLang = defaultLang;
             setUnseenCardText();
             
             vf.setInAnimation(slideLeftIn);
@@ -280,6 +286,8 @@ public class FreeMode extends Activity {
             Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
         } else {
             cursor.moveToPrevious();
+            // reset the card language that will show first
+            currentLang = defaultLang;
             setUnseenCardText();
             
             vf.setInAnimation(slideRightIn);
@@ -289,17 +297,14 @@ public class FreeMode extends Activity {
     }
     
     private void flipCard() {
-/*
-        if (currentSide.equals("english")) {
-            showCard(currentView, currentCard, "arabic");
-        // only show plural if the current side is arabic and plural isn't empty
-        } else if (showPlurals && currentSide.equals("arabic") && 
-                !currentCard.get("plural").equals("")) {
-            showCard(currentView, currentCard, "plural");
-        } else {
-            showCard(currentView, currentCard, "english");
+        if (currentLang.equals("english")) {
+            currentLang = "arabic";
+            
+        } else if (currentLang.equals("arabic")) {
+            currentLang = "english";
         }
-*/
+        // update the text of the current card
+        setCurrentCardText();
     }
     
     @Override
