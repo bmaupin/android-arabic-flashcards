@@ -30,10 +30,9 @@
             android:defaultValue="@bool/preferences_show_vowels_default" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Profiles">
+        android:title="@string/preferenece_category_about_title">
         <Preference
-            android:key="@string/preferences_delete_profile"
-            android:title="@string/preferences_delete_profile_title"
-            android:summary="@string/preferences_delete_profile_summary" />
+            android:key="@string/preferences_about"
+            android:title="@string/preferences_about_title" />
     </PreferenceCategory>
 </PreferenceScreen>
