@@ -194,10 +194,7 @@ public class FreeMode extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
-/*
-        	case R.id.menu_about:
-        		startActivity(new Intent(this, About.class));
-        		return true;
+// TODO: do we want to add a way to go back to ChooseStudySet?
 /*
         	case R.id.menu_choose_cards:
         		chooseCardSet();
@@ -212,12 +209,6 @@ public class FreeMode extends Activity {
         	case R.id.menu_search:
         	    onSearchRequested();
         	    return true;
-        	// uncomment this (and the res/menu/menu.xml entry) for testing
-        	/*
-        	case R.id.menu_choose_card:
-        	    showDialog(DIALOG_TESTING_CHOOSE_CARDS);
-        	    return true;
-        	*/
     	}
     	return false;
     }
