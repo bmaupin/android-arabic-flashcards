@@ -28,11 +28,6 @@
             android:title="@string/preferences_show_vowels_title"
             android:summary="@string/preferences_show_vowels_summary"
             android:defaultValue="@bool/preferences_show_vowels_default" />
-        <CheckBoxPreference
-            android:key="@string/preferences_show_plurals"
-            android:title="@string/preferences_show_plurals_title"
-            android:summary="@string/preferences_show_plurals_summary"
-            android:defaultValue="@bool/preferences_show_plurals_default" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Profiles">

@@ -3,5 +3,4 @@
 <resources>
     <bool name="preferences_ask_card_order_default">true</bool>
     <bool name="preferences_show_vowels_default">true</bool>
-    <bool name="preferences_show_plurals_default">false</bool>
 </resources>
