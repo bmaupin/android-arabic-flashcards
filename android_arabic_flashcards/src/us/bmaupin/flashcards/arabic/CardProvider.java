@@ -77,17 +77,6 @@ public class CardProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
 
-/*
-        String orderBy;
-        // If no sort order is specified, uses the default
-        if (TextUtils.isEmpty(sortOrder)) {
-            orderBy = NotePad.Notes.DEFAULT_SORT_ORDER;
-        } else {
-            // otherwise, uses the incoming sort order
-            orderBy = sortOrder;
-        }
-*/
-
         SQLiteDatabase db = cardDbHelper.getReadableDatabase();
 
         Cursor c = qb.query(
