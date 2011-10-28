@@ -102,7 +102,7 @@ public class FreeMode extends Activity {
             cursor.moveToFirst();
         } else {
 // TODO: handle if cursor contains no cards
-        	int doSomethingHere;
+            int doSomethingHere;
         }
         
 /*        
@@ -223,13 +223,13 @@ public class FreeMode extends Activity {
     }
     
     private void showFirstCard() {
-    	setCardText(vf.getDisplayedChild());
+        setCardText(vf.getDisplayedChild());
     }
     
     private void setCardText(int layoutIndexToShow) {
-    	ViewGroup rl = (RelativeLayout)vf.getChildAt(layoutIndexToShow);
-    	TextView tv = (TextView)rl.getChildAt(0);
-    	
+        ViewGroup rl = (RelativeLayout)vf.getChildAt(layoutIndexToShow);
+        TextView tv = (TextView)rl.getChildAt(0);
+        
         if (currentLang.equals("english")) {
             tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
             tv.setText(cursor.getString(1));
@@ -245,33 +245,33 @@ public class FreeMode extends Activity {
      * sets the text of the card that isn't seen
      */
     private void setUnseenCardText() {
-    	// the index of the layout view we want to show
-    	int layoutIndexToShow;
-    	// we want to change the layout that isn't currently being shown
-    	if (vf.getDisplayedChild() == 0) {
-    		layoutIndexToShow = 1;
-    	} else {
-    		layoutIndexToShow = 0;
-    	}
-    	
-    	setCardText(layoutIndexToShow);
+        // the index of the layout view we want to show
+        int layoutIndexToShow;
+        // we want to change the layout that isn't currently being shown
+        if (vf.getDisplayedChild() == 0) {
+            layoutIndexToShow = 1;
+        } else {
+            layoutIndexToShow = 0;
+        }
+        
+        setCardText(layoutIndexToShow);
     }
     
     private void showNextCard() {
-    	if (cursor.isLast()) {
-    	    // return a blank card so we can show the user a message that
+        if (cursor.isLast()) {
+            // return a blank card so we can show the user a message that
             // there aren't any more cards (or any cards at all)
 // TODO: do something if no more cards to show
-    		int doSomethingHere;
-//			showDialog(DIALOG_NO_MORE_CARDS);    		
-    	} else {
-    	    cursor.moveToNext();
-    	    setUnseenCardText();
-    	    
+            int doSomethingHere;
+//            showDialog(DIALOG_NO_MORE_CARDS);
+        } else {
+            cursor.moveToNext();
+            setUnseenCardText();
+            
             vf.setInAnimation(slideLeftIn);
             vf.setOutAnimation(slideLeftOut);
             vf.showNext();
-    	}
+        }
     }
     
     private void showPrevCard() {
@@ -279,9 +279,9 @@ public class FreeMode extends Activity {
 // TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
             Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
         } else {
-    	    cursor.moveToPrevious();
-    	    setUnseenCardText();
-        	
+            cursor.moveToPrevious();
+            setUnseenCardText();
+            
             vf.setInAnimation(slideRightIn);
             vf.setOutAnimation(slideRightOut);
             vf.showPrevious();
