@@ -471,7 +471,7 @@ public class ArabicFlashcards extends Activity {
 		} else if (thisSide.equals("arabic") || thisSide.equals("plural")) {
 			Log.d(TAG, "showCard, showing arabic");
 			thisView.setTextSize(ARABIC_CARD_TEXT_SIZE);
-			thisView.setText(HelperMethods.fixArabic(thisCard.get(thisSide), 
+			thisView.setText(Cards.fixArabic(thisCard.get(thisSide), 
 			        showVowels));
 		}
 	}
@@ -479,7 +479,7 @@ public class ArabicFlashcards extends Activity {
 	private void showCard(Map<String, String> thisCard) {
     	// store the ID and status of the current card
     	currentCardId = currentCard.get("ID");
-    	currentCardStatus = HelperMethods.stringToInteger(currentCard.get("status"));
+    	currentCardStatus = Cards.stringToInteger(currentCard.get("status"));
     	
 //
     	Log.d(TAG, "showCard: currentCard=" + currentCard);

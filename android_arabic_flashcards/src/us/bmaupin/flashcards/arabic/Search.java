@@ -85,7 +85,7 @@ public class Search extends ListActivity {
                 if (aColumnIndex == 2) {
                     String arabic = aCursor.getString(aColumnIndex);
                     TextView tv = (TextView) aView;                    
-                    tv.setText(HelperMethods.fixArabic(arabic, showVowels));
+                    tv.setText(Cards.fixArabic(arabic, showVowels));
                     return true;
                 }
                 
@@ -147,7 +147,7 @@ class MySimpleCursorAdapter extends SimpleCursorAdapter {
         View v = super.getView(position, convertView, parent);
         
         TextView tv = (TextView)v.findViewById(android.R.id.text2);
-        HelperMethods.setArabicTypeface(context, tv);
+        Cards.setArabicTypeface(context, tv);
         
         return v;
     }
