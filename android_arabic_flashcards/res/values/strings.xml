@@ -44,10 +44,10 @@
 &#8226; Go to Menu --> Choose cards to choose cards.\n
 &#8226; Go to Menu --> Settings to change settings.</string>
 
-    <string name="menu_about_label">About</string>
-    <string name="menu_about_shortcut">a</string>
+<!--
     <string name="menu_choose_cards_label">Choose cards</string>
     <string name="menu_choose_cards_shortcut">c</string>
+-->
     <string name="menu_help_label">Help</string>
     <string name="menu_help_shortcut">h</string>
     <string name="menu_search_label">Search</string>

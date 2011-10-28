@@ -5,14 +5,12 @@
 		android:title="@string/menu_help_label"
 		android:alphabeticShortcut="@string/menu_help_shortcut"
 		android:icon="@android:drawable/ic_menu_help" />
-	<item android:id="@+id/menu_about"
-		android:title="@string/menu_about_label"
-		android:alphabeticShortcut="@string/menu_about_shortcut"
-		android:icon="@android:drawable/ic_menu_info_details" />
+<!-- 
     <item android:id="@+id/menu_choose_cards"
         android:title="@string/menu_choose_cards_label"
         android:alphabeticShortcut="@string/menu_choose_cards_shortcut"
         android:icon="@drawable/ic_menu_database" />
+ -->
 	<item android:id="@+id/menu_settings"
 		android:title="@string/menu_settings_label"
 		android:alphabeticShortcut="@string/menu_settings_shortcut"

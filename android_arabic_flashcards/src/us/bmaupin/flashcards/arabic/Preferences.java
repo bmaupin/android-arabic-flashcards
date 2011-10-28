@@ -15,12 +15,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class Preferences extends PreferenceActivity 
-                                implements OnSharedPreferenceChangeListener {
+		implements OnSharedPreferenceChangeListener {
+/*
     private static final int DIALOG_CONFIRM_DELETE_PROFILE = 0;
     static final String EXTRA_PROFILE_ACTION = 
             "android.intent.extra.PROFILE_ACTION";
     
     private String profileName = "";
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +30,9 @@ public class Preferences extends PreferenceActivity
         super.onCreate(savedInstanceState);
         
         // get the profile name from the extra data in the intent
-        profileName = getIntent().getExtras().getString(ArabicFlashcards.EXTRA_PROFILE_NAME);
+//        profileName = getIntent().getExtras().getString(ArabicFlashcards.EXTRA_PROFILE_NAME);
         // set the preferences file to one based on the profile name
-        getPreferenceManager().setSharedPreferencesName(profileName);
+//        getPreferenceManager().setSharedPreferencesName(profileName);
         // get the default preferences from XML
         addPreferencesFromResource(R.xml.preferences);
         // determine whether default card order preference should be enabled
@@ -38,12 +40,12 @@ public class Preferences extends PreferenceActivity
         // set up a listener whenever a key changes            
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         
-        // handle when the delete profile option gets clicked
-        Preference deleteProfile = findPreference(getString(
-                R.string.preferences_delete_profile));
-        deleteProfile.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        // handle when the about option gets clicked
+        Preference about = findPreference(getString(
+        		R.string.preferences_about));
+        about.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference p) {
-                showDialog(DIALOG_CONFIRM_DELETE_PROFILE);
+            	startActivity(new Intent(Preferences.this, About.class));
                 return true;
             }
         });
@@ -67,6 +69,7 @@ public class Preferences extends PreferenceActivity
         defaultCardOrder.setEnabled(!askCardOrder.isChecked());
     }
     
+/*
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -75,7 +78,8 @@ public class Preferences extends PreferenceActivity
         }
         return null;
     }
-    
+*/
+/*    
     private Dialog createConfirmDeleteProfileDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("This will delete your profile containing all " +
@@ -100,4 +104,5 @@ public class Preferences extends PreferenceActivity
         AlertDialog ad = builder.create();
         return ad;
     }
+*/
 }
