@@ -24,7 +24,8 @@ public class Preferences extends PreferenceActivity
         // determine whether default card order preference should be enabled
         toggleDefaultCardOrder();
         // set up a listener whenever a key changes            
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences().
+        		registerOnSharedPreferenceChangeListener(this);
         
         // handle when the about option gets clicked
         Preference about = findPreference(getString(
@@ -37,7 +38,8 @@ public class Preferences extends PreferenceActivity
         });
     }
     
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, 
+    		String key) {
         // when the ask card order preference value changes
         if (key.equals(getString(R.string.preferences_ask_card_order))) {
             toggleDefaultCardOrder();
