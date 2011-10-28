@@ -1,5 +1,7 @@
 package us.bmaupin.flashcards.arabic;
 
+import java.util.HashMap;
+
 import us.bmaupin.flashcards.arabic.ArabicFlashcards.MyGestureDetector;
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -53,7 +55,7 @@ public class FreeMode extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         
-        setContentView(R.layout.main);
+        setContentView(R.layout.cards);
         
         vf = (ViewFlipper)findViewById(R.id.flipper);
         slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
@@ -64,18 +66,18 @@ public class FreeMode extends Activity {
         gestureDetector = new GestureDetector(new MyGestureDetector());
         
         // create objects for shared preferences and resources
-      preferences = getPreferences(MODE_PRIVATE);
-      resources = getResources();
+        preferences = getPreferences(MODE_PRIVATE);
+        resources = getResources();
         
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/KacstOne.ttf");
 
         // set the typeface for the three TextViews within the ViewFlipper
-        TextView leftView = (TextView)vf.findViewById(R.id.leftView);
-        TextView centerView = (TextView)vf.findViewById(R.id.centerView);
-        TextView rightView = (TextView)vf.findViewById(R.id.rightView);
-        leftView.setTypeface(tf);
-        centerView.setTypeface(tf);
-        rightView.setTypeface(tf);
+        TextView tv1 = (TextView)vf.findViewById(R.id.textview1);
+        TextView tv2 = (TextView)vf.findViewById(R.id.textview2);
+//        TextView rightView = (TextView)vf.findViewById(R.id.rightView);
+        tv1.setTypeface(tf);
+        tv2.setTypeface(tf);
+//        rightView.setTypeface(tf);
         
         Bundle bundle = this.getIntent().getExtras();
         String cardSet = bundle.getString(ChooseCardSet.EXTRA_CARD_SET);
@@ -98,8 +100,9 @@ public class FreeMode extends Activity {
         // make sure the cursor isn't empty
         if (cursor != null && cursor.getCount() != 0) {
             cursor.moveToFirst();
-            
-            Toast.makeText(getApplicationContext(), cursor.getString(1), Toast.LENGTH_SHORT).show();
+        } else {
+// TODO: handle if cursor contains no cards
+        	int doSomethingHere;
         }
         
 /*        
@@ -220,70 +223,69 @@ public class FreeMode extends Activity {
     }
     
     private void showFirstCard() {
-        ViewGroup currentLayout = (RelativeLayout)vf.getCurrentView();
-        // get the child view (TextView)
-        TextView currentView = (TextView) currentLayout.getChildAt(0);
-        
+    	setCardText(vf.getDisplayedChild());
+    }
+    
+    private void setCardText(int layoutIndexToShow) {
+    	ViewGroup rl = (RelativeLayout)vf.getChildAt(layoutIndexToShow);
+    	TextView tv = (TextView)rl.getChildAt(0);
+    	
         if (currentLang.equals("english")) {
-            currentView.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
-            currentView.setText(cursor.getString(1));
+            tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
+            tv.setText(cursor.getString(1));
             
         } else if (currentLang.equals("arabic")) {
-            currentView.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
-            currentView.setText(HelperMethods.fixArabic(cursor.getString(2), 
+            tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
+            tv.setText(HelperMethods.fixArabic(cursor.getString(2), 
                     showVowels));
         }
     }
     
+    /*
+     * sets the text of the card that isn't seen
+     */
+    private void setUnseenCardText() {
+    	// the index of the layout view we want to show
+    	int layoutIndexToShow;
+    	// we want to change the layout that isn't currently being shown
+    	if (vf.getDisplayedChild() == 0) {
+    		layoutIndexToShow = 1;
+    	} else {
+    		layoutIndexToShow = 0;
+    	}
+    	
+    	setCardText(layoutIndexToShow);
+    }
+    
     private void showNextCard() {
-        vf.setInAnimation(slideLeftIn);
-        vf.setOutAnimation(slideLeftOut);
-        vf.showNext();
-/*        
-        // update the status of the current card
-        ch.updateCardStatus(currentCardId, currentCardStatus, direction);
-        // get the next one
-        nextCard = ch.nextCard();
-        
-        if (nextCard.isEmpty()) {
-            showDialog(DIALOG_NO_MORE_CARDS);
-        } else {
-            currentCard = nextCard;
-            // only show the right animation if there's a next card
+    	if (cursor.isLast()) {
+    	    // return a blank card so we can show the user a message that
+            // there aren't any more cards (or any cards at all)
+// TODO: do something if no more cards to show
+    		int doSomethingHere;
+//			showDialog(DIALOG_NO_MORE_CARDS);    		
+    	} else {
+    	    cursor.moveToNext();
+    	    setUnseenCardText();
+    	    
             vf.setInAnimation(slideLeftIn);
             vf.setOutAnimation(slideLeftOut);
             vf.showNext();
-            
-            showCard(currentCard);
-        }
-*/
+    	}
     }
     
     private void showPrevCard() {
         if (cursor.isFirst()) {
-            Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
-        } else {
-            vf.setInAnimation(slideRightIn);
-            vf.setOutAnimation(slideRightOut);
-            vf.showPrevious();
-        }
-/*
-        nextCard = ch.prevCard();
-        
-        // make sure there's a previous card to show
-        if (nextCard.isEmpty()) {
 // TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
             Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
         } else {
-            currentCard = nextCard;
-            // only show the left animation if there's a previous card
+    	    cursor.moveToPrevious();
+    	    setUnseenCardText();
+        	
             vf.setInAnimation(slideRightIn);
             vf.setOutAnimation(slideRightOut);
             vf.showPrevious();
-            
-            showCard(currentCard);
         }
-*/
     }
     
     private void flipCard() {
