@@ -5,6 +5,9 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -72,6 +75,37 @@ public class ChooseStudySet extends ListActivity {
                 }
                 break;
         }
+    }
+    
+	/* Inflates the menu */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    
+    /* Handles menu selections */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+        	case R.id.menu_help:
+        		startActivity(new Intent(this, Help.class));
+        		return true;
+        	case R.id.menu_settings:
+        		startActivity(new Intent(this, Preferences.class));
+        		return true;
+        	case R.id.menu_search:
+        	    onSearchRequested();
+        	    return true;
+        	// uncomment this (and the res/menu/menu.xml entry) for testing
+        	/*
+        	case R.id.menu_choose_card:
+        	    showDialog(DIALOG_TESTING_CHOOSE_CARDS);
+        	    return true;
+        	*/
+    	}
+    	return false;
     }
     
     @Override
