@@ -72,7 +72,6 @@ public class FreeMode extends Activity {
         gestureDetector = new GestureDetector(new MyGestureDetector());
         
         // create objects for shared preferences and resources
-//        preferences = getPreferences(MODE_PRIVATE);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
 

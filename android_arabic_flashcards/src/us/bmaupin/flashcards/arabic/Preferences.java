@@ -19,10 +19,6 @@ public class Preferences extends PreferenceActivity
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         
-        // get the profile name from the extra data in the intent
-//        profileName = getIntent().getExtras().getString(ArabicFlashcards.EXTRA_PROFILE_NAME);
-        // set the preferences file to one based on the profile name
-//        getPreferenceManager().setSharedPreferencesName(profileName);
         // get the default preferences from XML
         addPreferencesFromResource(R.xml.preferences);
         // determine whether default card order preference should be enabled
