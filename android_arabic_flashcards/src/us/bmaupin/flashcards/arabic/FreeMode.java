@@ -86,26 +86,7 @@ public class FreeMode extends Activity {
 //        Toast.makeText(getApplicationContext(), cardSet, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getApplicationContext(), cardSubSet, Toast.LENGTH_SHORT).show();
         
-        String selection = "";
-        String[] selectionArgs = new String[] {};
-        
-        cursor = managedQuery(
-                CardProvider.CONTENT_URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                null
-        );
-
-        // make sure the cursor isn't empty
-        if (cursor != null && cursor.getCount() != 0) {
-            cursor.moveToFirst();
-        } else {
-// TODO: handle if cursor contains no cards
-            int doSomethingHere;
-        }
-        
-/*        
+        /*        
         if (currentCardSet.equals(context.getString(
                 R.string.card_set_ahlan_wa_sahlan))) {
             sqlCardSetSelection = " WHERE " + CardDatabaseHelper.CARDS_TABLE + "." + 
@@ -127,6 +108,30 @@ public class FreeMode extends Activity {
             
         }
 */
+        
+        String selection = "";
+        String[] selectionArgs = new String[] {};
+        
+        if (cardSet.equals(getString(R.string.card_set_categories))) {
+        	selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
+        	selectionArgs = new String[] {cardSubSet};
+        }
+        
+        cursor = managedQuery(
+                CardProvider.CONTENT_URI,
+                PROJECTION,
+                selection,
+                selectionArgs,
+                null
+        );
+
+        // make sure the cursor isn't empty
+        if (cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+        } else {
+// TODO: handle if cursor contains no cards
+            int doSomethingHere;
+        }
     }
     
     @Override
