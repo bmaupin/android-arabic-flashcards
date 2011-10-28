@@ -145,9 +145,6 @@ public class FreeMode extends Activity {
                    getString(R.string.preferences_default_card_order), 
                    getString(R.string.preferences_default_card_order_default)));
         }
-        showPlurals = preferences.getBoolean(
-                getString(R.string.preferences_show_plurals),
-                resources.getBoolean(R.bool.preferences_show_plurals_default));
 */
         defaultLang = preferences.getString(
                 getString(R.string.preferences_default_lang), 

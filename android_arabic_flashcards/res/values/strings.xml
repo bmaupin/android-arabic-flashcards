@@ -90,9 +90,6 @@
     <string name="preferences_delete_profile">delete_profile</string>
     <string name="preferences_delete_profile_summary">Delete the current profile</string>
     <string name="preferences_delete_profile_title">Delete profile</string>
-    <string name="preferences_show_plurals">show_plurals</string>
-    <string name="preferences_show_plurals_summary">Show Arabic plurals when available</string>
-    <string name="preferences_show_plurals_title">Show Arabic plurals</string>
     <string name="preferences_show_vowels">show_vowels</string>
     <string name="preferences_show_vowels_summary">Show vowels and other diacritics</string>
     <string name="preferences_show_vowels_title">Show vowels</string>
