@@ -226,12 +226,14 @@ public class ArabicFlashcards extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
+/*
         	case R.id.menu_about:
         		startActivity(new Intent(this, About.class));
         		return true;
         	case R.id.menu_choose_cards:
         		chooseCardSet();
         		return true;
+*/
         	case R.id.menu_help:
         		startActivity(new Intent(this, Help.class));
         		return true;
@@ -279,6 +281,7 @@ public class ArabicFlashcards extends Activity {
                     }
     			}
     			break;
+/*
     		case (REQUEST_PROFILE_ACTION) :
     		    if (resultCode == Activity.RESULT_OK) {
     		        String profileAction = data.getStringExtra(
@@ -289,6 +292,7 @@ public class ArabicFlashcards extends Activity {
     		        }
     		    }
     		    break;
+*/
     	}
     }
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import us.bmaupin.flashcards.arabic.ArabicFlashcards.MyGestureDetector;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -12,6 +13,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -38,6 +42,7 @@ public class FreeMode extends Activity {
     // current card language
     private String currentLang;
     private Cursor cursor;
+    private int cursorPosition;
     // default card language 
     private String defaultLang;
     private GestureDetector gestureDetector;
@@ -166,7 +171,54 @@ public class FreeMode extends Activity {
             currentLang = defaultLang;
         }
         
+// TODO: do we want to do this if the order is random?
+        // if we're coming back to this activity from another, we've probably
+        // lost our cursor postion
+        if (cursor.isBeforeFirst()) {
+        	cursor.moveToPosition(cursorPosition);
+        }
+        
         showFirstCard();
+    }
+    
+	/* Inflates the menu */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    
+    /* Handles menu selections */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+/*
+        	case R.id.menu_about:
+        		startActivity(new Intent(this, About.class));
+        		return true;
+/*
+        	case R.id.menu_choose_cards:
+        		chooseCardSet();
+        		return true;
+*/
+        	case R.id.menu_help:
+        		startActivity(new Intent(this, Help.class));
+        		return true;
+        	case R.id.menu_settings:
+        		startActivity(new Intent(this, Preferences.class));
+        		return true;
+        	case R.id.menu_search:
+        	    onSearchRequested();
+        	    return true;
+        	// uncomment this (and the res/menu/menu.xml entry) for testing
+        	/*
+        	case R.id.menu_choose_card:
+        	    showDialog(DIALOG_TESTING_CHOOSE_CARDS);
+        	    return true;
+        	*/
+    	}
+    	return false;
     }
 
     @Override
@@ -317,6 +369,9 @@ public class FreeMode extends Activity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
+        
+        // store the cursor position in case we come back
+        cursorPosition = cursor.getPosition();
     }
     
     @Override
