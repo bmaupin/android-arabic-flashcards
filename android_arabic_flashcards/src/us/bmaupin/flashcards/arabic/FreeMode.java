@@ -95,17 +95,6 @@ public class FreeMode extends Activity {
                     CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
                     CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = " + 
                     currentCardSubset + ") ";
-            
-        } else if (currentCardSet.equals(context.getString(
-                R.string.card_set_categories))) {
-            sqlCardSetSelection = " WHERE category = '" + currentCardSubset + 
-            "'";
-            
-        } else if (currentCardSet.equals(context.getString(
-                R.string.card_set_parts_of_speech))) {
-            sqlCardSetSelection = " WHERE type = '" + currentCardSubset + 
-            "'";
-            
         }
 */
         
@@ -114,6 +103,11 @@ public class FreeMode extends Activity {
         
         if (cardSet.equals(getString(R.string.card_set_categories))) {
         	selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
+        	selectionArgs = new String[] {cardSubSet};
+        	
+        } else if (cardSet.equals(getString(
+        		R.string.card_set_parts_of_speech))) {
+        	selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
         	selectionArgs = new String[] {cardSubSet};
         }
         
