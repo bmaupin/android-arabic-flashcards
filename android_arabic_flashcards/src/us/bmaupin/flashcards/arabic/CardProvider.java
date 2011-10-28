@@ -11,7 +11,8 @@ import android.util.Log;
 
 public class CardProvider extends ContentProvider {
     // various constants
-    public static final String AUTHORITY = "us.bmaupin.flashcards.arabic.cardprovider";
+    public static final String AUTHORITY = 
+    		"us.bmaupin.flashcards.arabic.cardprovider";
     private static final int CARD_ID_PATH_POSITION = 1;
     private static final String PATH_CARDS = "cards";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY 
@@ -21,8 +22,10 @@ public class CardProvider extends ContentProvider {
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
     // content provider mime type constants
-    public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.bmaupin.card";
-    public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.bmaupin.card";
+    public static final String CONTENT_TYPE = 
+    		"vnd.android.cursor.dir/vnd.bmaupin.card";
+    public static final String CONTENT_ITEM_TYPE = 
+    		"vnd.android.cursor.item/vnd.bmaupin.card";
     
     private CardDatabaseHelper cardDbHelper;
 
@@ -95,20 +98,21 @@ public class CardProvider extends ContentProvider {
     }
 	
     @Override
-    public Uri insert(Uri arg0, ContentValues arg1) {
-        // TODO Auto-generated method stub
+    public Uri insert(Uri uri, ContentValues values) {
+        // not going to implement
         return null;
     }
     
     @Override
-    public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3) {
-        // TODO Auto-generated method stub
+    public int update(Uri uri, ContentValues values, String selection, 
+    		String[] selectionArgs) {
+        // not going to implement
         return 0;
     }
 	
 	@Override
-	public int delete(Uri arg0, String arg1, String[] arg2) {
-		// TODO Auto-generated method stub
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+        // not going to implement
 		return 0;
 	}
 
