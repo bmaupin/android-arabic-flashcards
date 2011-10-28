@@ -30,7 +30,7 @@ public class FreeMode extends Activity {
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     
     private static final String[] PROJECTION = new String[] {
-        CardDatabaseHelper._ID,
+    	CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
         CardDatabaseHelper.CARDS_ENGLISH,
         CardDatabaseHelper.CARDS_ARABIC,
     };
@@ -94,8 +94,36 @@ public class FreeMode extends Activity {
         
         String selection = "";
         String[] selectionArgs = new String[] {};
-        
-        if (cardSet.equals(getString(R.string.card_set_categories))) {
+        String sortOrder = "";
+                
+        if (cardSet.equals(getString(R.string.card_set_ahlan_wa_sahlan))) {
+        	/*
+        	 * this looks like:
+        	 * where cards._id in (select card_ID from aws_chapters where chapter = ?) and chapter = ?
+        	 * 
+        	 * it may seem terribly redundant, but it's much faster than:
+        	 * where chapter = ?
+        	 * 
+        	 * because it doesn't do the left join (in the provider class) 
+        	 * on both entire tables
+        	 * 
+        	 * the entire query ends up looking like this:
+        	 * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where cards._id in (select card_ID from aws_chapters where chapter = 4) and chapter = 4 order by aws_chapters._id;
+        	 * 
+        	 * instead of this:
+        	 * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where chapter = 4 order by aws_chapters._id;
+        	 */
+        	selection = CardDatabaseHelper.CARDS_TABLE + "." + 
+        			CardDatabaseHelper._ID + " IN (SELECT " + 
+        			CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
+        			CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
+        			CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ?) AND " + 
+        			CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ? ";
+        	selectionArgs = new String[] {cardSubSet, cardSubSet};
+        	sortOrder = CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
+        			CardDatabaseHelper._ID;
+        	
+        } else if (cardSet.equals(getString(R.string.card_set_categories))) {
         	selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
         	selectionArgs = new String[] {cardSubSet};
         	
@@ -110,7 +138,7 @@ public class FreeMode extends Activity {
                 PROJECTION,
                 selection,
                 selectionArgs,
-                null
+                sortOrder
         );
 
         // make sure the cursor isn't empty
