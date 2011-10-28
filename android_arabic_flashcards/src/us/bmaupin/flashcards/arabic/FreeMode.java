@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -71,7 +72,8 @@ public class FreeMode extends Activity {
         gestureDetector = new GestureDetector(new MyGestureDetector());
         
         // create objects for shared preferences and resources
-        preferences = getPreferences(MODE_PRIVATE);
+//        preferences = getPreferences(MODE_PRIVATE);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
 
         // set the typeface for the TextViews within the ViewFlipper
