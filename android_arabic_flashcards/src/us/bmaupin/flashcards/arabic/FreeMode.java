@@ -80,18 +80,6 @@ public class FreeMode extends Activity {
         String cardSet = bundle.getString(ChooseCardSet.EXTRA_CARD_SET);
         String cardSubSet = bundle.getString(ChooseCardSet.EXTRA_CARD_SUBSET);
         
-        /*        
-        if (currentCardSet.equals(context.getString(
-                R.string.card_set_ahlan_wa_sahlan))) {
-            sqlCardSetSelection = " WHERE " + CardDatabaseHelper.CARDS_TABLE + "." + 
-                    CardDatabaseHelper._ID + " IN (SELECT " + 
-                    CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
-                    CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
-                    CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = " + 
-                    currentCardSubset + ") ";
-        }
-*/
-        
         String selection = "";
         String[] selectionArgs = new String[] {};
         String sortOrder = "";
