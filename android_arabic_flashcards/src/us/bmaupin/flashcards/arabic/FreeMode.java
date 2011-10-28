@@ -226,7 +226,7 @@ public class FreeMode extends Activity {
             
         } else if (currentLang.equals("arabic")) {
             tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
-            tv.setText(HelperMethods.fixArabic(cursor.getString(2), 
+            tv.setText(Cards.fixArabic(cursor.getString(2), 
                     showVowels));
         }
     }

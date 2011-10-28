@@ -33,7 +33,7 @@ public class ShowOneCard extends Activity {
         setContentView(R.layout.show_one_card);
         
         tv = (TextView) findViewById(R.id.textview);
-        HelperMethods.setArabicTypeface(this, tv);
+        Cards.setArabicTypeface(this, tv);
         
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,7 @@ public class ShowOneCard extends Activity {
         if (language.equals("english") || language.equals("")) {
             tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
             language = "arabic";
-            tv.setText(HelperMethods.fixArabic(arabic, showVowels));
+            tv.setText(Cards.fixArabic(arabic, showVowels));
         } else if (language.equals("arabic")) {
             tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
             language = "english";
