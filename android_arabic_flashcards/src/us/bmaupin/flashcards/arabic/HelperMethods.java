@@ -127,7 +127,7 @@ public class HelperMethods {
      * @param tv
      */
     static void setArabicTypeface(Context context, TextView tv) {
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/KacstOne.ttf");
+        Typeface tf = Typeface.createFromAsset(context.getAssets(), Cards.ARABIC_TYPEFACE);
         tv.setTypeface(tf);
     }
     

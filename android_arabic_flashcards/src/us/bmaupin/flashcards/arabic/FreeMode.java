@@ -68,23 +68,17 @@ public class FreeMode extends Activity {
         // create objects for shared preferences and resources
         preferences = getPreferences(MODE_PRIVATE);
         resources = getResources();
-        
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/KacstOne.ttf");
 
-        // set the typeface for the three TextViews within the ViewFlipper
+        // set the typeface for the TextViews within the ViewFlipper
+        Typeface tf = Typeface.createFromAsset(getAssets(), Cards.ARABIC_TYPEFACE);
         TextView tv1 = (TextView)vf.findViewById(R.id.textview1);
         TextView tv2 = (TextView)vf.findViewById(R.id.textview2);
-//        TextView rightView = (TextView)vf.findViewById(R.id.rightView);
         tv1.setTypeface(tf);
         tv2.setTypeface(tf);
-//        rightView.setTypeface(tf);
         
         Bundle bundle = this.getIntent().getExtras();
         String cardSet = bundle.getString(ChooseCardSet.EXTRA_CARD_SET);
         String cardSubSet = bundle.getString(ChooseCardSet.EXTRA_CARD_SUBSET);
-        
-//        Toast.makeText(getApplicationContext(), cardSet, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getApplicationContext(), cardSubSet, Toast.LENGTH_SHORT).show();
         
         /*        
         if (currentCardSet.equals(context.getString(
