@@ -82,6 +82,8 @@
     <string name="preferences_ask_card_order_summary">Ask for card order every time new cards are shown</string>
     <string name="preferences_ask_card_order_title">Ask for card order</string>
     <string name="preferenece_category_about_title">About this app</string>
+    <string name="preferenece_category_browse_cards_title">Browse cards</string>
+    <string name="preferenece_category_cards_title">Cards</string>
     <string name="preferences_default_card_order">default_card_order</string>
     <string name="preferences_default_card_order_summary">Order in which to show the cards</string>
     <string name="preferences_default_card_order_title">Default card order</string>
