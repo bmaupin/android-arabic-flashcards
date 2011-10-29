@@ -2,7 +2,7 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory
-        android:title="@string/preferenece_category_cards_title">
+        android:title="@string/preferenece_category_arabic_title">
         <CheckBoxPreference
             android:key="@string/preferences_show_vowels"
             android:title="@string/preferences_show_vowels_title"
