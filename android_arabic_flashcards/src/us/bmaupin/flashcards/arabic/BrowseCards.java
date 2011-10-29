@@ -30,7 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class FreeMode extends Activity {
+public class BrowseCards extends Activity {
     private static final String TAG = "ShowCards";
     // dialog id constants
     private static final int DIALOG_NO_CARDS = 0;

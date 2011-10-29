@@ -23,7 +23,8 @@ public class ChooseStudySet extends ListActivity {
         
         setContentView(R.layout.choose_study_set);
         
-        Button button = (Button)findViewById(R.id.study_set_button_free_mode);
+        Button button = (Button)findViewById(
+        		R.id.study_set_button_browse_cards);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -64,7 +65,7 @@ public class ChooseStudySet extends ListActivity {
 //                        showFirstCard();
 //                    }
                     
-                    Intent intent = new Intent(this, FreeMode.class);
+                    Intent intent = new Intent(this, BrowseCards.class);
                     intent.putExtra(ChooseCardSet.EXTRA_CARD_SET, 
                             data.getStringExtra(ChooseCardSet.EXTRA_CARD_SET));
                     intent.putExtra(ChooseCardSet.EXTRA_CARD_SUBSET, 
