@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id$ -->
 <resources>
     <string-array name="card_set_main_items">
         <item>@string/card_set_all</item>
