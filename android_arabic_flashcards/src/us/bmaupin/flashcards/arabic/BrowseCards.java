@@ -307,10 +307,6 @@ public class BrowseCards extends Activity {
             } else {
             	tv.setText(Cards.removeVowels(arabic));
             }
-            
-//            tv.setText(Cards.fixArabic(cursor.getString(2), 
-//                    showVowels));
-//            tv.setText(cursor.getString(2));
         }
     }
     
