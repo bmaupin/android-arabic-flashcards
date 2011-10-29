@@ -52,6 +52,7 @@ public class BrowseCards extends Activity {
     private int cursorPosition;
     // default card language 
     private String defaultLang;
+    private boolean fixArabic;
     private GestureDetector gestureDetector;
     private SharedPreferences preferences;
     private Resources resources;
@@ -168,6 +169,9 @@ public class BrowseCards extends Activity {
         defaultLang = preferences.getString(
                 getString(R.string.preferences_default_lang), 
                 getString(R.string.preferences_default_lang_default));
+        fixArabic = preferences.getBoolean(
+                getString(R.string.preferences_fix_arabic),
+                resources.getBoolean(R.bool.preferences_fix_arabic_default));
         showVowels = preferences.getBoolean(
                 getString(R.string.preferences_show_vowels),
                 resources.getBoolean(R.bool.preferences_show_vowels_default));
@@ -294,8 +298,19 @@ public class BrowseCards extends Activity {
             
         } else if (currentLang.equals("arabic")) {
             tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
-            tv.setText(Cards.fixArabic(cursor.getString(2), 
-                    showVowels));
+            String arabic = cursor.getString(2);
+            if (fixArabic) {
+            	arabic = Cards.fixArabic(arabic, showVowels);
+            }
+            if (showVowels) {
+            	tv.setText(arabic);
+            } else {
+            	tv.setText(Cards.removeVowels(arabic));
+            }
+            
+//            tv.setText(Cards.fixArabic(cursor.getString(2), 
+//                    showVowels));
+//            tv.setText(cursor.getString(2));
         }
     }
     

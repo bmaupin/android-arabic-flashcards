@@ -35,10 +35,11 @@ public class Cards {
         Log.d(TAG, "UNICODE: " + splitString(s));
         Log.d(TAG, "UNICODE: " + getUnicodeCodes(s));
         
+        // only fix the sheddas if we're showing the vowels
         if (showVowels) {
             return fixSheddas(s);
         } else {
-            return removeVowels(s);
+            return s;
         }
     }
     

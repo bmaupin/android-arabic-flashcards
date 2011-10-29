@@ -8,6 +8,11 @@
             android:title="@string/preferences_show_vowels_title"
             android:summary="@string/preferences_show_vowels_summary"
             android:defaultValue="@bool/preferences_show_vowels_default" />
+        <CheckBoxPreference
+            android:key="@string/preferences_fix_arabic"
+            android:title="@string/preferences_fix_arabic_title"
+            android:summary="@string/preferences_fix_arabic_summary"
+            android:defaultValue="@bool/preferences_fix_arabic_default" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/preferenece_category_browse_cards_title">
