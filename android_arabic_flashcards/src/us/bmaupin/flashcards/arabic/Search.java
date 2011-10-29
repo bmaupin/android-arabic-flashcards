@@ -4,9 +4,12 @@ import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +25,26 @@ public class Search extends ListActivity {
     private Cursor cursor;
     private SQLiteDatabase db;
     private CardDatabaseHelper dbHelper;
+    // whether or not to apply arabic fixes
+    private boolean fixArabic;
     private Intent intent;
+    private SharedPreferences preferences;
+    private Resources resources;
+    // whether or not to show arabic vowels
     private boolean showVowels;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         
-        super.onCreate(savedInstanceState);
         // we need to specify a layout to show a message when no results are 
         // found
         setContentView(R.layout.search);
+        
+        // create objects for shared preferences and resources
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        resources = getResources();
         
         this.intent = getIntent();
         
@@ -42,25 +54,28 @@ public class Search extends ListActivity {
     
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d(TAG, "onNewIntent()");
         super.onNewIntent(intent);
+        Log.d(TAG, "onNewIntent()");
         
         this.intent = intent;
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume()");
         super.onResume();
+        Log.d(TAG, "onResume()");
         
         String query = "";
         
+        fixArabic = preferences.getBoolean(
+                getString(R.string.preferences_fix_arabic),
+                resources.getBoolean(R.bool.preferences_fix_arabic_default));
+        showVowels = preferences.getBoolean(
+                getString(R.string.preferences_show_vowels),
+                resources.getBoolean(R.bool.preferences_show_vowels_default));
+        
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
-        }
-        Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
-        if (appData != null) {
-            showVowels = appData.getBoolean(ArabicFlashcards.EXTRA_SHOW_VOWELS);
         }
         
         String[] columns = new String[] {CardDatabaseHelper._ID, 
@@ -84,8 +99,15 @@ public class Search extends ListActivity {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
                 if (aColumnIndex == 2) {
                     String arabic = aCursor.getString(aColumnIndex);
-                    TextView tv = (TextView) aView;                    
-                    tv.setText(Cards.fixArabic(arabic, showVowels));
+                    TextView tv = (TextView) aView;
+                    if (fixArabic) {
+                    	arabic = Cards.fixArabic(arabic, showVowels);
+                    }
+                    if (showVowels) {
+                    	tv.setText(arabic);
+                    } else {
+                    	tv.setText(Cards.removeVowels(arabic));
+                    }
                     return true;
                 }
                 
@@ -106,25 +128,24 @@ public class Search extends ListActivity {
         
         Intent intent = new Intent(this, ShowOneCard.class);
         intent.putExtra(EXTRA_CARD_ID, cardId);
-        intent.putExtra(ArabicFlashcards.EXTRA_SHOW_VOWELS, showVowels);
         startActivity(intent);
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause()");
+    }
+    
+    @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestroy()");
         super.onDestroy();
+        Log.d(TAG, "onDestroy()");
         
         // clean up after ourselves
         cursor.close();
         db.close();
         dbHelper.close();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d(TAG, "onPause()");
-        super.onPause();
     }
 }
 
