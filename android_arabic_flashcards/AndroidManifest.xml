@@ -38,6 +38,8 @@
                   android:theme="@android:style/Theme" >
         </activity>
         <activity android:name=".ShowOneCard" >
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".Search" />
         </activity>
         <activity android:name=".Search"
                   android:launchMode="singleTop" >
