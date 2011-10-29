@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id$ -->
 <resources>
     <bool name="preferences_ask_card_order_default">true</bool>
     <bool name="preferences_fix_arabic_default">true</bool>
