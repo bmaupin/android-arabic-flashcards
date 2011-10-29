@@ -1,6 +1,7 @@
 package us.bmaupin.flashcards.arabic;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -13,7 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class ShowOneCard extends Activity {
-    private static final String TAG = "ShowSearchResult";
+    private static final String TAG = "ShowOneCard";
     
     private String arabic = "";
     private int cardId;
@@ -34,9 +35,6 @@ public class ShowOneCard extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        
-        Bundle bundle = this.getIntent().getExtras();
-        cardId = bundle.getInt(Search.EXTRA_CARD_ID);
         
         setContentView(R.layout.show_one_card);
         
@@ -61,6 +59,13 @@ public class ShowOneCard extends Activity {
         dbHelper = new CardDatabaseHelper(this);
         db = dbHelper.getReadableDatabase();
         
+        Bundle bundle = this.getIntent().getExtras();
+        getCard(bundle);
+    }
+        
+    private void getCard(Bundle bundle) {
+        cardId = bundle.getInt(Search.EXTRA_CARD_ID);
+        
         String[] columns = new String[] {CardDatabaseHelper.CARDS_ENGLISH, 
                 CardDatabaseHelper.CARDS_ARABIC};
         String selection = CardDatabaseHelper._ID + " = ?";
@@ -78,6 +83,15 @@ public class ShowOneCard extends Activity {
         db.close();
         dbHelper.close();
     }
+    
+    @Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Log.d(TAG, "onNewIntent()");
+		
+        Bundle bundle = intent.getExtras();
+        getCard(bundle);
+	}
     
     @Override
     protected void onResume() {
