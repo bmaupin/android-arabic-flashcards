@@ -98,8 +98,8 @@
     <string name="search_hint">Search cards</string>
     <string name="search_no_results">No results found</string>
     
+    <string name="study_set_browse_cards">Browse cards</string>
     <string name="study_set_create_new">Create new</string>
-    <string name="study_set_free_mode">Free mode</string>
     <string name="study_set_no_results">No study sets</string>
     <string name="study_set_no_results_details">Click below to create a new study set</string>
 </resources>
