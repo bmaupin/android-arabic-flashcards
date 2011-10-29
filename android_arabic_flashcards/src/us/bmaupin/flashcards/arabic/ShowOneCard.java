@@ -24,7 +24,6 @@ public class ShowOneCard extends Activity {
     private String english = "";
     // whether or not to apply arabic fixes
     private boolean fixArabic;
-    private String language = "";
     private SharedPreferences preferences;
     private Resources resources;
     // whether or not to show arabic vowels
@@ -129,21 +128,15 @@ public class ShowOneCard extends Activity {
         }
     }
     
-    /**
-     * Given a view, a card, and a language, shows the card in the view and 
-     * formats it depending on the language
-     */
     private void flipCard() {
-
-        if (language.equals("english") || language.equals("")) {
-            tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
-            language = "arabic";
-            tv.setText(Cards.fixArabic(arabic, showVowels));
-        } else if (language.equals("arabic")) {
-            tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
-            language = "english";
-            tv.setText(english);
+        if (currentLang.equals("english")) {
+            currentLang = "arabic";
+            
+        } else if (currentLang.equals("arabic")) {
+            currentLang = "english";
         }
+        // update the text of the current card
+        setCardText();
     }
     
     @Override
