@@ -2,7 +2,15 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory
-        android:title="Cards">
+        android:title="@string/preferenece_category_cards_title">
+        <CheckBoxPreference
+            android:key="@string/preferences_show_vowels"
+            android:title="@string/preferences_show_vowels_title"
+            android:summary="@string/preferences_show_vowels_summary"
+            android:defaultValue="@bool/preferences_show_vowels_default" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/preferenece_category_browse_cards_title">
         <ListPreference
             android:key="@string/preferences_default_lang"
             android:title="@string/preferences_default_lang_title"
@@ -22,11 +30,6 @@
             android:entries="@array/preferences_default_card_order_entries"
             android:entryValues="@array/preferences_default_card_order_values"
             android:defaultValue="@string/preferences_default_card_order_default" />
-        <CheckBoxPreference
-            android:key="@string/preferences_show_vowels"
-            android:title="@string/preferences_show_vowels_title"
-            android:summary="@string/preferences_show_vowels_summary"
-            android:defaultValue="@bool/preferences_show_vowels_default" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/preferenece_category_about_title">
