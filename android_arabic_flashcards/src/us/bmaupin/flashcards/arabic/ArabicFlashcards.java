@@ -41,9 +41,7 @@ public class ArabicFlashcards extends Activity {
     private static final int DIALOG_SELECT_CARD_ORDER = 2;
     private static final int DIALOG_TESTING_CHOOSE_CARDS = 3;
     static final String EXTRA_PROFILE_NAME = 
-        "android.intent.extra.PROFILE_NAME";
-    static final String EXTRA_SHOW_VOWELS = 
-        "android.intent.extra.SHOW_VOWELS";    
+        "android.intent.extra.PROFILE_NAME";    
     private static final int REQUEST_CARD_SET = 0;
     private static final int REQUEST_PROFILE_ACTION = 1;
 	private static final String TAG = "ArabicFlashcards";
@@ -668,7 +666,7 @@ public class ArabicFlashcards extends Activity {
 	    else
 	    	return false;
     }
-
+/*
     @Override
     public boolean onSearchRequested() {
         // http://developer.android.com/guide/topics/search/search-dialog.html#SearchContextData
@@ -677,4 +675,5 @@ public class ArabicFlashcards extends Activity {
         startSearch(null, false, appData, false);
         return true;
     }
+*/
 }

@@ -52,10 +52,12 @@ public class BrowseCards extends Activity {
     private int cursorPosition;
     // default card language 
     private String defaultLang;
+    // whether or not to apply arabic fixes
     private boolean fixArabic;
     private GestureDetector gestureDetector;
     private SharedPreferences preferences;
     private Resources resources;
+    // whether or not to show arabic vowels
     private boolean showVowels;
     private Animation slideLeftIn;
     private Animation slideLeftOut;
