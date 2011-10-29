@@ -5,23 +5,23 @@
       android:versionName="0.4.1">
     <application android:icon="@drawable/icon"
                  android:label="@string/app_name"
-                 android:theme="@android:style/Theme.NoTitleBar">
-        <activity android:name=".ArabicFlashcards">
+                 android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:name=".ArabicFlashcards" >
         </activity>
         <activity android:name=".About"
         	      android:label="@string/about_title"
-        	      android:theme="@android:style/Theme.Dialog">
+        	      android:theme="@android:style/Theme.Dialog" >
         </activity>
         <activity android:name=".BrowseCards"
-                  android:configChanges="orientation|keyboardHidden">
+                  android:configChanges="orientation|keyboardHidden" >
             <meta-data android:name="android.app.default_searchable"
                        android:value=".Search" />
         </activity>
         <activity android:name=".ChooseCardSet"
                   android:label="@string/choose_cards_title"
-                  android:theme="@android:style/Theme">
+                  android:theme="@android:style/Theme" >
         </activity>
-        <activity android:name=".ChooseStudySet">
+        <activity android:name=".ChooseStudySet" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,19 +31,18 @@
         </activity>
         <activity android:name=".Help"
                   android:label="@string/help_title"
-                  android:theme="@android:style/Theme.Dialog">
+                  android:theme="@android:style/Theme.Dialog" >
         </activity>
         <activity android:name=".Preferences"
                   android:label="@string/preferences_title"
-                  android:theme="@android:style/Theme">
+                  android:theme="@android:style/Theme" >
         </activity>
-        <activity android:name=".ShowOneCard"
-                  android:launchMode="singleTop">
+        <activity android:name=".ShowOneCard" >
             <meta-data android:name="android.app.default_searchable"
                        android:value=".Search" />
         </activity>
         <activity android:name=".Search"
-                  android:launchMode="singleTop">
+                  android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -52,7 +51,7 @@
         </activity>
         <provider android:name=".CardProvider"
                   android:authorities="us.bmaupin.flashcards.arabic.cardprovider"
-                  android:exported="false">
+                  android:exported="false" >
                   <grant-uri-permission android:pathPattern=".*" />
         </provider>
     </application>
