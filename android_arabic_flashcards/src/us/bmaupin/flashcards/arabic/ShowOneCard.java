@@ -1,6 +1,7 @@
 package us.bmaupin.flashcards.arabic;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -9,6 +10,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -98,6 +102,31 @@ public class ShowOneCard extends Activity {
         setCardText();
     }
     
+	/* Inflates the menu */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    
+    /* Handles menu selections */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+        	case R.id.menu_help:
+        		startActivity(new Intent(this, Help.class));
+        		return true;
+        	case R.id.menu_settings:
+        		startActivity(new Intent(this, Preferences.class));
+        		return true;
+        	case R.id.menu_search:
+        	    onSearchRequested();
+        	    return true;
+    	}
+    	return false;
+    }
+    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -116,14 +145,18 @@ public class ShowOneCard extends Activity {
             tv.setText(english);
             
         } else if (currentLang.equals("arabic")) {
+        	// need to put this in a temporary variable so it updates if 
+        	// preferences change and the activity resumes
+        	String tempArabic = arabic;
+        	
             tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
             if (fixArabic) {
-            	arabic = Cards.fixArabic(arabic, showVowels);
+            	tempArabic = Cards.fixArabic(tempArabic, showVowels);
             }
             if (showVowels) {
-            	tv.setText(arabic);
+            	tv.setText(tempArabic);
             } else {
-            	tv.setText(Cards.removeVowels(arabic));
+            	tv.setText(Cards.removeVowels(tempArabic));
             }
         }
     }

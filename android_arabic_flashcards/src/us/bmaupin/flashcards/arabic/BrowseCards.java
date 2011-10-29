@@ -271,7 +271,7 @@ public class BrowseCards extends Activity {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            Log.d(TAG, "onSingleTapUp");
+            Log.d(TAG, "onSingleTapUp()");
             flipCard();
             return true;
         }
