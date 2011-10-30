@@ -1,8 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-import java.util.HashMap;
-
-import us.bmaupin.flashcards.arabic.ArabicFlashcards.MyGestureDetector;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
