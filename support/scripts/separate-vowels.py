@@ -20,6 +20,28 @@ def main():
         except ValueError:
             return False
 
+    max_cardid = 0
+    chapters = {}
+    aws_chapters = open(aws_chapters_name)
+
+    for line in aws_chapters:
+        line = line.strip()
+        chapter, cardid = line.split('|')
+        cardid = int(cardid)
+        chapter = int(chapter)
+        if cardid > max_cardid:
+            max_cardid = cardid
+        if chapter not in chapters:
+            chapters[chapter] = []
+        chapters[chapter].append(cardid)
+
+    aws_chapters.close()
+
+#    print chapters[4]
+#    print max_cardid
+#    sys.exit()
+
+    '''
     card_chapters = {}
     aws_chapters = open(aws_chapters_name)
 
@@ -27,11 +49,13 @@ def main():
         line = line.strip()
         chapter, cardid = line.split('|')
         cardid = int(cardid)
+        chapter = int(chapter)
         if cardid not in card_chapters:
             card_chapters[cardid] = []
         card_chapters[cardid].append(chapter)
 
     aws_chapters.close()
+    '''
 
     infile = open(infile_name)
     outfile = open(outfile_name, 'w')
@@ -40,34 +64,63 @@ def main():
     plurals = 0
     for line in infile:
         index += 1
+        print index
         line = line.strip()
         english, arabic, plural, part, category, gender = line.split('|')
 
         if plural == '':
             outfile.write(line + '|n\n')
         else:
+#            print index
+#            print plurals
+#            print len(card_chapters)
 #            plurals += 1
             # write out the singular line
             outfile.write(('|').join([english, arabic, part, category, gender]) + '|n\n')
 
+            for chapter in chapters:
+                print chapter
+                for i in range(0, len(chapters[chapter])):
+                    print 'comparing %s' % (i)
+                    if chapters[chapter][i] > index:
+                        print 'greater than'
+                        chapters[chapter][i] = chapters[chapter][i] + 1
+                    elif chapters[chapter][i] == index:
+                        print 'equal'
+                        chapters[chapter].insert(i, index + 1)
+           
+            '''
+
+                for cardid in chapters[chapter]:
+                    if cardid > 
+
             for cardid in sorted(card_chapters, reverse=True):
-                if cardid > index + plurals:
-                    card_chapters[cardid + 1] = card_chapters[cardid]
+                if cardid >= index + plurals:
+            
+                    
+                    card_chapters[cardid + plurals + 1] = card_chapters[cardid + plurals]
                     
                 try:
                     card_chapters[index + plurals + 1] = card_chapters[index + plurals]
                     break
-                except KeyError:
-                    print 'index: ' + str(index)
-                    print 'plurals: ' + str(plurals)
-                    print 'cardid: ' + str(cardid)
-                    print 'card_chapters[cardid]: ' + str(card_chapters[cardid])
-                    print 'card_chapters[cardid + 1]: ' + str(card_chapters[cardid + 1])
-                    print 'card_chapters[index + plurals + 1]: ' + str(card_chapters[index + plurals + 1])
-                    print 'card_chapters[index + plurals]: ' + str(card_chapters[index + plurals])
-                    sys.exit()
-                
+                    
+                    #try:
+                    card_chapters[cardid + 1] = card_chapters[cardid]
+                    
+                    except KeyError:
+                        print 'index: ' + str(index)
+                        print 'plurals: ' + str(plurals)
+                        print 'cardid: ' + str(cardid)
+                        print 'card_chapters[cardid]: ' + str(card_chapters[cardid])
+                        print 'card_chapters[cardid + 1]: ' + str(card_chapters[cardid + 1])
+                        print 'card_chapters[index + plurals + 1]: ' + str(card_chapters[index + plurals + 1])
+                        print 'card_chapters[index + plurals]: ' + str(card_chapters[index + plurals])
+                        sys.exit()
+
+            
 #            card_chapters[index + plurals + 1] = 'test'
+
+            '''
 
             if part != 'noun':
                 english_plural = english + ' (pl)'
@@ -96,17 +149,20 @@ def main():
     outfile.close()
     infile.close()
 
-    chapters = []
+    '''
+    chapters = {}
     for cardid in card_chapters:
         for chapter in card_chapters[cardid]:
             if chapter not in chapters:
                 chapters[chapter] = []
             chapters[chapter].append(cardid)
+    print chapters
+    '''
 
     aws_chapters_new = open(aws_chapters_new_name, 'w')
 
-    for chapter in chapters:
-        for cardid in sorted(chapters[cardid]):
+    for chapter in sorted(chapters):
+        for cardid in chapters[chapter]:
             aws_chapters_new.write('%s|%s\n' % (chapter, cardid))
 
     aws_chapters_new.close()
