@@ -64,7 +64,11 @@ def main():
     plurals = 0
     for line in infile:
         index += 1
-        print index
+#        print index
+
+#        if index == 690:
+#            print chapters
+#            sys.exit()
         line = line.strip()
         english, arabic, plural, part, category, gender = line.split('|')
 
@@ -73,21 +77,28 @@ def main():
         else:
 #            print index
 #            print plurals
+#            print plurals
 #            print len(card_chapters)
 #            plurals += 1
             # write out the singular line
             outfile.write(('|').join([english, arabic, part, category, gender]) + '|n\n')
 
             for chapter in chapters:
-                print chapter
+#                print chapter
                 for i in range(0, len(chapters[chapter])):
-                    print 'comparing %s' % (i)
-                    if chapters[chapter][i] > index:
-                        print 'greater than'
+#                    print 'comparing %s' % (i)
+                    if chapters[chapter][i] > index + plurals:
+#                        print 'greater than'
                         chapters[chapter][i] = chapters[chapter][i] + 1
-                    elif chapters[chapter][i] == index:
-                        print 'equal'
-                        chapters[chapter].insert(i, index + 1)
+                try:
+                    i = chapters[chapter].index(index + plurals)
+                    chapters[chapter].insert(i + 1, index + plurals + 1)
+                except ValueError, e:
+                    pass
+
+#                    elif chapters[chapter][i] == index:
+#                        print 'equal'
+#                        chapters[chapter].insert(i, index + 1)
            
             '''
 
@@ -149,6 +160,8 @@ def main():
     outfile.close()
     infile.close()
 
+#    print chapters
+
     '''
     chapters = {}
     for cardid in card_chapters:
@@ -200,7 +213,9 @@ def make_english_plural(english):
     
     if english in non_plurals:
         return '%s (pl)' % (english)
-    elif english.endswith('y') and english[-2] != 'o' and english[-2] != 'a':
+    elif english.endswith('y') and english[-2] != 'a' and english[-2] != 'e' \
+            and english[-2] != 'i' and english[-2] != 'o' and english[-2] != \
+            'u':
         return english[:-1] + 'ies'
     elif english.endswith('s') or english.endswith('sh') or english.endswith('ch'):
         return english + 'es'
