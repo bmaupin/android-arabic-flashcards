@@ -425,6 +425,7 @@ some|بَعْضُ||noun|||n
 October|تِشرين الأوَّل||noun|months|m|n
 November|تِشرين الثاني||noun|months|m|n
 to be acquainted with|تَعَرَّفَ (بَتَعَرَّفُ) تَعَرُّف|verb|||n
+to be acquainted with (pl)|على|verb|||y
 calendar|تَقويم|noun||m|n
 calendars|تَقاويم|noun||m|y
 July|تَمّوز||noun|months|m|n
@@ -512,7 +513,7 @@ green|خَضْراء|adj|colors|f|n
 green (pl)|خُضْر|adj|colors|f|y
 warm|دافِئ||adj|common|m|n
 class, step, level, degree (temperature)|دَرَجة|noun||f|n
-classes, steps, levels, degrees (temperature)|دَرَجات|noun||f|y
+classes, steps, levels, degree (temperature)s|دَرَجات|noun||f|y
 spring|رَبيع||noun|times|m|n
 wind|ريح|noun||f|n
 winds|رِياح|noun||f|y
@@ -566,16 +567,16 @@ bathroom|حَمّام|noun|household|f|n
 bathrooms|حمّامات|noun|household|f|y
 news story|خَبَر|noun||m|n
 news stories|أخْبار|noun||m|y
-vegetable|خُضرة|noun|food|f|n
-vegetables|خُضَر|noun|food|f|y
+vegetables|خُضرة|noun|food|f|n
+vegetableses|خُضَر|noun|food|f|y
 chin (or beard, when shaving)|ذَقْن|noun|body|f|n
-chins (or beards, when shaving)|ذُقون|noun|body|f|y
+chin (or beards, when shaving)s|ذُقون|noun|body|f|y
 to organize|رَتّبَ (يُرَتِّبُ) تَرْتيب||verb|||n
 to return, to go back|رَجَعَ (يَرْجِعُ) رُجوع||verb|||n
 letter, message|رِسالة|noun||f|n
 letters, messages|رَسائِل|noun||f|y
 tooth|سِنٌّ|noun|body|f|n
-teeth|أسْنان|noun|body|f|y
+tooths|أسْنان|noun|body|f|y
 to witness, to see, to watch|شاهَدَ (يُشاهِدُ) مُشاهَدة||verb|||n
 soap|صابون||noun||m|n
 plate|صَحْن|noun|dishes|m|n
@@ -596,22 +597,22 @@ brushes|فَراشٍ|noun||f|y
 to spend time|قَضى (يَقضي) قَضاء||verb|||n
 writing|كِتابة||noun|subjects||n
 much, a great deal|كَثير|noun|common|m|n
-much, a great deal (pl)|كَثيرون/كِثار|noun|common|m|y
+muches, a great deals|كَثيرون/كِثار|noun|common|m|y
 because|ﻷَنَّ||particle|||n
 yogurt|لَبَن||noun|food|m|n
 why|لِماذا||particle|||n
 one coming early|مُبَكِّر|noun||m|n
-one coming early (pl)|مُبَكِّرون|noun||m|y
+one coming earlies|مُبَكِّرون|noun||m|y
 one coming late|مُتَأخِّر|noun||m|n
-one coming late (pl)|مُتَأخِّرهن|noun||m|y
+one coming lates|مُتَأخِّرهن|noun||m|y
 stewed|مٌدَمَّس||adj|||n
 once, one occurrence|مَرّة|noun|common|f|n
-once, one occurrence (pl)|مَرّات|noun|common|f|y
+onces, one occurrences|مَرّات|noun|common|f|y
 show, (television) series, serial|مُسَلسَل|noun|entertainment|m|n
-shows, (television) series, serials|مُسَلسَلات|noun|entertainment|m|y
+shows, (television) serieses, serials|مُسَلسَلات|noun|entertainment|m|y
 watching|مٌشاهَدة||noun|||n
 busy|مَشْغول|noun||m|n
-busy (pl)|مَشْغولون|noun||m|y
+busies|مَشْغولون|noun||m|y
 together|مَعاً||adv|||n
 paste|مَعْجون|noun||m|n
 pastes|مَعاجين|noun||m|y
@@ -629,7 +630,7 @@ extended families|أُسَر|noun|family|f|y
 to wait|اِنتَظَرَ (يَنْتَظِرُ) اِنتِظار||verb|||n
 onion|بَصَل||noun|food|m|n
 neighborhood, borough; a living person|حَيّ|noun||m|n
-neighborhoods, boroughs; living people|أحْياء|noun||m|y
+neighborhoods, boroughs; a living persons|أحْياء|noun||m|y
 to do (Syrian colloquial)|سلوى (يساوي)||verb|||n
 what (Syrian colloquial)|شو||particle|||n
 journalism|صِحافة||noun|subjects|f|n
@@ -658,7 +659,7 @@ famous, well-known|مَشْهور|adj|||n
 famous, well-known (pl)|(ون), مَشاهير|adj|||y
 pasta, macaroni|مَعْكَرونة||noun|food|f|n
 place of entertainment|مَلْهىً|noun|entertainment|m|n
-places of entertainment|مَلاهٍ|noun|entertainment|m|y
+place of entertainments|مَلاهٍ|noun|entertainment|m|y
 engineer|مُهَنْدِس|noun|occupations|m|n
 engineers|مُهَندِسون|noun|occupations|m|y
 clean|نَظيف||adj||m|n
@@ -676,13 +677,13 @@ revolution|ثَوْرة|noun||f|n
 revolutions|ثَورات|noun||f|y
 pilgrimage|حَجّ||noun|Islam|m|n
 dessert, sweets|حَلْوى|noun|food|f|n
-desserts, sweets|حَلوَيات|noun|food|f|y
+desserts, sweetses|حَلوَيات|noun|food|f|y
 special, particular (to)|خاصّ||adj|||n
 rooster|ديك|noun|animals|m|n
 roosters|دِيَكة|noun|animals|m|y
 turkey|ديك حَبَش||noun|food|m|n
 with, of, owner of|ذو|noun||m|n
-with, of, owner of (pl)|ذَوو|noun||m|y
+withs, ofs, owner ofs|ذَوو|noun||m|y
 head|رأس|noun|body|m|n
 heads|رُؤوس|noun|body|m|y
 to adorn, to decorate|زَيَّنَ (يُزَيِّنُ) تزيين||verb|||n
@@ -716,7 +717,7 @@ Christ|المَسيح||noun|religious|m|n
 teacher|مُعَلِّم|noun|occupations|m|n
 teachers|مُعَلِّمون|noun|occupations|m|y
 information|مَعلومة|noun||f|n
-information (pl)|مَعلومات|noun||f|y
+informations|مَعلومات|noun||f|y
 sunset|مَغْرِب||noun|times|m|n
 occasion|مُناسَبة|noun||f|n
 occasions|مُناسَبات|noun||f|y
@@ -735,14 +736,14 @@ to use, to utilize, to employ|اِستَخدَمَ (يَستَخدِمُ) اِس
 to become a martyr|اُسْتُشْهِدَ (يُستَشْهَدُ) اِسْتِشهاد||verb|||n
 to establish, to found|أسَّسَ (يُؤَسِّسُ) تأسيس||verb|||n
 black|أسْوَد|noun|colors|m|n
-black (pl)|سود|noun|colors|m|y
+blacks|سود|noun|colors|m|y
 to be assassinated|اُغْتيلَ (يُغتالُ) اِغتِيال||verb|||n
 prince|أمير|noun|titles|m|n
 princes|أُمَراء|noun|titles|m|y
 to elect|اِنْتَخَبَ (يَنتَخِبُ) اِنتِخاب||verb|||n
 Andalusia, Muslim Spain|اﻷنْدَلُس||noun|places|f|n
 history|تاريخ|noun|subjects|m|n
-history (pl)|تَواريخ|noun|subjects|m|y
+histories|تَواريخ|noun|subjects|m|y
 discrimination|تَمييز||noun||m|n
 to pass away|تُوُفِيَ (يُتَوَفّى) وَفاة||verb|||n
 mosque|جامِع|noun|Islam|m|n
@@ -773,9 +774,9 @@ to reject|رَفَضَ (يَرفُضُ/يَرفِضُ) رَفْض||verb|||n
 leader, president|رَئيس|noun|occupations|m|n
 leaders, presidents|رُؤَساء|noun|occupations|m|y
 leader (popular)|زَعيم|noun|occupations|m|n
-leaders (popular)|زُعَماء|noun|occupations|m|y
+leader (popular)s|زُعَماء|noun|occupations|m|y
 young man|شابّ|noun|people|m|n
-young men|شَباب|noun|people|m|y
+young mans|شَباب|noun|people|m|y
 poet|شاعِر|noun|occupations|m|n
 poets|شُعَراء|noun|occupations|m|y
 personality, character|شَخصِيّة|noun|abstract|f|n
@@ -800,7 +801,7 @@ to do, to perform|قامَ (يَقومُ) قِيام||verb|||n
 law|قانون|noun|subjects|m|n
 laws|قَوانين|noun|subjects|m|y
 leader (military)|قائد|noun|occupations|m|n
-leaders (military)|قادة|noun|occupations|m|y
+leader (military)s|قادة|noun|occupations|m|y
 village|قَرية|noun|places|f|n
 villages|قُرى|noun|places|f|y
 priest|قِسّيس|noun|religious|m|n
@@ -848,7 +849,7 @@ only (Syrian colloquial)|بَسّ||adv|||n
 gate|بَوّابة|noun||f|n
 gates|بَوّابات|noun||f|y
 sitting|جالِس|noun||m|n
-sitting (pl)|جالِسون|noun||m|y
+sittings|جالِسون|noun||m|y
 pill|حَبّة|noun|medical|m|n
 pills|حَبّات|noun|medical|m|y
 government|حُكومة|noun||f|n
@@ -856,24 +857,24 @@ governments|حُكومات|noun||f|y
 to carry|حَمَلَ (يَحْمِلُ) حَمْل||verb|||n
 to see|رَأى (يَرى) رُؤية||verb|||n
 housewife|رَبّةُ بَيْت|noun|occupations|f|n
-housewives|رِبّات بُيوت|noun|occupations|f|y
+housewifes|رِبّات بُيوت|noun|occupations|f|y
 future marker (=will in Syrian colloquial)|رَح||particle|||n
 colleague, coworker|زَميل|noun|people|m|n
 colleagues, coworkers|زُمَلاء|noun|people|m|y
 mail carrier|ساعٍ|noun|occupations|m|n
 mail carriers|سُعاة (ساعي بَريد)|noun|occupations|m|y
 to help, to assist|ساعَدَ (يُساعِدُ) مُساعَدة||verb|||n
-safe, secure; healthy|سالِم|noun|descriptive|m|n
-safe, secure; healthy (pl)|سالِمون|noun|descriptive|m|y
+safe, secure; healthy|سالِم|noun||m|n
+safes, secures; healthies|سالِمون|noun||m|y
 reason, cause|سَبَب|noun||m|n
 reasons, causes|أسْباب|noun||m|y
 Syria, Damascus, Greater Syria|الشام||noun|places|f|n
 drink, beverage, sherbert|شَراب|noun|food|m|n
 drinks, beverages, sherberts|أشْرِبة، شَرابات|noun|food|m|y
 opposite, anti-, adversary, opponent|ضِدٌّ|noun||m|n
-opposites, anti-, adversaries, opponents|أضْداد|noun||m|y
+opposites, anti-s, adversaries, opponents|أضْداد|noun||m|y
 molar tooth|ضِرْس|noun|body|m|n
-molar teeth|أضْراس، ضُروس|noun|body|m|y
+molar tooths|أضْراس، ضُروس|noun|body|m|y
 physician, doctor|طَبيب|noun|occupations|m|n
 physicians, doctors|أَطِبّاء|noun|occupations|m|y
 good|طَيِّب|noun|descriptive|m|n
@@ -884,18 +885,18 @@ crowded (Syrian colloquial)|عَجْقة||noun||f|n
 to know|عَلِمَ (يَعْلَمُ) عِلْم||verb|||n
 sunset|غُروب||noun|times|m|n
 rich, wealthy|غَنيّ|noun|descriptive|m|n
-rich, wealthy (pl)|أغنِياء|noun|descriptive|m|y
+riches, wealthies|أغنِياء|noun|descriptive|m|y
 and, then, so|فـ||particle|||n
 benefit, use, advantage|فائِدة|noun||f|n
 benefits, uses, advantages|فَوائِد|noun||f|y
 poor|فَقير|noun|descriptive|m|n
-poor (pl)|فُقَراء|noun|descriptive|m|y
+poors|فُقَراء|noun|descriptive|m|y
 to worry|قَلِقَ (يَقْلَق) قَلَق||verb|||n
 as|كَمل||particle|||n
 electricity|كَهْرَباء||noun||f|n
 not (particle used to negate past-tense verbs)|لَمْ||particle|||n
 (a) night|لَيْلة|noun|times|f|n
-nights|لَيالٍ|noun|times|f|y
+(a) nights|لَيالٍ|noun|times|f|y
 except|ما عَدا||particle|||n
 previous, last, past|ماضٍ (الماضي)||adj|common||n
 school|مَدْرَسة|noun|education|f|n
@@ -914,7 +915,7 @@ to lease, to let|أجَّر (يؤجِّر) تأجير||verb|||n
 rent, wage, fare|أُجْرة|noun||f|n
 rents, wages, fares|أُجور|noun||f|y
 other|آخَر|noun|common|m|n
-other (pl)|آخَرون|noun|common|m|y
+others|آخَرون|noun|common|m|y
 couch|أريكة|noun|household|f|n
 couches|أرائِك|noun|household|f|y
 to rent, to hire|استأجَرَ (يَستأجِرُ) استِئجار||verb|||n
@@ -925,22 +926,22 @@ in front of|أمامَ||prep|common||n
 to (infinitive)|أنْ||particle|||n
 Europe|أوروبا||noun|places|f|n
 rent|إيجار|noun||m|n
-rent (pl)|إيجارات|noun||m|y
+rents|إيجارات|noun||m|y
 refrigerator (Syria)|بَرّاد|noun|household|m|n
-refrigerators (Syria)|بَرّادات|noun|household|m|y
+refrigerator (Syria)s|بَرّادات|noun|household|m|y
 far|بَعيد||adv|||n
 grocer|بَقّال|noun|occupations|m|n
 grocers|بَقّالون|noun|occupations|m|y
 local, popular|بَلَديّ||adj|||n
 bank (colloquial)|بَنْك|noun|locations|m|n
-banks (colloquial)|بُنوك|noun|locations|m|y
+bank (colloquial)s|بُنوك|noun|locations|m|y
 to be late|تَأخَّرَ (يَتَأخَّرُ) تَأخُّر||verb|||n
 insurance|تأمين|noun||m|n
-insurance (pl)|تأمينات|noun||m|y
+insurances|تأمينات|noun||m|y
 telephone (colloquial)|تَليفون|noun|household|m|n
-telephones (colloquial)|تَليفونات|noun|household|m|y
+telephone (colloquial)s|تَليفونات|noun|household|m|y
 refrigerator (Egypt)|ثَلاّجة|noun|household|f|n
-refrigerators (Egypt)|ثلاّجات|noun|household|f|y
+refrigerator (Egypt)s|ثلاّجات|noun|household|f|y
 part|جُزْء|noun||m|n
 parts|أجْزاء|noun||m|y
 dishwasher|جَلاّية|noun|household|f|n
@@ -956,26 +957,26 @@ servants|خَدَم|noun|occupations|m|y
 baker|خَبّاز|noun|occupations|m|n
 bakers|خَبّازون|noun|occupations|m|y
 wood, lumber, timber|خَشَب|noun||m|n
-wood, lumber, timber (pl)|أخْشاب|noun||m|y
+woods, lumbers, timbers|أخْشاب|noun||m|y
 greengrocer|خُضَريّ|noun|occupations|m|n
 greengrocers|خُضَريّون|noun|occupations|m|y
 behind|خَلفَ||prep|common||n
 shop, store|دُكّان|noun|locations|f|n
 shops, stores|دَكاكين|noun|locations|f|y
 dinar (Algeria, Bahrain, Iraq, Kuwait)|دينار|noun||m|n
-dinars (Algeria, Bahrain, Iraq, Kuwait)|دَنانير|noun||m|y
+dinar (Algerias, Bahrains, Iraqs, Kuwait)s|دَنانير|noun||m|y
 water heater|سَخّان لِلماء||noun|||n
 truck|شاحِنة|noun|transportation|f|n
 trucks|شاحِنات|noun|transportation|f|y
 company|شَرِكة|noun||f|n
 companies|شَرِكات|noun||f|y
 health|صِحّة||noun|||n
-floor, story, flat|طابَق|noun||m|n
-floors, stories, flats|طَوابِق|noun||m|y
+floor, storey, flat|طابَق|noun||m|n
+floors, storeys, flats|طَوابِق|noun||m|y
 in general, generally|على العُموم||adv|||n
 to hang|عَلَّقَ (يُعَلِّقُ) تَعْليق||verb|||n
 doctor's practice, clinic|عِيادة|noun|locations|f|n
-doctors' practices, clinics|عِيادات|noun|locations|f|y
+doctor's practices, clinics|عِيادات|noun|locations|f|y
 bread (Egypt)|عَيش||noun|food|m|n
 [butane] gas|غاز|noun||m|n
 [butane] gases|غازات|noun||m|y
@@ -1007,7 +1008,7 @@ washbasin, bathroom sink|مَغْسَلة|noun|household|f|n
 washbasins, bathroom sinks|مَغاسِل|noun|household|f|y
 opposite, across from|مُقابِل||adv|||n
 clothes|مَلبَس|noun|clothing|m|n
-clothes (pl)|مَلابِس|noun|clothing|m|y
+clotheses|مَلابِس|noun|clothing|m|y
 [cooking] range|مَوْقِد|noun|household|m|n
 [cooking] ranges|مَواقِد|noun|household|m|y
 [bus] stop, parking lot|مَوْقِف|noun|transportation|m|n
@@ -1071,13 +1072,13 @@ industry|صِناعة|noun||f|n
 industries|صِناعات|noun||f|y
 to make a picture, to portray, to illustrate|سَوَّرَ (يُصَوِّرُ) تَصوير||verb|||n
 number (quantity)|عَدَد|noun||m|n
-numbers (quantity)|أعْداد|noun||m|y
+number (quantity)s|أعْداد|noun||m|y
 show, demonstration, performance|عَرْض|noun|entertainment|m|n
 shows, demonstrations, performances|عُروض|noun|entertainment|m|y
 dear, esteemed, beloved|عَزيز|noun|descriptive|m|n
-dear, esteemed, beloved (pl)|أعِزّاء|noun|descriptive|m|y
+dears, esteemeds, beloveds|أعِزّاء|noun|descriptive|m|y
 great, important, imposing|عَظيم|noun|descriptive|m|n
-great, important, imposing (pl)|عُظَماء|noun|descriptive|m|y
+greats, importants, imposings|عُظَماء|noun|descriptive|m|y
 expensive, dear|غالٍ||noun|descriptive|m|n
 often, mostly, generally|غالِباً||adv|||n
 west|غَرْب||noun|directions|m|n
@@ -1100,9 +1101,9 @@ buildings, constructions|مَبانٍ|noun||m|y
 museum|مُتحَف|noun|locations|m|n
 museums|مَتاحِف|noun|locations|m|y
 loving|مُحِبّ|noun|descriptive||n
-loving (pl)|مُحِبّون|noun|descriptive||y
+lovings|مُحِبّون|noun|descriptive||y
 sincere, faithful, (sincerely yours)|مُخلِص|noun|descriptive|m|n
-sincere, faithful, (sincerely yours) (pl)|مُخلِصون|noun|descriptive|m|y
+sinceres, faithfuls, (sincerely yours)s|مُخلِصون|noun|descriptive|m|y
 period, duration|مُدّة|noun|times|f|n
 periods, durations|مُدَد|noun|times|f|y
 to pass, to go by|مَرَّ (يَمُرُّ) مُرور||verb|||n
@@ -1111,12 +1112,12 @@ mosques|مَساجِد|noun|Islam|m|y
 theater, stage|مَسرَح|noun|entertainment|m|n
 theaters, stages|مَسارِح|noun|entertainment|m|y
 one who is longing, yearning|مُشْتاق|noun|||n
-one who is longing, yearning (pl)|مُشْتاقون|noun|||y
+one who is longings, yearnings|مُشْتاقون|noun|||y
 elevator, lift|مِصعَد|noun||m|n
 elevators, lifts|مَصاعِد|noun||m|y
 though, although|مَعَ أنَّ||conj|||n
 coming, next, following|مُقبِل|noun|common|m|n
-coming, next, following (pl)|مُقبِلون|noun|common|m|y
+comings, nexts, followings|مُقبِلون|noun|common|m|y
 million|مِليون||noun|numbers|m|n
 since, for|مُنْدُ||prep|||n
 square, field, arena|مَيدان|noun|locations|m|n
@@ -1124,9 +1125,9 @@ squares, fields, arenas|مَيادين|noun|locations|m|y
 port|ميناء|noun|locations|m|n
 ports|مَوانِئ|noun|locations|m|y
 person (used in population counts)|نَسَمة|noun|people|f|n
-people (used in population counts)|نَسَمات|noun|people|f|y
+person (used in population counts)s|نَسَمات|noun|people|f|y
 important, significant|هامٌّ|noun|descriptive||n
-important, significant (pl)|هامّون|noun|descriptive||y
+importants, significants|هامّون|noun|descriptive||y
 pyramid|هَرَم|noun||m|n
 pyramids|أهرام/أهرامات|noun||m|y
 father, parent|والِد|noun|family|m|n
@@ -1152,7 +1153,7 @@ seed, kernel|بِذرة|noun|plants|f|n
 seeds, kernels|بُذور|noun|plants|f|y
 watermelon|بِطّيخ||noun|food|m|n
 cow, cattle|بَقَرة|noun|animals|f|n
-cows, cattle|أبْقار/بَقَر|noun|animals|f|y
+cows, cattles|أبْقار/بَقَر|noun|animals|f|y
 tomato|بَنَدورة (طَماطِم في مصر)||noun|food|f|n
 white|بَيضاء|adj|colors|f|n
 white (pl)|بيض|adj|colors|f|y
@@ -1193,7 +1194,7 @@ green (bell) pepper|فُلَيفُلة||noun|food|f|n
 to understand, to comprehend, to realize|فَهِمَ (يَفْهَمُ) فَهْم||verb|||n
 peanuts|فول (سوداني)||noun|food|m|n
 rule, principle, basis, foundation, base|قاعِدة|noun||f|n
-rules, principles, bases, foundations|قَواعِد|noun||f|y
+rules, principles, basises, foundations, bases|قَواعِد|noun||f|y
 cauliflower|قَرنَبيط||noun|food|m|n
 like, as|كَـ||prep|||n
 sufficient|كافٍ (الكافي)||adj|||n
@@ -1233,7 +1234,7 @@ Atlantic|أطلَسيّ||adj|places||n
 to discharge a firearm, to shoot; to dispatch|أطْلَقَ (يُطْلِق) إطْلاق||verb|||n
 to consider|اِعتَبَرَ (يَعتَبِرُ) اِعتِبار||verb|||n
 top, highest point, upper|أعْلى|noun|common|m|n
-tops, highest points, upper|أعالٍ|noun|common|m|y
+tops, highest points, uppers|أعالٍ|noun|common|m|y
 Africa|إفريقية||noun|places|f|n
 region|إقليم|noun|places|m|n
 regions|أقاليم|noun|places|m|y
@@ -1243,12 +1244,12 @@ Iran|إيران||noun|places||n
 semi-arid desert|بادِية|noun|geography|f|n
 semi-arid deserts|بَوادٍ|noun|geography|f|y
 merchandise, goods|بِضاعة|noun||f|n
-merchandise, goods (pl)|بَضائِع|noun||f|y
+merchandises, goodses|بَضائِع|noun||f|y
 ice cream|بوظة||noun|food|f|n
 to consist of, to comprise|تَأَلَّفَ (يَتَألَّفُ) تَألُّف||verb|||n
 traditional|تَقْليديّ||adj|||n
 date (fruit)|تَمْر|noun|food|m|n
-dates (fruit)|تُمور|noun|food|m|y
+date (fruit)s|تُمور|noun|food|m|y
 hole|ثَقْب|noun||m|n
 holes|ثُقوب|noun||m|y
 mountain|جَبَل|noun|geography|m|n
@@ -1282,11 +1283,11 @@ coasts, shores|سَواحِل|noun|geography|m|y
 ceiling|سَقْف|noun|household|m|n
 ceilings|سُقوف|noun|household|m|y
 range, series, chain|سِلسِلة|noun|geography|f|n
-ranges, series, chains|سَلاسِل|noun|geography|f|y
+ranges, serieses, chains|سَلاسِل|noun|geography|f|y
 plain|سَهل|noun|geography|m|n
 plains|سُهول|noun|geography|m|y
 semi-, quasi, similarity|شِبْه|noun||m|n
-semi-, quasi, similarities|أشباه|noun||m|y
+semi-s, quasis, similarities|أشباه|noun||m|y
 emblem, sign, slogan|شِعار|noun||m|n
 emblems, signs, slogans|شِعارات، أشعِرة|noun||m|y
 to form, to constitute|شَكَّلَ (يُشَكِّلُ) تَشكيل||verb|||n
@@ -1330,7 +1331,7 @@ textile, tissue, fabric|نِسيج||noun||m|n
 petroleum, crude oil|نِفْط||noun||m|n
 Pacific|الهادي||adj|places||n
 middle, central|وَسَط|noun|common|m|n
-middle, central (pl)|أوساط|noun|common|m|y
+middles, centrals|أوساط|noun|common|m|y
 for the sake of, because of|أجْل (مِن أجْلِ)||conj|||n
 broadcasting station|إذاعَة|noun|entertainment|f|n
 broadcasting stations|ات|noun|entertainment|f|y
@@ -1351,7 +1352,7 @@ to hear|سَمِعَ (يَسْمَع) سَمْع||verb|||n
 tape|شَريط|noun||m|n
 tapes|أشْرِطة|noun||m|y
 person|شَخْص|noun|people|m|n
-people|أشْخاص|noun|people|m|y
+persons|أشْخاص|noun|people|m|y
 honestly, candidly|صَراحةً (بِصَراحة)||noun||f|n
 of course|طَبْعاً||adv|||n
 nature|طَبيعة||noun||f|n
@@ -1370,7 +1371,7 @@ channels|قَنَوات|noun|entertainment|f|y
 cable|كيبِل||noun||m|n
 to die|ماتَ (يموتُ) مَوْت||verb|||n
 married man|مُتَزَوِّج|noun|people|m|n
-married men|ون|noun|people|m|y
+married mans|ون|noun|people|m|y
 free of charge|مَجّانيّ||adj|||n
 announcer|مُذيع|noun|occupations|m|n
 announcers|ون|noun|occupations|m|y
@@ -1431,7 +1432,7 @@ peasant, farmworker|فَلاّح|noun|people|m|n
 peasants, farmworkers|ون|noun|people|m|y
 denotes completed action, emphasis, or possibility|قَد||particle|||n
 a relative|قَريب|noun|family|m|n
-relatives|أقارِب|noun|family|m|y
+a relatives|أقارِب|noun|family|m|y
 heart|قَلْل|noun|body|m|n
 hearts|قُلوب|noun|body|m|y
 hospitality, generosity|كَرَم||noun|abstract|m|n
@@ -1460,7 +1461,7 @@ houses, residences|مَنازِل|noun|household|m|y
 view, panorama|مَنْظَر|noun||m|n
 views, panoramas|مَناظِر|noun||m|y
 means of transportation|مُواصَلة|noun|transportation|f|n
-means of transportation (pl)|مُواصَلات|noun|transportation|f|y
+means of transportations|مُواصَلات|noun|transportation|f|y
 waiter|نادِل|noun|occupations|m|n
 waiters|نُدُل|noun|occupations|m|y
 mint, peppermint|نَعناع||noun|food|m|n
@@ -1474,7 +1475,7 @@ department|إدارة|noun||f|n
 departments|إدارات|noun||f|y
 to import|اِسْتَوْرَدَ (يَسْتَوْرِدُ) اِسْتِيراد||verb|||n
 bottom, lowest point, lower|أسْفَل|noun||m|n
-bottom, lowest points, lower (pl)|أسافِل|noun||m|y
+bottoms, lowest points, lowers|أسافِل|noun||m|y
 to resemble|أشْبَهَ (يُشْبِهُ) شَبَه||verb|||n
 to take care of, to tend|اِعْتَنى (يَعْتَني) اِعتِناء (بِـ)||verb|||n
 to reside in|أقام (يُقيم) إقامة||verb|||n
@@ -1504,7 +1505,7 @@ tourist|سياحيّ||adj|||n
 hair|شَعْر|noun|body|m|n
 hairs|شُعور/أشْعار|noun|body|m|y
 poetry, poem|شِعْر|noun||m|n
-poetry (pl), poems|أشْعار|noun||m|y
+poetries, poems|أشْعار|noun||m|y
 last name, surname|شُهْرة||noun||f|n
 to issue|صَدَرَ (يَصْدُرُ) صُدور||verb|||n
 youngest, smallest|صُغرى||adj|common||n
@@ -1538,9 +1539,9 @@ occupation, profession|مِهْنة|noun|occupations|f|n
 occupations, professions|مِهَن|noun|occupations|f|y
 consisting of, comprising|مُؤَلَّف (مِن)||participle|||n
 same|نَفْس|noun||f|n
-same (pl)|أنْفَس (...الـ)|noun||f|y
+sames|أنْفَس (...الـ)|noun||f|y
 ministry, department in an administration|وِزارة|noun||f|n
-ministries, departments in an administration|وِزارات|noun||f|y
+ministries, department in an administrations|وِزارات|noun||f|y
 good evening|مَساع الخَيْر||phrase|||n
 fine, well|بِخَيْر||adj|common||n
 tired|تَعْبان||adj|common||n
@@ -1552,7 +1553,7 @@ where?|أَيْنَ||adv|common||n
 television|تِلفاز|noun|technology||n
 televisions|تِلفازات|noun|technology||y
 newspaper (alternate)|جَريدَة|noun|entertainment||n
-newspapers (alternate)|جَرائِد|noun|entertainment||y
+newspaper (alternate)s|جَرائِد|noun|entertainment||y
 computer|حاسوب|noun|technology||n
 computers|حَواسين|noun|technology||y
 you (m/f dual)|أنْتُما||pronoun|common||n
@@ -1607,7 +1608,7 @@ erasers|مَماحٍ/مِمْحَيات|noun||f|y
 window|نافِذة|noun|household|f|n
 windows|نَوافِذ|noun|household|f|y
 sheet of paper|وَرَقة|noun|common|f|n
-sheets of paper|وَرَقات|noun|common|f|y
+sheet of papers|وَرَقات|noun|common|f|y
 beside|بِجانِب||prep|common||n
 under|تَحْتَ||prep|common||n
 over|فَوْقَ||prep|common||n
