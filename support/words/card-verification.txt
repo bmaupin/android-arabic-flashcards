@@ -1,0 +1,18 @@
+23:
+    starts with 992 (to differ (from))
+    contains 611 (to believe)
+        467 (to wait)
+        388 (class, step, level, degree (temperature))
+        568 (to pay)
+        910 (trip, journey, flight)
+        839 (to laugh)
+        854 (like, as)
+    ends with 1047 (present, gift)
+
+24:
+    starts with 1048 (to select)
+    contains 884 (top, highest point, upper)
+        678 (to be late)
+        23 (store, shop; place, location)
+    ends with 1097 (ministry, department in an administration)
+
