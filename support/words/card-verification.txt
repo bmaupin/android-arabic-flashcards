@@ -16,3 +16,4 @@
         23 (store, shop; place, location)
     ends with 1097 (ministry, department in an administration)
 
+587 638

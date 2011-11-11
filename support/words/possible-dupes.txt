@@ -6,8 +6,6 @@
     big
 189-377
     small, young
-267-563
-    to prepare
 355-627
     extended family
 356-628
@@ -26,3 +24,8 @@
 654-1444
 1032-1479
 1064-1546
+
+dupes removed:
+    487
+    562
+    
