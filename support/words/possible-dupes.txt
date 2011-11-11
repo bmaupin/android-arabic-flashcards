@@ -6,8 +6,6 @@
     big
 189-377
     small, young
-349-487
-    to sleep
 267-563
     to prepare
 355-627
