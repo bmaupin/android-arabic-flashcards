@@ -9,9 +9,18 @@
 355-627
     extended family
 356-628
-326-842
-433-848
-1021-1156
+    families
+326-839
+    to begin
+    3rd word irregular
+433-845
+    sitting
+    need to mark one as verbal noun?
+1018-1153
+    white (pl)
+    one a noun m, one an adj f
+
+
 207-1026
 14-1065
 15-1066
