@@ -336,6 +336,8 @@ public class BrowseCards extends Activity {
 // TODO: do something if no more cards to show
             int doSomethingHere;
 //            showDialog(DIALOG_NO_MORE_CARDS);
+            // for now let's at least let people know there are no more cards...
+            Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
         } else {
             cursor.moveToNext();
             // reset the card language that will show first
