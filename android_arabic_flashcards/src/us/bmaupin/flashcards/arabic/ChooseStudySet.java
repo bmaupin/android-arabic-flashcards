@@ -155,8 +155,6 @@ public class ChooseStudySet extends ListActivity {
 	}
     
     private Dialog createCreateStudySetDialog() {
-        final CharSequence[] items = {"Red", "Green", "Blue"};
-
         View layout = LayoutInflater.from(this).inflate(
         		R.layout.dialog_create_study_set, 
         		(ViewGroup) findViewById(R.id.dialog_create_study_set_layout));
@@ -179,20 +177,6 @@ public class ChooseStudySet extends ListActivity {
 	                    dialog.cancel();
 	               }
 	           });
-        
-        
-/*
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                Toast.makeText(getApplicationContext(), items[item], Toast.LENGTH_SHORT).show();
-            }
-        });
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                 MyActivity.this.finish();
-            }
-        })
-*/
 
         AlertDialog ad = builder.create();
         return ad;
