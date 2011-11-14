@@ -20,7 +20,6 @@
     <RadioGroup
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
-		<!-- android:orientation="vertical" -->
 		<RadioButton android:id="@+id/dialog_create_study_set_arabic"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -31,19 +30,4 @@
 		    android:layout_height="wrap_content"
 		    android:text="@string/dialog_create_study_set_english" />
     </RadioGroup>
-	
-	<!-- 
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:id="@+id/helpItemHeader"
-		android:textSize="20sp"
-		android:textStyle="bold"
-		android:layout_gravity="center" />
-	<TextView
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:id="@+id/helpItemText"
-	/>
-	 -->
 </LinearLayout>
