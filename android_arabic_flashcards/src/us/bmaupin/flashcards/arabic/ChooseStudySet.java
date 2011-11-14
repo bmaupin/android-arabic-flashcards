@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class ChooseStudySet extends ListActivity {
@@ -23,6 +24,9 @@ public class ChooseStudySet extends ListActivity {
 	private static final int REQUEST_CARD_SET_BROWSE = 0;
     private static final int REQUEST_CARD_SET_CREATE = 1;
     private static final String TAG = "ChooseStudySet";
+    
+    // string to hold the new study set name based on set and subset
+    private String newStudySetName = "";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +101,19 @@ public class ChooseStudySet extends ListActivity {
             	break;
             case (REQUEST_CARD_SET_CREATE) :
                 if (resultCode == Activity.RESULT_OK) {
-                    String cardSet = data.getStringExtra(ChooseCardSet.EXTRA_CARD_SET);
+                    String cardSet = data.getStringExtra(
+                    		ChooseCardSet.EXTRA_CARD_SET);
                     Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
+                    
+                    // create a study set name to prefill our create study set dialog
+                    newStudySetName = data.getStringExtra(
+                    		ChooseCardSet.EXTRA_CARD_SET);
+                    
+                    if (data.getStringExtra(ChooseCardSet.EXTRA_CARD_SUBSET) != 
+                    		null) {
+                    	newStudySetName += " - " + data.getStringExtra(
+                    			ChooseCardSet.EXTRA_CARD_SUBSET);
+                    }
                     
 /*                    
                     Intent intent = new Intent(this, BrowseCards.class);
@@ -154,11 +169,31 @@ public class ChooseStudySet extends ListActivity {
         return null;
 	}
     
-    private Dialog createCreateStudySetDialog() {
+    
+    
+    @Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {
+	        case DIALOG_CREATE_STUDY_SET:
+//	        	AlertDialog createStudySetDialog = (AlertDialog)dialog;
+//	        	createStudySetDialog.setMessage(m_dlgMsg);
+
+	        	
+	            EditText et = (EditText) findViewById(
+	            		R.id.dialog_create_study_set_name);
+	            et.setText(newStudySetName);
+	    }
+	}
+
+	private Dialog createCreateStudySetDialog() {
         View layout = LayoutInflater.from(this).inflate(
         		R.layout.dialog_create_study_set, 
         		(ViewGroup) findViewById(R.id.dialog_create_study_set_layout));
-        
+/*        
+        EditText et = (EditText) layout.findViewById(
+        		R.id.dialog_create_study_set_name);
+        et.setText(newStudySetName);
+*/        
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(layout)
                .setCancelable(true)
