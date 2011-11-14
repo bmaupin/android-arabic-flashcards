@@ -17,6 +17,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class ChooseStudySet extends ListActivity {
@@ -160,6 +162,11 @@ public class ChooseStudySet extends ListActivity {
     	return false;
     }
     
+    private void createStudySet(String studySetName, String language) {
+        Toast.makeText(getApplicationContext(), studySetName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), language, Toast.LENGTH_SHORT).show();
+    }
+    
     @Override
 	protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -168,8 +175,6 @@ public class ChooseStudySet extends ListActivity {
         }
         return null;
 	}
-    
-    
     
     @Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
@@ -182,7 +187,7 @@ public class ChooseStudySet extends ListActivity {
 	}
 
 	private Dialog createCreateStudySetDialog() {
-        View layout = LayoutInflater.from(this).inflate(
+        final View layout = LayoutInflater.from(this).inflate(
         		R.layout.dialog_create_study_set, 
         		(ViewGroup) findViewById(R.id.dialog_create_study_set_layout));
 
@@ -194,7 +199,17 @@ public class ChooseStudySet extends ListActivity {
             		   R.string.dialog_create_study_set_positive_button), 
             		   new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
-//		                MyActivity.this.finish();
+		               // yikes these are ugly, but they work...
+		               String studySetName = ((EditText) layout.findViewById(
+                               R.id.dialog_create_study_set_name)).getText().
+                               toString();
+		               String language = ((RadioButton)layout.findViewById(
+		                       (((RadioGroup) layout.findViewById(
+                               R.id.dialog_create_study_set_language)).
+                               getCheckedRadioButtonId()))).getText().
+                               toString();
+		               
+		               createStudySet(studySetName, language);
 		           }
                })
 	           .setNegativeButton(getString(
