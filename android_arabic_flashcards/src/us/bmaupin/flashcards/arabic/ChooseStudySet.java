@@ -175,11 +175,7 @@ public class ChooseStudySet extends ListActivity {
 	protected void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
 	        case DIALOG_CREATE_STUDY_SET:
-//	        	AlertDialog createStudySetDialog = (AlertDialog)dialog;
-//	        	createStudySetDialog.setMessage(m_dlgMsg);
-
-	        	
-	            EditText et = (EditText) findViewById(
+	            EditText et = (EditText) dialog.findViewById(
 	            		R.id.dialog_create_study_set_name);
 	            et.setText(newStudySetName);
 	    }
@@ -189,11 +185,7 @@ public class ChooseStudySet extends ListActivity {
         View layout = LayoutInflater.from(this).inflate(
         		R.layout.dialog_create_study_set, 
         		(ViewGroup) findViewById(R.id.dialog_create_study_set_layout));
-/*        
-        EditText et = (EditText) layout.findViewById(
-        		R.id.dialog_create_study_set_name);
-        et.setText(newStudySetName);
-*/        
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(layout)
                .setCancelable(true)
