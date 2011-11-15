@@ -190,8 +190,8 @@ small; young|صَغير|adj|common|m|n
 child|طِفْل|noun|people|m|n
 children|أطْفال|noun|people|m|y
 tenth|عاشِر|adj|numbers||n
-nuclear family|عائِلَة|noun|family|f|n
-nuclear families|عائِلات|noun|family|f|y
+nuclear family; family that one supports|عائِلَة|noun|family|f|n
+nuclear families; family that one supports (pl)|عوائِل/عائِلات|noun|family|f|y
 (academic) term, season|فَصْل|noun|education|m|n
 (academic) terms, seasons|فُصول|noun|education|m|y
 only; no more than|فَقَطْ|particle|common||n
@@ -352,8 +352,8 @@ halves|أنْصاف|noun|numbers|m|y
 here|هُنا|adv|common||n
 alone, by himself|وَحْدَهُ|adv|||n
 The United States of America|الوِلاياتُ المُتَّحِدةُ الأمريكيّة|noun|places|f|n
-immediate (parents, siblings) and extended family|أسْرة|noun|family|f|n
-immediate (parents, siblings) and extended families|أسَر|noun|family|f|y
+immediate (parents, siblings) and extended family; extended family|أُسْرة|noun|family|f|n
+immediate (parents, siblings) and extended families; extended families|أُسَر|noun|family|f|y
 Germany|ألمانيا|noun|places|f|n
 German|ألمانيّ|adj|places||n
 Pakistan|الباكِسْتان|noun|places|f|n
@@ -378,7 +378,6 @@ small child, young child|صَغير|noun|people|m|n
 small children, young children|صِغار|noun|people|m|y
 tall|طَويل|noun|descriptive|m|n
 tall (pl)|طِوال|noun|descriptive|m|y
-family that one supports|عائلة|noun|family|f|n
 family that one supports (pl)|عوائِل/عائلات|noun|family|f|y
 cord used to hold a headdress in place|عِقال|noun|clothing|m|n
 cord used to hold a headdress in place (pl)|عُقُل|noun|clothing|m|y
