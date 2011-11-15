@@ -1,40 +1,40 @@
 LEAVING ALONE FOR NOW
 163-174
     girls, daughters
-199-395
+199-394
     big
-189-377
+189-376
     small, young
-1017-1148
+1016-1147
     white (pl)
     one a noun m, one an adj f
-474(11)-1422(23)
+473(11)-1421(23)
     close, near/relative
 
 
-193(5)-381(10)
-355(10)-624(14)
+355(10)-623(14)
     extended family
-356(10)-625(14)
+356(10)-624(14)
     families
-326(9)-838(17)
+326(9)-837(17)
     to begin
     3rd word irregular
-432(11)-844(17)
+431(11)-843(17)
     sitting
     need to mark one as verbal noun?
-131(3)-1362(22)
+131(3)-1361(22)
     married
-132(3)-1363(22)
+132(3)-1362(22)
     married (pl)
-1059(19)-1535(n/a)
+1058(19)-1534(n/a)
     north/left
-580(13)-1349(22)
+579(13)-1348(22)
     to return
     3rd word differs
 
 
 dupes removed:
+    381
     381
     487
     562
