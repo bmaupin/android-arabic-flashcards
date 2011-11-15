@@ -5,30 +5,28 @@ LEAVING ALONE FOR NOW
     big
 189-376
     small, young
-1016-1147
+1015-1146
     white (pl)
     one a noun m, one an adj f
-473(11)-1421(23)
+473(11)-1420(23)
     close, near/relative
 
 
-355(10)-623(14)
-    extended family
-356(10)-624(14)
+356(10)-623(14)
     families
-326(9)-837(17)
+326(9)-836(17)
     to begin
     3rd word irregular
-431(11)-843(17)
+431(11)-842(17)
     sitting
     need to mark one as verbal noun?
-131(3)-1361(22)
+131(3)-1360(22)
     married
-132(3)-1362(22)
+132(3)-1361(22)
     married (pl)
-1058(19)-1534(n/a)
+1058(19)-1533(n/a)
     north/left
-579(13)-1348(22)
+579(13)-1347(22)
     to return
     3rd word differs
 
@@ -38,6 +36,7 @@ dupes removed:
     381
     487
     562
+    623
     641
     1023
     1061
