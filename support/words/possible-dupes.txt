@@ -16,32 +16,30 @@
 433-845
     sitting
     need to mark one as verbal noun?
-1018-1152
+1018-1151
     white (pl)
     one a noun m, one an adj f
-131(3)-1366(22)
+131(3)-1365(22)
     married
-132(3)-1367(22)
+132(3)-1366(22)
     married (pl)
-475(11)-1427(23)
+475(11)-1426(23)
     close, near/relative
-1060(19)-1542(n/a)
+1060(19)-1541(n/a)
     north/left
 
 
-14(1)-1061(19)
-    thing
-15(1)-1062(19)
+15(1)-1061(19)
     things
-729(16)-1138(20)
+729(16)-1137(20)
     to use, to utilize, to employ
-581(13)-1353(22)
+581(13)-1352(22)
     to return
-427(11)-1400(23)
+427(11)-1399(23)
     to be acquainted with
-651(14)-1440(23)
+651(14)-1439(23)
     crowded
-1028(19)-1475(24)
+1028(19)-1474(24)
     to take, make
 
 
@@ -50,4 +48,5 @@ dupes removed:
     562
     641
     1023
+    1061
 
