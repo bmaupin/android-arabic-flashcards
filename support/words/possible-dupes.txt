@@ -6,9 +6,9 @@
     big
 189-377
     small, young
-355-627
+355-625
     extended family
-356-628
+356-626
     families
 326-839
     to begin
@@ -19,22 +19,35 @@
 1018-1153
     white (pl)
     one a noun m, one an adj f
+131(3)-1367(22)
+    married
+132(3)-1368(22)
+    married (pl)
+475(11)-1428(23)
+    close, near/relative
+1061(19)-1543(n/a)
+    north/left
 
 
-207-1023
+207(6)-1023(19)
     to be able
 
 
-14-1065
-15-1066
-732-1142
-583-1357
-131-1370
-427-1404
-475-1431
-654-1444
-1032-1479
-1064-1546
+14(1)-1062(19)
+    thing
+15(1)-1063(19)
+    things
+729(16)-1139(20)
+    to use, to utilize, to employ
+581(13)-1354(22)
+    to return
+427(11)-1401(23)
+    to be acquainted with
+651(14)-1441(23)
+    crowded
+1029(19)-1476(24)
+    to take, make
+
 
 dupes removed:
     487
