@@ -25,16 +25,14 @@
     married (pl)
 475(11)-1423(23)
     close, near/relative
-1060(19)-1538(n/a)
+1060(19)-1537(n/a)
     north/left
 581(13)-1350(22)
     to return
     3rd word differs
 
 
-651(14)-1436(23)
-    crowded
-1028(19)-1471(24)
+1028(19)-1470(24)
     to take, make
 
 
@@ -47,4 +45,5 @@ dupes removed:
     1061
     1136
     1397
+    1436
 
