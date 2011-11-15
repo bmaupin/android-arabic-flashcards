@@ -23,23 +23,18 @@
     married
 132(3)-1364(22)
     married (pl)
-475(11)-1424(23)
+475(11)-1423(23)
     close, near/relative
-1060(19)-1539(n/a)
+1060(19)-1538(n/a)
     north/left
-
-
-729(16)-1136(20)
-    to use, to utilize, to employ
-
-
 581(13)-1350(22)
     to return
-427(11)-1397(23)
-    to be acquainted with
-651(14)-1437(23)
+    3rd word differs
+
+
+651(14)-1436(23)
     crowded
-1028(19)-1472(24)
+1028(19)-1471(24)
     to take, make
 
 
@@ -51,4 +46,5 @@ dupes removed:
     1061
     1061
     1136
+    1397
 
