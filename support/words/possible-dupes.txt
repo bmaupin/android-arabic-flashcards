@@ -8,18 +8,16 @@ LEAVING ALONE FOR NOW
 1013-1144
     white (pl)
     one a noun m, one an adj f
-473(11)-1418(23)
+473(11)-1417(23)
     close, near/relative
-
-
 431(11)-840(17)
     sitting
     need to mark one as verbal noun?
-131(3)-1358(22)
-    married
-132(3)-1359(22)
+
+
+132(3)-1358(22)
     married (pl)
-1056(19)-1531(n/a)
+1056(19)-1530(n/a)
     north/left
 579(13)-1345(22)
     to return
@@ -39,6 +37,7 @@ dupes removed:
     1061
     1061
     1136
+    1358
     1397
     1436
     1470
