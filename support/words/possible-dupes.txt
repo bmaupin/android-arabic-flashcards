@@ -15,8 +15,6 @@ LEAVING ALONE FOR NOW
     need to mark one as verbal noun?
 
 
-1056(19)-1529(n/a)
-    north/left
 579(13)-1345(22)
     to return
     3rd word differs
@@ -40,3 +38,4 @@ dupes removed:
     1397
     1436
     1470
+    1529
