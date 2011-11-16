@@ -8,16 +8,11 @@ LEAVING ALONE FOR NOW
 1013-1144
     white (pl)
     one a noun m, one an adj f
-473(11)-1416(23)
+473(11)-1415(23)
     close, near/relative
 431(11)-840(17)
     sitting
     need to mark one as verbal noun?
-
-
-579(13)-1345(22)
-    to return
-    3rd word differs
 
 
 dupes removed:
@@ -33,6 +28,7 @@ dupes removed:
     1061
     1061
     1136
+    1345
     1358
     1358
     1397
