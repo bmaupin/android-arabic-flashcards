@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,22 +40,24 @@ public class ChooseStudySet extends ListActivity {
         
         setContentView(R.layout.choose_study_set);
         
-        Button browseCardsButton = (Button)findViewById(
+        Button browseCardsButton = (Button) findViewById(
         		R.id.study_set_button_browse_cards);
         browseCardsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent(ChooseStudySet.this, ChooseCardSet.class);
+                Intent intent = new Intent(ChooseStudySet.this, 
+                        ChooseCardSet.class);
                 startActivityForResult(intent, REQUEST_CARD_SET_BROWSE);
             }
         });
         
-        Button createNewButton = (Button)findViewById(
+        Button createNewButton = (Button) findViewById(
         		R.id.study_set_button_create_new);
         createNewButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent(ChooseStudySet.this, ChooseCardSet.class);
+                Intent intent = new Intent(ChooseStudySet.this, 
+                        ChooseCardSet.class);
                 startActivityForResult(intent, REQUEST_CARD_SET_CREATE);
             }
         });
@@ -165,6 +170,34 @@ public class ChooseStudySet extends ListActivity {
     private void createStudySet(String studySetName, String language) {
         Toast.makeText(getApplicationContext(), studySetName, Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), language, Toast.LENGTH_SHORT).show();
+        
+        StudySetDatabaseHelper studySetDbHelper = new 
+                StudySetDatabaseHelper(this);
+        SQLiteDatabase studySetDb = studySetDbHelper.getReadableDatabase();
+        
+        ContentValues cv=new ContentValues();
+        cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
+        cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
+        
+        long newStudySetId = studySetDb.insert(
+                StudySetDatabaseHelper.META_TABLE_NAME, 
+                StudySetDatabaseHelper._ID, cv);
+        
+        if (newStudySetId != -1) {
+            
+        } else {
+            Log.e(TAG, String.format("ERROR: insert new study set failed. " +
+            		"name=%s, language=%s", studySetName, language));
+        }
+        
+//        Cursor cursor = studySetDb.query(StudySetDatabaseHelper.META_TABLE_NAME, 
+//                null, language, null, language, language, language);
+        
+        /*
+         * 1. insert new row into studyset_meta
+         * 2. get the ID from that row
+         * 3. create a new study set table with that ID
+         */
     }
     
     @Override
@@ -203,7 +236,7 @@ public class ChooseStudySet extends ListActivity {
 		               String studySetName = ((EditText) layout.findViewById(
                                R.id.dialog_create_study_set_name)).getText().
                                toString();
-		               String language = ((RadioButton)layout.findViewById(
+		               String language = ((RadioButton) layout.findViewById(
 		                       (((RadioGroup) layout.findViewById(
                                R.id.dialog_create_study_set_language)).
                                getCheckedRadioButtonId()))).getText().
