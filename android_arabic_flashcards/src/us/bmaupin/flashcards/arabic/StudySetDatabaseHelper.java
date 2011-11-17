@@ -9,26 +9,32 @@ import android.util.Log;
 public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     // The tag will be used for logging
     public static final String TAG = "StudySetDatabaseHelper";
-
+    
     // The name of your database
     public static final String DATABASE_NAME = "studysets.db";
     // The version of your database (increment this every time you change something)
     public static final int DATABASE_VERSION = 1;
     // The name of the table in your database
     public static final String META_TABLE_NAME = "studysets_meta";
-   
+    
     // The name of each column in the database
     public static final String _ID = BaseColumns._ID;
-    public static final String SET_ID = "set_id";
-    public static final String SET_NAME = "set_name";
-
+//    public static final String SET_ID = "set_id";
+    public static final String META_SET_NAME = "set_name";
+    public static final String META_SET_LANGUAGE = "set_language";
+    
+    public static final String SET_CARD_ID = "card_id";
+    public static final String SET_INTERVAL = "interval";
+    public static final String SET_DUE_TIME = "due_time";
+    
     // SQL Statement to create a new database.
     public static final String META_TABLE_CREATE =
         "CREATE TABLE " + META_TABLE_NAME + " (" +
         _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-        SET_ID + " TEXT, " +
-        SET_NAME + " TEXT);";
-   
+//        SET_ID + " TEXT, " +
+        META_SET_NAME + " TEXT, " +
+        META_SET_LANGUAGE + ");";
+    
     // The constructor method
     public StudySetDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
