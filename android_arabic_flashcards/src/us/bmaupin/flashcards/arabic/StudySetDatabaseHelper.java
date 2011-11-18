@@ -16,6 +16,7 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     // The name of the table in your database
     public static final String META_TABLE_NAME = "studysets_meta";
+    public static final String SET_TABLE_PREFIX = "set_";
     
     // The name of each column in the database
     public static final String _ID = BaseColumns._ID;
@@ -24,16 +25,18 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public static final String META_SET_LANGUAGE = "set_language";
     
     public static final String SET_CARD_ID = "card_id";
+    // card interval (in hours)
     public static final String SET_INTERVAL = "interval";
+    // timestamp card is due
     public static final String SET_DUE_TIME = "due_time";
     
-    // SQL Statement to create a new database.
+    // SQL Statement to create a new database table
     public static final String META_TABLE_CREATE =
         "CREATE TABLE " + META_TABLE_NAME + " (" +
         _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 //        SET_ID + " TEXT, " +
         META_SET_NAME + " TEXT, " +
-        META_SET_LANGUAGE + ");";
+        META_SET_LANGUAGE + " TEXT);";
     
     // The constructor method
     public StudySetDatabaseHelper(Context context) {
@@ -59,5 +62,16 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
         // this is probably not the best way to do it...
 //        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
 //        onCreate(db);
+    }
+    
+    public void createNewStudySet(SQLiteDatabase db, long studySetId) {
+        final String STUDY_SET_TABLE_CREATE =
+            "CREATE TABLE " + SET_TABLE_PREFIX + studySetId + " (" +
+            _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            SET_CARD_ID + " TEXT, " +
+            SET_INTERVAL + " INTEGER, " +
+            SET_DUE_TIME + " INTEGER);";
+        
+        db.execSQL(STUDY_SET_TABLE_CREATE);
     }
 }

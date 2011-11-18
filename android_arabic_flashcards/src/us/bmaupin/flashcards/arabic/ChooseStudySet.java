@@ -184,6 +184,7 @@ public class ChooseStudySet extends ListActivity {
                 StudySetDatabaseHelper._ID, cv);
         
         if (newStudySetId != -1) {
+            studySetDbHelper.createNewStudySet(studySetDb, newStudySetId);
             
         } else {
             Log.e(TAG, String.format("ERROR: insert new study set failed. " +
