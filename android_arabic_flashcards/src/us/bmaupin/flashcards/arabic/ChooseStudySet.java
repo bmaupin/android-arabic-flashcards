@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class ChooseStudySet extends ListActivity {
@@ -32,6 +33,8 @@ public class ChooseStudySet extends ListActivity {
     
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
+    private SQLiteDatabase db;
+    private StudySetDatabaseHelper dbHelper;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +64,32 @@ public class ChooseStudySet extends ListActivity {
                 startActivityForResult(intent, REQUEST_CARD_SET_CREATE);
             }
         });
+        
+        dbHelper = new StudySetDatabaseHelper(this);
+        db = dbHelper.getReadableDatabase();
     }
     
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
+        
+        String[] columns = new String[] {StudySetDatabaseHelper._ID, 
+                StudySetDatabaseHelper.META_SET_NAME};
+        
+        Cursor cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
+                columns, null, null, null, null, null);
+        startManagingCursor(cursor);
+        
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+                this,
+                android.R.layout.simple_list_item_1,
+                cursor,
+                new String[] {StudySetDatabaseHelper.META_SET_NAME},
+                new int[] { android.R.id.text1 });
+        
+        // Bind to our new adapter.
+        setListAdapter(adapter);
     }
 
     @Override
@@ -171,20 +194,16 @@ public class ChooseStudySet extends ListActivity {
         Toast.makeText(getApplicationContext(), studySetName, Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), language, Toast.LENGTH_SHORT).show();
         
-        StudySetDatabaseHelper studySetDbHelper = new 
-                StudySetDatabaseHelper(this);
-        SQLiteDatabase studySetDb = studySetDbHelper.getReadableDatabase();
-        
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         
-        long newStudySetId = studySetDb.insert(
+        long newStudySetId = db.insert(
                 StudySetDatabaseHelper.META_TABLE_NAME, 
                 StudySetDatabaseHelper._ID, cv);
         
         if (newStudySetId != -1) {
-            studySetDbHelper.createNewStudySet(studySetDb, newStudySetId);
+            dbHelper.createNewStudySet(db, newStudySetId);
             
         } else {
             Log.e(TAG, String.format("ERROR: insert new study set failed. " +
@@ -268,5 +287,9 @@ public class ChooseStudySet extends ListActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
+        
+        // clean up after ourselves
+        db.close();
+        dbHelper.close();
     }
 }
