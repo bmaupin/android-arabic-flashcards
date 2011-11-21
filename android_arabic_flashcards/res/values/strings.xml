@@ -111,6 +111,7 @@
     
     <string name="study_set_browse_cards">Browse cards</string>
     <string name="study_set_create_new">Create new</string>
+    <string name="study_set_heading">Please choose a study set</string>
     <string name="study_set_no_results">No study sets</string>
     <string name="study_set_no_results_details">Click below to create a new study set</string>
 </resources>
