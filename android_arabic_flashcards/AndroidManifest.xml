@@ -17,9 +17,7 @@
             <meta-data android:name="android.app.default_searchable"
                        android:value=".Search" />
         </activity>
-        <activity android:name=".ChooseCardSet"
-                  android:label="@string/choose_cards_title"
-                  android:theme="@android:style/Theme" >
+        <activity android:name=".ChooseCardSet" >
         </activity>
         <activity android:name=".ChooseStudySet" >
             <intent-filter>

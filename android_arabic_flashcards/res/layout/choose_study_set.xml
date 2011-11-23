@@ -12,13 +12,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="2dip"
-            android:paddingBottom="3dip"
-            android:paddingLeft="5dip"
-            android:paddingRight="10dip"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:background="@color/custom_blue"
+            style="@style/CustomHeader"
             android:text="@string/study_set_heading"
             />
         <ListView
