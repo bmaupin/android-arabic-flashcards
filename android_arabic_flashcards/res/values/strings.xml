@@ -25,7 +25,7 @@
     <string name="card_set_pronouns">Pronouns</string>
     <string name="card_set_verbs">Verbs</string>
 
-    <string name="choose_cards_title">Choose cards</string>
+    <string name="choose_cards_heading">Choose cards</string>
 
     <string name="dialog_choose_aws_chapter_title">Please select a chapter:</string>
     <string name="dialog_choose_card_category_title">Please select a category:</string>
