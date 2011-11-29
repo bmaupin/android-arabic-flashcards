@@ -26,11 +26,16 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class ChooseStudySet extends ListActivity {
-	private static final int DIALOG_CREATE_STUDY_SET = 0;
+    private static final String[] COLUMNS = new String[] {
+            StudySetDatabaseHelper._ID, 
+            StudySetDatabaseHelper.META_SET_NAME};
+    private static final int DIALOG_CREATE_STUDY_SET = 0;
 	private static final int REQUEST_CARD_SET_BROWSE = 0;
     private static final int REQUEST_CARD_SET_CREATE = 1;
     private static final String TAG = "ChooseStudySet";
     
+    SimpleCursorAdapter adapter;
+    Cursor cursor;
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
     private SQLiteDatabase db;
@@ -74,14 +79,11 @@ public class ChooseStudySet extends ListActivity {
         super.onResume();
         Log.d(TAG, "onResume()");
         
-        String[] columns = new String[] {StudySetDatabaseHelper._ID, 
-                StudySetDatabaseHelper.META_SET_NAME};
-        
-        Cursor cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
-                columns, null, null, null, null, null);
+        cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
+                COLUMNS, null, null, null, null, null);
         startManagingCursor(cursor);
         
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+        adapter = new SimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_1,
                 cursor,
@@ -209,6 +211,12 @@ public class ChooseStudySet extends ListActivity {
             Log.e(TAG, String.format("ERROR: insert new study set failed. " +
             		"name=%s, language=%s", studySetName, language));
         }
+        
+        // update the list of study sets
+        cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
+                COLUMNS, null, null, null, null, null);
+        adapter.changeCursor(cursor);
+        
         
 //        Cursor cursor = studySetDb.query(StudySetDatabaseHelper.META_TABLE_NAME, 
 //                null, language, null, language, language, language);
