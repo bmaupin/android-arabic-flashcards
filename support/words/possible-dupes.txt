@@ -19,6 +19,15 @@ LEAVING ALONE FOR NOW
     need to mark one as verbal noun?
 
 
+107-627
+142-626
+252-1392
+267-1392
+322-834
+330-365
+573-683
+
+
 dupes removed:
     381
     381
