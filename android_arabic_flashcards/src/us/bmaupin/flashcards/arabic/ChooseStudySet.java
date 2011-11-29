@@ -11,15 +11,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
@@ -92,6 +95,9 @@ public class ChooseStudySet extends ListActivity {
         
         // Bind to our new adapter.
         setListAdapter(adapter);
+        
+        ListView list = getListView();
+        registerForContextMenu(list);
     }
 
     @Override
@@ -192,6 +198,17 @@ public class ChooseStudySet extends ListActivity {
     	return false;
     }
     
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+            ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // set a title (this can't be done in xml)
+        menu.setHeaderTitle(R.string.choose_study_set_context_menu_title);
+        
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.choose_study_set_context_menu, menu);
+    }
+
     private void createStudySet(String studySetName, String language) {
         Toast.makeText(getApplicationContext(), studySetName, Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), language, Toast.LENGTH_SHORT).show();
