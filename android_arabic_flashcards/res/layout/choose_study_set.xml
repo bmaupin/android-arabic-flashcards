@@ -5,9 +5,32 @@
     android:layout_height="fill_parent"
     >
     <LinearLayout
+        android:id="@+id/study_set_bottom"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+        <Button
+            android:id="@+id/study_set_button_create_new"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/study_set_create_new"
+            />
+        <Button
+            android:id="@+id/study_set_button_browse_cards"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/study_set_browse_cards"
+            />
+    </LinearLayout>
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/study_set_bottom"
         >
         <TextView
             android:layout_width="fill_parent"
@@ -48,26 +71,5 @@
                 android:text="@string/study_set_no_results_details"
                 />
         </TwoLineListItem>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        >
-        <Button
-            android:id="@+id/study_set_button_create_new"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:text="@string/study_set_create_new"
-            />
-        <Button
-            android:id="@+id/study_set_button_browse_cards"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:text="@string/study_set_browse_cards"
-            />
     </LinearLayout>
 </RelativeLayout>
