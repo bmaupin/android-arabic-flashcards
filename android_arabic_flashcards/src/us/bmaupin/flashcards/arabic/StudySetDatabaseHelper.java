@@ -58,10 +58,7 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                + newVersion + ", which will destroy all old data");
-        // this is probably not the best way to do it...
-//        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
-//        onCreate(db);
+                + newVersion);
     }
     
     public void createNewStudySet(SQLiteDatabase db, long studySetId) {
