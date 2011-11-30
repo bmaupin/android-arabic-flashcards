@@ -34,16 +34,19 @@ public class ChooseStudySet extends ListActivity {
             StudySetDatabaseHelper._ID, 
             StudySetDatabaseHelper.META_SET_NAME};
     private static final int DIALOG_CREATE_STUDY_SET = 0;
+    private static final int DIALOG_CONFIRM_DELETE_STUDY_SET = 1;
 	private static final int REQUEST_CARD_SET_BROWSE = 0;
     private static final int REQUEST_CARD_SET_CREATE = 1;
     private static final String TAG = "ChooseStudySet";
     
     SimpleCursorAdapter adapter;
     Cursor cursor;
-    // string to hold the new study set name based on set and subset
-    private String newStudySetName = "";
     private SQLiteDatabase db;
     private StudySetDatabaseHelper dbHelper;
+    // string to hold the new study set name based on set and subset
+    private String newStudySetName = "";
+    // ID of study set to delete
+    private long studySetToDelete;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +218,8 @@ public class ChooseStudySet extends ListActivity {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.choose_study_set_delete_study_set:
-            Toast.makeText(getApplicationContext(), "" + info.id, Toast.LENGTH_SHORT).show();
+            studySetToDelete = info.id;
+            showDialog(DIALOG_CONFIRM_DELETE_STUDY_SET);
             return true;
         default:
             return super.onContextItemSelected(item);
@@ -255,11 +259,17 @@ public class ChooseStudySet extends ListActivity {
          */
     }
     
+    private void deleteStudySet(long id) {
+        Toast.makeText(getApplicationContext(), "" + id, Toast.LENGTH_SHORT).show();
+    }
+    
     @Override
 	protected Dialog onCreateDialog(int id) {
         switch (id) {
 	        case DIALOG_CREATE_STUDY_SET:
 	            return createCreateStudySetDialog();
+            case DIALOG_CONFIRM_DELETE_STUDY_SET:
+                return createConfirmDeleteStudySetDialog();
         }
         return null;
 	}
@@ -271,6 +281,7 @@ public class ChooseStudySet extends ListActivity {
 	            EditText et = (EditText) dialog.findViewById(
 	            		R.id.dialog_create_study_set_name);
 	            et.setText(newStudySetName);
+	            break;
 	    }
 	}
 
@@ -311,6 +322,24 @@ public class ChooseStudySet extends ListActivity {
         AlertDialog ad = builder.create();
         return ad;
     }
+	
+	private Dialog createConfirmDeleteStudySetDialog() {
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setMessage(R.string.choose_study_set_confirm_delete_study_set)
+               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       deleteStudySet(studySetToDelete);
+                   }
+               })
+               .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                   }
+               });
+	    
+        AlertDialog ad = builder.create();
+        return ad;
+	}
 
 	@Override
     protected void onPause() {
