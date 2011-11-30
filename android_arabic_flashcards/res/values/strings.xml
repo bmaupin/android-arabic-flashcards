@@ -27,9 +27,10 @@
 
     <string name="choose_cards_heading">Choose cards</string>
     
-    <string name="choose_study_set_delete_study_set">Delete study set</string>
     <string name="choose_study_set_confirm_delete_study_set">Are you sure you want to delete this study set?</string>
     <string name="choose_study_set_context_menu_title">Edit study set</string>
+    <string name="choose_study_set_delete_study_set">Delete study set</string>
+    <string name="choose_study_set_study_set_deleted">Study set deleted</string>
 
     <string name="dialog_choose_aws_chapter_title">Please select a chapter:</string>
     <string name="dialog_choose_card_category_title">Please select a category:</string>
