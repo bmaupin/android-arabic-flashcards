@@ -27,6 +27,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class ChooseStudySet extends ListActivity {
     private static final String[] COLUMNS = new String[] {
@@ -208,11 +209,20 @@ public class ChooseStudySet extends ListActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.choose_study_set_context_menu, menu);
     }
+    
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+        case R.id.choose_study_set_delete_study_set:
+            Toast.makeText(getApplicationContext(), "" + info.id, Toast.LENGTH_SHORT).show();
+            return true;
+        default:
+            return super.onContextItemSelected(item);
+        }
+    }
 
     private void createStudySet(String studySetName, String language) {
-        Toast.makeText(getApplicationContext(), studySetName, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), language, Toast.LENGTH_SHORT).show();
-        
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
