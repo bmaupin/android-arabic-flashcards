@@ -243,10 +243,7 @@ public class ChooseStudySet extends ListActivity {
             		"name=%s, language=%s", studySetName, language));
         }
         
-        // update the list of study sets
-        cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
-                COLUMNS, null, null, null, null, null);
-        adapter.changeCursor(cursor);
+        updateStudySetList();
         
         
 //        Cursor cursor = studySetDb.query(StudySetDatabaseHelper.META_TABLE_NAME, 
@@ -260,7 +257,19 @@ public class ChooseStudySet extends ListActivity {
     }
     
     private void deleteStudySet(long id) {
-        Toast.makeText(getApplicationContext(), "" + id, Toast.LENGTH_SHORT).show();
+        dbHelper.deleteStudySet(db, id);
+        Toast.makeText(getApplicationContext(), 
+                R.string.choose_study_set_study_set_deleted, 
+                Toast.LENGTH_SHORT).show();
+        
+        updateStudySetList();
+    }
+    
+    private void updateStudySetList() {
+        // update the list of study sets
+        cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
+                COLUMNS, null, null, null, null, null);
+        adapter.changeCursor(cursor);
     }
     
     @Override
