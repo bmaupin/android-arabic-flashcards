@@ -120,29 +120,12 @@ public class ChooseStudySet extends ListActivity {
                     String cardSet = data.getStringExtra(ChooseCardSet.EXTRA_CARD_SET);
                     Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
                     
-/*                    
-                    if (data.getStringExtra(ChooseCardSet.EXTRA_CARD_SUBSET) == null) {
-//                        ch.loadCardSet(cardSet);
-                    } else {
-//                        ch.loadCardSet(cardSet, data.getStringExtra(
-//                                ChooseCardSet.CARD_SUBSET));
-                    }
-*/
-                    
-//                    if (ch.isAskCardOrder()) {
-//                        showDialog(DIALOG_SELECT_CARD_ORDER);
-//                    } else {
-//                        showFirstCard();
-//                    }
-                    
                     Intent intent = new Intent(this, BrowseCards.class);
                     intent.putExtra(ChooseCardSet.EXTRA_CARD_SET, 
                             data.getStringExtra(ChooseCardSet.EXTRA_CARD_SET));
                     intent.putExtra(ChooseCardSet.EXTRA_CARD_SUBSET, 
                             data.getStringExtra(ChooseCardSet.EXTRA_CARD_SUBSET));
                     startActivity(intent);
-                    
-//                    startActivity(new Intent(this, FreeMode.class));
                 }
             	break;
             case (REQUEST_CARD_SET_CREATE) :
@@ -162,15 +145,7 @@ public class ChooseStudySet extends ListActivity {
                     if (newStudySetCardSubset != null) {
                     	newStudySetName += " - " + newStudySetCardSubset;
                     }
-                    
-/*                    
-                    Intent intent = new Intent(this, BrowseCards.class);
-                    intent.putExtra(ChooseCardSet.EXTRA_CARD_SET, 
-                            data.getStringExtra(ChooseCardSet.EXTRA_CARD_SET));
-                    intent.putExtra(ChooseCardSet.EXTRA_CARD_SUBSET, 
-                            data.getStringExtra(ChooseCardSet.EXTRA_CARD_SUBSET));
-                    startActivity(intent);
-*/
+
                     showDialog(DIALOG_CREATE_STUDY_SET);
                 }
                 break;
@@ -252,16 +227,6 @@ public class ChooseStudySet extends ListActivity {
         }
         
         updateStudySetList();
-        
-        
-//        Cursor cursor = studySetDb.query(StudySetDatabaseHelper.META_TABLE_NAME, 
-//                null, language, null, language, language, language);
-        
-        /*
-         * 1. insert new row into studyset_meta
-         * 2. get the ID from that row
-         * 3. create a new study set table with that ID
-         */
     }
     
     private void deleteStudySet(long id) {
