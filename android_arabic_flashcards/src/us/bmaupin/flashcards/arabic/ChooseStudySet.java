@@ -43,6 +43,10 @@ public class ChooseStudySet extends ListActivity {
     Cursor cursor;
     private SQLiteDatabase db;
     private StudySetDatabaseHelper dbHelper;
+    // the card set of a new study set
+    private String newStudySetCardSet = "";
+    // the card subset of a new study set
+    private String newStudySetCardSubset = "";
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
     // ID of study set to delete
@@ -147,14 +151,16 @@ public class ChooseStudySet extends ListActivity {
                     		ChooseCardSet.EXTRA_CARD_SET);
                     Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
                     
-                    // create a study set name to prefill our create study set dialog
-                    newStudySetName = data.getStringExtra(
-                    		ChooseCardSet.EXTRA_CARD_SET);
+                    newStudySetCardSet = data.getStringExtra(
+                            ChooseCardSet.EXTRA_CARD_SET);
+                    newStudySetCardSubset = data.getStringExtra(
+                            ChooseCardSet.EXTRA_CARD_SUBSET);
                     
-                    if (data.getStringExtra(ChooseCardSet.EXTRA_CARD_SUBSET) != 
-                    		null) {
-                    	newStudySetName += " - " + data.getStringExtra(
-                    			ChooseCardSet.EXTRA_CARD_SUBSET);
+                    // create a study set name to prefill our create study set dialog
+                    newStudySetName = newStudySetCardSet;
+                    
+                    if (newStudySetCardSubset != null) {
+                    	newStudySetName += " - " + newStudySetCardSubset;
                     }
                     
 /*                    
@@ -229,6 +235,8 @@ public class ChooseStudySet extends ListActivity {
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
+        cv.put(StudySetDatabaseHelper.META_SET_CATEGORY, newStudySetCardSet);
+        cv.put(StudySetDatabaseHelper.META_SET_SUBCATEGORY, newStudySetCardSubset);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         
         long newStudySetId = db.insert(
