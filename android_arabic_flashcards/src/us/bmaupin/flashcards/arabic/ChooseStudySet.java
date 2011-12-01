@@ -235,8 +235,8 @@ public class ChooseStudySet extends ListActivity {
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
-        cv.put(StudySetDatabaseHelper.META_SET_CATEGORY, newStudySetCardSet);
-        cv.put(StudySetDatabaseHelper.META_SET_SUBCATEGORY, newStudySetCardSubset);
+        cv.put(StudySetDatabaseHelper.META_SET_CARD_SET, newStudySetCardSet);
+        cv.put(StudySetDatabaseHelper.META_SET_CARD_SUBSET, newStudySetCardSubset);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         
         long newStudySetId = db.insert(

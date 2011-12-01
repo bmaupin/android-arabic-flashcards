@@ -13,7 +13,7 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     // The name of your database
     public static final String DATABASE_NAME = "studysets.db";
     // The version of your database (increment this every time you change something)
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     // The name of the table in your database
     public static final String META_TABLE_NAME = "studysets_meta";
     public static final String SET_TABLE_PREFIX = "set_";
@@ -21,8 +21,8 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     // The name of each column in the database
     public static final String _ID = BaseColumns._ID;
     public static final String META_SET_NAME = "set_name";
-    public static final String META_SET_CATEGORY = "set_category";
-    public static final String META_SET_SUBCATEGORY = "set_subcategory";
+    public static final String META_SET_CARD_SET = "card_set";
+    public static final String META_SET_CARD_SUBSET = "card_subset";
     public static final String META_SET_LANGUAGE = "set_language";
     
     public static final String SET_CARD_ID = "card_id";
@@ -36,8 +36,8 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
         "CREATE TABLE " + META_TABLE_NAME + " (" +
         _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
         META_SET_NAME + " TEXT, " +
-        META_SET_CATEGORY + " TEXT, " +
-        META_SET_SUBCATEGORY + " TEXT, " +
+        META_SET_CARD_SET + " TEXT, " +
+        META_SET_CARD_SUBSET + " TEXT, " +
         META_SET_LANGUAGE + " TEXT);";
     
     // The constructor method
