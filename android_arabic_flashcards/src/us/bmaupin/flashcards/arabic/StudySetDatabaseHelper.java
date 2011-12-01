@@ -20,7 +20,6 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     
     // The name of each column in the database
     public static final String _ID = BaseColumns._ID;
-//    public static final String SET_ID = "set_id";
     public static final String META_SET_NAME = "set_name";
     public static final String META_SET_CATEGORY = "set_category";
     public static final String META_SET_SUBCATEGORY = "set_subcategory";
@@ -36,7 +35,6 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public static final String META_TABLE_CREATE =
         "CREATE TABLE " + META_TABLE_NAME + " (" +
         _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//        SET_ID + " TEXT, " +
         META_SET_NAME + " TEXT, " +
         META_SET_CATEGORY + " TEXT, " +
         META_SET_SUBCATEGORY + " TEXT, " +
