@@ -13,7 +13,7 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     // The name of your database
     public static final String DATABASE_NAME = "studysets.db";
     // The version of your database (increment this every time you change something)
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     // The name of the table in your database
     public static final String META_TABLE_NAME = "studysets_meta";
     public static final String SET_TABLE_PREFIX = "set_";
@@ -63,6 +63,9 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                 + newVersion);
+        // this is probably not the best way to do it...
+        db.execSQL("DROP TABLE IF EXISTS " + META_TABLE_NAME);
+        onCreate(db);
     }
     
     public void createNewStudySet(SQLiteDatabase db, long studySetId) {
