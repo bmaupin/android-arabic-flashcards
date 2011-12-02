@@ -39,6 +39,10 @@
             <meta-data android:name="android.app.default_searchable"
                        android:value=".Search" />
         </activity>
+        <activity android:name=".ShowStudySet" >
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".Search" />
+        </activity>
         <activity android:name=".Search"
                   android:launchMode="singleTop" >
             <intent-filter>
