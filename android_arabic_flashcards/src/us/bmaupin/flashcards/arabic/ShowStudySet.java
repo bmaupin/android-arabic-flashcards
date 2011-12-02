@@ -215,11 +215,19 @@ public class ShowStudySet extends Activity {
         Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event="
                 + event);
         switch (keyCode) {
+        case KeyEvent.KEYCODE_DPAD_UP:
+// TODO: fix these
+//            showNextCard("up");
+            break;
+        case KeyEvent.KEYCODE_DPAD_DOWN:
+//            showNextCard("down");
+            break;
         case KeyEvent.KEYCODE_DPAD_LEFT:
-            showPrevCard();
+// TODO: do we want to allow going back to previous cards?
+//            showPrevCard();
             break;
         case KeyEvent.KEYCODE_DPAD_RIGHT:
-            showNextCard();
+//            showNextCard();
             break;
         case KeyEvent.KEYCODE_DPAD_CENTER:
             flipCard();
@@ -234,6 +242,7 @@ public class ShowStudySet extends Activity {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
+/*                
                 if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                     return false;
                 // right to left swipe
@@ -243,6 +252,28 @@ public class ShowStudySet extends Activity {
                 // left to right
                 }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                     showPrevCard();
+                    return true;
+                }
+*/
+                // from http://stackoverflow.com/questions/4098198/adding-fling-gesture-to-an-image-view-android
+                // right to left
+                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+// TODO: fix these
+//                    showNextCard("right");
+                    return true;
+                // left to right
+                }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+// TODO: do we want to allow going back to previous cards?
+//                    showPrevCard();
+                    return true;
+                }
+                // bottom to top
+                if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+//                    showNextCard("up");
+                    return true;
+                // top to bottom
+                }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+//                    showNextCard("down");
                     return true;
                 }
                 return false;
