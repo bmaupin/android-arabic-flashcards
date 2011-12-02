@@ -32,13 +32,12 @@ public class ShowStudySet extends Activity {
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-/*    
+    
     private static final String[] PROJECTION = new String[] {
         CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
         CardDatabaseHelper.CARDS_ENGLISH,
         CardDatabaseHelper.CARDS_ARABIC,
     };
-*/
     
     // current card language
     private String currentLang;
