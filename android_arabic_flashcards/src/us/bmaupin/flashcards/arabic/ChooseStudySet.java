@@ -206,6 +206,14 @@ public class ChooseStudySet extends ListActivity {
             return super.onContextItemSelected(item);
         }
     }
+    
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        // id is the study set id
+        Toast.makeText(getApplicationContext(), "" + id, Toast.LENGTH_SHORT).show();
+    }
 
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
