@@ -29,19 +29,16 @@ import android.widget.ViewFlipper;
 
 public class ShowStudySet extends Activity {
     private static final String TAG = "ShowStudySet";
-    // dialog id constants
-    private static final int DIALOG_NO_CARDS = 0;
-    private static final int DIALOG_NO_MORE_CARDS = 1;
     // constants for swipe
-    private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-    
+/*    
     private static final String[] PROJECTION = new String[] {
         CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
         CardDatabaseHelper.CARDS_ENGLISH,
         CardDatabaseHelper.CARDS_ARABIC,
     };
+*/
     
     // current card language
     private String currentLang;
@@ -70,6 +67,7 @@ public class ShowStudySet extends Activity {
         setContentView(R.layout.cards);
         
         vf = (ViewFlipper)findViewById(R.id.flipper);
+// TODO: do we want to allow going back to previous cards?
         slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
         slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
         slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
@@ -154,20 +152,8 @@ public class ShowStudySet extends Activity {
         Log.d(TAG, "onResume()");
         
         // get any preferences that may have changed
-/*        
-        ch.setAskCardOrder(preferences.getBoolean(
-              getString(R.string.preferences_ask_card_order),
-              resources.getBoolean(R.bool.preferences_ask_card_order_default)));
-        // if we're gonna ask for card order anyway, don't need to change it
-        if (!ch.isAskCardOrder()) {
-            ch.setCardOrder(preferences.getString(
-                   getString(R.string.preferences_default_card_order), 
-                   getString(R.string.preferences_default_card_order_default)));
-        }
-*/
-        defaultLang = preferences.getString(
-                getString(R.string.preferences_default_lang), 
-                getString(R.string.preferences_default_lang_default));
+// TODO: get this from db
+//        defaultLang = 
         fixArabic = preferences.getBoolean(
                 getString(R.string.preferences_fix_arabic),
                 resources.getBoolean(R.bool.preferences_fix_arabic_default));
@@ -187,7 +173,7 @@ public class ShowStudySet extends Activity {
         }
         
         if (cursor == null || cursor.getCount() == 0) {
-            showDialog(DIALOG_NO_CARDS);
+            Log.e(TAG, "for some reason the cursor is empty...");
         } else {
             showFirstCard();
         }
@@ -335,7 +321,6 @@ public class ShowStudySet extends Activity {
             // there aren't any more cards (or any cards at all)
 // TODO: do something if no more cards to show
             int doSomethingHere;
-//            showDialog(DIALOG_NO_MORE_CARDS);
             // for now let's at least let people know there are no more cards...
             Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
         } else {
@@ -375,32 +360,6 @@ public class ShowStudySet extends Activity {
         }
         // update the text of the current card
         setCurrentCardText();
-    }
-    
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case DIALOG_NO_CARDS:
-            return createNoCardsDialog();
-        case DIALOG_NO_MORE_CARDS:
-//          return createNoMoreCardsDialog();
-        }
-        return null;
-    }
-    
-    private Dialog createNoCardsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Sorry, the set of cards you selected is empty.  " +
-                "Please choose a different set of cards.")
-                .setCancelable(false)
-                .setPositiveButton("Choose new cards", 
-                        new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                    }
-                });
-        AlertDialog ad = builder.create();
-        return ad;
     }
     
     @Override
