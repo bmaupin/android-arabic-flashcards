@@ -8,24 +8,27 @@ LEAVING ALONE FOR NOW
 189-376
     small, young
     one an adj, one a noun
-1013-1144
+1012-1143
     white (pl)
     one a noun m, one an adj f
-473(11)-1415(23)
+473(11)-1414(23)
     close, near/relative
     one an adj, one a noun
-431(11)-840(17)
+431(11)-839(17)
     sitting
     need to mark one as verbal noun?
 
 
+UNSURE
 107-627
-142-626
-252-1392
-267-1392
-322-834
+
+
 330-365
 573-683
+
+
+NOT DUPES
+252-267-1391 (to bring; to attain, to get, to acquire; to attend, to be present)
 
 
 dupes removed:
@@ -36,6 +39,7 @@ dupes removed:
     623
     623
     641
+    834
     835
     1023
     1061
