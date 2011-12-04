@@ -4,7 +4,8 @@
         <!-- disable the shadow that covers the top of the activity -->
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    <style name="CustomHeader" parent="@android:style/Widget.TextView.ListSeparator">
+    <!-- <style name="CustomHeader" parent="@android:style/Widget.TextView.ListSeparator">  -->
+    <style name="CustomHeader">
         <item name="android:paddingTop">2dip</item>
         <item name="android:paddingBottom">3dip</item>
         <item name="android:paddingLeft">5dip</item>
