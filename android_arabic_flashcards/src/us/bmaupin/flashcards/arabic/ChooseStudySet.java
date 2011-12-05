@@ -120,27 +120,27 @@ public class ChooseStudySet extends ListActivity {
         switch(requestCode) {
             case (REQUEST_CARD_SET_BROWSE) :
                 if (resultCode == Activity.RESULT_OK) {
-                    String cardSet = data.getStringExtra(ChooseCardSet.EXTRA_CARD_SET);
+                    String cardSet = data.getStringExtra(Cards.EXTRA_CARD_SET);
                     Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
                     
                     Intent intent = new Intent(this, BrowseCards.class);
-                    intent.putExtra(ChooseCardSet.EXTRA_CARD_SET, 
-                            data.getStringExtra(ChooseCardSet.EXTRA_CARD_SET));
-                    intent.putExtra(ChooseCardSet.EXTRA_CARD_SUBSET, 
-                            data.getStringExtra(ChooseCardSet.EXTRA_CARD_SUBSET));
+                    intent.putExtra(Cards.EXTRA_CARD_SET, 
+                            data.getStringExtra(Cards.EXTRA_CARD_SET));
+                    intent.putExtra(Cards.EXTRA_CARD_SUBSET, 
+                            data.getStringExtra(Cards.EXTRA_CARD_SUBSET));
                     startActivity(intent);
                 }
             	break;
             case (REQUEST_CARD_SET_CREATE) :
                 if (resultCode == Activity.RESULT_OK) {
                     String cardSet = data.getStringExtra(
-                    		ChooseCardSet.EXTRA_CARD_SET);
+                    		Cards.EXTRA_CARD_SET);
                     Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
                     
                     newStudySetCardSet = data.getStringExtra(
-                            ChooseCardSet.EXTRA_CARD_SET);
+                            Cards.EXTRA_CARD_SET);
                     newStudySetCardSubset = data.getStringExtra(
-                            ChooseCardSet.EXTRA_CARD_SUBSET);
+                            Cards.EXTRA_CARD_SUBSET);
                     
                     // create a study set name to prefill our create study set dialog
                     newStudySetName = newStudySetCardSet;
@@ -215,9 +215,9 @@ public class ChooseStudySet extends ListActivity {
         super.onListItemClick(l, v, position, id);
         
         Intent intent = new Intent(this, ShowStudySet.class);
-        intent.putExtra(ChooseCardSet.EXTRA_CARD_SET, 
+        intent.putExtra(Cards.EXTRA_CARD_SET, 
         		cursor.getString(2));
-        intent.putExtra(ChooseCardSet.EXTRA_CARD_SUBSET, 
+        intent.putExtra(Cards.EXTRA_CARD_SUBSET, 
         		cursor.getString(2));
         startActivity(intent);
 

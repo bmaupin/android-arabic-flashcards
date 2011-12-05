@@ -19,6 +19,10 @@ public class Cards {
     
     static final String ARABIC_TYPEFACE = "fonts/KacstOne.ttf";
     
+	static final String EXTRA_CARD_SET = "android.intent.extra.EXTRA_CARD_SET";
+	static final String EXTRA_CARD_SUBSET = 
+	"android.intent.extra.EXTRA_CARD_SUBSET";
+    
     /**
      * apply a bunch of modifications to arabic text so it doesn't look terrible
      * @param s

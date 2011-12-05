@@ -22,9 +22,6 @@ public class ChooseCardSet extends Activity {
 	private static final int DIALOG_CARD_SET_AHLAN_WA_SAHLAN = 0;
 	private static final int DIALOG_CARD_SET_CATEGORIES = 1;
 	private static final int DIALOG_CARD_SET_PARTS_OF_SPEECH = 2;
-	static final String EXTRA_CARD_SET = "android.intent.extra.EXTRA_CARD_SET";
-	static final String EXTRA_CARD_SUBSET = 
-	    "android.intent.extra.EXTRA_CARD_SUBSET";
 	private static final String TAG = "ChooseCards";
 	
 	String selectedChapter;
@@ -57,7 +54,7 @@ public class ChooseCardSet extends Activity {
 				
                 if (itemText.equals(getString(R.string.card_set_all))) {
                     Intent result = new Intent();
-                    result.putExtra(EXTRA_CARD_SET, 
+                    result.putExtra(Cards.EXTRA_CARD_SET, 
                             getString(R.string.card_set_all));
                     setResult(RESULT_OK, result);
                     finish();
@@ -107,9 +104,9 @@ public class ChooseCardSet extends Activity {
 				Log.d(TAG, "createAWSChapterDialog: chapter=" + chapters[item]);
 				
 				Intent result = new Intent();
-				result.putExtra(EXTRA_CARD_SET, 
+				result.putExtra(Cards.EXTRA_CARD_SET, 
 				        getString(R.string.card_set_ahlan_wa_sahlan));
-				result.putExtra(EXTRA_CARD_SUBSET, chapters[item]);
+				result.putExtra(Cards.EXTRA_CARD_SUBSET, chapters[item]);
 				
 				setResult(RESULT_OK, result);
 				finish();
@@ -134,9 +131,9 @@ public class ChooseCardSet extends Activity {
                         categories[item]);
                 
                 Intent result = new Intent();
-                result.putExtra(EXTRA_CARD_SET, 
+                result.putExtra(Cards.EXTRA_CARD_SET, 
                         getString(R.string.card_set_categories));
-                result.putExtra(EXTRA_CARD_SUBSET, categories[item]);
+                result.putExtra(Cards.EXTRA_CARD_SUBSET, categories[item]);
                 
                 setResult(RESULT_OK, result);
                 finish();
@@ -164,10 +161,10 @@ public class ChooseCardSet extends Activity {
                         partsOfSpeechEntries[item]);
                 
                 Intent result = new Intent();
-                result.putExtra(EXTRA_CARD_SET, 
+                result.putExtra(Cards.EXTRA_CARD_SET, 
                         getString(R.string.card_set_parts_of_speech));
                 // make sure we put the part of speech value and not the entry
-                result.putExtra(EXTRA_CARD_SUBSET, partsOfSpeechValues[item]);
+                result.putExtra(Cards.EXTRA_CARD_SUBSET, partsOfSpeechValues[item]);
                 
                 setResult(RESULT_OK, result);
                 finish();
