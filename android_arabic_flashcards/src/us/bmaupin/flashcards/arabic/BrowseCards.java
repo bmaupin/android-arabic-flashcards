@@ -291,11 +291,11 @@ public class BrowseCards extends Activity {
         ViewGroup rl = (RelativeLayout)vf.getChildAt(layoutIndexToShow);
         TextView tv = (TextView)rl.getChildAt(0);
         
-        if (currentLang.equals("english")) {
+        if (currentLang.equals(Cards.LANGUAGE_ENGLISH)) {
             tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
             tv.setText(cursor.getString(1));
             
-        } else if (currentLang.equals("arabic")) {
+        } else if (currentLang.equals(Cards.LANGUAGE_ARABIC)) {
             tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
             String arabic = cursor.getString(2);
             if (fixArabic) {
@@ -367,11 +367,11 @@ public class BrowseCards extends Activity {
     }
     
     private void flipCard() {
-        if (currentLang.equals("english")) {
-            currentLang = "arabic";
+        if (currentLang.equals(Cards.LANGUAGE_ENGLISH)) {
+            currentLang = Cards.LANGUAGE_ARABIC;
             
-        } else if (currentLang.equals("arabic")) {
-            currentLang = "english";
+        } else if (currentLang.equals(Cards.LANGUAGE_ARABIC)) {
+            currentLang = Cards.LANGUAGE_ENGLISH;
         }
         // update the text of the current card
         setCurrentCardText();

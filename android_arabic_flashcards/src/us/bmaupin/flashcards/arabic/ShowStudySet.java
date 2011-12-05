@@ -82,7 +82,8 @@ public class ShowStudySet extends Activity {
         resources = getResources();
 
         // set the typeface for the TextViews within the ViewFlipper
-        Typeface tf = Typeface.createFromAsset(getAssets(), Cards.ARABIC_TYPEFACE);
+        Typeface tf = Typeface.createFromAsset(getAssets(), 
+        		Cards.ARABIC_TYPEFACE);
         TextView tv1 = (TextView)vf.findViewById(R.id.textview1);
         TextView tv2 = (TextView)vf.findViewById(R.id.textview2);
         tv1.setTypeface(tf);
@@ -91,6 +92,7 @@ public class ShowStudySet extends Activity {
         Bundle bundle = this.getIntent().getExtras();
         String cardSet = bundle.getString(Cards.EXTRA_CARD_SET);
         String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBSET);
+        defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
         
         String selection = "";
         String[] selectionArgs = new String[] {};
@@ -154,8 +156,6 @@ public class ShowStudySet extends Activity {
         Log.d(TAG, "onResume()");
         
         // get any preferences that may have changed
-// TODO: get this from db
-//        defaultLang = 
         fixArabic = preferences.getBoolean(
                 getString(R.string.preferences_fix_arabic),
                 resources.getBoolean(R.bool.preferences_fix_arabic_default));
@@ -310,11 +310,13 @@ public class ShowStudySet extends Activity {
         ViewGroup rl = (RelativeLayout)vf.getChildAt(layoutIndexToShow);
         TextView tv = (TextView)rl.getChildAt(0);
         
-        if (currentLang.equals("english")) {
+        Log.d(TAG, "currentLang=" + currentLang);
+        
+        if (currentLang.toLowerCase().equals(Cards.LANGUAGE_ENGLISH)) {
             tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
             tv.setText(cursor.getString(1));
             
-        } else if (currentLang.equals("arabic")) {
+        } else if (currentLang.toLowerCase().equals(Cards.LANGUAGE_ARABIC)) {
             tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
             String arabic = cursor.getString(2);
             if (fixArabic) {
@@ -385,11 +387,11 @@ public class ShowStudySet extends Activity {
     }
     
     private void flipCard() {
-        if (currentLang.equals("english")) {
-            currentLang = "arabic";
+        if (currentLang.toLowerCase().equals(Cards.LANGUAGE_ENGLISH)) {
+            currentLang = Cards.LANGUAGE_ARABIC;
             
-        } else if (currentLang.equals("arabic")) {
-            currentLang = "english";
+        } else if (currentLang.toLowerCase().equals(Cards.LANGUAGE_ARABIC)) {
+            currentLang = Cards.LANGUAGE_ENGLISH;
         }
         // update the text of the current card
         setCurrentCardText();
