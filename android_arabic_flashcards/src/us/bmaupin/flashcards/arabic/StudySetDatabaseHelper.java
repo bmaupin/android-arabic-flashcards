@@ -70,7 +70,7 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
         final String STUDY_SET_TABLE_CREATE =
             "CREATE TABLE " + SET_TABLE_PREFIX + studySetId + " (" +
             _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            SET_CARD_ID + " TEXT, " +
+            SET_CARD_ID + " TEXT UNIQUE, " +
             SET_INTERVAL + " INTEGER, " +
             SET_DUE_TIME + " INTEGER);";
         
