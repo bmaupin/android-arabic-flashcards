@@ -29,6 +29,10 @@ public class Cards {
 	
 	static final String LANGUAGE_ARABIC = "arabic";
 	static final String LANGUAGE_ENGLISH = "english";
+	
+	static final float MULTIPLIER_KNOW = 2.2f;
+	static final float MULTIPLIER_IFFY = 1.4f;
+	static final float MULTIPLIER_DONT_KNOW = 0.5f;
     
     /**
      * apply a bunch of modifications to arabic text so it doesn't look terrible
