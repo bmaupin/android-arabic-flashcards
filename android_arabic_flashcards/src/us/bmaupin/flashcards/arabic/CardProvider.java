@@ -14,13 +14,16 @@ public class CardProvider extends ContentProvider {
     public static final String AUTHORITY = 
     		"us.bmaupin.flashcards.arabic.cardprovider";
     private static final int CARD_ID_PATH_POSITION = 1;
+    private static final int LIMIT_PATH_POSITION = 2;
     private static final String PATH_CARDS = "cards";
+    private static final String PATH_LIMIT = "limit";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY 
             + "/" + PATH_CARDS);
     private static final String TAG = "CardProvider";
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
+    private static final int CARDS_LIMIT = 3;
     // content provider mime type constants
     public static final String CONTENT_TYPE = 
     		"vnd.android.cursor.dir/vnd.bmaupin.card";
@@ -35,6 +38,8 @@ public class CardProvider extends ContentProvider {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(AUTHORITY, PATH_CARDS, CARDS);
         sUriMatcher.addURI(AUTHORITY, PATH_CARDS + "/#", CARD_ID);
+        sUriMatcher.addURI(AUTHORITY, PATH_CARDS + "/" + PATH_LIMIT + "/#", 
+        		CARDS_LIMIT);
     }
     
     @Override
@@ -49,35 +54,43 @@ public class CardProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
             String[] selectionArgs, String sortOrder) {
         Log.d(TAG, "query()");
+        
+        String limit = null;
+        
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(CardDatabaseHelper.CARDS_TABLE);
         
         switch (sUriMatcher.match(uri)) {
-            case CARDS:
-            	// if we're searching for cards by ahlan wa sahlan chapter
-            	if (selection.indexOf(CardDatabaseHelper.AWS_CHAPTERS_CHAPTER)
-            			!= -1) {
-            		/*
-            		 * this looks like:
-            		 * cards left join aws_chapters on cards._id = aws_chapters.card_id
-            		 */
-            		qb.setTables(CardDatabaseHelper.CARDS_TABLE + " LEFT " +
-            				"JOIN " + CardDatabaseHelper.AWS_CHAPTERS_TABLE + 
-            				" ON " + CardDatabaseHelper.CARDS_TABLE + "." + 
-            				CardDatabaseHelper._ID + " = " + 
-            				CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
-            				CardDatabaseHelper.AWS_CHAPTERS_CARD_ID);
-            	}
-                break;
+        case CARDS_LIMIT:
+        	limit = uri.getPathSegments().get(LIMIT_PATH_POSITION);
+        
+        case CARDS:
+        	// if we're searching for cards by ahlan wa sahlan chapter
+        	if (selection.indexOf(CardDatabaseHelper.AWS_CHAPTERS_CHAPTER)
+        			!= -1) {
+        		/*
+        		 * this looks like:
+        		 * cards left join aws_chapters on cards._id = aws_chapters.card_id
+        		 */
+        		qb.setTables(CardDatabaseHelper.CARDS_TABLE + " LEFT " +
+        				"JOIN " + CardDatabaseHelper.AWS_CHAPTERS_TABLE + 
+        				" ON " + CardDatabaseHelper.CARDS_TABLE + "." + 
+        				CardDatabaseHelper._ID + " = " + 
+        				CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
+        				CardDatabaseHelper.AWS_CHAPTERS_CARD_ID);
+        	}
+            break;
+        
+        case CARD_ID:
+            qb.appendWhere(CardDatabaseHelper._ID + "=" + 
+                    uri.getPathSegments().get(CARD_ID_PATH_POSITION));
+            break;
             
-            case CARD_ID:
-                qb.appendWhere(CardDatabaseHelper._ID + "=" + 
-                        uri.getPathSegments().get(CARD_ID_PATH_POSITION));
-                break;
-                
-            default:
-                // If the URI doesn't match any of the known patterns, throw an exception.
-                throw new IllegalArgumentException("Unknown URI " + uri);
+
+            
+        default:
+            // If the URI doesn't match any of the known patterns, throw an exception.
+            throw new IllegalArgumentException("Unknown URI " + uri);
         }
 
         SQLiteDatabase db = cardDbHelper.getReadableDatabase();
@@ -87,9 +100,10 @@ public class CardProvider extends ContentProvider {
                 projection,     // The columns to return from the query
                 selection,      // The columns for the where clause
                 selectionArgs,  // The values for the where clause
-                null,          // don't group the rows
-                null,          // don't filter by row groups
-                sortOrder       // The sort order
+                null,           // don't group the rows
+                null,           // don't filter by row groups
+                sortOrder,      // The sort order
+                limit          // limit 
             );
 
         // Tells the Cursor what URI to watch, so it knows when its source data changes
