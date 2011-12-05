@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -29,7 +30,7 @@ public class ShowStudySet extends Activity {
     private static final String TAG = "ShowStudySet";
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
-    private static final int NEW_CARDS_TO_SHOW = 3;
+    private static final int NEW_CARDS_TO_SHOW = 20;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -53,16 +54,23 @@ public class ShowStudySet extends Activity {
     private Resources resources;
     // whether or not to show arabic vowels
     private boolean showVowels;
+    // the ID of the current study set
+    private long studySetId;
     private Animation slideLeftIn;
     private Animation slideLeftOut;
     private Animation slideRightIn;
     private Animation slideRightOut;
     private ViewFlipper vf;
     
+    private SQLiteDatabase db;
+    private StudySetDatabaseHelper dbHelper;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
+        
+        Toast.makeText(getApplicationContext(), "" + System.currentTimeMillis(), Toast.LENGTH_LONG).show();
         
         setContentView(R.layout.cards);
         
@@ -91,6 +99,7 @@ public class ShowStudySet extends Activity {
         tv2.setTypeface(tf);
         
         Bundle bundle = this.getIntent().getExtras();
+        studySetId = bundle.getLong(Cards.EXTRA_STUDY_SET_ID);
         String cardSet = bundle.getString(Cards.EXTRA_CARD_SET);
         String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBSET);
         defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
@@ -158,6 +167,9 @@ public class ShowStudySet extends Activity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
+        
+        dbHelper = new StudySetDatabaseHelper(this);
+        db = dbHelper.getReadableDatabase();
         
         // get any preferences that may have changed
         fixArabic = preferences.getBoolean(
@@ -402,8 +414,21 @@ public class ShowStudySet extends Activity {
     }
     
 // TODO: what's the best data type for multiplier?
-    private void updateCardInterval(String id, short multiplier) {
-    	Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
+    private void updateCardInterval(String cardId, short multiplier) {
+    	Toast.makeText(getApplicationContext(), cardId, Toast.LENGTH_SHORT).show();
+    	
+    	final String[] COLUMNS = {StudySetDatabaseHelper.SET_INTERVAL};
+    	final String SELECTION = StudySetDatabaseHelper.SET_CARD_ID + " = ? ";
+    	final String[] SELECTIONARGS = {cardId};
+    	
+    	Cursor cursor = db.query(StudySetDatabaseHelper.SET_TABLE_PREFIX + 
+    			studySetId, COLUMNS, null, null, null, null, null);
+    	
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            
+        }
+    	
     	/*
     	 * using id...
     	 * 1. get old interval
@@ -420,6 +445,10 @@ public class ShowStudySet extends Activity {
         
         // store the cursor position in case we come back
         cursorPosition = cursor.getPosition();
+        
+        // clean up after ourselves
+        db.close();
+        dbHelper.close();
     }
     
     @Override

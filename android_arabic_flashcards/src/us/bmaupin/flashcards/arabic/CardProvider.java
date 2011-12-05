@@ -37,7 +37,8 @@ public class CardProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher;
 
     /* this part just defines which URI formats are valid.  it doesn't actually
-     * do any URI parsing.
+     * do any URI parsing.  all the parsing is done in the classes below which 
+     * actually take a content URI.
      */
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
