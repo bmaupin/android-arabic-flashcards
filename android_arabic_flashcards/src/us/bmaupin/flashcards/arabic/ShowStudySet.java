@@ -1,9 +1,7 @@
 package us.bmaupin.flashcards.arabic;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -29,6 +27,9 @@ import android.widget.ViewFlipper;
 
 public class ShowStudySet extends Activity {
     private static final String TAG = "ShowStudySet";
+    // how many new cards to show per study set session
+    // we'll probably replace this later using shared preferences
+    private static final int NEW_CARDS_TO_SHOW = 3;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -136,7 +137,10 @@ public class ShowStudySet extends Activity {
         }
         
         cursor = managedQuery(
-                CardProvider.CONTENT_URI,
+        		// add the limit to the content uri
+        		ContentUris.withAppendedId(
+        				CardProvider.CONTENT_URI_CARDS_LIMIT, 
+        				NEW_CARDS_TO_SHOW),
                 PROJECTION,
                 selection,
                 selectionArgs,
@@ -229,7 +233,7 @@ public class ShowStudySet extends Activity {
 //            showPrevCard();
             break;
         case KeyEvent.KEYCODE_DPAD_RIGHT:
-//            showNextCard();
+            showNextCard();
             break;
         case KeyEvent.KEYCODE_DPAD_CENTER:
             flipCard();
@@ -357,7 +361,7 @@ public class ShowStudySet extends Activity {
 // TODO: do something if no more cards to show
             int doSomethingHere;
             // for now let's at least let people know there are no more cards...
-            Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
         } else {
             cursor.moveToNext();
             // reset the card language that will show first
@@ -395,6 +399,18 @@ public class ShowStudySet extends Activity {
         }
         // update the text of the current card
         setCurrentCardText();
+    }
+    
+// TODO: what's the best data type for multiplier?
+    private void updateCardInterval(String id, short multiplier) {
+    	Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT).show();
+    	/*
+    	 * using id...
+    	 * 1. get old interval
+    	 * 2. calculate new interval based on old interval and multiplier
+    	 * 3. write new interval
+    	 * 4. write new due_time based on time now + new interval
+    	 */
     }
     
     @Override

@@ -17,8 +17,10 @@ public class CardProvider extends ContentProvider {
     private static final int LIMIT_PATH_POSITION = 2;
     private static final String PATH_CARDS = "cards";
     private static final String PATH_LIMIT = "limit";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY 
-            + "/" + PATH_CARDS);
+    public static final Uri CONTENT_URI_CARDS = Uri.parse("content://" + 
+    		AUTHORITY + "/" + PATH_CARDS);
+    public static final Uri CONTENT_URI_CARDS_LIMIT = Uri.parse("content://" + 
+    		AUTHORITY + "/" + PATH_CARDS + "/" + PATH_LIMIT);
     private static final String TAG = "CardProvider";
     // content provider data type constants
     private static final int CARDS = 1;
@@ -34,6 +36,9 @@ public class CardProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher;
 
+    /* this part just defines which URI formats are valid.  it doesn't actually
+     * do any URI parsing.
+     */
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(AUTHORITY, PATH_CARDS, CARDS);
