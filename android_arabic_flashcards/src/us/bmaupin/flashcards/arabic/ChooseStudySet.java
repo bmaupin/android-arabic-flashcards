@@ -215,18 +215,12 @@ public class ChooseStudySet extends ListActivity {
         super.onListItemClick(l, v, position, id);
         
         Intent intent = new Intent(this, ShowStudySet.class);
-        intent.putExtra(Cards.EXTRA_CARD_SET, 
-        		cursor.getString(2));
-        intent.putExtra(Cards.EXTRA_CARD_SUBSET, 
-        		cursor.getString(2));
-        startActivity(intent);
-
         // id is the study set id
-        
-        
-//        Toast.makeText(getApplicationContext(),  , Toast.LENGTH_SHORT).show();
-        
-//        Toast.makeText(getApplicationContext(), "" + id, Toast.LENGTH_SHORT).show();
+        intent.putExtra(Cards.STUDY_SET_ID, id);
+        intent.putExtra(Cards.EXTRA_CARD_SET, cursor.getString(2));
+        intent.putExtra(Cards.EXTRA_CARD_SUBSET, cursor.getString(3));
+        intent.putExtra(Cards.STUDY_SET_LANGUAGE, cursor.getString(4));
+        startActivity(intent);
     }
 
     private void createStudySet(String studySetName, String language) {
