@@ -29,6 +29,9 @@ import android.widget.ViewFlipper;
 public class ShowStudySet extends Activity {
     private static final String TAG = "ShowStudySet";
     // how many new cards to show per study set session
+    private static final int DIRECTION_UP = 0;
+    private static final int DIRECTION_RIGHT = 1;
+    private static final int DIRECTION_DOWN = 2;
     // we'll probably replace this later using shared preferences
     private static final int NEW_CARDS_TO_SHOW = 20;
     // constants for swipe
@@ -414,19 +417,52 @@ public class ShowStudySet extends Activity {
     }
     
 // TODO: what's the best data type for multiplier?
-    private void updateCardInterval(String cardId, short multiplier) {
+    private void updateCardInterval(String cardId, int direction) {
     	Toast.makeText(getApplicationContext(), cardId, Toast.LENGTH_SHORT).show();
     	
-    	final String[] COLUMNS = {StudySetDatabaseHelper.SET_INTERVAL};
-    	final String SELECTION = StudySetDatabaseHelper.SET_CARD_ID + " = ? ";
-    	final String[] SELECTIONARGS = {cardId};
+        final String[] COLUMNS = {StudySetDatabaseHelper.SET_INTERVAL};
+        final String SELECTION = StudySetDatabaseHelper.SET_CARD_ID + " = ? ";
+        final String[] SELECTIONARGS = {cardId};
+        
+        float multiplier;
+        int newInterval;
+        int oldInterval;
+    	
+    	switch(direction) {
+    	case DIRECTION_UP:
+    	    multiplier = Cards.MULTIPLIER_KNOW;
+    	    break;
+    	case DIRECTION_RIGHT:
+    	    multiplier = Cards.MULTIPLIER_IFFY;
+    	    break;
+    	case DIRECTION_DOWN:
+    	    multiplier = Cards.MULTIPLIER_DONT_KNOW;
+    	    break;
+    	default:
+    	    multiplier = 1;
+    	}
     	
     	Cursor cursor = db.query(StudySetDatabaseHelper.SET_TABLE_PREFIX + 
-    			studySetId, COLUMNS, null, null, null, null, null);
+    			studySetId, COLUMNS, SELECTION, SELECTIONARGS, null, null, 
+    			null);
     	
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
-            
+            oldInterval = cursor.getInt(0);
+            // create the new interval and round it
+            newInterval = Math.round(oldInterval * multiplier);
+        } else {
+            switch(direction) {
+            case DIRECTION_UP:
+                newInterval = 68;
+                break;
+            case DIRECTION_RIGHT:
+                newInterval = 20;
+                break;
+            case DIRECTION_DOWN:
+                newInterval = 0;
+                break;
+            }
         }
     	
     	/*
