@@ -32,7 +32,10 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 public class ChooseStudySet extends ListActivity {
     private static final String[] COLUMNS = new String[] {
             StudySetDatabaseHelper._ID, 
-            StudySetDatabaseHelper.META_SET_NAME};
+            StudySetDatabaseHelper.META_SET_NAME,
+            StudySetDatabaseHelper.META_SET_CARD_SET,
+            StudySetDatabaseHelper.META_SET_CARD_SUBSET,
+            StudySetDatabaseHelper.META_SET_LANGUAGE};
     private static final int DIALOG_CREATE_STUDY_SET = 0;
     private static final int DIALOG_CONFIRM_DELETE_STUDY_SET = 1;
 	private static final int REQUEST_CARD_SET_BROWSE = 0;
@@ -210,9 +213,20 @@ public class ChooseStudySet extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+        
+        Intent intent = new Intent(this, ShowStudySet.class);
+        intent.putExtra(ChooseCardSet.EXTRA_CARD_SET, 
+        		cursor.getString(2));
+        intent.putExtra(ChooseCardSet.EXTRA_CARD_SUBSET, 
+        		cursor.getString(2));
+        startActivity(intent);
 
         // id is the study set id
-        Toast.makeText(getApplicationContext(), "" + id, Toast.LENGTH_SHORT).show();
+        
+        
+//        Toast.makeText(getApplicationContext(),  , Toast.LENGTH_SHORT).show();
+        
+//        Toast.makeText(getApplicationContext(), "" + id, Toast.LENGTH_SHORT).show();
     }
 
     private void createStudySet(String studySetName, String language) {
