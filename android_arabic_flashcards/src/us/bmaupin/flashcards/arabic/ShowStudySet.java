@@ -86,8 +86,8 @@ public class ShowStudySet extends Activity {
         tv2.setTypeface(tf);
         
         Bundle bundle = this.getIntent().getExtras();
-        String cardSet = bundle.getString(ChooseCardSet.EXTRA_CARD_SET);
-        String cardSubSet = bundle.getString(ChooseCardSet.EXTRA_CARD_SUBSET);
+        String cardSet = bundle.getString(Cards.EXTRA_CARD_SET);
+        String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBSET);
         
         String selection = "";
         String[] selectionArgs = new String[] {};

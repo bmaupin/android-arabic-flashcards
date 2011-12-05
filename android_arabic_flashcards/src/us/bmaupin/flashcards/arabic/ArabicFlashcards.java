@@ -262,14 +262,14 @@ public class ArabicFlashcards extends Activity {
     	switch(requestCode) {
     		case (REQUEST_CARD_SET) :
     			if (resultCode == Activity.RESULT_OK) {
-    				String cardSet = data.getStringExtra(ChooseCardSet.EXTRA_CARD_SET);
+    				String cardSet = data.getStringExtra(Cards.EXTRA_CARD_SET);
     				Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
     				
-    				if (data.getStringExtra(ChooseCardSet.EXTRA_CARD_SUBSET) == null) {
+    				if (data.getStringExtra(Cards.EXTRA_CARD_SUBSET) == null) {
     				    ch.loadCardSet(cardSet);
     				} else {
     				    ch.loadCardSet(cardSet, data.getStringExtra(
-    				            ChooseCardSet.EXTRA_CARD_SUBSET));
+    				            Cards.EXTRA_CARD_SUBSET));
     				}
                     
                     if (ch.isAskCardOrder()) {
