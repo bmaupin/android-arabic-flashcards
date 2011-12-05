@@ -68,9 +68,12 @@ public class ShowStudySet extends Activity {
         vf = (ViewFlipper)findViewById(R.id.flipper);
 // TODO: do we want to allow going back to previous cards?
         slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
-        slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
-        slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
-        slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
+        slideLeftOut = AnimationUtils.loadAnimation(this, 
+        		R.anim.slide_left_out);
+        slideRightIn = AnimationUtils.loadAnimation(this, 
+        		R.anim.slide_right_in);
+        slideRightOut = AnimationUtils.loadAnimation(this, 
+        		R.anim.slide_right_out);
         
         gestureDetector = new GestureDetector(new MyGestureDetector());
         

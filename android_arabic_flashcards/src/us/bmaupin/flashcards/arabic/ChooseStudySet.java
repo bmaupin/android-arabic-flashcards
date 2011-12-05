@@ -216,10 +216,10 @@ public class ChooseStudySet extends ListActivity {
         
         Intent intent = new Intent(this, ShowStudySet.class);
         // id is the study set id
-        intent.putExtra(Cards.STUDY_SET_ID, id);
+        intent.putExtra(Cards.EXTRA_STUDY_SET_ID, id);
         intent.putExtra(Cards.EXTRA_CARD_SET, cursor.getString(2));
         intent.putExtra(Cards.EXTRA_CARD_SUBSET, cursor.getString(3));
-        intent.putExtra(Cards.STUDY_SET_LANGUAGE, cursor.getString(4));
+        intent.putExtra(Cards.EXTRA_STUDY_SET_LANGUAGE, cursor.getString(4));
         startActivity(intent);
     }
 
