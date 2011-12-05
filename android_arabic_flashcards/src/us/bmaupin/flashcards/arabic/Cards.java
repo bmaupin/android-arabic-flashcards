@@ -26,6 +26,9 @@ public class Cards {
 			"android.intent.extra.EXTRA_STUDY_SET_ID";
 	static final String EXTRA_STUDY_SET_LANGUAGE = 
 			"android.intent.extra.EXTRA_STUDY_SET_LANGUAGE";
+	
+	static final String LANGUAGE_ARABIC = "arabic";
+	static final String LANGUAGE_ENGLISH = "english";
     
     /**
      * apply a bunch of modifications to arabic text so it doesn't look terrible

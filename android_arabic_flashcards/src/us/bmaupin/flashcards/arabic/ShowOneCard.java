@@ -98,7 +98,7 @@ public class ShowOneCard extends Activity {
         /* TODO: for now, show arabic first
          * in the future, show whichever language wasn't searched for
          */
-        currentLang = "arabic";
+        currentLang = Cards.LANGUAGE_ARABIC;
         setCardText();
     }
     
@@ -140,11 +140,11 @@ public class ShowOneCard extends Activity {
     }
     
     private void setCardText() {
-        if (currentLang.equals("english")) {
+        if (currentLang.equals(Cards.LANGUAGE_ENGLISH)) {
             tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
             tv.setText(english);
             
-        } else if (currentLang.equals("arabic")) {
+        } else if (currentLang.equals(Cards.LANGUAGE_ARABIC)) {
         	// need to put this in a temporary variable so it updates if 
         	// preferences change and the activity resumes
         	String tempArabic = arabic;
@@ -162,11 +162,11 @@ public class ShowOneCard extends Activity {
     }
     
     private void flipCard() {
-        if (currentLang.equals("english")) {
-            currentLang = "arabic";
+        if (currentLang.equals(Cards.LANGUAGE_ENGLISH)) {
+            currentLang = Cards.LANGUAGE_ARABIC;
             
-        } else if (currentLang.equals("arabic")) {
-            currentLang = "english";
+        } else if (currentLang.equals(Cards.LANGUAGE_ARABIC)) {
+            currentLang = Cards.LANGUAGE_ENGLISH;
         }
         // update the text of the current card
         setCardText();
