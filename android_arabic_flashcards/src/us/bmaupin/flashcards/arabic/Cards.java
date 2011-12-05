@@ -22,9 +22,10 @@ public class Cards {
 	static final String EXTRA_CARD_SET = "android.intent.extra.EXTRA_CARD_SET";
 	static final String EXTRA_CARD_SUBSET = 
 			"android.intent.extra.EXTRA_CARD_SUBSET";
-	static final String STUDY_SET_ID = "android.intent.extra.STUDY_SET_ID";
-	static final String STUDY_SET_LANGUAGE = 
-			"android.intent.extra.STUDY_SET_LANGUAGE";
+	static final String EXTRA_STUDY_SET_ID = 
+			"android.intent.extra.EXTRA_STUDY_SET_ID";
+	static final String EXTRA_STUDY_SET_LANGUAGE = 
+			"android.intent.extra.EXTRA_STUDY_SET_LANGUAGE";
     
     /**
      * apply a bunch of modifications to arabic text so it doesn't look terrible
