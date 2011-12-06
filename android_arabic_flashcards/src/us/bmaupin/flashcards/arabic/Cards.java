@@ -30,9 +30,14 @@ public class Cards {
 	static final String LANGUAGE_ARABIC = "arabic";
 	static final String LANGUAGE_ENGLISH = "english";
 	
-	static final float MULTIPLIER_KNOW = 2.2f;
+	static final float MULTIPLIER_KNOWN = 2.2f;
 	static final float MULTIPLIER_IFFY = 1.4f;
-	static final float MULTIPLIER_DONT_KNOW = 0.5f;
+	static final float MULTIPLIER_UNKNOWN = 0.5f;
+	
+	// minimum interval for a card in a study set
+	static final int MIN_INTERVAL = 8;
+	// maximum interval for a card marked as unknown in a study set
+	static final int MAX_UNKNOWN_INTERVAL = 144;
     
     /**
      * apply a bunch of modifications to arabic text so it doesn't look terrible
