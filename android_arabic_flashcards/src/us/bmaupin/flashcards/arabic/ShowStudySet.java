@@ -465,12 +465,13 @@ public class ShowStudySet extends Activity {
         } else {
             switch(direction) {
             case DIRECTION_UP:
-                newInterval = 68;
+                newInterval = Cards.FIRST_INTERVAL_KNOWN;
                 break;
             case DIRECTION_RIGHT:
-                newInterval = 20;
+                newInterval = Cards.FIRST_INTERVAL_IFFY;
                 break;
             case DIRECTION_DOWN:
+// TODO: implement logic for dealing with unknown cards
                 newInterval = 0;
                 break;
             }

@@ -34,6 +34,8 @@ public class Cards {
 	static final float MULTIPLIER_IFFY = 1.4f;
 	static final float MULTIPLIER_UNKNOWN = 0.5f;
 	
+	static final int FIRST_INTERVAL_KNOWN = 68;
+	static final int FIRST_INTERVAL_IFFY = 20;
 	// minimum interval for a card in a study set
 	static final int MIN_INTERVAL = 8;
 	// maximum interval for a card marked as unknown in a study set
