@@ -430,13 +430,13 @@ public class ShowStudySet extends Activity {
     	
     	switch(direction) {
     	case DIRECTION_UP:
-    	    multiplier = Cards.MULTIPLIER_KNOW;
+    	    multiplier = Cards.MULTIPLIER_KNOWN;
     	    break;
     	case DIRECTION_RIGHT:
     	    multiplier = Cards.MULTIPLIER_IFFY;
     	    break;
     	case DIRECTION_DOWN:
-    	    multiplier = Cards.MULTIPLIER_DONT_KNOW;
+    	    multiplier = Cards.MULTIPLIER_UNKNOWN;
     	    break;
     	default:
     	    multiplier = 1;
@@ -451,6 +451,17 @@ public class ShowStudySet extends Activity {
             oldInterval = cursor.getInt(0);
             // create the new interval and round it
             newInterval = Math.round(oldInterval * multiplier);
+            
+            // if the card was marked as unknown
+            if (direction == DIRECTION_DOWN) {
+                // don't allow the interval to go below the minimum
+                if (newInterval < Cards.MIN_INTERVAL) {
+                    newInterval = Cards.MIN_INTERVAL;
+                // don't allow the interval to go above the maximum
+                } else if (newInterval > Cards.MAX_UNKNOWN_INTERVAL) {
+                    newInterval = Cards.MAX_UNKNOWN_INTERVAL;
+                }
+            }
         } else {
             switch(direction) {
             case DIRECTION_UP:
