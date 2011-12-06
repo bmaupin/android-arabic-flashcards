@@ -37,6 +37,7 @@ public class ShowStudySet extends Activity {
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    private static final int ONE_HOUR_IN_MS = 3600000;
     
     private static final String[] PROJECTION = new String[] {
         CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
@@ -425,6 +426,7 @@ public class ShowStudySet extends Activity {
         final String[] SELECTIONARGS = {cardId};
         
         float multiplier;
+        long newDueDate;
         int newInterval;
         int oldInterval;
     	
@@ -474,8 +476,15 @@ public class ShowStudySet extends Activity {
 // TODO: implement logic for dealing with unknown cards
                 newInterval = 0;
                 break;
+            default:
+                newInterval = 0;
             }
         }
+        
+        newDueDate = System.currentTimeMillis() + (newInterval * 
+                ONE_HOUR_IN_MS);
+        
+        
     	
     	/*
     	 * using id...
