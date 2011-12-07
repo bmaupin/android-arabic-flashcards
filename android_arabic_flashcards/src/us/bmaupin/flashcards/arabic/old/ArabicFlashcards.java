@@ -1,7 +1,20 @@
-package us.bmaupin.flashcards.arabic;
+package us.bmaupin.flashcards.arabic.old;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import us.bmaupin.flashcards.arabic.Cards;
+import us.bmaupin.flashcards.arabic.ChooseCardGroup;
+import us.bmaupin.flashcards.arabic.ChooseStudySet;
+import us.bmaupin.flashcards.arabic.Help;
+import us.bmaupin.flashcards.arabic.Preferences;
+import us.bmaupin.flashcards.arabic.R;
+import us.bmaupin.flashcards.arabic.R.anim;
+import us.bmaupin.flashcards.arabic.R.array;
+import us.bmaupin.flashcards.arabic.R.id;
+import us.bmaupin.flashcards.arabic.R.layout;
+import us.bmaupin.flashcards.arabic.R.menu;
+import us.bmaupin.flashcards.arabic.R.string;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -258,7 +271,9 @@ public class ArabicFlashcards extends Activity {
     	super.onActivityResult(requestCode, resultCode, data);
     	
     	Log.d(TAG, "onActivityResult called");
-    	
+
+// this part commented because of Cards class access
+/*
     	switch(requestCode) {
     		case (REQUEST_CARD_SET) :
     			if (resultCode == Activity.RESULT_OK) {
@@ -291,7 +306,7 @@ public class ArabicFlashcards extends Activity {
     		    }
     		    break;
 */
-    	}
+//    	}
     }
 
     @Override
@@ -473,15 +488,16 @@ public class ArabicFlashcards extends Activity {
 		} else if (thisSide.equals("arabic") || thisSide.equals("plural")) {
 			Log.d(TAG, "showCard, showing arabic");
 			thisView.setTextSize(ARABIC_CARD_TEXT_SIZE);
-			thisView.setText(Cards.fixArabic(thisCard.get(thisSide), 
-			        showVowels));
+// commented because of Cards class access
+//			thisView.setText(Cards.fixArabic(thisCard.get(thisSide), 
+//			        showVowels));
 		}
 	}
 	
 	private void showCard(Map<String, String> thisCard) {
     	// store the ID and status of the current card
     	currentCardId = currentCard.get("ID");
-    	currentCardStatus = Cards.stringToInteger(currentCard.get("status"));
+//    	currentCardStatus = Cards.stringToInteger(currentCard.get("status"));
     	
 //
     	Log.d(TAG, "showCard: currentCard=" + currentCard);

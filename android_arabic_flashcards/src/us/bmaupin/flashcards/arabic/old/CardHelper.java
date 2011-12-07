@@ -1,8 +1,10 @@
-package us.bmaupin.flashcards.arabic;
+package us.bmaupin.flashcards.arabic.old;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import us.bmaupin.flashcards.arabic.R;
+import us.bmaupin.flashcards.arabic.R.string;
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 
 import android.content.ContentValues;

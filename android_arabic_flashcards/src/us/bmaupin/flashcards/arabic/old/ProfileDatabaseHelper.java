@@ -1,4 +1,4 @@
-package us.bmaupin.flashcards.arabic;
+package us.bmaupin.flashcards.arabic.old;
 
 import java.util.ArrayList;
 import java.util.List;
