@@ -429,24 +429,9 @@ public class ShowStudySet extends Activity {
         final String SELECTION = StudySetDatabaseHelper.SET_CARD_ID + " = ? ";
         final String[] SELECTIONARGS = {cardId};
         
-        float multiplier;
         long newDueTime;
         int newInterval;
         int oldInterval;
-    	
-    	switch(response) {
-    	case RESPONSE_KNOWN:
-    	    multiplier = Cards.MULTIPLIER_KNOWN;
-    	    break;
-    	case RESPONSE_IFFY:
-    	    multiplier = Cards.MULTIPLIER_IFFY;
-    	    break;
-    	case RESPONSE_UNKNOWN:
-    	    multiplier = Cards.MULTIPLIER_UNKNOWN;
-    	    break;
-    	default:
-    	    multiplier = 1;
-    	}
     	
     	Cursor cursor = db.query(StudySetDatabaseHelper.SET_TABLE_PREFIX + 
     			studySetId, COLUMNS, SELECTION, SELECTIONARGS, null, null, 
@@ -455,11 +440,19 @@ public class ShowStudySet extends Activity {
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             oldInterval = cursor.getInt(0);
-            // create the new interval and round it
-            newInterval = Math.round(oldInterval * multiplier);
             
-            // if the card was marked as unknown
-            if (response == RESPONSE_UNKNOWN) {
+        	switch(response) {
+        	case RESPONSE_KNOWN:
+        		// create the new interval and round it
+        	    newInterval = Math.round(oldInterval * Cards.MULTIPLIER_KNOWN);
+        	    break;
+        	case RESPONSE_IFFY:
+        		newInterval = Math.round(oldInterval * Cards.MULTIPLIER_IFFY);
+        	    break;
+        	case RESPONSE_UNKNOWN:
+        		newInterval = Math.round(oldInterval * 
+        				Cards.MULTIPLIER_UNKNOWN);
+        		
                 // don't allow the interval to go below the minimum
                 if (newInterval < Cards.MIN_INTERVAL) {
                     newInterval = Cards.MIN_INTERVAL;
@@ -467,7 +460,11 @@ public class ShowStudySet extends Activity {
                 } else if (newInterval > Cards.MAX_UNKNOWN_INTERVAL) {
                     newInterval = Cards.MAX_UNKNOWN_INTERVAL;
                 }
-            }
+        	    break;
+        	default:
+        		Log.e(TAG, "ERROR: unknown response");
+        	    newInterval = oldInterval;
+        	}
         } else {
             switch(response) {
             case RESPONSE_KNOWN:
@@ -481,6 +478,7 @@ public class ShowStudySet extends Activity {
                 newInterval = 0;
                 break;
             default:
+            	Log.e(TAG, "ERROR: unknown response");
                 newInterval = 0;
             }
         }
