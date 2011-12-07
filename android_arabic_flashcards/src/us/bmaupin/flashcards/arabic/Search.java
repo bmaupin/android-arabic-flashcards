@@ -1,5 +1,6 @@
 package us.bmaupin.flashcards.arabic;
 
+import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;

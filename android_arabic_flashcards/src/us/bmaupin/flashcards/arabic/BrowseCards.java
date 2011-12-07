@@ -1,5 +1,7 @@
 package us.bmaupin.flashcards.arabic;
 
+import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
+import us.bmaupin.flashcards.arabic.data.CardProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

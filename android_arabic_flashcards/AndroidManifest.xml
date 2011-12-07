@@ -51,7 +51,7 @@
             <meta-data android:name="android.app.searchable"
                        android:resource="@xml/searchable" />
         </activity>
-        <provider android:name=".CardProvider"
+        <provider android:name=".data.CardProvider"
                   android:authorities="us.bmaupin.flashcards.arabic.cardprovider"
                   android:exported="false" >
                   <grant-uri-permission android:pathPattern=".*" />

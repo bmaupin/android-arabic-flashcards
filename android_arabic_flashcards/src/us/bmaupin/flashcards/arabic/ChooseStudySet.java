@@ -1,5 +1,6 @@
 package us.bmaupin.flashcards.arabic;
 
+import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
