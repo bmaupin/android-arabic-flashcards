@@ -19,9 +19,10 @@ public class Cards {
     
     static final String ARABIC_TYPEFACE = "fonts/KacstOne.ttf";
     
-	static final String EXTRA_CARD_SET = "android.intent.extra.EXTRA_CARD_SET";
-	static final String EXTRA_CARD_SUBSET = 
-			"android.intent.extra.EXTRA_CARD_SUBSET";
+	static final String EXTRA_CARD_GROUP = 
+			"android.intent.extra.EXTRA_CARD_GROUP";
+	static final String EXTRA_CARD_SUBGROUP = 
+			"android.intent.extra.EXTRA_CARD_SUBGROUP";
 	static final String EXTRA_STUDY_SET_ID = 
 			"android.intent.extra.EXTRA_STUDY_SET_ID";
 	static final String EXTRA_STUDY_SET_LANGUAGE = 

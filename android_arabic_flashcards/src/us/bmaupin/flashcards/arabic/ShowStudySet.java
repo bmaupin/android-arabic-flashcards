@@ -104,8 +104,8 @@ public class ShowStudySet extends Activity {
         
         Bundle bundle = this.getIntent().getExtras();
         studySetId = bundle.getLong(Cards.EXTRA_STUDY_SET_ID);
-        String cardSet = bundle.getString(Cards.EXTRA_CARD_SET);
-        String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBSET);
+        String cardSet = bundle.getString(Cards.EXTRA_CARD_GROUP);
+        String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
         
         String selection = "";

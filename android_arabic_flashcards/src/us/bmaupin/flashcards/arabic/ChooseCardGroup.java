@@ -19,10 +19,10 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ChooseCardGroup extends Activity {
 	//unique dialog id
-	private static final int DIALOG_CARD_SET_AHLAN_WA_SAHLAN = 0;
-	private static final int DIALOG_CARD_SET_CATEGORIES = 1;
-	private static final int DIALOG_CARD_SET_PARTS_OF_SPEECH = 2;
-	private static final String TAG = "ChooseCards";
+	private static final int DIALOG_CARD_GROUP_AHLAN_WA_SAHLAN = 0;
+	private static final int DIALOG_CARD_GROUP_CATEGORIES = 1;
+	private static final int DIALOG_CARD_GROUP_PARTS_OF_SPEECH = 2;
+	private static final String TAG = "ChooseCardGroup";
 	
 	String selectedChapter;
 	private CardDatabaseHelper helper;
@@ -54,22 +54,22 @@ public class ChooseCardGroup extends Activity {
 				
                 if (itemText.equals(getString(R.string.card_group_all))) {
                     Intent result = new Intent();
-                    result.putExtra(Cards.EXTRA_CARD_SET, 
+                    result.putExtra(Cards.EXTRA_CARD_GROUP, 
                             getString(R.string.card_group_all));
                     setResult(RESULT_OK, result);
                     finish();
                     
                 } else if (itemText.equals(getString(
                         R.string.card_group_ahlan_wa_sahlan))) {
-					showDialog(DIALOG_CARD_SET_AHLAN_WA_SAHLAN);
+					showDialog(DIALOG_CARD_GROUP_AHLAN_WA_SAHLAN);
 					
                 } else if (itemText.equals(getString(
                         R.string.card_group_categories))) {
-                    showDialog(DIALOG_CARD_SET_CATEGORIES);
+                    showDialog(DIALOG_CARD_GROUP_CATEGORIES);
                     
                 } else if (itemText.equals(getString(
                         R.string.card_group_parts_of_speech))) {
-                    showDialog(DIALOG_CARD_SET_PARTS_OF_SPEECH);
+                    showDialog(DIALOG_CARD_GROUP_PARTS_OF_SPEECH);
                     
                 }
 			}
@@ -79,11 +79,11 @@ public class ChooseCardGroup extends Activity {
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-			case DIALOG_CARD_SET_AHLAN_WA_SAHLAN:
+			case DIALOG_CARD_GROUP_AHLAN_WA_SAHLAN:
 				return createChooseAWSChapterDialog();
-            case DIALOG_CARD_SET_CATEGORIES:
+            case DIALOG_CARD_GROUP_CATEGORIES:
                 return createChooseCategoryDialog();
-            case DIALOG_CARD_SET_PARTS_OF_SPEECH:
+            case DIALOG_CARD_GROUP_PARTS_OF_SPEECH:
                 return createChoosePartOfSpeechDialog();
 		}
 		return null;
@@ -104,9 +104,9 @@ public class ChooseCardGroup extends Activity {
 				Log.d(TAG, "createAWSChapterDialog: chapter=" + chapters[item]);
 				
 				Intent result = new Intent();
-				result.putExtra(Cards.EXTRA_CARD_SET, 
+				result.putExtra(Cards.EXTRA_CARD_GROUP, 
 				        getString(R.string.card_group_ahlan_wa_sahlan));
-				result.putExtra(Cards.EXTRA_CARD_SUBSET, chapters[item]);
+				result.putExtra(Cards.EXTRA_CARD_SUBGROUP, chapters[item]);
 				
 				setResult(RESULT_OK, result);
 				finish();
@@ -131,9 +131,9 @@ public class ChooseCardGroup extends Activity {
                         categories[item]);
                 
                 Intent result = new Intent();
-                result.putExtra(Cards.EXTRA_CARD_SET, 
+                result.putExtra(Cards.EXTRA_CARD_GROUP, 
                         getString(R.string.card_group_categories));
-                result.putExtra(Cards.EXTRA_CARD_SUBSET, categories[item]);
+                result.putExtra(Cards.EXTRA_CARD_SUBGROUP, categories[item]);
                 
                 setResult(RESULT_OK, result);
                 finish();
@@ -161,10 +161,10 @@ public class ChooseCardGroup extends Activity {
                         partsOfSpeechEntries[item]);
                 
                 Intent result = new Intent();
-                result.putExtra(Cards.EXTRA_CARD_SET, 
+                result.putExtra(Cards.EXTRA_CARD_GROUP, 
                         getString(R.string.card_group_parts_of_speech));
                 // make sure we put the part of speech value and not the entry
-                result.putExtra(Cards.EXTRA_CARD_SUBSET, partsOfSpeechValues[item]);
+                result.putExtra(Cards.EXTRA_CARD_SUBGROUP, partsOfSpeechValues[item]);
                 
                 setResult(RESULT_OK, result);
                 finish();
