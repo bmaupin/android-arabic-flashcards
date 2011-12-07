@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="card_set_main_items">
-        <item>@string/card_set_all</item>
-        <item>@string/card_set_ahlan_wa_sahlan</item>
-        <item>@string/card_set_categories</item>
-        <item>@string/card_set_parts_of_speech</item>
+    <string-array name="card_group_main_items">
+        <item>@string/card_group_all</item>
+        <item>@string/card_group_ahlan_wa_sahlan</item>
+        <item>@string/card_group_categories</item>
+        <item>@string/card_group_parts_of_speech</item>
     </string-array>
     
     <string-array name="dialog_parts_of_speech_entries">
