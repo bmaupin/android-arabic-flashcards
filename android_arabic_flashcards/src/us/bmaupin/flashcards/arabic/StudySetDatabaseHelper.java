@@ -13,7 +13,7 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     // The name of your database
     public static final String DATABASE_NAME = "studysets.db";
     // The version of your database (increment this every time you change something)
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     // The name of the table in your database
     public static final String META_TABLE_NAME = "studysets_meta";
     public static final String SET_TABLE_PREFIX = "set_";
