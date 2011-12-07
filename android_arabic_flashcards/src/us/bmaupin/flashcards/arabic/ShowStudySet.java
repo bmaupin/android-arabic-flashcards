@@ -3,8 +3,10 @@ package us.bmaupin.flashcards.arabic;
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
+import us.bmaupin.flashcards.arabic.old.ProfileDatabaseHelper;
 import android.app.Activity;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -420,7 +422,6 @@ public class ShowStudySet extends Activity {
         setCurrentCardText();
     }
     
-// TODO: what's the best data type for multiplier?
     private void updateCardInterval(String cardId, int direction) {
     	Toast.makeText(getApplicationContext(), cardId, Toast.LENGTH_SHORT).show();
     	
@@ -429,7 +430,7 @@ public class ShowStudySet extends Activity {
         final String[] SELECTIONARGS = {cardId};
         
         float multiplier;
-        long newDueDate;
+        long newDueTime;
         int newInterval;
         int oldInterval;
     	
@@ -484,18 +485,16 @@ public class ShowStudySet extends Activity {
             }
         }
         
-        newDueDate = System.currentTimeMillis() + (newInterval * 
+        newDueTime = System.currentTimeMillis() + (newInterval * 
                 ONE_HOUR_IN_MS);
         
+        ContentValues cv = new ContentValues();
+        cv.put(StudySetDatabaseHelper.SET_CARD_ID, cardId);
+        cv.put(StudySetDatabaseHelper.SET_INTERVAL, newInterval);
+        cv.put(StudySetDatabaseHelper.SET_DUE_TIME, newDueTime);
         
-    	
-    	/*
-    	 * using id...
-    	 * 1. get old interval
-    	 * 2. calculate new interval based on old interval and multiplier
-    	 * 3. write new interval
-    	 * 4. write new due_time based on time now + new interval
-    	 */
+        db.replace(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
+        		ProfileDatabaseHelper.CARD_ID, cv);
     }
     
     @Override
