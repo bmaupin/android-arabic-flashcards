@@ -454,7 +454,7 @@ public class ArabicFlashcards extends Activity {
     }
 	
 	private void chooseCardSet() {
-	    Intent intent = new Intent(this, ChooseCardSet.class);
+	    Intent intent = new Intent(this, ChooseCardGroup.class);
         startActivityForResult(intent, REQUEST_CARD_SET);
 	}
 		

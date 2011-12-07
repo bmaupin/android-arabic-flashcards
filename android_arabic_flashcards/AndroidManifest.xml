@@ -17,7 +17,7 @@
             <meta-data android:name="android.app.default_searchable"
                        android:value=".Search" />
         </activity>
-        <activity android:name=".ChooseCardSet" >
+        <activity android:name=".ChooseCardGroup" >
         </activity>
         <activity android:name=".ChooseStudySet" >
             <intent-filter>
