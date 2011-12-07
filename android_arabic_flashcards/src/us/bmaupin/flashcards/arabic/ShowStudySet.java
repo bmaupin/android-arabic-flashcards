@@ -50,10 +50,10 @@ public class ShowStudySet extends Activity {
         CardDatabaseHelper.CARDS_ARABIC,
     };
     
+    private Cursor cardsCursor;
+    private int cardsCursorPosition;
     // current card language
     private String currentLang;
-    private Cursor cursor;
-    private int cursorPosition;
     // default card language 
     private String defaultLang;
     // whether or not to apply arabic fixes
@@ -71,8 +71,9 @@ public class ShowStudySet extends Activity {
     private Animation slideRightOut;
     private ViewFlipper vf;
     
-    private SQLiteDatabase db;
-    private StudySetDatabaseHelper dbHelper;
+    private Cursor studySetCursor;
+    private SQLiteDatabase studySetDb;
+    private StudySetDatabaseHelper studySetDbHelper;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,6 @@ public class ShowStudySet extends Activity {
         setContentView(R.layout.cards);
         
         vf = (ViewFlipper)findViewById(R.id.flipper);
-// TODO: do we want to allow going back to previous cards?
         slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
         slideLeftOut = AnimationUtils.loadAnimation(this, 
         		R.anim.slide_left_out);
@@ -154,7 +154,7 @@ public class ShowStudySet extends Activity {
             selectionArgs = new String[] {cardSubSet};
         }
         
-        cursor = managedQuery(
+        cardsCursor = managedQuery(
         		// add the limit to the content uri
         		ContentUris.withAppendedId(
         				CardProvider.CONTENT_URI_CARDS_LIMIT, 
@@ -167,8 +167,8 @@ public class ShowStudySet extends Activity {
 
         // make sure the cursor isn't empty
         // if it is empty, we take care of that in onResume
-        if (cursor != null && cursor.getCount() != 0) {
-            cursor.moveToFirst();
+        if (cardsCursor != null && cardsCursor.getCount() != 0) {
+            cardsCursor.moveToFirst();
         }
     }
     
@@ -177,8 +177,8 @@ public class ShowStudySet extends Activity {
         super.onResume();
         Log.d(TAG, "onResume()");
         
-        dbHelper = new StudySetDatabaseHelper(this);
-        db = dbHelper.getReadableDatabase();
+        studySetDbHelper = new StudySetDatabaseHelper(this);
+        studySetDb = studySetDbHelper.getReadableDatabase();
         
         // get any preferences that may have changed
         fixArabic = preferences.getBoolean(
@@ -195,11 +195,11 @@ public class ShowStudySet extends Activity {
 // TODO: do we want to do this if the order is random?
         // if we're coming back to this activity from another, we've probably
         // lost our cursor postion
-        if (cursor.isBeforeFirst()) {
-            cursor.moveToPosition(cursorPosition);
+        if (cardsCursor.isBeforeFirst()) {
+            cardsCursor.moveToPosition(cardsCursorPosition);
         }
         
-        if (cursor == null || cursor.getCount() == 0) {
+        if (cardsCursor == null || cardsCursor.getCount() == 0) {
             Log.e(TAG, "for some reason the cursor is empty...");
         } else {
             showFirstCard();
@@ -250,7 +250,6 @@ public class ShowStudySet extends Activity {
 //            showNextCard("down");
             break;
         case KeyEvent.KEYCODE_DPAD_LEFT:
-// TODO: do we want to allow going back to previous cards?
 //            showPrevCard();
             break;
         case KeyEvent.KEYCODE_DPAD_RIGHT:
@@ -290,8 +289,7 @@ public class ShowStudySet extends Activity {
                     return true;
                 // left to right
                 }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-// TODO: do we want to allow going back to previous cards?
-//                    showPrevCard();
+                    showPrevCard();
                     return true;
                 }
                 // bottom to top
@@ -339,11 +337,11 @@ public class ShowStudySet extends Activity {
         
         if (currentLang.toLowerCase().equals(Cards.LANGUAGE_ENGLISH)) {
             tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
-            tv.setText(cursor.getString(1));
+            tv.setText(cardsCursor.getString(1));
             
         } else if (currentLang.toLowerCase().equals(Cards.LANGUAGE_ARABIC)) {
             tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
-            String arabic = cursor.getString(2);
+            String arabic = cardsCursor.getString(2);
             if (fixArabic) {
                 arabic = Cards.fixArabic(arabic, showVowels);
             }
@@ -376,7 +374,7 @@ public class ShowStudySet extends Activity {
     }
     
     private void showNextCard() {
-        if (cursor.isLast()) {
+        if (cardsCursor.isLast()) {
             // return a blank card so we can show the user a message that
             // there aren't any more cards (or any cards at all)
 // TODO: do something if no more cards to show
@@ -384,7 +382,7 @@ public class ShowStudySet extends Activity {
             // for now let's at least let people know there are no more cards...
 //            Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
         } else {
-            cursor.moveToNext();
+            cardsCursor.moveToNext();
             // reset the card language that will show first
             currentLang = defaultLang;
             setUnseenCardText();
@@ -396,11 +394,11 @@ public class ShowStudySet extends Activity {
     }
     
     private void showPrevCard() {
-        if (cursor.isFirst()) {
+        if (cardsCursor.isFirst()) {
 // TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
             Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
         } else {
-            cursor.moveToPrevious();
+            cardsCursor.moveToPrevious();
             // reset the card language that will show first
             currentLang = defaultLang;
             setUnseenCardText();
@@ -433,13 +431,13 @@ public class ShowStudySet extends Activity {
         int newInterval;
         int oldInterval;
     	
-    	Cursor cursor = db.query(StudySetDatabaseHelper.SET_TABLE_PREFIX + 
+    	studySetCursor = studySetDb.query(StudySetDatabaseHelper.SET_TABLE_PREFIX + 
     			studySetId, COLUMNS, SELECTION, SELECTIONARGS, null, null, 
     			null);
     	
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            oldInterval = cursor.getInt(0);
+        if (studySetCursor.getCount() != 0) {
+            studySetCursor.moveToFirst();
+            oldInterval = studySetCursor.getInt(0);
             
         	switch(response) {
         	case RESPONSE_KNOWN:
@@ -475,11 +473,11 @@ public class ShowStudySet extends Activity {
                 break;
             case RESPONSE_UNKNOWN:
 // TODO: implement logic for dealing with unknown cards
-                newInterval = 0;
+                newInterval = Cards.MIN_INTERVAL;
                 break;
             default:
             	Log.e(TAG, "ERROR: unknown response");
-                newInterval = 0;
+                newInterval = Cards.MIN_INTERVAL;
             }
         }
         
@@ -491,7 +489,7 @@ public class ShowStudySet extends Activity {
         cv.put(StudySetDatabaseHelper.SET_INTERVAL, newInterval);
         cv.put(StudySetDatabaseHelper.SET_DUE_TIME, newDueTime);
         
-        db.replace(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
+        studySetDb.replace(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
         		ProfileDatabaseHelper.CARD_ID, cv);
     }
     
@@ -501,11 +499,14 @@ public class ShowStudySet extends Activity {
         Log.d(TAG, "onPause()");
         
         // store the cursor position in case we come back
-        cursorPosition = cursor.getPosition();
+        cardsCursorPosition = cardsCursor.getPosition();
         
         // clean up after ourselves
-        db.close();
-        dbHelper.close();
+        if (!studySetCursor.isClosed()) {
+            studySetCursor.close();
+        }
+        studySetDb.close();
+        studySetDbHelper.close();
     }
     
     @Override
