@@ -38,7 +38,7 @@ public class ShowStudySet extends Activity {
     private static final int RESPONSE_UNKNOWN = 2;
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
-    private static final int NEW_CARDS_TO_SHOW = 10;
+    private static final int MAX_NEW_CARDS_TO_SHOW = 10;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -79,8 +79,6 @@ public class ShowStudySet extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        
-        Toast.makeText(getApplicationContext(), "" + System.currentTimeMillis(), Toast.LENGTH_LONG).show();
         
         setContentView(R.layout.cards);
         
@@ -158,7 +156,7 @@ public class ShowStudySet extends Activity {
         		// add the limit to the content uri
         		ContentUris.withAppendedId(
         				CardProvider.CONTENT_URI_CARDS_LIMIT, 
-        				NEW_CARDS_TO_SHOW),
+        				MAX_NEW_CARDS_TO_SHOW),
                 PROJECTION,
                 selection,
                 selectionArgs,
@@ -243,17 +241,16 @@ public class ShowStudySet extends Activity {
                 + event);
         switch (keyCode) {
         case KeyEvent.KEYCODE_DPAD_UP:
-// TODO: fix these
-//            showNextCard("up");
+            showNextCard(RESPONSE_KNOWN);
             break;
         case KeyEvent.KEYCODE_DPAD_DOWN:
-//            showNextCard("down");
+            showNextCard(RESPONSE_UNKNOWN);
             break;
         case KeyEvent.KEYCODE_DPAD_LEFT:
-//            showPrevCard();
+            showPrevCard();
             break;
         case KeyEvent.KEYCODE_DPAD_RIGHT:
-            showNextCard();
+            showNextCard(RESPONSE_IFFY);
             break;
         case KeyEvent.KEYCODE_DPAD_CENTER:
             flipCard();
@@ -284,8 +281,7 @@ public class ShowStudySet extends Activity {
                 // from http://stackoverflow.com/questions/4098198/adding-fling-gesture-to-an-image-view-android
                 // right to left
                 if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-// TODO: fix these
-//                    showNextCard("right");
+                    showNextCard(RESPONSE_IFFY);
                     return true;
                 // left to right
                 }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
@@ -294,16 +290,16 @@ public class ShowStudySet extends Activity {
                 }
                 // bottom to top
                 if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-//                    showNextCard("up");
+                    showNextCard(RESPONSE_KNOWN);
                     return true;
                 // top to bottom
                 }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-//                    showNextCard("down");
+                    showNextCard(RESPONSE_UNKNOWN);
                     return true;
                 }
                 return false;
             } catch (Exception e) {
-                // nothing
+                Log.e(TAG, "ERROR: Exception caught when swiping");
             }
             return false;
         }
@@ -373,6 +369,11 @@ public class ShowStudySet extends Activity {
         setCardText(layoutIndexToShow);
     }
     
+    private void showNextCard(int response) {
+        updateCardInterval(cardsCursor.getString(0), response);
+        showNextCard();
+    }
+    
     private void showNextCard() {
         if (cardsCursor.isLast()) {
             // return a blank card so we can show the user a message that
@@ -380,7 +381,7 @@ public class ShowStudySet extends Activity {
 // TODO: do something if no more cards to show
             int doSomethingHere;
             // for now let's at least let people know there are no more cards...
-//            Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
         } else {
             cardsCursor.moveToNext();
             // reset the card language that will show first
@@ -396,7 +397,8 @@ public class ShowStudySet extends Activity {
     private void showPrevCard() {
         if (cardsCursor.isFirst()) {
 // TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
-            Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "No previous cards!", 
+                    Toast.LENGTH_SHORT).show();
         } else {
             cardsCursor.moveToPrevious();
             // reset the card language that will show first
@@ -421,8 +423,6 @@ public class ShowStudySet extends Activity {
     }
     
     private void updateCardInterval(String cardId, int response) {
-    	Toast.makeText(getApplicationContext(), cardId, Toast.LENGTH_SHORT).show();
-    	
         final String[] COLUMNS = {StudySetDatabaseHelper.SET_INTERVAL};
         final String SELECTION = StudySetDatabaseHelper.SET_CARD_ID + " = ? ";
         final String[] SELECTIONARGS = {cardId};
@@ -431,7 +431,8 @@ public class ShowStudySet extends Activity {
         int newInterval;
         int oldInterval;
     	
-    	studySetCursor = studySetDb.query(StudySetDatabaseHelper.SET_TABLE_PREFIX + 
+    	studySetCursor = studySetDb.query(
+    	        StudySetDatabaseHelper.SET_TABLE_PREFIX + 
     			studySetId, COLUMNS, SELECTION, SELECTIONARGS, null, null, 
     			null);
     	
