@@ -96,7 +96,7 @@ public class BrowseCards extends Activity {
         String[] selectionArgs = new String[] {};
         String sortOrder = "";
                 
-        if (cardSet.equals(getString(R.string.card_set_ahlan_wa_sahlan))) {
+        if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
         	/*
         	 * this looks like:
         	 * where cards._id in (select card_ID from aws_chapters where chapter = ?) and chapter = ?
@@ -123,12 +123,12 @@ public class BrowseCards extends Activity {
         	sortOrder = CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
         			CardDatabaseHelper._ID;
         	
-        } else if (cardSet.equals(getString(R.string.card_set_categories))) {
+        } else if (cardSet.equals(getString(R.string.card_group_categories))) {
         	selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
         	selectionArgs = new String[] {cardSubSet};
         	
         } else if (cardSet.equals(getString(
-        		R.string.card_set_parts_of_speech))) {
+        		R.string.card_group_parts_of_speech))) {
         	selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
         	selectionArgs = new String[] {cardSubSet};
         }

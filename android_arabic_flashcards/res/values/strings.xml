@@ -6,24 +6,24 @@
     <string name="about_text">Written by bmaupin\n
 \nUses icons from www.androidicons.com, licensed under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.</string>
 
+    <string name="card_group_adjectives">Adjectives</string>
+    <string name="card_group_adverbs">Adverbs</string>
+    <string name="card_group_ahlan_wa_sahlan">Ahlan wa sahlan</string>
+    <string name="card_group_all">All</string>
+    <string name="card_group_categories">Categories</string>
+    <string name="card_group_conjunctions">Conjunctions</string>
+    <string name="card_group_interjections">Interjections</string>
+    <string name="card_group_nouns">Nouns</string>
+    <string name="card_group_parts_of_speech">Parts of speech</string>
+    <string name="card_group_phrases">Phrases</string>
+    <string name="card_group_prepositions">Prepositions</string>
+    <string name="card_group_pronouns">Pronouns</string>
+    <string name="card_group_verbs">Verbs</string>
+
     <string name="card_order_random">random</string>
     <string name="card_order_random_entry">Random</string>
     <string name="card_order_in_order">in order</string>
     <string name="card_order_in_order_entry">In order</string>
-
-    <string name="card_set_adjectives">Adjectives</string>
-    <string name="card_set_adverbs">Adverbs</string>
-    <string name="card_set_ahlan_wa_sahlan">Ahlan wa sahlan</string>
-    <string name="card_set_all">All</string>
-    <string name="card_set_categories">Categories</string>
-    <string name="card_set_conjunctions">Conjunctions</string>
-    <string name="card_set_interjections">Interjections</string>
-    <string name="card_set_nouns">Nouns</string>
-    <string name="card_set_parts_of_speech">Parts of speech</string>
-    <string name="card_set_phrases">Phrases</string>
-    <string name="card_set_prepositions">Prepositions</string>
-    <string name="card_set_pronouns">Pronouns</string>
-    <string name="card_set_verbs">Verbs</string>
 
     <string name="choose_cards_heading">Choose cards</string>
     

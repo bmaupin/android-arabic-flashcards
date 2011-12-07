@@ -38,7 +38,7 @@ public class ChooseCardGroup extends Activity {
 		int layoutID = android.R.layout.simple_list_item_1;
 		
 		final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				this, R.array.card_set_main_items,
+				this, R.array.card_group_main_items,
 				layoutID);
 		
 		final ListView lv = (ListView)findViewById(R.id.myListView);
@@ -52,23 +52,23 @@ public class ChooseCardGroup extends Activity {
 				
 				CharSequence itemText = adapter.getItem(pos);
 				
-                if (itemText.equals(getString(R.string.card_set_all))) {
+                if (itemText.equals(getString(R.string.card_group_all))) {
                     Intent result = new Intent();
                     result.putExtra(Cards.EXTRA_CARD_SET, 
-                            getString(R.string.card_set_all));
+                            getString(R.string.card_group_all));
                     setResult(RESULT_OK, result);
                     finish();
                     
                 } else if (itemText.equals(getString(
-                        R.string.card_set_ahlan_wa_sahlan))) {
+                        R.string.card_group_ahlan_wa_sahlan))) {
 					showDialog(DIALOG_CARD_SET_AHLAN_WA_SAHLAN);
 					
                 } else if (itemText.equals(getString(
-                        R.string.card_set_categories))) {
+                        R.string.card_group_categories))) {
                     showDialog(DIALOG_CARD_SET_CATEGORIES);
                     
                 } else if (itemText.equals(getString(
-                        R.string.card_set_parts_of_speech))) {
+                        R.string.card_group_parts_of_speech))) {
                     showDialog(DIALOG_CARD_SET_PARTS_OF_SPEECH);
                     
                 }
@@ -105,7 +105,7 @@ public class ChooseCardGroup extends Activity {
 				
 				Intent result = new Intent();
 				result.putExtra(Cards.EXTRA_CARD_SET, 
-				        getString(R.string.card_set_ahlan_wa_sahlan));
+				        getString(R.string.card_group_ahlan_wa_sahlan));
 				result.putExtra(Cards.EXTRA_CARD_SUBSET, chapters[item]);
 				
 				setResult(RESULT_OK, result);
@@ -132,7 +132,7 @@ public class ChooseCardGroup extends Activity {
                 
                 Intent result = new Intent();
                 result.putExtra(Cards.EXTRA_CARD_SET, 
-                        getString(R.string.card_set_categories));
+                        getString(R.string.card_group_categories));
                 result.putExtra(Cards.EXTRA_CARD_SUBSET, categories[item]);
                 
                 setResult(RESULT_OK, result);
@@ -162,7 +162,7 @@ public class ChooseCardGroup extends Activity {
                 
                 Intent result = new Intent();
                 result.putExtra(Cards.EXTRA_CARD_SET, 
-                        getString(R.string.card_set_parts_of_speech));
+                        getString(R.string.card_group_parts_of_speech));
                 // make sure we put the part of speech value and not the entry
                 result.putExtra(Cards.EXTRA_CARD_SUBSET, partsOfSpeechValues[item]);
                 

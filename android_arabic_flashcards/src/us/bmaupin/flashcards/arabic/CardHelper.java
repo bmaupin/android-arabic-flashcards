@@ -128,7 +128,7 @@ public class CardHelper {
         String sqlCardSetSelection = "";
         
         if (currentCardSet.equals(context.getString(
-                R.string.card_set_ahlan_wa_sahlan))) {
+                R.string.card_group_ahlan_wa_sahlan))) {
             sqlCardSetSelection = " WHERE " + CardDatabaseHelper.CARDS_TABLE + "." + 
                     CardDatabaseHelper._ID + " IN (SELECT " + 
                     CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
@@ -137,12 +137,12 @@ public class CardHelper {
                     currentCardSubset + ") ";
             
         } else if (currentCardSet.equals(context.getString(
-                R.string.card_set_categories))) {
+                R.string.card_group_categories))) {
             sqlCardSetSelection = " WHERE category = '" + currentCardSubset + 
             "'";
             
         } else if (currentCardSet.equals(context.getString(
-                R.string.card_set_parts_of_speech))) {
+                R.string.card_group_parts_of_speech))) {
             sqlCardSetSelection = " WHERE type = '" + currentCardSubset + 
             "'";
             
@@ -177,7 +177,7 @@ public class CardHelper {
             // we have to massage query to maintain the same card order of the 
             // separate table where we store the ahlan wa sahlan data 
             if (currentCardSet.equals(context.getString(
-                    R.string.card_set_ahlan_wa_sahlan))) {
+                    R.string.card_group_ahlan_wa_sahlan))) {
                 sqlCardSetSelection = " LEFT JOIN " + 
                         CardDatabaseHelper.AWS_CHAPTERS_TABLE + " ON " + 
                         CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID + 
