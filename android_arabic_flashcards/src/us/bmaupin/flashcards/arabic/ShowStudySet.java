@@ -1,5 +1,8 @@
 package us.bmaupin.flashcards.arabic;
 
+import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
+import us.bmaupin.flashcards.arabic.data.CardProvider;
+import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package us.bmaupin.flashcards.arabic;
+package us.bmaupin.flashcards.arabic.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

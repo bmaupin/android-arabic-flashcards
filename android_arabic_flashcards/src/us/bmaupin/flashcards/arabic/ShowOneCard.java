@@ -1,5 +1,6 @@
 package us.bmaupin.flashcards.arabic;
 
+import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;

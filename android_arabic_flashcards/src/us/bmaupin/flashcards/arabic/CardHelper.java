@@ -3,6 +3,8 @@ package us.bmaupin.flashcards.arabic;
 import java.util.HashMap;
 import java.util.Map;
 
+import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
