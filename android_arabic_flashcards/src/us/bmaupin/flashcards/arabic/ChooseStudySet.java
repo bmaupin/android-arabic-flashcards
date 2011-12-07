@@ -33,8 +33,8 @@ public class ChooseStudySet extends ListActivity {
     private static final String[] COLUMNS = new String[] {
             StudySetDatabaseHelper._ID, 
             StudySetDatabaseHelper.META_SET_NAME,
-            StudySetDatabaseHelper.META_SET_CARD_SET,
-            StudySetDatabaseHelper.META_SET_CARD_SUBSET,
+            StudySetDatabaseHelper.META_SET_CARD_GROUP,
+            StudySetDatabaseHelper.META_SET_CARD_SUBGROUP,
             StudySetDatabaseHelper.META_SET_LANGUAGE};
     private static final int DIALOG_CREATE_STUDY_SET = 0;
     private static final int DIALOG_CONFIRM_DELETE_STUDY_SET = 1;
@@ -226,8 +226,8 @@ public class ChooseStudySet extends ListActivity {
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
-        cv.put(StudySetDatabaseHelper.META_SET_CARD_SET, newStudySetCardSet);
-        cv.put(StudySetDatabaseHelper.META_SET_CARD_SUBSET, newStudySetCardSubset);
+        cv.put(StudySetDatabaseHelper.META_SET_CARD_GROUP, newStudySetCardSet);
+        cv.put(StudySetDatabaseHelper.META_SET_CARD_SUBGROUP, newStudySetCardSubset);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         
         long newStudySetId = db.insert(
