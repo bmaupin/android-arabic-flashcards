@@ -33,12 +33,12 @@ import android.widget.ViewFlipper;
 
 public class ShowStudySet extends Activity {
     private static final String TAG = "ShowStudySet";
+    private static final int RESPONSE_KNOWN = 0;
+    private static final int RESPONSE_IFFY = 1;
+    private static final int RESPONSE_UNKNOWN = 2;
     // how many new cards to show per study set session
-    private static final int DIRECTION_UP = 0;
-    private static final int DIRECTION_RIGHT = 1;
-    private static final int DIRECTION_DOWN = 2;
     // we'll probably replace this later using shared preferences
-    private static final int NEW_CARDS_TO_SHOW = 20;
+    private static final int NEW_CARDS_TO_SHOW = 10;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -422,7 +422,7 @@ public class ShowStudySet extends Activity {
         setCurrentCardText();
     }
     
-    private void updateCardInterval(String cardId, int direction) {
+    private void updateCardInterval(String cardId, int response) {
     	Toast.makeText(getApplicationContext(), cardId, Toast.LENGTH_SHORT).show();
     	
         final String[] COLUMNS = {StudySetDatabaseHelper.SET_INTERVAL};
@@ -434,14 +434,14 @@ public class ShowStudySet extends Activity {
         int newInterval;
         int oldInterval;
     	
-    	switch(direction) {
-    	case DIRECTION_UP:
+    	switch(response) {
+    	case RESPONSE_KNOWN:
     	    multiplier = Cards.MULTIPLIER_KNOWN;
     	    break;
-    	case DIRECTION_RIGHT:
+    	case RESPONSE_IFFY:
     	    multiplier = Cards.MULTIPLIER_IFFY;
     	    break;
-    	case DIRECTION_DOWN:
+    	case RESPONSE_UNKNOWN:
     	    multiplier = Cards.MULTIPLIER_UNKNOWN;
     	    break;
     	default:
@@ -459,7 +459,7 @@ public class ShowStudySet extends Activity {
             newInterval = Math.round(oldInterval * multiplier);
             
             // if the card was marked as unknown
-            if (direction == DIRECTION_DOWN) {
+            if (response == RESPONSE_UNKNOWN) {
                 // don't allow the interval to go below the minimum
                 if (newInterval < Cards.MIN_INTERVAL) {
                     newInterval = Cards.MIN_INTERVAL;
@@ -469,14 +469,14 @@ public class ShowStudySet extends Activity {
                 }
             }
         } else {
-            switch(direction) {
-            case DIRECTION_UP:
+            switch(response) {
+            case RESPONSE_KNOWN:
                 newInterval = Cards.FIRST_INTERVAL_KNOWN;
                 break;
-            case DIRECTION_RIGHT:
+            case RESPONSE_IFFY:
                 newInterval = Cards.FIRST_INTERVAL_IFFY;
                 break;
-            case DIRECTION_DOWN:
+            case RESPONSE_UNKNOWN:
 // TODO: implement logic for dealing with unknown cards
                 newInterval = 0;
                 break;
