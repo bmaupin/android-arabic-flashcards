@@ -17,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ChooseCardSet extends Activity {
+public class ChooseCardGroup extends Activity {
 	//unique dialog id
 	private static final int DIALOG_CARD_SET_AHLAN_WA_SAHLAN = 0;
 	private static final int DIALOG_CARD_SET_CATEGORIES = 1;
@@ -28,7 +28,7 @@ public class ChooseCardSet extends Activity {
 	private CardDatabaseHelper helper;
 	private SQLiteDatabase db; 
 	
-	Context context = ChooseCardSet.this;
+	Context context = ChooseCardGroup.this;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

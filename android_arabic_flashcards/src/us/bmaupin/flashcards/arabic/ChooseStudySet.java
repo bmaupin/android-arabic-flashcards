@@ -68,7 +68,7 @@ public class ChooseStudySet extends ListActivity {
             @Override
             public void onClick(View arg0) {
                 Intent intent = new Intent(ChooseStudySet.this, 
-                        ChooseCardSet.class);
+                        ChooseCardGroup.class);
                 startActivityForResult(intent, REQUEST_CARD_SET_BROWSE);
             }
         });
@@ -79,7 +79,7 @@ public class ChooseStudySet extends ListActivity {
             @Override
             public void onClick(View arg0) {
                 Intent intent = new Intent(ChooseStudySet.this, 
-                        ChooseCardSet.class);
+                        ChooseCardGroup.class);
                 startActivityForResult(intent, REQUEST_CARD_SET_CREATE);
             }
         });
