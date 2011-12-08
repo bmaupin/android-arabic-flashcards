@@ -56,6 +56,11 @@
                   android:exported="false" >
                   <grant-uri-permission android:pathPattern=".*" />
         </provider>
+        <provider android:name=".data.StudySetProvider"
+                  android:authorities="us.bmaupin.flashcards.arabic.studysetprovider"
+                  android:exported="false" >
+                  <grant-uri-permission android:pathPattern=".*" />
+        </provider>
     </application>
     <uses-sdk android:minSdkVersion="4" />
 
