@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
@@ -62,9 +63,49 @@ public class StudySetProvider extends ContentProvider {
             String[] selectionArgs, String sortOrder) {
     	Log.d(TAG, "query()");
     	
+    	String limit = null;
+    	
     	SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
     	
-    	return null;
+    	switch (sUriMatcher.match(uri)) {
+    	case STUDYSETS:
+    		break;
+    		
+    	case STUDYSETS_ID:
+    		break;
+    		
+    	case STUDYSETS_CARDS_ID:
+    		break;
+		
+    	case STUDYSETS_META:
+    	    qb.setTables(StudySetDatabaseHelper.META_TABLE_NAME);
+    	    
+    		break;
+    	
+    	case STUDYSETS_META_ID:
+    		break;
+    	
+    	default:
+            // If the URI doesn't match any of the known patterns, throw an exception.
+            throw new IllegalArgumentException("Unknown URI " + uri);
+    	}
+    	
+    	SQLiteDatabase db = dbHelper.getReadableDatabase();
+    	
+        Cursor c = qb.query(
+                db,             // The database to query
+                projection,     // The columns to return from the query
+                selection,      // The columns for the where clause
+                selectionArgs,  // The values for the where clause
+                null,           // don't group the rows
+                null,           // don't filter by row groups
+                sortOrder,      // The sort order
+                limit           // limit 
+            );
+    	
+        // Tells the Cursor what URI to watch, so it knows when its source data changes
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+        return c;
     }
 	
     @Override
