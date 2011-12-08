@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.util.Log;
 
 public class CardProvider extends ContentProvider {
+	private static final String TAG = "CardProvider";
     // various constants
     public static final String AUTHORITY = 
     		"us.bmaupin.flashcards.arabic.cardprovider";
@@ -21,7 +22,6 @@ public class CardProvider extends ContentProvider {
     		AUTHORITY + "/" + PATH_CARDS);
     public static final Uri CONTENT_URI_CARDS_LIMIT = Uri.parse("content://" + 
     		AUTHORITY + "/" + PATH_CARDS + "/" + PATH_LIMIT);
-    private static final String TAG = "CardProvider";
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
