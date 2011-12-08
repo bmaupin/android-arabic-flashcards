@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -245,7 +246,6 @@ public class ChooseStudySet extends ListActivity {
         startActivity(intent);
     }
 
-/*
 // TODO: reimplement this
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
@@ -254,21 +254,13 @@ public class ChooseStudySet extends ListActivity {
         cv.put(StudySetDatabaseHelper.META_SET_CARD_SUBGROUP, newStudySetCardSubset);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         
-        long newStudySetId = db.insert(
-                StudySetDatabaseHelper.META_TABLE_NAME, 
-                StudySetDatabaseHelper._ID, cv);
-        
-        if (newStudySetId != -1) {
-            dbHelper.createNewStudySet(db, newStudySetId);
-            
-        } else {
-            Log.e(TAG, String.format("ERROR: insert new study set failed. " +
-            		"name=%s, language=%s", studySetName, language));
-        }
-        
-        updateStudySetList();
+        Uri studySetUri = getContentResolver().insert(
+                StudySetProvider.CONTENT_URI_META,
+                cv);
+
+// TODO: reimplement this        
+//        updateStudySetList();
     }
-*/
     
     private void deleteStudySet(long id) {
 // TODO: reimplement this
@@ -342,8 +334,7 @@ public class ChooseStudySet extends ListActivity {
                                R.id.dialog_create_study_set_language)).
                                getCheckedRadioButtonId()))).getText().
                                toString();
-// TODO: reimplement this		               
-//		               createStudySet(studySetName, language);
+		               createStudySet(studySetName, language);
 		           }
                })
 	           .setNegativeButton(getString(
