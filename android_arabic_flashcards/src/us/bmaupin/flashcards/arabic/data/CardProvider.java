@@ -92,8 +92,6 @@ public class CardProvider extends ContentProvider {
                     uri.getPathSegments().get(CARD_ID_PATH_POSITION));
             break;
             
-
-            
         default:
             // If the URI doesn't match any of the known patterns, throw an exception.
             throw new IllegalArgumentException("Unknown URI " + uri);
