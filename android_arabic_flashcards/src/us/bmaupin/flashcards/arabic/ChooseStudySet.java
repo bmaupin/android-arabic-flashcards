@@ -258,17 +258,21 @@ public class ChooseStudySet extends ListActivity {
                 StudySetProvider.CONTENT_URI_META,
                 cv);
 
-// TODO: reimplement this        
+// TODO: reimplement this
 //        updateStudySetList();
     }
     
     private void deleteStudySet(long id) {
-// TODO: reimplement this
-//        dbHelper.deleteStudySet(db, id);
+        getContentResolver().delete(
+                ContentUris.withAppendedId(
+                        StudySetProvider.CONTENT_URI_META,
+                        id),
+                null, null);
         Toast.makeText(getApplicationContext(), 
                 R.string.choose_study_set_study_set_deleted, 
                 Toast.LENGTH_SHORT).show();
-        
+
+// TODO: reimplement this
 //        updateStudySetList();
     }
 /*    
