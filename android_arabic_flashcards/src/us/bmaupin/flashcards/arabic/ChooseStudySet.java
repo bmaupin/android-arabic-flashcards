@@ -1,10 +1,13 @@
 package us.bmaupin.flashcards.arabic;
 
+import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
+import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,22 +34,32 @@ import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class ChooseStudySet extends ListActivity {
+	private static final String TAG = "ChooseStudySet";
+/*	
     private static final String[] COLUMNS = new String[] {
             StudySetDatabaseHelper._ID, 
             StudySetDatabaseHelper.META_SET_NAME,
             StudySetDatabaseHelper.META_SET_CARD_GROUP,
             StudySetDatabaseHelper.META_SET_CARD_SUBGROUP,
             StudySetDatabaseHelper.META_SET_LANGUAGE};
+*/
     private static final int DIALOG_CREATE_STUDY_SET = 0;
     private static final int DIALOG_CONFIRM_DELETE_STUDY_SET = 1;
 	private static final int REQUEST_CARD_SET_BROWSE = 0;
     private static final int REQUEST_CARD_SET_CREATE = 1;
-    private static final String TAG = "ChooseStudySet";
+    
+    private static final String[] PROJECTION = new String[] {
+        StudySetDatabaseHelper._ID, 
+        StudySetDatabaseHelper.META_SET_NAME,
+        StudySetDatabaseHelper.META_SET_CARD_GROUP,
+        StudySetDatabaseHelper.META_SET_CARD_SUBGROUP,
+        StudySetDatabaseHelper.META_SET_LANGUAGE
+	};
     
     SimpleCursorAdapter adapter;
     Cursor cursor;
-    private SQLiteDatabase db;
-    private StudySetDatabaseHelper dbHelper;
+//    private SQLiteDatabase db;
+//    private StudySetDatabaseHelper dbHelper;
     // the card set of a new study set
     private String newStudySetCardSet = "";
     // the card subset of a new study set
@@ -85,8 +98,8 @@ public class ChooseStudySet extends ListActivity {
             }
         });
         
-        dbHelper = new StudySetDatabaseHelper(this);
-        db = dbHelper.getReadableDatabase();
+//        dbHelper = new StudySetDatabaseHelper(this);
+//        db = dbHelper.getReadableDatabase();
     }
     
     @Override
@@ -94,10 +107,18 @@ public class ChooseStudySet extends ListActivity {
         super.onResume();
         Log.d(TAG, "onResume()");
         
+        cursor = managedQuery(
+        		StudySetProvider.CONTENT_URI_META,
+                PROJECTION,
+                null,
+                null,
+                null
+        );
+/*        
         cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
                 COLUMNS, null, null, null, null, null);
         startManagingCursor(cursor);
-        
+*/        
         adapter = new SimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -224,6 +245,8 @@ public class ChooseStudySet extends ListActivity {
         startActivity(intent);
     }
 
+/*
+// TODO: reimplement this
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
@@ -245,22 +268,35 @@ public class ChooseStudySet extends ListActivity {
         
         updateStudySetList();
     }
+*/
     
     private void deleteStudySet(long id) {
-        dbHelper.deleteStudySet(db, id);
+// TODO: reimplement this
+//        dbHelper.deleteStudySet(db, id);
         Toast.makeText(getApplicationContext(), 
                 R.string.choose_study_set_study_set_deleted, 
                 Toast.LENGTH_SHORT).show();
         
-        updateStudySetList();
+//        updateStudySetList();
     }
-    
+/*    
     private void updateStudySetList() {
         // update the list of study sets
-        cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
-                COLUMNS, null, null, null, null, null);
+        cursor = managedQuery(
+        		StudySetProvider.CONTENT_URI_META,
+                PROJECTION,
+                null,
+                null,
+                null
+        );
+    	
+    	
+    	
+//        cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
+//                COLUMNS, null, null, null, null, null);
         adapter.changeCursor(cursor);
     }
+*/
     
     @Override
 	protected Dialog onCreateDialog(int id) {
@@ -306,8 +342,8 @@ public class ChooseStudySet extends ListActivity {
                                R.id.dialog_create_study_set_language)).
                                getCheckedRadioButtonId()))).getText().
                                toString();
-		               
-		               createStudySet(studySetName, language);
+// TODO: reimplement this		               
+//		               createStudySet(studySetName, language);
 		           }
                })
 	           .setNegativeButton(getString(
@@ -350,9 +386,10 @@ public class ChooseStudySet extends ListActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
-        
+/*        
         // clean up after ourselves
         db.close();
         dbHelper.close();
+*/
     }
 }
