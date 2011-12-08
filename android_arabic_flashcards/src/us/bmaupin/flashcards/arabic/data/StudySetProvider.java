@@ -27,10 +27,16 @@ public class StudySetProvider extends ContentProvider {
     		"/" + PATH_STUDYSETS + "/" + PATH_META);
     // uri pattern constants
     private static final int STUDYSETS = 1;
+    // an instance of a study set
     private static final int STUDYSETS_ID = 2;
+    // a particular card within a study set
     private static final int STUDYSETS_CARDS_ID = 3;
+    // the meta table
     private static final int STUDYSETS_META = 4;
+    // a particular entry in the meta table
     private static final int STUDYSETS_META_ID = 5;
+    // 0-relative uri path positions
+    private static final int STUDYSETS_META_ID_PATH_POSITION = 2;
     
     private static final UriMatcher sUriMatcher;
 
@@ -112,13 +118,13 @@ public class StudySetProvider extends ContentProvider {
 	
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
         switch (sUriMatcher.match(uri)) {
-            
         case STUDYSETS_ID:
             break;
         
         case STUDYSETS_META:
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
             long newStudySetId = db.insert(
                     StudySetDatabaseHelper.META_TABLE_NAME, 
                     StudySetDatabaseHelper._ID, values);
@@ -153,8 +159,28 @@ public class StudySetProvider extends ContentProvider {
 	
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // not going to implement
-		return 0;
+	    SQLiteDatabase db = dbHelper.getWritableDatabase();
+	    int count;
+	    
+        switch (sUriMatcher.match(uri)) {
+        case STUDYSETS_META_ID:
+            String studySetId = uri.getPathSegments().get(
+                    STUDYSETS_META_ID_PATH_POSITION);
+            // delete the entry from the meta table
+            count = db.delete(StudySetDatabaseHelper.META_TABLE_NAME, 
+                    StudySetDatabaseHelper._ID + " = ? ", 
+                    new String[] {studySetId});
+            // delete the study set table
+            dbHelper.deleteStudySet(db, studySetId);
+            break;
+        
+        default:
+            // If the URI doesn't match any of the known patterns, throw an exception.
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
 	}
 
 	@Override

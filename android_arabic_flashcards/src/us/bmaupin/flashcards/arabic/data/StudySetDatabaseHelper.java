@@ -77,14 +77,10 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(STUDY_SET_TABLE_CREATE);
     }
     
-    public void deleteStudySet(SQLiteDatabase db, long studySetId) {
+    public void deleteStudySet(SQLiteDatabase db, String studySetId) {
         final String STUDY_SET_TABLE_DELETE = 
             "DROP TABLE IF EXISTS " + SET_TABLE_PREFIX + studySetId;
-        final String STUDY_SET_META_DELETE = 
-            "DELETE FROM " + META_TABLE_NAME + " WHERE " + _ID + " = " +
-            studySetId;
         
         db.execSQL(STUDY_SET_TABLE_DELETE);
-        db.execSQL(STUDY_SET_META_DELETE);
     }
 }
