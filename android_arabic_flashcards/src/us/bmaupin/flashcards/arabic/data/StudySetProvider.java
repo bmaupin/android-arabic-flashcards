@@ -23,8 +23,8 @@ public class StudySetProvider extends ContentProvider {
     // content uris
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + 
     		"/" + PATH_STUDYSETS);
-    public static final Uri CONTENT_URI_META = Uri.parse("content://" + AUTHORITY + 
-    		"/" + PATH_STUDYSETS + "/" + PATH_META);
+    public static final Uri CONTENT_URI_META = Uri.parse("content://" + 
+    		AUTHORITY + "/" + PATH_STUDYSETS + "/" + PATH_META);
     // uri pattern constants
     private static final int STUDYSETS = 1;
     // an instance of a study set
