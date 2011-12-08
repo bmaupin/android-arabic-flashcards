@@ -1,9 +1,11 @@
 package us.bmaupin.flashcards.arabic.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
@@ -110,7 +112,35 @@ public class StudySetProvider extends ContentProvider {
 	
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        // not going to implement
+        switch (sUriMatcher.match(uri)) {
+            
+        case STUDYSETS_ID:
+            break;
+        
+        case STUDYSETS_META:
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            long newStudySetId = db.insert(
+                    StudySetDatabaseHelper.META_TABLE_NAME, 
+                    StudySetDatabaseHelper._ID, values);
+            // if the insertion of the new study set into meta was successful
+            if (newStudySetId > 0) {
+                // create the new study set table
+                dbHelper.createNewStudySet(db, newStudySetId);
+                
+                Uri studySetUri = ContentUris.withAppendedId(CONTENT_URI_META, 
+                        newStudySetId);
+                getContext().getContentResolver().notifyChange(studySetUri, 
+                        null);
+                return studySetUri;
+            }
+            
+            throw new SQLException("Failed to insert row into " + uri);
+        
+        default:
+            // If the URI doesn't match any of the known patterns, throw an exception.
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        
         return null;
     }
     
