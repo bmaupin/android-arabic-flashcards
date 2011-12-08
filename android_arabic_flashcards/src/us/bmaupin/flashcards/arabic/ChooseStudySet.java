@@ -1,6 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.app.Activity;
@@ -12,8 +11,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -36,14 +33,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class ChooseStudySet extends ListActivity {
 	private static final String TAG = "ChooseStudySet";
-/*	
-    private static final String[] COLUMNS = new String[] {
-            StudySetDatabaseHelper._ID, 
-            StudySetDatabaseHelper.META_SET_NAME,
-            StudySetDatabaseHelper.META_SET_CARD_GROUP,
-            StudySetDatabaseHelper.META_SET_CARD_SUBGROUP,
-            StudySetDatabaseHelper.META_SET_LANGUAGE};
-*/
+
     private static final int DIALOG_CREATE_STUDY_SET = 0;
     private static final int DIALOG_CONFIRM_DELETE_STUDY_SET = 1;
 	private static final int REQUEST_CARD_SET_BROWSE = 0;
@@ -59,8 +49,6 @@ public class ChooseStudySet extends ListActivity {
     
     SimpleCursorAdapter adapter;
     Cursor cursor;
-//    private SQLiteDatabase db;
-//    private StudySetDatabaseHelper dbHelper;
     // the card set of a new study set
     private String newStudySetCardSet = "";
     // the card subset of a new study set
@@ -98,9 +86,6 @@ public class ChooseStudySet extends ListActivity {
                 startActivityForResult(intent, REQUEST_CARD_SET_CREATE);
             }
         });
-        
-//        dbHelper = new StudySetDatabaseHelper(this);
-//        db = dbHelper.getReadableDatabase();
     }
     
     @Override
@@ -115,11 +100,7 @@ public class ChooseStudySet extends ListActivity {
                 null,
                 null
         );
-/*        
-        cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
-                COLUMNS, null, null, null, null, null);
-        startManagingCursor(cursor);
-*/        
+
         adapter = new SimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -246,7 +227,6 @@ public class ChooseStudySet extends ListActivity {
         startActivity(intent);
     }
 
-// TODO: reimplement this
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
@@ -254,12 +234,9 @@ public class ChooseStudySet extends ListActivity {
         cv.put(StudySetDatabaseHelper.META_SET_CARD_SUBGROUP, newStudySetCardSubset);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         
-        Uri studySetUri = getContentResolver().insert(
+        getContentResolver().insert(
                 StudySetProvider.CONTENT_URI_META,
                 cv);
-
-// TODO: reimplement this
-//        updateStudySetList();
     }
     
     private void deleteStudySet(long id) {
@@ -271,28 +248,7 @@ public class ChooseStudySet extends ListActivity {
         Toast.makeText(getApplicationContext(), 
                 R.string.choose_study_set_study_set_deleted, 
                 Toast.LENGTH_SHORT).show();
-
-// TODO: reimplement this
-//        updateStudySetList();
     }
-/*    
-    private void updateStudySetList() {
-        // update the list of study sets
-        cursor = managedQuery(
-        		StudySetProvider.CONTENT_URI_META,
-                PROJECTION,
-                null,
-                null,
-                null
-        );
-    	
-    	
-    	
-//        cursor = db.query(StudySetDatabaseHelper.META_TABLE_NAME, 
-//                COLUMNS, null, null, null, null, null);
-        adapter.changeCursor(cursor);
-    }
-*/
     
     @Override
 	protected Dialog onCreateDialog(int id) {
@@ -381,10 +337,5 @@ public class ChooseStudySet extends ListActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
-/*        
-        // clean up after ourselves
-        db.close();
-        dbHelper.close();
-*/
     }
 }
