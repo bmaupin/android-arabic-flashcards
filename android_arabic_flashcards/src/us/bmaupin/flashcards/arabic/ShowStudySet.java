@@ -111,6 +111,9 @@ public class ShowStudySet extends Activity {
         String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
         
+        // now = System.currentTimeMillis();
+        // select * from study set where due_time < now limit 20;
+        
         String selection = "";
         String[] selectionArgs = new String[] {};
         String sortOrder = "";
