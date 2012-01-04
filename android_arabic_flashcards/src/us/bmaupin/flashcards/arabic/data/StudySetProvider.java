@@ -27,7 +27,7 @@ public class StudySetProvider extends ContentProvider {
     		AUTHORITY + "/" + PATH_STUDYSETS + "/" + PATH_META);
     // uri pattern constants
     private static final int STUDYSETS = 1;
-    // an instance of a study set
+    // a specific study set
     private static final int STUDYSETS_ID = 2;
     // a particular card within a study set
     private static final int STUDYSETS_CARDS_ID = 3;
@@ -36,6 +36,7 @@ public class StudySetProvider extends ContentProvider {
     // a particular entry in the meta table
     private static final int STUDYSETS_META_ID = 5;
     // 0-relative uri path positions
+    private static final int STUDYSETS_ID_PATH_POSITION = 1;
     private static final int STUDYSETS_META_ID_PATH_POSITION = 2;
     
     private static final UriMatcher sUriMatcher;
@@ -80,6 +81,10 @@ public class StudySetProvider extends ContentProvider {
     		break;
     		
     	case STUDYSETS_ID:
+            String studySetId = uri.getPathSegments().get(
+                    STUDYSETS_ID_PATH_POSITION);
+    	    qb.setTables(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId);
+            
     		break;
     		
     	case STUDYSETS_CARDS_ID:
