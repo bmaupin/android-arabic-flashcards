@@ -47,6 +47,10 @@ public class ShowStudySet extends FragmentActivity
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     private static final int ONE_HOUR_IN_MS = 3600000;
     
+    private static final String[] PROJECTION_STUDYSET = new String[] {
+        StudySetDatabaseHelper.SET_DUE_TIME,
+    };
+    
     private static final String[] PROJECTION = new String[] {
         CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
         CardDatabaseHelper.CARDS_ENGLISH,
@@ -214,7 +218,8 @@ public class ShowStudySet extends FragmentActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // TODO Auto-generated method stub
+        // use STUDYSETS_ID to query a study set
+        
         return null;
     }
 
