@@ -4,7 +4,6 @@ import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import us.bmaupin.flashcards.arabic.old.ProfileDatabaseHelper;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -15,6 +14,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -31,7 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class ShowStudySet extends Activity {
+public class ShowStudySet extends FragmentActivity 
+        implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "ShowStudySet";
     private static final int RESPONSE_KNOWN = 0;
     private static final int RESPONSE_IFFY = 1;
@@ -113,6 +116,8 @@ public class ShowStudySet extends Activity {
         
         // now = System.currentTimeMillis();
         // select * from study set where due_time < now limit 20;
+        
+        getSupportLoaderManager().initLoader(0, null, this);
         
         String selection = "";
         String[] selectionArgs = new String[] {};
@@ -206,7 +211,28 @@ public class ShowStudySet extends Activity {
             showFirstCard();
         }
     }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Swap the new cursor in.  (The framework will take care of closing the
+        // old cursor once we return.)
+//        mAdapter.swapCursor(data);
+    }
     
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
+//        mAdapter.swapCursor(null);
+    }
+
     /* Inflates the menu */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
