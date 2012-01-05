@@ -1,5 +1,8 @@
 package us.bmaupin.flashcards.arabic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
@@ -46,6 +49,7 @@ public class ShowStudySet extends FragmentActivity
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
+    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 20;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -91,6 +95,8 @@ public class ShowStudySet extends FragmentActivity
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         
+        String studySetIds = "";
+        
         setContentView(R.layout.cards);
         
         vf = (ViewFlipper)findViewById(R.id.flipper);
@@ -124,24 +130,44 @@ public class ShowStudySet extends FragmentActivity
         
 //        getSupportLoaderManager().initLoader(LOADER_STUDYSET, null, this);
         
-        String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
+        String selection = StudySetDatabaseHelper.SET_DUE_TIME + " <  0" + 
                 System.currentTimeMillis();
         
-// TODO: we need to specify a limit for this query
+// TODO: use a specific/random order?
         studySetDbHelper = new StudySetDatabaseHelper(this);
         studySetDb = studySetDbHelper.getReadableDatabase();
         studySetCursor = studySetDb.query(
                 StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
-                new String[] {StudySetDatabaseHelper.SET_DUE_TIME}, 
-                selection, null, null, null, null);
+                new String[] {StudySetDatabaseHelper.SET_CARD_ID}, 
+                selection, null, null, null, null, 
+                "" + MAX_STUDYSET_CARDS_TO_SHOW);
+        
+        if (studySetCursor.moveToFirst()) {
+            studySetIds = "(";
+//            List<String> studySetIds = new ArrayList<String>();
+            while (!studySetCursor.isAfterLast()) {
+//                studySetIds.add(studySetCursor.getString(0));
+                studySetIds += studySetCursor.getString(0) + ", ";
+                studySetCursor.moveToNext();
+            }
+            // drop the separator from the last part of the string
+            studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + ")";
+            
+        } else {
+// TODO: no due cards, do something here
+        }
+        
         studySetCursor.close();
         studySetDb.close();
         studySetDbHelper.close();
         
+        selection = CardDatabaseHelper._ID + " IN " + studySetIds;
+        
+      
         selection = "";
         String[] selectionArgs = new String[] {};
         String sortOrder = "";
-                
+        
         if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
             /*
              * this looks like:
@@ -159,6 +185,7 @@ public class ShowStudySet extends FragmentActivity
              * instead of this:
              * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where chapter = 4 order by aws_chapters._id;
              */
+
             selection = CardDatabaseHelper.CARDS_TABLE + "." + 
                     CardDatabaseHelper._ID + " IN (SELECT " + 
                     CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
@@ -195,6 +222,7 @@ public class ShowStudySet extends FragmentActivity
         if (cardsCursor != null && cardsCursor.getCount() != 0) {
             cardsCursor.moveToFirst();
         }
+
     }
     
     @Override
