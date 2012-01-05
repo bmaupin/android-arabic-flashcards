@@ -3,6 +3,7 @@ package us.bmaupin.flashcards.arabic;
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
+import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import us.bmaupin.flashcards.arabic.old.ProfileDatabaseHelper;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -39,6 +41,8 @@ public class ShowStudySet extends FragmentActivity
     private static final int RESPONSE_KNOWN = 0;
     private static final int RESPONSE_IFFY = 1;
     private static final int RESPONSE_UNKNOWN = 2;
+    private static final int LOADER_CARD = 0;
+    private static final int LOADER_STUDYSET = 1;
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
@@ -118,10 +122,7 @@ public class ShowStudySet extends FragmentActivity
         String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
         
-        // now = System.currentTimeMillis();
-        // select * from study set where due_time < now limit 20;
-        
-        getSupportLoaderManager().initLoader(0, null, this);
+        getSupportLoaderManager().initLoader(LOADER_STUDYSET, null, this);
         
         String selection = "";
         String[] selectionArgs = new String[] {};
@@ -218,9 +219,53 @@ public class ShowStudySet extends FragmentActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        int temp;
+        
+        switch (id) {
+        case LOADER_STUDYSET:
+            String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
+                    System.currentTimeMillis();
+            
+            return new CursorLoader(this,
+                    ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                            studySetId),
+                    PROJECTION_STUDYSET, 
+                    selection,
+                    null,
+                    null);
+            
+        default:
+            return null;
+        }
+        
         // use STUDYSETS_ID to query a study set
         
-        return null;
+
+
+        // now = System.currentTimeMillis();
+        // select * from study set where due_time < now limit 20;
+        
+
+        
+/*        
+        Uri baseUri;
+        if (mCurFilter != null) {
+            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,
+                    Uri.encode(mCurFilter));
+        } else {
+            baseUri = Contacts.CONTENT_URI;
+        }
+
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        String select = "((" + Contacts.DISPLAY_NAME + " NOTNULL) AND ("
+                + Contacts.HAS_PHONE_NUMBER + "=1) AND ("
+                + Contacts.DISPLAY_NAME + " != '' ))";
+        return new CursorLoader(getActivity(), baseUri,
+                CONTACTS_SUMMARY_PROJECTION, select, null,
+                Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
+*/      
+//        return null;
     }
 
     @Override
@@ -228,6 +273,11 @@ public class ShowStudySet extends FragmentActivity
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
 //        mAdapter.swapCursor(data);
+        switch (loader.getId()) {
+        case LOADER_STUDYSET:
+            Toast.makeText(getApplicationContext(), "DEBUG: loader finished", Toast.LENGTH_SHORT).show();
+            break;
+        }
     }
     
     @Override
