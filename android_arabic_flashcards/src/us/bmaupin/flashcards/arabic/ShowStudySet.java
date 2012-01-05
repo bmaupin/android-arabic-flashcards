@@ -122,9 +122,23 @@ public class ShowStudySet extends FragmentActivity
         String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
         
-        getSupportLoaderManager().initLoader(LOADER_STUDYSET, null, this);
+//        getSupportLoaderManager().initLoader(LOADER_STUDYSET, null, this);
         
-        String selection = "";
+        String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
+                System.currentTimeMillis();
+        
+// TODO: we need to specify a limit for this query
+        studySetDbHelper = new StudySetDatabaseHelper(this);
+        studySetDb = studySetDbHelper.getReadableDatabase();
+        studySetCursor = studySetDb.query(
+                StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
+                new String[] {StudySetDatabaseHelper.SET_DUE_TIME}, 
+                selection, null, null, null, null);
+        studySetCursor.close();
+        studySetDb.close();
+        studySetDbHelper.close();
+        
+        selection = "";
         String[] selectionArgs = new String[] {};
         String sortOrder = "";
                 
@@ -188,8 +202,8 @@ public class ShowStudySet extends FragmentActivity
         super.onResume();
         Log.d(TAG, "onResume()");
         
-        studySetDbHelper = new StudySetDatabaseHelper(this);
-        studySetDb = studySetDbHelper.getReadableDatabase();
+//        studySetDbHelper = new StudySetDatabaseHelper(this);
+//        studySetDb = studySetDbHelper.getReadableDatabase();
         
         // get any preferences that may have changed
         fixArabic = preferences.getBoolean(
@@ -219,7 +233,7 @@ public class ShowStudySet extends FragmentActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        int temp;
+// TODO: clean this up
         
         switch (id) {
         case LOADER_STUDYSET:
@@ -585,13 +599,14 @@ public class ShowStudySet extends FragmentActivity
         
         // store the cursor position in case we come back
         cardsCursorPosition = cardsCursor.getPosition();
-        
+/*        
         // clean up after ourselves
         if (!studySetCursor.isClosed()) {
             studySetCursor.close();
         }
         studySetDb.close();
         studySetDbHelper.close();
+*/
     }
     
     @Override
