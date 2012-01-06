@@ -55,14 +55,13 @@ public class ShowStudySet extends FragmentActivity
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     private static final int ONE_HOUR_IN_MS = 3600000;
     
-    private static final String[] PROJECTION_STUDYSET = new String[] {
-        StudySetDatabaseHelper.SET_DUE_TIME,
-    };
-    
-    private static final String[] PROJECTION = new String[] {
+    private static final String[] PROJECTION_CARDS = new String[] {
         CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
         CardDatabaseHelper.CARDS_ENGLISH,
         CardDatabaseHelper.CARDS_ARABIC,
+    };
+    private static final String[] PROJECTION_STUDYSET = new String[] {
+        StudySetDatabaseHelper.SET_DUE_TIME,
     };
     
     private Cursor cardsCursor;
@@ -80,6 +79,7 @@ public class ShowStudySet extends FragmentActivity
     private boolean showVowels;
     // the ID of the current study set
     private long studySetId;
+    private String studySetIds = "";
     private Animation slideLeftIn;
     private Animation slideLeftOut;
     private Animation slideRightIn;
@@ -94,8 +94,6 @@ public class ShowStudySet extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        
-        String studySetIds = "";
         
         setContentView(R.layout.cards);
         
@@ -161,9 +159,9 @@ public class ShowStudySet extends FragmentActivity
         studySetDb.close();
         studySetDbHelper.close();
         
-        selection = CardDatabaseHelper._ID + " IN " + studySetIds;
+        getSupportLoaderManager().initLoader(LOADER_CARD, null, this);
         
-      
+/*      
         selection = "";
         String[] selectionArgs = new String[] {};
         String sortOrder = "";
@@ -185,7 +183,7 @@ public class ShowStudySet extends FragmentActivity
              * instead of this:
              * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where chapter = 4 order by aws_chapters._id;
              */
-
+/*
             selection = CardDatabaseHelper.CARDS_TABLE + "." + 
                     CardDatabaseHelper._ID + " IN (SELECT " + 
                     CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
@@ -222,7 +220,7 @@ public class ShowStudySet extends FragmentActivity
         if (cardsCursor != null && cardsCursor.getCount() != 0) {
             cardsCursor.moveToFirst();
         }
-
+*/
     }
     
     @Override
@@ -244,28 +242,43 @@ public class ShowStudySet extends FragmentActivity
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
         }
-        
+
+/*
 // TODO: do we want to do this if the order is random?
         // if we're coming back to this activity from another, we've probably
         // lost our cursor postion
         if (cardsCursor.isBeforeFirst()) {
             cardsCursor.moveToPosition(cardsCursorPosition);
         }
+*/
         
+/*
         if (cardsCursor == null || cardsCursor.getCount() == 0) {
             Log.e(TAG, "for some reason the cursor is empty...");
         } else {
             showFirstCard();
         }
+*/
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 // TODO: clean this up
+        String selection;
         
         switch (id) {
+        case LOADER_CARD:
+            selection = CardDatabaseHelper._ID + " IN " + studySetIds;
+            
+            return new CursorLoader(this,
+                    CardProvider.CONTENT_URI_CARDS,
+                    PROJECTION_CARDS,
+                    selection,
+                    null,
+                    null);
+/*            
         case LOADER_STUDYSET:
-            String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
+            selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
                     System.currentTimeMillis();
             
             return new CursorLoader(this,
@@ -275,6 +288,7 @@ public class ShowStudySet extends FragmentActivity
                     selection,
                     null,
                     null);
+*/
             
         default:
             return null;
@@ -316,9 +330,21 @@ public class ShowStudySet extends FragmentActivity
         // old cursor once we return.)
 //        mAdapter.swapCursor(data);
         switch (loader.getId()) {
+        case LOADER_CARD:
+            cardsCursor = data;
+            
+            if (cardsCursor.moveToFirst()) {
+                showFirstCard();
+            } else {
+                Log.e(TAG, "for some reason the cursor is empty...");
+            }
+            
+            break;
+/*        
         case LOADER_STUDYSET:
             Toast.makeText(getApplicationContext(), "DEBUG: loader finished", Toast.LENGTH_SHORT).show();
             break;
+*/
         }
     }
     
