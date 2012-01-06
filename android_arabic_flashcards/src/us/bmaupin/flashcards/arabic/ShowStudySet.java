@@ -126,12 +126,9 @@ public class ShowStudySet extends FragmentActivity
         String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
         
-//        getSupportLoaderManager().initLoader(LOADER_STUDYSET, null, this);
-        
         String selection = StudySetDatabaseHelper.SET_DUE_TIME + " <  0" + 
                 System.currentTimeMillis();
         
-// TODO: use a specific/random order?
         studySetDbHelper = new StudySetDatabaseHelper(this);
         studySetDb = studySetDbHelper.getReadableDatabase();
         studySetCursor = studySetDb.query(
@@ -269,7 +266,8 @@ public class ShowStudySet extends FragmentActivity
         switch (id) {
         case LOADER_CARD:
             selection = CardDatabaseHelper._ID + " IN " + studySetIds;
-            
+
+// TODO: use a specific/random order?
             return new CursorLoader(this,
                     CardProvider.CONTENT_URI_CARDS,
                     PROJECTION_CARDS,
@@ -293,42 +291,10 @@ public class ShowStudySet extends FragmentActivity
         default:
             return null;
         }
-        
-        // use STUDYSETS_ID to query a study set
-        
-
-
-        // now = System.currentTimeMillis();
-        // select * from study set where due_time < now limit 20;
-        
-
-        
-/*        
-        Uri baseUri;
-        if (mCurFilter != null) {
-            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,
-                    Uri.encode(mCurFilter));
-        } else {
-            baseUri = Contacts.CONTENT_URI;
-        }
-
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
-        String select = "((" + Contacts.DISPLAY_NAME + " NOTNULL) AND ("
-                + Contacts.HAS_PHONE_NUMBER + "=1) AND ("
-                + Contacts.DISPLAY_NAME + " != '' ))";
-        return new CursorLoader(getActivity(), baseUri,
-                CONTACTS_SUMMARY_PROJECTION, select, null,
-                Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
-*/      
-//        return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // Swap the new cursor in.  (The framework will take care of closing the
-        // old cursor once we return.)
-//        mAdapter.swapCursor(data);
         switch (loader.getId()) {
         case LOADER_CARD:
             cardsCursor = data;
