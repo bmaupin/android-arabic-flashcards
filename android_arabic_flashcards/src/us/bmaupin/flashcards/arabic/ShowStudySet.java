@@ -273,6 +273,15 @@ public class ShowStudySet extends FragmentActivity
                     selection,
                     null,
                     null);
+            
+        case LOADER_STUDYSET:
+            return new CursorLoader(this,
+                    ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                            studySetId),
+                    args.getStringArray("columns"),
+                    args.getString("selection"),
+                    args.getStringArray("selectionArgs"),
+                    null);
 /*            
         case LOADER_STUDYSET:
             selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
@@ -305,11 +314,12 @@ public class ShowStudySet extends FragmentActivity
             }
             
             break;
-/*        
+
         case LOADER_STUDYSET:
-            Toast.makeText(getApplicationContext(), "DEBUG: loader finished", Toast.LENGTH_SHORT).show();
+            if (data.moveToFirst()) {
+                Toast.makeText(getApplicationContext(), "DEBUG: " + data.getString(0), Toast.LENGTH_SHORT).show();
+            }
             break;
-*/
         }
     }
     
@@ -548,6 +558,14 @@ public class ShowStudySet extends FragmentActivity
         int newInterval;
         int oldInterval;
     	
+        Bundle bundle = new Bundle();
+// TODO: use extra constants for these once we get cursorloader stuff sorted out
+        bundle.putStringArray("columns", new String[] {StudySetDatabaseHelper.SET_INTERVAL});
+        bundle.putString("selection", StudySetDatabaseHelper.SET_CARD_ID + " = ? ");
+        bundle.putStringArray("selectionArgs", new String[] {cardId});
+        
+        getSupportLoaderManager().initLoader(LOADER_STUDYSET, bundle, this);
+/*        
     	studySetCursor = studySetDb.query(
     	        StudySetDatabaseHelper.SET_TABLE_PREFIX + 
     			studySetId, COLUMNS, SELECTION, SELECTIONARGS, null, null, 
@@ -609,6 +627,7 @@ public class ShowStudySet extends FragmentActivity
         
         studySetDb.replace(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
         		ProfileDatabaseHelper.CARD_ID, cv);
+*/
     }
     
     @Override
