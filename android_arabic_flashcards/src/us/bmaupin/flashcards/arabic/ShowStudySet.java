@@ -139,14 +139,13 @@ public class ShowStudySet extends FragmentActivity
         
         if (studySetCursor.moveToFirst()) {
             studySetIds = "(";
-//            List<String> studySetIds = new ArrayList<String>();
             while (!studySetCursor.isAfterLast()) {
-//                studySetIds.add(studySetCursor.getString(0));
                 studySetIds += studySetCursor.getString(0) + ", ";
                 studySetCursor.moveToNext();
             }
             // drop the separator from the last part of the string
-            studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + ")";
+            studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + 
+                    ")";
             
         } else {
 // TODO: no due cards, do something here
