@@ -49,7 +49,7 @@ public class ShowStudySet extends FragmentActivity
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
-    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 2;
+    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 20;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -138,15 +138,7 @@ public class ShowStudySet extends FragmentActivity
                 selection,
                 null,
                 null);
-/*        
-        studySetDbHelper = new StudySetDatabaseHelper(this);
-        studySetDb = studySetDbHelper.getReadableDatabase();
-        studySetCursor = studySetDb.query(
-                StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
-                new String[] {StudySetDatabaseHelper.SET_CARD_ID}, 
-                selection, null, null, null, null, 
-                "" + MAX_STUDYSET_CARDS_TO_SHOW);
-*/        
+
         if (studySetCursor.moveToFirst()) {
             studySetIds = "(";
             while (!studySetCursor.isAfterLast()) {
@@ -160,11 +152,6 @@ public class ShowStudySet extends FragmentActivity
         } else {
 // TODO: no due cards, do something here
         }
-/*        
-        studySetCursor.close();
-        studySetDb.close();
-        studySetDbHelper.close();
-*/
         
         getSupportLoaderManager().initLoader(LOADER_CARD, null, this);
         
