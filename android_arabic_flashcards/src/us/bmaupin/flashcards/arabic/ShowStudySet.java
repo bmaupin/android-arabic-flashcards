@@ -260,11 +260,14 @@ public class ShowStudySet extends FragmentActivity
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 // TODO: clean this up
-        String selection;
+        String selection = "";
         
         switch (id) {
         case LOADER_CARD:
-            selection = CardDatabaseHelper._ID + " IN " + studySetIds;
+// TODO: for now, handle studySetIds being empty here.  may need to do this elsewhere instead
+            if (!studySetIds.equals("")) {
+                selection = CardDatabaseHelper._ID + " IN " + studySetIds;
+            }
 
 // TODO: use a specific/random order?
             return new CursorLoader(this,
@@ -548,14 +551,24 @@ public class ShowStudySet extends FragmentActivity
         int newInterval;
         int oldInterval;
     	
+        studySetCursor = getContentResolver().query(
+                ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                studySetId),
+                COLUMNS,
+                SELECTION,
+                SELECTIONARGS,
+                null);
+/*        
     	studySetCursor = studySetDb.query(
     	        StudySetDatabaseHelper.SET_TABLE_PREFIX + 
     			studySetId, COLUMNS, SELECTION, SELECTIONARGS, null, null, 
     			null);
-    	
+*/    	
         if (studySetCursor.getCount() != 0) {
             studySetCursor.moveToFirst();
             oldInterval = studySetCursor.getInt(0);
+            
+Toast.makeText(getApplicationContext(), "DEBUG: " + oldInterval, Toast.LENGTH_SHORT).show();
             
         	switch(response) {
         	case RESPONSE_KNOWN:
@@ -606,23 +619,28 @@ public class ShowStudySet extends FragmentActivity
         cv.put(StudySetDatabaseHelper.SET_CARD_ID, cardId);
         cv.put(StudySetDatabaseHelper.SET_INTERVAL, newInterval);
         cv.put(StudySetDatabaseHelper.SET_DUE_TIME, newDueTime);
-        
+/*        
         studySetDb.replace(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
         		ProfileDatabaseHelper.CARD_ID, cv);
+*/
+        Toast.makeText(getApplicationContext(), "DEBUG: " + newDueTime, Toast.LENGTH_SHORT).show();
     }
     
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
-        
+
+/*        
         // store the cursor position in case we come back
         cardsCursorPosition = cardsCursor.getPosition();
-/*        
+*/
+        
         // clean up after ourselves
         if (!studySetCursor.isClosed()) {
             studySetCursor.close();
         }
+/*
         studySetDb.close();
         studySetDbHelper.close();
 */
