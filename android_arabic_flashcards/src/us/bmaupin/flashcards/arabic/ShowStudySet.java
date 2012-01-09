@@ -130,6 +130,7 @@ public class ShowStudySet extends FragmentActivity
                 System.currentTimeMillis();
         
         studySetCursor = getContentResolver().query(
+                // specify the study set ID and a limit
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId).buildUpon().appendQueryParameter(
                         StudySetProvider.QUERY_PARAMETER_LIMIT,
