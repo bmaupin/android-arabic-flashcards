@@ -200,9 +200,9 @@ public class ShowStudySet extends FragmentActivity
         
         cardsCursor = managedQuery(
         		// add the limit to the content uri
-        		ContentUris.withAppendedId(
-        				CardProvider.CONTENT_URI_CARDS_LIMIT, 
-        				MAX_NEW_CARDS_TO_SHOW),
+                CardProvider.CONTENT_URI.buildUpon().appendQueryParameter(
+                        CardProvider.QUERY_PARAMETER_LIMIT,
+                        "" + MAX_NEW_CARDS_TO_SHOW).build(),
                 PROJECTION,
                 selection,
                 selectionArgs,
