@@ -273,15 +273,6 @@ public class ShowStudySet extends FragmentActivity
                     selection,
                     null,
                     null);
-            
-        case LOADER_STUDYSET:
-            return new CursorLoader(this,
-                    ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
-                            studySetId),
-                    args.getStringArray("columns"),
-                    args.getString("selection"),
-                    args.getStringArray("selectionArgs"),
-                    null);
 /*            
         case LOADER_STUDYSET:
             selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
@@ -312,14 +303,13 @@ public class ShowStudySet extends FragmentActivity
             } else {
                 Log.e(TAG, "for some reason the cursor is empty...");
             }
-            break;
-
-        case LOADER_STUDYSET:
             
-            if (data.moveToFirst()) {
-                
-            }
             break;
+/*        
+        case LOADER_STUDYSET:
+            Toast.makeText(getApplicationContext(), "DEBUG: loader finished", Toast.LENGTH_SHORT).show();
+            break;
+*/
         }
     }
     
@@ -497,8 +487,7 @@ public class ShowStudySet extends FragmentActivity
     }
     
     private void showNextCard(int response) {
-        // getCardInterval will call updateCardInterval
-        getCardInterval(cardsCursor.getString(0), response);
+        updateCardInterval(cardsCursor.getString(0), response);
         showNextCard();
     }
     
@@ -550,18 +539,6 @@ public class ShowStudySet extends FragmentActivity
         setCurrentCardText();
     }
     
-    private void getCardInterval(String cardId, int response) {
-        Bundle bundle = new Bundle();
-// TODO: use extra constants for these once we get cursorloader stuff sorted out
-        bundle.putStringArray("columns", new String[] {StudySetDatabaseHelper.SET_INTERVAL});
-        bundle.putString("selection", StudySetDatabaseHelper.SET_CARD_ID + " = ? ");
-        bundle.putStringArray("selectionArgs", new String[] {cardId});
-        bundle.putString("cardId", cardId);
-        bundle.putInt("response", response);
-        
-        getSupportLoaderManager().initLoader(LOADER_STUDYSET, bundle, this);
-    }
-    
     private void updateCardInterval(String cardId, int response) {
         final String[] COLUMNS = {StudySetDatabaseHelper.SET_INTERVAL};
         final String SELECTION = StudySetDatabaseHelper.SET_CARD_ID + " = ? ";
@@ -571,8 +548,6 @@ public class ShowStudySet extends FragmentActivity
         int newInterval;
         int oldInterval;
     	
-
-/*        
     	studySetCursor = studySetDb.query(
     	        StudySetDatabaseHelper.SET_TABLE_PREFIX + 
     			studySetId, COLUMNS, SELECTION, SELECTIONARGS, null, null, 
@@ -634,7 +609,6 @@ public class ShowStudySet extends FragmentActivity
         
         studySetDb.replace(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
         		ProfileDatabaseHelper.CARD_ID, cv);
-*/
     }
     
     @Override
