@@ -269,7 +269,7 @@ public class ShowStudySet extends FragmentActivity
 
 // TODO: use a specific/random order?
             return new CursorLoader(this,
-                    CardProvider.CONTENT_URI_CARDS,
+                    CardProvider.CONTENT_URI,
                     PROJECTION_CARDS,
                     selection,
                     null,

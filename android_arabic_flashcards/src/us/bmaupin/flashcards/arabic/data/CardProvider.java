@@ -15,22 +15,19 @@ public class CardProvider extends ContentProvider {
     public static final String AUTHORITY = 
             "us.bmaupin.flashcards.arabic.cardprovider";
     private static final int CARD_ID_PATH_POSITION = 1;
-    private static final int LIMIT_PATH_POSITION = 2;
     private static final String PATH_CARDS = "cards";
-    private static final String PATH_LIMIT = "limit";
-    public static final Uri CONTENT_URI_CARDS = Uri.parse("content://" + 
-            AUTHORITY + "/" + PATH_CARDS);
-    public static final Uri CONTENT_URI_CARDS_LIMIT = Uri.parse("content://" + 
-            AUTHORITY + "/" + PATH_CARDS + "/" + PATH_LIMIT);
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY 
+            + "/" + PATH_CARDS);
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
-    private static final int CARDS_LIMIT = 3;
     // content provider mime type constants
     public static final String CONTENT_TYPE = 
             "vnd.android.cursor.dir/vnd.bmaupin.card";
     public static final String CONTENT_ITEM_TYPE = 
             "vnd.android.cursor.item/vnd.bmaupin.card";
+    // query parameter for limiting the results of the query
+    public static final String QUERY_PARAMETER_LIMIT = "limit";
     
     private CardDatabaseHelper cardDbHelper;
 
@@ -44,8 +41,6 @@ public class CardProvider extends ContentProvider {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(AUTHORITY, PATH_CARDS, CARDS);
         sUriMatcher.addURI(AUTHORITY, PATH_CARDS + "/#", CARD_ID);
-        sUriMatcher.addURI(AUTHORITY, PATH_CARDS + "/" + PATH_LIMIT + "/#", 
-                CARDS_LIMIT);
     }
     
     @Override
@@ -67,10 +62,8 @@ public class CardProvider extends ContentProvider {
         qb.setTables(CardDatabaseHelper.CARDS_TABLE);
         
         switch (sUriMatcher.match(uri)) {
-        case CARDS_LIMIT:
-            limit = uri.getPathSegments().get(LIMIT_PATH_POSITION);
-        
         case CARDS:
+            limit = uri.getQueryParameter(QUERY_PARAMETER_LIMIT);
             // if we're searching for cards by ahlan wa sahlan chapter
             if (selection.indexOf(CardDatabaseHelper.AWS_CHAPTERS_CHAPTER)
                     != -1) {

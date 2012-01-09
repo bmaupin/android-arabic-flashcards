@@ -136,7 +136,7 @@ public class BrowseCards extends Activity {
         }
         
         cursor = managedQuery(
-                CardProvider.CONTENT_URI_CARDS,
+                CardProvider.CONTENT_URI,
                 PROJECTION,
                 selection,
                 selectionArgs,
