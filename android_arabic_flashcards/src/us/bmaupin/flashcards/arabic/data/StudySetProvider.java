@@ -38,6 +38,8 @@ public class StudySetProvider extends ContentProvider {
     // 0-relative uri path positions
     private static final int STUDYSETS_ID_PATH_POSITION = 1;
     private static final int STUDYSETS_META_ID_PATH_POSITION = 2;
+    // query parameter for limiting the results of the query
+    public static final String QUERY_PARAMETER_LIMIT = "limit";
     
     private static final UriMatcher sUriMatcher;
 
@@ -83,7 +85,7 @@ public class StudySetProvider extends ContentProvider {
     	case STUDYSETS_ID:
             String studySetId = uri.getPathSegments().get(
                     STUDYSETS_ID_PATH_POSITION);
-            limit = uri.getQueryParameter("limit");
+            limit = uri.getQueryParameter(QUERY_PARAMETER_LIMIT);
     	    qb.setTables(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId);
             
     		break;

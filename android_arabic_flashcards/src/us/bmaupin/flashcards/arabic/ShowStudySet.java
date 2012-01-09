@@ -49,7 +49,7 @@ public class ShowStudySet extends FragmentActivity
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
-    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 20;
+    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 2;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -131,8 +131,9 @@ public class ShowStudySet extends FragmentActivity
         
         studySetCursor = getContentResolver().query(
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
-                studySetId).buildUpon().appendQueryParameter("limit", 
-                "" + MAX_STUDYSET_CARDS_TO_SHOW).build(),
+                        studySetId).buildUpon().appendQueryParameter(
+                        StudySetProvider.QUERY_PARAMETER_LIMIT,
+                        "" + MAX_STUDYSET_CARDS_TO_SHOW).build(),
                 new String[] {StudySetDatabaseHelper.SET_CARD_ID},
                 selection,
                 null,
