@@ -129,6 +129,15 @@ public class ShowStudySet extends FragmentActivity
         String selection = StudySetDatabaseHelper.SET_DUE_TIME + " <  0" + 
                 System.currentTimeMillis();
         
+        studySetCursor = getContentResolver().query(
+                ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                studySetId).buildUpon().appendQueryParameter("limit", 
+                "" + MAX_STUDYSET_CARDS_TO_SHOW).build(),
+                new String[] {StudySetDatabaseHelper.SET_CARD_ID},
+                selection,
+                null,
+                null);
+/*        
         studySetDbHelper = new StudySetDatabaseHelper(this);
         studySetDb = studySetDbHelper.getReadableDatabase();
         studySetCursor = studySetDb.query(
@@ -136,7 +145,7 @@ public class ShowStudySet extends FragmentActivity
                 new String[] {StudySetDatabaseHelper.SET_CARD_ID}, 
                 selection, null, null, null, null, 
                 "" + MAX_STUDYSET_CARDS_TO_SHOW);
-        
+*/        
         if (studySetCursor.moveToFirst()) {
             studySetIds = "(";
             while (!studySetCursor.isAfterLast()) {
@@ -150,10 +159,11 @@ public class ShowStudySet extends FragmentActivity
         } else {
 // TODO: no due cards, do something here
         }
-        
+/*        
         studySetCursor.close();
         studySetDb.close();
         studySetDbHelper.close();
+*/
         
         getSupportLoaderManager().initLoader(LOADER_CARD, null, this);
         
@@ -567,8 +577,6 @@ public class ShowStudySet extends FragmentActivity
         if (studySetCursor.getCount() != 0) {
             studySetCursor.moveToFirst();
             oldInterval = studySetCursor.getInt(0);
-            
-Toast.makeText(getApplicationContext(), "DEBUG: " + oldInterval, Toast.LENGTH_SHORT).show();
             
         	switch(response) {
         	case RESPONSE_KNOWN:

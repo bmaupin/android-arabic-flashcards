@@ -83,6 +83,7 @@ public class StudySetProvider extends ContentProvider {
     	case STUDYSETS_ID:
             String studySetId = uri.getPathSegments().get(
                     STUDYSETS_ID_PATH_POSITION);
+            limit = uri.getQueryParameter("limit");
     	    qb.setTables(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId);
             
     		break;
