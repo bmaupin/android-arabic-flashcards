@@ -223,9 +223,6 @@ public class ShowStudySet extends FragmentActivity
         super.onResume();
         Log.d(TAG, "onResume()");
         
-//        studySetDbHelper = new StudySetDatabaseHelper(this);
-//        studySetDb = studySetDbHelper.getReadableDatabase();
-        
         // get any preferences that may have changed
         fixArabic = preferences.getBoolean(
                 getString(R.string.preferences_fix_arabic),
@@ -557,12 +554,7 @@ public class ShowStudySet extends FragmentActivity
                 SELECTION,
                 SELECTIONARGS,
                 null);
-/*        
-    	studySetCursor = studySetDb.query(
-    	        StudySetDatabaseHelper.SET_TABLE_PREFIX + 
-    			studySetId, COLUMNS, SELECTION, SELECTIONARGS, null, null, 
-    			null);
-*/    	
+
         if (studySetCursor.getCount() != 0) {
             studySetCursor.moveToFirst();
             oldInterval = studySetCursor.getInt(0);
@@ -616,17 +608,12 @@ public class ShowStudySet extends FragmentActivity
         cv.put(StudySetDatabaseHelper.SET_CARD_ID, cardId);
         cv.put(StudySetDatabaseHelper.SET_INTERVAL, newInterval);
         cv.put(StudySetDatabaseHelper.SET_DUE_TIME, newDueTime);
-/*        
-        studySetDb.replace(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
-        		ProfileDatabaseHelper.CARD_ID, cv);
-*/
         
+        // this is actually a REPLACE (INSERT OR REPLACE)
         getContentResolver().insert(
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
                 cv);
-        
-        Toast.makeText(getApplicationContext(), "DEBUG: " + newDueTime, Toast.LENGTH_SHORT).show();
     }
     
     @Override
@@ -643,10 +630,6 @@ public class ShowStudySet extends FragmentActivity
         if (!studySetCursor.isClosed()) {
             studySetCursor.close();
         }
-/*
-        studySetDb.close();
-        studySetDbHelper.close();
-*/
     }
     
     @Override
