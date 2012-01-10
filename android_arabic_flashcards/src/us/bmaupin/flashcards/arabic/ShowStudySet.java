@@ -621,7 +621,7 @@ public class ShowStudySet extends FragmentActivity
         		ProfileDatabaseHelper.CARD_ID, cv);
 */
         
-        getContentResolver().replace(
+        getContentResolver().insert(
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
                 cv);

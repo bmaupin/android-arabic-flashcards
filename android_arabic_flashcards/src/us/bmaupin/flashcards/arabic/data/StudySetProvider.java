@@ -118,6 +118,31 @@ public class StudySetProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
         switch (sUriMatcher.match(uri)) {
+        case STUDYSETS_ID:
+            String studySetId = uri.getPathSegments().get(
+                    STUDYSETS_ID_PATH_POSITION);
+            /*
+             * note we're doing a REPLACE instead of an INSERT here.  there's 
+             * nowhere else for it, and REPLACE is merely an alias for INSERT
+             * OR REPLACE anyway...
+             */
+            long rowId = db.replace(
+                    StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId,
+                    // this just has to be any column that can be null
+                    StudySetDatabaseHelper.SET_INTERVAL,
+                    values);
+            
+            if (rowId > 0) {
+                Uri rowUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
+                
+                // Notifies observers registered against this provider that the data changed.
+                getContext().getContentResolver().notifyChange(rowUri, null);
+                return rowUri;
+            }
+            
+            // If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
+            throw new SQLException("Failed to replace row into " + uri);
+            
         case STUDYSETS_META:
             long newStudySetId = db.insert(
                     StudySetDatabaseHelper.META_TABLE_NAME, 
@@ -180,34 +205,4 @@ public class StudySetProvider extends ContentProvider {
 		// not going to implement
         return null;
     }
-	
-	public Uri replace(Uri uri, ContentValues values) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
-        switch (sUriMatcher.match(uri)) {
-        case STUDYSETS_ID:
-            String studySetId = uri.getPathSegments().get(
-                    STUDYSETS_ID_PATH_POSITION);
-            long rowId = db.replace(
-                    StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId,
-                    // this just has to be any column that can be null
-                    StudySetDatabaseHelper.SET_INTERVAL,
-                    values);
-            
-            if (rowId > 0) {
-                Uri rowUri = ContentUris.withAppendedId(CONTENT_URI, rowId);
-                
-                // Notifies observers registered against this provider that the data changed.
-                getContext().getContentResolver().notifyChange(rowUri, null);
-                return rowUri;
-            }
-            
-            // If the insert didn't succeed, then the rowID is <= 0. Throws an exception.
-            throw new SQLException("Failed to replace row into " + uri);
-	    
-        default:
-            // If the URI doesn't match any of the known patterns, throw an exception.
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
-	}
 }
