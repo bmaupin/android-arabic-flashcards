@@ -79,26 +79,15 @@ public class StudySetProvider extends ContentProvider {
     	SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
     	
     	switch (sUriMatcher.match(uri)) {
-    	case STUDYSETS:
-    		break;
-    		
     	case STUDYSETS_ID:
             String studySetId = uri.getPathSegments().get(
                     STUDYSETS_ID_PATH_POSITION);
             limit = uri.getQueryParameter(QUERY_PARAMETER_LIMIT);
     	    qb.setTables(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId);
-            
-    		break;
-    		
-    	case STUDYSETS_CARDS_ID:
     		break;
 		
     	case STUDYSETS_META:
     	    qb.setTables(StudySetDatabaseHelper.META_TABLE_NAME);
-    	    
-    		break;
-    	
-    	case STUDYSETS_META_ID:
     		break;
     	
     	default:
@@ -129,9 +118,6 @@ public class StudySetProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
         switch (sUriMatcher.match(uri)) {
-        case STUDYSETS_ID:
-            break;
-        
         case STUDYSETS_META:
             long newStudySetId = db.insert(
                     StudySetDatabaseHelper.META_TABLE_NAME, 
@@ -154,8 +140,6 @@ public class StudySetProvider extends ContentProvider {
             // If the URI doesn't match any of the known patterns, throw an exception.
             throw new IllegalArgumentException("Unknown URI " + uri);
         }
-        
-        return null;
     }
     
     @Override
