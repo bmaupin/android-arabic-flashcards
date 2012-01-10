@@ -620,6 +620,12 @@ public class ShowStudySet extends FragmentActivity
         studySetDb.replace(StudySetDatabaseHelper.SET_TABLE_PREFIX + studySetId, 
         		ProfileDatabaseHelper.CARD_ID, cv);
 */
+        
+        getContentResolver().replace(
+                ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                        studySetId),
+                cv);
+        
         Toast.makeText(getApplicationContext(), "DEBUG: " + newDueTime, Toast.LENGTH_SHORT).show();
     }
     
