@@ -39,10 +39,12 @@ public class ShowStudySet extends FragmentActivity
     private static final int RESPONSE_KNOWN = 0;
     private static final int RESPONSE_IFFY = 1;
     private static final int RESPONSE_UNKNOWN = 2;
+    private static final int CARD_MODE_DUE = 0;
+    private static final int CARD_MODE_NEW = 1;
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
-    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 20;
+    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 1;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -54,6 +56,9 @@ public class ShowStudySet extends FragmentActivity
         CardDatabaseHelper.CARDS_ARABIC,
     };
     
+    private int cardMode = CARD_MODE_DUE;
+    private String cardSet;
+    private String cardSubSet;
     private Cursor cardsCursor;
     private int cardsCursorPosition;
     // current card language
@@ -110,12 +115,15 @@ public class ShowStudySet extends FragmentActivity
         
         Bundle bundle = this.getIntent().getExtras();
         studySetId = bundle.getLong(Cards.EXTRA_STUDY_SET_ID);
-        String cardSet = bundle.getString(Cards.EXTRA_CARD_GROUP);
-        String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
+        cardSet = bundle.getString(Cards.EXTRA_CARD_GROUP);
+        cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
         
         String selection = StudySetDatabaseHelper.SET_DUE_TIME + " <  0" + 
                 System.currentTimeMillis();
+        
+//        Log.d(TAG, "getStudySetCount(): " + getStudySetCount());
+        Log.d(TAG, "System.currentTimeMillis(): " +System.currentTimeMillis());
         
         studySetCursor = getContentResolver().query(
                 // specify the study set ID and a limit
@@ -143,67 +151,6 @@ public class ShowStudySet extends FragmentActivity
         }
         
         getSupportLoaderManager().initLoader(0, null, this);
-        
-/*      
-        selection = "";
-        String[] selectionArgs = new String[] {};
-        String sortOrder = "";
-        
-        if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
-            /*
-             * this looks like:
-             * where cards._id in (select card_ID from aws_chapters where chapter = ?) and chapter = ?
-             * 
-             * it may seem terribly redundant, but it's much faster than:
-             * where chapter = ?
-             * 
-             * because it doesn't do the left join (in the provider class) 
-             * on both entire tables
-             * 
-             * the entire query ends up looking like this:
-             * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where cards._id in (select card_ID from aws_chapters where chapter = 4) and chapter = 4 order by aws_chapters._id;
-             * 
-             * instead of this:
-             * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where chapter = 4 order by aws_chapters._id;
-             */
-/*
-            selection = CardDatabaseHelper.CARDS_TABLE + "." + 
-                    CardDatabaseHelper._ID + " IN (SELECT " + 
-                    CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
-                    CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
-                    CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ?) AND " + 
-                    CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ? ";
-            selectionArgs = new String[] {cardSubSet, cardSubSet};
-            sortOrder = CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
-                    CardDatabaseHelper._ID;
-            
-        } else if (cardSet.equals(getString(R.string.card_group_categories))) {
-            selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
-            selectionArgs = new String[] {cardSubSet};
-            
-        } else if (cardSet.equals(getString(
-                R.string.card_group_parts_of_speech))) {
-            selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
-            selectionArgs = new String[] {cardSubSet};
-        }
-        
-        cardsCursor = managedQuery(
-        		// add the limit to the content uri
-                CardProvider.CONTENT_URI.buildUpon().appendQueryParameter(
-                        CardProvider.QUERY_PARAMETER_LIMIT,
-                        "" + MAX_NEW_CARDS_TO_SHOW).build(),
-                PROJECTION,
-                selection,
-                selectionArgs,
-                sortOrder
-        );
-
-        // make sure the cursor isn't empty
-        // if it is empty, we take care of that in onResume
-        if (cardsCursor != null && cardsCursor.getCount() != 0) {
-            cardsCursor.moveToFirst();
-        }
-*/
     }
     
     @Override
@@ -237,28 +184,90 @@ public class ShowStudySet extends FragmentActivity
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String selection = "";
 
+        if (cardMode == CARD_MODE_DUE) {
 // TODO: for now, handle studySetIds being empty here.  may need to do this elsewhere instead
-        if (!studySetIds.equals("")) {
-            selection = CardDatabaseHelper._ID + " IN " + studySetIds;
-        }
+            if (!studySetIds.equals("")) {
+                selection = CardDatabaseHelper._ID + " IN " + studySetIds;
+            }
 
-// TODO: use a specific/random order?
-        return new CursorLoader(this,
-                CardProvider.CONTENT_URI,
-                PROJECTION_CARDS,
-                selection,
-                null,
-                null);
+            return new CursorLoader(this,
+                    CardProvider.CONTENT_URI,
+                    PROJECTION_CARDS,
+                    selection,
+                    null,
+                    null);
+            
+        } else {
+            String[] selectionArgs = new String[] {};
+            String sortOrder = "";
+            
+            if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
+                /*
+                 * this looks like:
+                 * where cards._id in (select card_ID from aws_chapters where chapter = ?) and chapter = ?
+                 * 
+                 * it may seem terribly redundant, but it's much faster than:
+                 * where chapter = ?
+                 * 
+                 * because it doesn't do the left join (in the provider class) 
+                 * on both entire tables
+                 * 
+                 * the entire query ends up looking like this:
+                 * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where cards._id in (select card_ID from aws_chapters where chapter = 4) and chapter = 4 order by aws_chapters._id;
+                 * 
+                 * instead of this:
+                 * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where chapter = 4 order by aws_chapters._id;
+                 */
+                selection = CardDatabaseHelper.CARDS_TABLE + "." + 
+                        CardDatabaseHelper._ID + " IN (SELECT " + 
+                        CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
+                        CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
+                        CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ?) AND " + 
+                        CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ? ";
+                selectionArgs = new String[] {cardSubSet, cardSubSet};
+                sortOrder = CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
+                        CardDatabaseHelper._ID;
+                
+            } else if (cardSet.equals(getString(R.string.card_group_categories))) {
+                selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
+                selectionArgs = new String[] {cardSubSet};
+                
+            } else if (cardSet.equals(getString(
+                    R.string.card_group_parts_of_speech))) {
+                selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
+                selectionArgs = new String[] {cardSubSet};
+            }
+            
+            return new CursorLoader(this,
+                    // add the limit to the content uri
+                    CardProvider.CONTENT_URI.buildUpon().appendQueryParameter(
+                            CardProvider.QUERY_PARAMETER_LIMIT,
+                            "" + MAX_NEW_CARDS_TO_SHOW).build(),
+                    PROJECTION_CARDS,
+                    selection,
+                    selectionArgs,
+                    sortOrder
+            );
+        }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         cardsCursor = data;
-        
-        if (cardsCursor.moveToFirst()) {
-            showFirstCard();
-        } else {
-            Log.e(TAG, "for some reason the cursor is empty...");
+        if (cardMode == CARD_MODE_DUE) {
+            if (cardsCursor.moveToFirst()) {
+                showFirstCard();
+            } else {
+                Log.e(TAG, "for some reason the cursor is empty...");
+            }
+            
+        } else if (cardMode == CARD_MODE_NEW) {
+            if (cardsCursor.moveToFirst()) {
+                showNextCard();
+            } else {
+// TODO: handle here if no new cards?                
+                Log.e(TAG, "for some reason the cursor is empty...");
+            }
         }
     }
     
@@ -428,12 +437,20 @@ public class ShowStudySet extends FragmentActivity
     
     private void showNextCard() {
         if (cardsCursor.isLast()) {
-            // return a blank card so we can show the user a message that
-            // there aren't any more cards (or any cards at all)
+            // if we're out of due cards
+            if (cardMode == CARD_MODE_DUE) {
+                // show new cards
+                cardMode = CARD_MODE_NEW;
+                
+                getSupportLoaderManager().restartLoader(0, null, this);
+                
+            } else {
 // TODO: do something if no more cards to show
-            int doSomethingHere;
-            // for now let's at least let people know there are no more cards...
-            Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
+                int doSomethingHere;
+                // for now let's at least let people know there are no more cards...
+                Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
+            }
+            
         } else {
             cardsCursor.moveToNext();
             // reset the card language that will show first
@@ -551,6 +568,27 @@ public class ShowStudySet extends FragmentActivity
                         studySetId),
                 cv);
     }
+    
+    /*
+     * get the total count of rows in the study set table, to be used as an
+     * offset for new cards
+     */
+/*
+    private String getStudySetCount() {
+        Cursor cursor = getContentResolver().query(
+                ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                        studySetId),
+                new String[] {"COUNT()"},
+                null,
+                null,
+                null);
+        if (cursor.moveToFirst()) {
+            return cursor.getString(0);
+        }
+        
+        return null;
+    }
+*/
     
     @Override
     protected void onPause() {
