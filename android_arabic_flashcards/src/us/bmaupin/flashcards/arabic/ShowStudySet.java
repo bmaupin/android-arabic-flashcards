@@ -1,20 +1,15 @@
 package us.bmaupin.flashcards.arabic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetProvider;
-import us.bmaupin.flashcards.arabic.old.ProfileDatabaseHelper;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -58,9 +53,6 @@ public class ShowStudySet extends FragmentActivity
         CardDatabaseHelper.CARDS_ENGLISH,
         CardDatabaseHelper.CARDS_ARABIC,
     };
-    private static final String[] PROJECTION_STUDYSET = new String[] {
-        StudySetDatabaseHelper.SET_DUE_TIME,
-    };
     
     private Cursor cardsCursor;
     private int cardsCursorPosition;
@@ -85,8 +77,6 @@ public class ShowStudySet extends FragmentActivity
     private ViewFlipper vf;
     
     private Cursor studySetCursor;
-    private SQLiteDatabase studySetDb;
-    private StudySetDatabaseHelper studySetDbHelper;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,14 +229,6 @@ public class ShowStudySet extends FragmentActivity
         // lost our cursor postion
         if (cardsCursor.isBeforeFirst()) {
             cardsCursor.moveToPosition(cardsCursorPosition);
-        }
-*/
-        
-/*
-        if (cardsCursor == null || cardsCursor.getCount() == 0) {
-            Log.e(TAG, "for some reason the cursor is empty...");
-        } else {
-            showFirstCard();
         }
 */
     }
