@@ -44,8 +44,6 @@ public class ShowStudySet extends FragmentActivity
     private static final int RESPONSE_KNOWN = 0;
     private static final int RESPONSE_IFFY = 1;
     private static final int RESPONSE_UNKNOWN = 2;
-    private static final int LOADER_CARD = 0;
-    private static final int LOADER_STUDYSET = 1;
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
@@ -154,7 +152,7 @@ public class ShowStudySet extends FragmentActivity
 // TODO: no due cards, do something here
         }
         
-        getSupportLoaderManager().initLoader(LOADER_CARD, null, this);
+        getSupportLoaderManager().initLoader(0, null, this);
         
 /*      
         selection = "";
@@ -255,60 +253,30 @@ public class ShowStudySet extends FragmentActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-// TODO: clean this up
         String selection = "";
-        
-        switch (id) {
-        case LOADER_CARD:
+
 // TODO: for now, handle studySetIds being empty here.  may need to do this elsewhere instead
-            if (!studySetIds.equals("")) {
-                selection = CardDatabaseHelper._ID + " IN " + studySetIds;
-            }
+        if (!studySetIds.equals("")) {
+            selection = CardDatabaseHelper._ID + " IN " + studySetIds;
+        }
 
 // TODO: use a specific/random order?
-            return new CursorLoader(this,
-                    CardProvider.CONTENT_URI,
-                    PROJECTION_CARDS,
-                    selection,
-                    null,
-                    null);
-/*            
-        case LOADER_STUDYSET:
-            selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
-                    System.currentTimeMillis();
-            
-            return new CursorLoader(this,
-                    ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
-                            studySetId),
-                    PROJECTION_STUDYSET, 
-                    selection,
-                    null,
-                    null);
-*/
-            
-        default:
-            return null;
-        }
+        return new CursorLoader(this,
+                CardProvider.CONTENT_URI,
+                PROJECTION_CARDS,
+                selection,
+                null,
+                null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-        case LOADER_CARD:
-            cardsCursor = data;
-            
-            if (cardsCursor.moveToFirst()) {
-                showFirstCard();
-            } else {
-                Log.e(TAG, "for some reason the cursor is empty...");
-            }
-            
-            break;
-/*        
-        case LOADER_STUDYSET:
-            Toast.makeText(getApplicationContext(), "DEBUG: loader finished", Toast.LENGTH_SHORT).show();
-            break;
-*/
+        cardsCursor = data;
+        
+        if (cardsCursor.moveToFirst()) {
+            showFirstCard();
+        } else {
+            Log.e(TAG, "for some reason the cursor is empty...");
         }
     }
     
@@ -317,7 +285,6 @@ public class ShowStudySet extends FragmentActivity
         // This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
-//        mAdapter.swapCursor(null);
     }
 
     /* Inflates the menu */
