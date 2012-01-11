@@ -119,7 +119,7 @@ public class ShowStudySet extends FragmentActivity
         cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
         
-        String selection = StudySetDatabaseHelper.SET_DUE_TIME + " <  0" + 
+        String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
                 System.currentTimeMillis();
         
 //        Log.d(TAG, "getStudySetCount(): " + getStudySetCount());
