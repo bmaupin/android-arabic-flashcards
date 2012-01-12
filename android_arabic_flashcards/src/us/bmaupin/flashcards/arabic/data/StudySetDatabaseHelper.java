@@ -31,6 +31,8 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     // timestamp card is due
     public static final String SET_DUE_TIME = "due_time";
     
+    public static final String COUNT = "COUNT()";
+    
     // SQL Statement to create a new database table
     public static final String META_TABLE_CREATE =
         "CREATE TABLE " + META_TABLE_NAME + " (" +
