@@ -114,6 +114,13 @@ public class ShowStudySet extends FragmentActivity
                 new String[] {StudySetDatabaseHelper.SET_CARD_ID},
                 selection,
                 null,
+/*
+ *  TODO: okay, so apparently ordering by due time here doesn't matter, because
+ *  the order is ignored when getting the cards.  maybe not worth worrying 
+ *  about (would probably require a join to get working)...  but we'll keep it 
+ *  anyway so at least the cards due soonest will be in the set of shown cards, 
+ *  even if not in order by due time
+ */
                 StudySetDatabaseHelper.SET_DUE_TIME);
 
         if (studySetCursor.moveToFirst()) {
@@ -405,6 +412,7 @@ public class ShowStudySet extends FragmentActivity
         TextView tv = (TextView)rl.getChildAt(0);
         
         Log.d(TAG, "currentLang=" + currentLang);
+        Log.d(TAG, "current card ID=" + cardsCursor.getString(0));
         
         if (currentLang.toLowerCase().equals(Cards.LANGUAGE_ENGLISH)) {
             tv.setTextSize(Cards.ENGLISH_CARD_TEXT_SIZE);
