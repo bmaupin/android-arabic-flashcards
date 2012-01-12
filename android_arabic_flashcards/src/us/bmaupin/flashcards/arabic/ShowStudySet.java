@@ -140,6 +140,7 @@ public class ShowStudySet extends FragmentActivity
         } else {
             cardMode = CARD_MODE_NONE_DUE;
         }
+        cursor.close();
 
         getSupportLoaderManager().initLoader(0, null, this);
     }
