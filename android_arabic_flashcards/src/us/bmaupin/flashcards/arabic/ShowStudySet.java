@@ -116,7 +116,7 @@ public class ShowStudySet extends FragmentActivity
                 selection,
                 null,
 /*
- *  TODO: okay, so apparently ordering by due time here doesn't matter, because
+ *  okay, so apparently ordering by due time here doesn't matter, because
  *  the order is ignored when getting the cards.  maybe not worth worrying 
  *  about (would probably require a join to get working)...  but we'll keep it 
  *  anyway so at least the cards due soonest will be in the set of shown cards, 
@@ -190,6 +190,7 @@ public class ShowStudySet extends FragmentActivity
                     null);
             
         } else {
+            Log.d(TAG, "Now showing new cards...");
             String[] selectionArgs = new String[] {};
             String sortOrder = "";
             
@@ -199,8 +200,7 @@ public class ShowStudySet extends FragmentActivity
                 limit = MAX_NEW_CARDS_TO_SHOW;
             }
             
-            // offset is number of cards in study set plus 1
-            String limitString = (getStudySetCount() + 1) + "," + limit;
+            String limitString = getStudySetCount() + "," + limit;
             
             if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
                 /*
@@ -263,10 +263,7 @@ public class ShowStudySet extends FragmentActivity
                 showFirstCard();
                 break;
             case CARD_MODE_NEW:
-// TODO: BUG: probably shouldn't do showNextCard here either, just do screen transition
-// TODO:
-// TODO:
-                showNextCard();
+                showNextCard(false);
                 break;
             }
         } else {
@@ -468,10 +465,13 @@ public class ShowStudySet extends FragmentActivity
     
     private void showNextCard(int response) {
         updateCardInterval(cardsCursor.getString(0), response);
-        showNextCard();
+        showNextCard(true);
     }
     
-    private void showNextCard() {
+    /*
+     * takes a boolean: whether or not to move the cursor to the next item
+     */
+    private void showNextCard(boolean moveCursor) {
         if (cardsCursor.isLast()) {
             // if we're out of due cards
             if (cardMode == CARD_MODE_DUE) {
@@ -488,7 +488,9 @@ public class ShowStudySet extends FragmentActivity
             }
             
         } else {
-            cardsCursor.moveToNext();
+            if (moveCursor) {
+                cardsCursor.moveToNext();
+            }
             // reset the card language that will show first
             currentLang = defaultLang;
             setUnseenCardText();
