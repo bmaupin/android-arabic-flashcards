@@ -67,6 +67,8 @@ public class ShowStudySet extends FragmentActivity
     private String currentLang;
     // default card language 
     private String defaultLang;
+    // the number of due cards to show
+    private int dueCardCount = 0;
     // whether or not to apply arabic fixes
     private boolean fixArabic;
     private GestureDetector gestureDetector;
@@ -125,6 +127,7 @@ public class ShowStudySet extends FragmentActivity
         if (cursor.moveToFirst()) {
             studySetIds = "(";
             while (!cursor.isAfterLast()) {
+                dueCardCount ++;
                 studySetIds += cursor.getString(0) + ", ";
                 cursor.moveToNext();
             }
@@ -132,10 +135,9 @@ public class ShowStudySet extends FragmentActivity
             studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + 
                     ")";
             Log.d(TAG, "studySetIds: " + studySetIds);
+            Log.d(TAG, "dueCardCount: " + dueCardCount);
             
         } else {
-// TODO: no due cards, do something here
-// TODO:
             cardMode = CARD_MODE_NONE_DUE;
         }
 
@@ -189,7 +191,15 @@ public class ShowStudySet extends FragmentActivity
         } else {
             String[] selectionArgs = new String[] {};
             String sortOrder = "";
-            String limit = (getStudySetCount() + 1) + "," + MAX_NEW_CARDS_TO_SHOW;
+            
+            // don't show more than the max number of total or new cards
+            int limit = MAX_CARDS_TO_SHOW - dueCardCount;
+            if (limit > MAX_NEW_CARDS_TO_SHOW) {
+                limit = MAX_NEW_CARDS_TO_SHOW;
+            }
+            
+            // offset is number of cards in study set plus 1
+            String limitString = (getStudySetCount() + 1) + "," + limit;
             
             if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
                 /*
@@ -232,7 +242,7 @@ public class ShowStudySet extends FragmentActivity
                     // add the limit to the content uri
                     CardProvider.CONTENT_URI.buildUpon().appendQueryParameter(
                             CardProvider.QUERY_PARAMETER_LIMIT,
-                            limit).build(),
+                            limitString).build(),
                     PROJECTION_CARDS,
                     selection,
                     selectionArgs,
@@ -252,6 +262,9 @@ public class ShowStudySet extends FragmentActivity
                 showFirstCard();
                 break;
             case CARD_MODE_NEW:
+// TODO: BUG: probably shouldn't do showNextCard here either, just do screen transition
+// TODO:
+// TODO:
                 showNextCard();
                 break;
             }
