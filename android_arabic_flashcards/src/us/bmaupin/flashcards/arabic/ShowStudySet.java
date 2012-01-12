@@ -189,7 +189,7 @@ public class ShowStudySet extends FragmentActivity
         } else {
             String[] selectionArgs = new String[] {};
             String sortOrder = "";
-            String limit = getStudySetCount() + "," + MAX_NEW_CARDS_TO_SHOW;
+            String limit = (getStudySetCount() + 1) + "," + MAX_NEW_CARDS_TO_SHOW;
             
             if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
                 /*
