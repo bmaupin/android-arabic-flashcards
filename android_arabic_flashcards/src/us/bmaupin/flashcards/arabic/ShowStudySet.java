@@ -41,6 +41,7 @@ public class ShowStudySet extends FragmentActivity
     private static final int RESPONSE_UNKNOWN = 2;
     private static final int CARD_MODE_DUE = 0;
     private static final int CARD_MODE_NEW = 1;
+    private static final int CARD_MODE_NONE_DUE = 2;
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
@@ -148,6 +149,8 @@ public class ShowStudySet extends FragmentActivity
             
         } else {
 // TODO: no due cards, do something here
+// TODO:
+            cardMode = CARD_MODE_NONE_DUE;
         }
         
         getSupportLoaderManager().initLoader(0, null, this);
@@ -254,20 +257,30 @@ public class ShowStudySet extends FragmentActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         cardsCursor = data;
-        if (cardMode == CARD_MODE_DUE) {
-            if (cardsCursor.moveToFirst()) {
+        if (cardsCursor.moveToFirst()) {
+            switch (cardMode) {
+            case CARD_MODE_NONE_DUE:
+                cardMode = CARD_MODE_NEW;
+            case CARD_MODE_DUE:
                 showFirstCard();
-            } else {
+                break;
+            case CARD_MODE_NEW:
+                showNextCard();
+                break;
+            }
+        } else {
+            switch (cardMode) {
+            case CARD_MODE_DUE:
+                // we should never get here
                 Log.e(TAG, "for some reason the cursor is empty...");
+                break;
+            case CARD_MODE_NONE_DUE:
+            case CARD_MODE_NEW:
+// TODO: handle here if no new cards?
+                Toast.makeText(getApplicationContext(), "DEBUG: No new cards", Toast.LENGTH_SHORT).show();
+                break;
             }
             
-        } else if (cardMode == CARD_MODE_NEW) {
-            if (cardsCursor.moveToFirst()) {
-                showNextCard();
-            } else {
-// TODO: handle here if no new cards?                
-                Log.e(TAG, "for some reason the cursor is empty...");
-            }
         }
     }
     
