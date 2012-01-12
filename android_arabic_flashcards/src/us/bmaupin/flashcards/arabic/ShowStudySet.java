@@ -45,7 +45,7 @@ public class ShowStudySet extends FragmentActivity
     // how many new cards to show per study set session
     // we'll probably replace this later using shared preferences
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
-    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 1;
+    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 20;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -103,7 +103,7 @@ public class ShowStudySet extends FragmentActivity
                 System.currentTimeMillis();
         
         Log.d(TAG, "getStudySetCount(): " + getStudySetCount());
-        Log.d(TAG, "System.currentTimeMillis(): " +System.currentTimeMillis());
+        Log.d(TAG, "System.currentTimeMillis(): " + System.currentTimeMillis());
         
         studySetCursor = getContentResolver().query(
                 // specify the study set ID and a limit
@@ -114,7 +114,7 @@ public class ShowStudySet extends FragmentActivity
                 new String[] {StudySetDatabaseHelper.SET_CARD_ID},
                 selection,
                 null,
-                null);
+                StudySetDatabaseHelper.SET_DUE_TIME);
 
         if (studySetCursor.moveToFirst()) {
             studySetIds = "(";
@@ -125,6 +125,7 @@ public class ShowStudySet extends FragmentActivity
             // drop the separator from the last part of the string
             studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + 
                     ")";
+            Log.d(TAG, "studySetIds: " + studySetIds);
             
         } else {
 // TODO: no due cards, do something here
