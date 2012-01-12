@@ -122,7 +122,7 @@ public class ShowStudySet extends FragmentActivity
         String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
                 System.currentTimeMillis();
         
-//        Log.d(TAG, "getStudySetCount(): " + getStudySetCount());
+        Log.d(TAG, "getStudySetCount(): " + getStudySetCount());
         Log.d(TAG, "System.currentTimeMillis(): " +System.currentTimeMillis());
         
         studySetCursor = getContentResolver().query(
@@ -573,7 +573,6 @@ public class ShowStudySet extends FragmentActivity
      * get the total count of rows in the study set table, to be used as an
      * offset for new cards
      */
-/*
     private String getStudySetCount() {
         Cursor cursor = getContentResolver().query(
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
@@ -588,7 +587,6 @@ public class ShowStudySet extends FragmentActivity
         
         return null;
     }
-*/
     
     @Override
     protected void onPause() {
