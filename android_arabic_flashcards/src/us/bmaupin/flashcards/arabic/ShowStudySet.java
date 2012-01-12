@@ -577,7 +577,7 @@ public class ShowStudySet extends FragmentActivity
         Cursor cursor = getContentResolver().query(
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
-                new String[] {"COUNT()"},
+                new String[] {StudySetDatabaseHelper.COUNT},
                 null,
                 null,
                 null);
