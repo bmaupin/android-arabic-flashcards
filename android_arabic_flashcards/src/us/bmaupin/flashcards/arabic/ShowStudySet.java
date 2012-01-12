@@ -42,10 +42,11 @@ public class ShowStudySet extends FragmentActivity
     private static final int CARD_MODE_DUE = 0;
     private static final int CARD_MODE_NEW = 1;
     private static final int CARD_MODE_NONE_DUE = 2;
-    // how many new cards to show per study set session
-    // we'll probably replace this later using shared preferences
+    // we'll probably replace these later using shared preferences
+    // max new cards to show (per day)
     private static final int MAX_NEW_CARDS_TO_SHOW = 10;
-    private static final int MAX_STUDYSET_CARDS_TO_SHOW = 20;
+    // how many total cards to show per study set session
+    private static final int MAX_CARDS_TO_SHOW = 20;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -82,8 +83,6 @@ public class ShowStudySet extends FragmentActivity
     private Animation slideRightOut;
     private ViewFlipper vf;
     
-    private Cursor studySetCursor;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,12 +104,12 @@ public class ShowStudySet extends FragmentActivity
         Log.d(TAG, "getStudySetCount(): " + getStudySetCount());
         Log.d(TAG, "System.currentTimeMillis(): " + System.currentTimeMillis());
         
-        studySetCursor = getContentResolver().query(
+        Cursor cursor = getContentResolver().query(
                 // specify the study set ID and a limit
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId).buildUpon().appendQueryParameter(
                         StudySetProvider.QUERY_PARAMETER_LIMIT,
-                        "" + MAX_STUDYSET_CARDS_TO_SHOW).build(),
+                        "" + MAX_CARDS_TO_SHOW).build(),
                 new String[] {StudySetDatabaseHelper.SET_CARD_ID},
                 selection,
                 null,
@@ -123,11 +122,11 @@ public class ShowStudySet extends FragmentActivity
  */
                 StudySetDatabaseHelper.SET_DUE_TIME);
 
-        if (studySetCursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             studySetIds = "(";
-            while (!studySetCursor.isAfterLast()) {
-                studySetIds += studySetCursor.getString(0) + ", ";
-                studySetCursor.moveToNext();
+            while (!cursor.isAfterLast()) {
+                studySetIds += cursor.getString(0) + ", ";
+                cursor.moveToNext();
             }
             // drop the separator from the last part of the string
             studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + 
@@ -190,6 +189,7 @@ public class ShowStudySet extends FragmentActivity
         } else {
             String[] selectionArgs = new String[] {};
             String sortOrder = "";
+            String limit = getStudySetCount() + "," + MAX_NEW_CARDS_TO_SHOW;
             
             if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
                 /*
@@ -232,7 +232,7 @@ public class ShowStudySet extends FragmentActivity
                     // add the limit to the content uri
                     CardProvider.CONTENT_URI.buildUpon().appendQueryParameter(
                             CardProvider.QUERY_PARAMETER_LIMIT,
-                            "" + MAX_NEW_CARDS_TO_SHOW).build(),
+                            limit).build(),
                     PROJECTION_CARDS,
                     selection,
                     selectionArgs,
@@ -522,7 +522,7 @@ public class ShowStudySet extends FragmentActivity
         int newInterval;
         int oldInterval;
     	
-        studySetCursor = getContentResolver().query(
+        Cursor cursor = getContentResolver().query(
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                 studySetId),
                 COLUMNS,
@@ -530,9 +530,10 @@ public class ShowStudySet extends FragmentActivity
                 SELECTIONARGS,
                 null);
 
-        if (studySetCursor.getCount() != 0) {
-            studySetCursor.moveToFirst();
-            oldInterval = studySetCursor.getInt(0);
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            oldInterval = cursor.getInt(0);
+            cursor.close();
             
         	switch(response) {
         	case RESPONSE_KNOWN:
@@ -595,7 +596,7 @@ public class ShowStudySet extends FragmentActivity
      * get the total count of rows in the study set table, to be used as an
      * offset for new cards
      */
-    private String getStudySetCount() {
+    private int getStudySetCount() {
         Cursor cursor = getContentResolver().query(
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
@@ -604,10 +605,12 @@ public class ShowStudySet extends FragmentActivity
                 null,
                 null);
         if (cursor.moveToFirst()) {
-            return cursor.getString(0);
+            int studySetCount = cursor.getInt(0);
+            cursor.close();
+            return studySetCount;
         }
         
-        return null;
+        return 0;
     }
     
     @Override
@@ -619,11 +622,6 @@ public class ShowStudySet extends FragmentActivity
         // store the cursor position in case we come back
         cardsCursorPosition = cardsCursor.getPosition();
 */
-        
-        // clean up after ourselves
-        if (!studySetCursor.isClosed()) {
-            studySetCursor.close();
-        }
     }
     
     @Override
