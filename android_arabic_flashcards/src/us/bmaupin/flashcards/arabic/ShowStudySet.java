@@ -89,30 +89,9 @@ public class ShowStudySet extends FragmentActivity
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         
-        setContentView(R.layout.cards);
-        
-        vf = (ViewFlipper)findViewById(R.id.flipper);
-        slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
-        slideLeftOut = AnimationUtils.loadAnimation(this, 
-        		R.anim.slide_left_out);
-        slideRightIn = AnimationUtils.loadAnimation(this, 
-        		R.anim.slide_right_in);
-        slideRightOut = AnimationUtils.loadAnimation(this, 
-        		R.anim.slide_right_out);
-        
-        gestureDetector = new GestureDetector(new MyGestureDetector());
-        
         // create objects for shared preferences and resources
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
-
-        // set the typeface for the TextViews within the ViewFlipper
-        Typeface tf = Typeface.createFromAsset(getAssets(), 
-        		Cards.ARABIC_TYPEFACE);
-        TextView tv1 = (TextView)vf.findViewById(R.id.textview1);
-        TextView tv2 = (TextView)vf.findViewById(R.id.textview2);
-        tv1.setTypeface(tf);
-        tv2.setTypeface(tf);
         
         Bundle bundle = this.getIntent().getExtras();
         studySetId = bundle.getLong(Cards.EXTRA_STUDY_SET_ID);
@@ -152,7 +131,7 @@ public class ShowStudySet extends FragmentActivity
 // TODO:
             cardMode = CARD_MODE_NONE_DUE;
         }
-        
+
         getSupportLoaderManager().initLoader(0, null, this);
     }
     
@@ -396,6 +375,27 @@ public class ShowStudySet extends FragmentActivity
     }
     
     private void showFirstCard() {
+        setContentView(R.layout.cards);
+        
+        vf = (ViewFlipper)findViewById(R.id.flipper);
+        slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+        slideLeftOut = AnimationUtils.loadAnimation(this, 
+                R.anim.slide_left_out);
+        slideRightIn = AnimationUtils.loadAnimation(this, 
+                R.anim.slide_right_in);
+        slideRightOut = AnimationUtils.loadAnimation(this, 
+                R.anim.slide_right_out);
+        
+        gestureDetector = new GestureDetector(new MyGestureDetector());
+
+        // set the typeface for the TextViews within the ViewFlipper
+        Typeface tf = Typeface.createFromAsset(getAssets(), 
+                Cards.ARABIC_TYPEFACE);
+        TextView tv1 = (TextView)vf.findViewById(R.id.textview1);
+        TextView tv2 = (TextView)vf.findViewById(R.id.textview2);
+        tv1.setTypeface(tf);
+        tv2.setTypeface(tf);
+        
         setCurrentCardText();
     }
     
