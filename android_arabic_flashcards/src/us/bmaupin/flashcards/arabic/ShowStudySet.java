@@ -177,10 +177,7 @@ public class ShowStudySet extends FragmentActivity
         String selection = "";
 
         if (cardMode == CARD_MODE_DUE) {
-// TODO: for now, handle studySetIds being empty here.  may need to do this elsewhere instead
-            if (!studySetIds.equals("")) {
-                selection = CardDatabaseHelper._ID + " IN " + studySetIds;
-            }
+            selection = CardDatabaseHelper._ID + " IN " + studySetIds;
 
             return new CursorLoader(this,
                     CardProvider.CONTENT_URI,
