@@ -24,7 +24,9 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public static final String META_SET_CARD_GROUP = "card_group";
     public static final String META_SET_CARD_SUBGROUP = "card_subgroup";
     public static final String META_SET_LANGUAGE = "set_language";
+    // last date new cards were shown
     public static final String META_NEW_CARDS_DATE = "new_cards_date";
+    // how many cards were shown on META_NEW_CARDS_DATE
     public static final String META_NEW_CARDS_SHOWN = "new_cards_shown";
     
     public static final String SET_CARD_ID = "card_id";
@@ -34,6 +36,8 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public static final String SET_DUE_TIME = "due_time";
     
     public static final String COUNT = "COUNT()";
+    // date format of META_NEW_CARDS_DATE column
+    public static final String META_NEW_CARDS_DATE_FORMAT = "yyyyMMdd";
     
     // SQL Statement to create a new database table
     public static final String META_TABLE_CREATE =
