@@ -170,8 +170,24 @@ public class StudySetProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, 
     		String[] selectionArgs) {
-        // not going to implement
-        return 0;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int count;
+        
+        switch (sUriMatcher.match(uri)) {
+        case STUDYSETS_META:
+            count = db.update(StudySetDatabaseHelper.META_TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs);
+            break;
+            
+        default:
+            // If the URI doesn't match any of the known patterns, throw an exception.
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
     }
 	
 	@Override

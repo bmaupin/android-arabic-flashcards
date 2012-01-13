@@ -1,5 +1,8 @@
 package us.bmaupin.flashcards.arabic;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
@@ -72,6 +75,8 @@ public class ShowStudySet extends FragmentActivity
     // whether or not to apply arabic fixes
     private boolean fixArabic;
     private GestureDetector gestureDetector;
+    // the number of new cards shown
+    private int newCardsShown = 0;
     private SharedPreferences preferences;
     private Resources resources;
     // whether or not to show arabic vowels
@@ -603,6 +608,11 @@ public class ShowStudySet extends FragmentActivity
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
                 cv);
+        
+        // increment the counter of new cards shown
+        if (cardMode == CARD_MODE_NEW) {
+            newCardsShown ++;
+        }
     }
     
     /*
@@ -630,7 +640,25 @@ public class ShowStudySet extends FragmentActivity
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
-
+        
+// TODO: put date format string into a constant?
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date = new Date();
+        
+        String selection = StudySetDatabaseHelper._ID + " = ? ";
+        String[] selectionArgs = {"" + studySetId};
+        
+        ContentValues cv = new ContentValues();
+        cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, 
+                simpleDateFormat.format(date).toString());
+        cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, newCardsShown);
+        
+        getContentResolver().update(
+                StudySetProvider.CONTENT_URI_META,
+                cv,
+                selection,
+                selectionArgs);
+        
 /*        
         // store the cursor position in case we come back
         cardsCursorPosition = cardsCursor.getPosition();
