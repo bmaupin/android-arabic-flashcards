@@ -641,8 +641,8 @@ public class ShowStudySet extends FragmentActivity
         super.onPause();
         Log.d(TAG, "onPause()");
         
-// TODO: put date format string into a constant?
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                StudySetDatabaseHelper.META_NEW_CARDS_DATE_FORMAT);
         Date date = new Date();
         
         String selection = StudySetDatabaseHelper._ID + " = ? ";
