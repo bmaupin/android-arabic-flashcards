@@ -24,6 +24,8 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public static final String META_SET_CARD_GROUP = "card_group";
     public static final String META_SET_CARD_SUBGROUP = "card_subgroup";
     public static final String META_SET_LANGUAGE = "set_language";
+    public static final String META_NEW_CARDS_DATE = "new_cards_date";
+    public static final String META_NEW_CARDS_SHOWN = "new_cards_shown";
     
     public static final String SET_CARD_ID = "card_id";
     // card interval (in hours)
@@ -40,7 +42,9 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
         META_SET_NAME + " TEXT, " +
         META_SET_CARD_GROUP + " TEXT, " +
         META_SET_CARD_SUBGROUP + " TEXT, " +
-        META_SET_LANGUAGE + " TEXT);";
+        META_SET_LANGUAGE + " TEXT, " +
+        META_NEW_CARDS_DATE + " TEXT, " +
+        META_NEW_CARDS_SHOWN + " INTEGER);";
     
     // The constructor method
     public StudySetDatabaseHelper(Context context) {
