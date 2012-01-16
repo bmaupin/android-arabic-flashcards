@@ -5,13 +5,13 @@ import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -31,7 +32,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class ChooseStudySet extends ListActivity {
+public class ChooseStudySet extends FragmentActivity {
 	private static final String TAG = "ChooseStudySet";
 
     private static final int DIALOG_CREATE_STUDY_SET = 0;
@@ -108,11 +109,27 @@ public class ChooseStudySet extends ListActivity {
                 new String[] {StudySetDatabaseHelper.META_SET_NAME},
                 new int[] { android.R.id.text1 });
         
-        // Bind to our new adapter.
-        setListAdapter(adapter);
+        ListView lv = (ListView) findViewById(android.R.id.list);
         
-        ListView list = getListView();
-        registerForContextMenu(list);
+        // Bind to our new adapter.
+        lv.setAdapter(adapter);
+        
+        registerForContextMenu(lv);
+        
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, 
+                    int position, long id) {
+                
+                Intent intent = new Intent(ChooseStudySet.this, ShowStudySet.class);
+                // id is the study set id
+                intent.putExtra(Cards.EXTRA_STUDY_SET_ID, id);
+                intent.putExtra(Cards.EXTRA_CARD_GROUP, cursor.getString(2));
+                intent.putExtra(Cards.EXTRA_CARD_SUBGROUP, cursor.getString(3));
+                intent.putExtra(Cards.EXTRA_STUDY_SET_LANGUAGE, cursor.getString(4));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -212,19 +229,6 @@ public class ChooseStudySet extends ListActivity {
         default:
             return super.onContextItemSelected(item);
         }
-    }
-    
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        
-        Intent intent = new Intent(this, ShowStudySet.class);
-        // id is the study set id
-        intent.putExtra(Cards.EXTRA_STUDY_SET_ID, id);
-        intent.putExtra(Cards.EXTRA_CARD_GROUP, cursor.getString(2));
-        intent.putExtra(Cards.EXTRA_CARD_SUBGROUP, cursor.getString(3));
-        intent.putExtra(Cards.EXTRA_STUDY_SET_LANGUAGE, cursor.getString(4));
-        startActivity(intent);
     }
 
     private void createStudySet(String studySetName, String language) {
