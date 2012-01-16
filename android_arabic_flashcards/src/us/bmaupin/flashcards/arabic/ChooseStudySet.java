@@ -1,5 +1,8 @@
 package us.bmaupin.flashcards.arabic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.app.Activity;
@@ -10,6 +13,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -27,6 +31,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -52,8 +57,10 @@ public class ChooseStudySet extends FragmentActivity
         StudySetDatabaseHelper.META_SET_LANGUAGE
 	};
     
-    SimpleCursorAdapter adapter;
-    Cursor cursor;
+// TODO
+//    SimpleCursorAdapter adapter;
+    private ArrayAdapter<ArrayList> adapter;
+    private Cursor cursor;
     // the card set of a new study set
     private String newStudySetCardSet = "";
     // the card subset of a new study set
@@ -97,7 +104,7 @@ public class ChooseStudySet extends FragmentActivity
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-        
+/*        
         adapter = new SimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -105,10 +112,17 @@ public class ChooseStudySet extends FragmentActivity
                 new String[] {StudySetDatabaseHelper.META_SET_NAME},
                 new int[] {android.R.id.text1},
                 0);
-        
+*/        
         ListView lv = (ListView) findViewById(android.R.id.list);
-        
+/*        
         // Bind to our new adapter.
+        lv.setAdapter(adapter);
+*/
+        
+        adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_2,
+                new ArrayList<ArrayList<String>>());
+        
         lv.setAdapter(adapter);
         
         getSupportLoaderManager().initLoader(0, null, this);
@@ -177,6 +191,8 @@ public class ChooseStudySet extends FragmentActivity
     
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+// TODO
+// TODO
         return new CursorLoader(this,
                 StudySetProvider.CONTENT_URI_META,
                 PROJECTION,
@@ -190,9 +206,11 @@ public class ChooseStudySet extends FragmentActivity
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
-        adapter.swapCursor(data);
+//        adapter.swapCursor(data);
         // make the cursor available to the rest of the class
         cursor = data;
+        
+        new LoadListDataTask().execute(data);
     }
     
     @Override
@@ -200,7 +218,7 @@ public class ChooseStudySet extends FragmentActivity
         // This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
-        adapter.swapCursor(null);
+//        adapter.swapCursor(null);
     }
     
 	/* Inflates the menu */
@@ -370,5 +388,42 @@ public class ChooseStudySet extends FragmentActivity
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
+    }
+    
+    class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
+        @Override
+        protected Void doInBackground(Cursor... params) {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    ArrayList<String> list = new ArrayList<String>();
+                    list.add(cursor.getString(1));
+                    list.add(cursor.getString(2));
+                    
+                    publishProgress(list);
+                    cursor.moveToNext();
+                }
+            }
+            
+            //List<String> myList = new ArrayList<String>();
+/*            
+            for (String item : items) {
+                publishProgress(item);
+//                SystemClock.sleep(200);
+            }
+*/
+            return(null);
+        }
+        
+        @Override
+        protected void onProgressUpdate(ArrayList<String>... item) {
+            adapter.add(item[0]);
+        }
+        
+        @Override
+        protected void onPostExecute(Void unused) {
+            Toast
+            .makeText(ChooseStudySet.this, "DEBUG: Async task done", Toast.LENGTH_SHORT)
+            .show();
+        }
     }
 }
