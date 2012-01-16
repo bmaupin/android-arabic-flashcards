@@ -47,7 +47,7 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
         META_SET_CARD_GROUP + " TEXT, " +
         META_SET_CARD_SUBGROUP + " TEXT, " +
         META_SET_LANGUAGE + " TEXT, " +
-        META_NEW_CARDS_DATE + " TEXT, " +
+        META_NEW_CARDS_DATE + " TEXT NOT NULL, " +
         META_NEW_CARDS_SHOWN + " INTEGER);";
     
     // The constructor method

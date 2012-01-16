@@ -233,6 +233,8 @@ public class ChooseStudySet extends ListActivity {
         cv.put(StudySetDatabaseHelper.META_SET_CARD_GROUP, newStudySetCardSet);
         cv.put(StudySetDatabaseHelper.META_SET_CARD_SUBGROUP, newStudySetCardSubset);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
+        // this needs a default non-null value
+        cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, "0");
         
         getContentResolver().insert(
                 StudySetProvider.CONTENT_URI_META,
