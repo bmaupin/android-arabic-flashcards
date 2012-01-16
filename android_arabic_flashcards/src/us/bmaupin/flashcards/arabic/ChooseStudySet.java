@@ -12,6 +12,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -28,11 +32,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class ChooseStudySet extends FragmentActivity {
+public class ChooseStudySet extends FragmentActivity 
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 	private static final String TAG = "ChooseStudySet";
 
     private static final int DIALOG_CREATE_STUDY_SET = 0;
@@ -94,25 +98,20 @@ public class ChooseStudySet extends FragmentActivity {
         super.onResume();
         Log.d(TAG, "onResume()");
         
-        cursor = managedQuery(
-        		StudySetProvider.CONTENT_URI_META,
-                PROJECTION,
-                null,
-                null,
-                null
-        );
-
         adapter = new SimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_1,
-                cursor,
+                null,
                 new String[] {StudySetDatabaseHelper.META_SET_NAME},
-                new int[] { android.R.id.text1 });
+                new int[] {android.R.id.text1},
+                0);
         
         ListView lv = (ListView) findViewById(android.R.id.list);
         
         // Bind to our new adapter.
         lv.setAdapter(adapter);
+        
+        getSupportLoaderManager().initLoader(0, null, this);
         
         registerForContextMenu(lv);
         
@@ -174,6 +173,34 @@ public class ChooseStudySet extends FragmentActivity {
                 }
                 break;
         }
+    }
+    
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this,
+                StudySetProvider.CONTENT_URI_META,
+                PROJECTION,
+                null,
+                null,
+                null
+        );
+    }
+    
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Swap the new cursor in.  (The framework will take care of closing the
+        // old cursor once we return.)
+        adapter.swapCursor(data);
+        // make the cursor available to the rest of the class
+        cursor = data;
+    }
+    
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
+        adapter.swapCursor(null);
     }
     
 	/* Inflates the menu */
