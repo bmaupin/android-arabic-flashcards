@@ -112,29 +112,29 @@ mention al kitaab (edition) vocab
 DATABASE IMPORT PROCESS:
 
 drop table temp;
-drop table words;
+drop table cards;
 
 CREATE TABLE temp (
     "english" TEXT NOT NULL,
     "arabic" TEXT NOT NULL,
-    "plural" TEXT,
     "type" TEXT,
     "category" TEXT,
-    "gender" TEXT
+    "gender" TEXT,
+    "plural" TEXT
 );
 
 CREATE TABLE cards (
-    "_ID" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "_id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "english" TEXT NOT NULL,
     "arabic" TEXT NOT NULL,
-    "plural" TEXT,
     "type" TEXT,
     "category" TEXT COLLATE NOCASE,
-    "gender" TEXT
+    "gender" TEXT,
+    "plural" TEXT
 );
 
 
-insert into cards (english, arabic, plural, type, category, gender) select english, arabic, plural, type, category, gender from temp;
+insert into cards (english, arabic, type, category, gender, plural) select english, arabic, type, category, gender, plural from temp;
 
 
 
