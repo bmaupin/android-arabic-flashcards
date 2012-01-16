@@ -1,5 +1,6 @@
 package us.bmaupin.flashcards.arabic;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -81,6 +82,8 @@ public class ShowStudySet extends FragmentActivity
     private Resources resources;
     // whether or not to show arabic vowels
     private boolean showVowels;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+            StudySetDatabaseHelper.META_NEW_CARDS_DATE_FORMAT);
     // the ID of the current study set
     private long studySetId;
     private String studySetIds = "";
@@ -196,11 +199,41 @@ public class ShowStudySet extends FragmentActivity
             String[] selectionArgs = new String[] {};
             String sortOrder = "";
             
-            // don't show more than the max number of total or new cards
-            int limit = MAX_CARDS_TO_SHOW - dueCardCount;
-            if (limit > MAX_NEW_CARDS_TO_SHOW) {
-                limit = MAX_NEW_CARDS_TO_SHOW;
+            // get info on new cards shown
+            Cursor cursor = getContentResolver().query(
+                    StudySetProvider.CONTENT_URI_META,
+                    new String[] {StudySetDatabaseHelper.META_NEW_CARDS_DATE,
+                            StudySetDatabaseHelper.META_NEW_CARDS_SHOWN},
+                    StudySetDatabaseHelper._ID + " = ? ",
+                    new String[] {"" + studySetId},
+                    null);
+            
+            if (cursor.moveToFirst()) {
+                // if the date found in the database is today
+                if (cursor.getString(0).equals(
+                        simpleDateFormat.format(new Date()).toString())) {
+                    // set the count of new cards shown from the database
+                    newCardsShown = cursor.getInt(1);
+                    Log.d(TAG, "newCardsShown (from db)=" + newCardsShown);
+                }
             }
+            cursor.close();
+            
+            /* 
+             * don't show more than the max number of total or new cards
+             * (minus new cards already shown today)
+             */
+            int limit = MAX_CARDS_TO_SHOW - dueCardCount;
+            if (limit > MAX_NEW_CARDS_TO_SHOW - newCardsShown) {
+                limit = MAX_NEW_CARDS_TO_SHOW - newCardsShown;
+            }
+            
+            Log.d(TAG, "new cards to show=" + limit);
+            
+/*
+ * TODO: handle here if limit = 0 (basically we showed 20 due cards, and there
+ * are no new cards to show
+ */
             
             String limitString = getStudySetCount() + "," + limit;
             
@@ -641,16 +674,14 @@ public class ShowStudySet extends FragmentActivity
         super.onPause();
         Log.d(TAG, "onPause()");
         
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                StudySetDatabaseHelper.META_NEW_CARDS_DATE_FORMAT);
-        Date date = new Date();
+        Date now = new Date();
         
         String selection = StudySetDatabaseHelper._ID + " = ? ";
         String[] selectionArgs = {"" + studySetId};
         
         ContentValues cv = new ContentValues();
         cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, 
-                simpleDateFormat.format(date).toString());
+                simpleDateFormat.format(now).toString());
         cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, newCardsShown);
         
         getContentResolver().update(
