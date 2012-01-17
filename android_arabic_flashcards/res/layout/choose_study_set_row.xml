@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
-        android:mode="twoLine">
+        android:mode="twoLine" >
         <TextView
             android:id="@+id/study_set_title"
             android:layout_width="fill_parent"
@@ -18,14 +18,30 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/study_set_no_results"
             />
-        <TextView
-            android:id="@+id/study_set_due"
-            android:layout_width="fill_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal" 
             android:layout_below="@id/study_set_title"
             android:layout_alignLeft="@id/study_set_title"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/study_set_no_results_details"
-            />
+            >
+	        <TextView
+	            android:id="@+id/study_set_due"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:text="@string/study_set_no_results_details"
+	            />
+	        <TextView
+	            android:id="@+id/study_set_new"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginRight="6dip"
+	            android:layout_alignParentRight="true"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:text="@string/study_set_no_results_details"
+	            />
+        </RelativeLayout>
+
     </TwoLineListItem>
 </LinearLayout>

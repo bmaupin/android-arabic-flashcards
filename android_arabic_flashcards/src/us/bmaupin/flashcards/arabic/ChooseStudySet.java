@@ -431,7 +431,10 @@ public class ChooseStudySet extends FragmentActivity
             tv1.setText(objects.get(position).get(1));
             TextView tv2 = (TextView)v.findViewById(R.id.study_set_due);
 // TODO: put this into a string resource
-            tv2.setText(objects.get(position).get(2) + " cards due");
+            tv2.setText(objects.get(position).get(2) + " due");
+            TextView tv3 = (TextView)v.findViewById(R.id.study_set_new);
+         // TODO: put this into a string resource
+            tv3.setText("XX new today");
             
             
             
