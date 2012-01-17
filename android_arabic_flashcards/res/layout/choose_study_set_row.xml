@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+    <TwoLineListItem android:id="@+id/study_set_row"
+        android:paddingTop="2dip"
+        android:paddingBottom="2dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:mode="twoLine">
+        <TextView
+            android:id="@+id/study_set_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:layout_marginTop="6dip"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/study_set_no_results"
+            />
+        <TextView
+            android:id="@+id/study_set_new"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/study_set_title"
+            android:layout_alignLeft="@id/study_set_title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/study_set_no_results_details"
+            />
+    </TwoLineListItem>
+</LinearLayout>
