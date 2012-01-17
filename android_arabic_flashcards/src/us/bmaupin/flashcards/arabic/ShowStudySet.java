@@ -46,11 +46,6 @@ public class ShowStudySet extends FragmentActivity
     private static final int CARD_MODE_DUE = 0;
     private static final int CARD_MODE_NEW = 1;
     private static final int CARD_MODE_NONE_DUE = 2;
-    // we'll probably replace these later using shared preferences
-    // max new cards to show (per day)
-    private static final int MAX_NEW_CARDS_TO_SHOW = 10;
-    // how many total cards to show per study set session
-    private static final int MAX_CARDS_TO_SHOW = 20;
     // constants for swipe
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -119,7 +114,7 @@ public class ShowStudySet extends FragmentActivity
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId).buildUpon().appendQueryParameter(
                         StudySetProvider.QUERY_PARAMETER_LIMIT,
-                        "" + MAX_CARDS_TO_SHOW).build(),
+                        "" + Cards.MAX_CARDS_TO_SHOW).build(),
                 new String[] {StudySetDatabaseHelper.SET_CARD_ID},
                 selection,
                 null,
@@ -223,9 +218,9 @@ public class ShowStudySet extends FragmentActivity
              * don't show more than the max number of total or new cards
              * (minus new cards already shown today)
              */
-            int limit = MAX_CARDS_TO_SHOW - dueCardCount;
-            if (limit > MAX_NEW_CARDS_TO_SHOW - newCardsShown) {
-                limit = MAX_NEW_CARDS_TO_SHOW - newCardsShown;
+            int limit = Cards.MAX_CARDS_TO_SHOW - dueCardCount;
+            if (limit > Cards.MAX_NEW_CARDS_TO_SHOW - newCardsShown) {
+                limit = Cards.MAX_NEW_CARDS_TO_SHOW - newCardsShown;
             }
             
             Log.d(TAG, "new cards to show=" + limit);

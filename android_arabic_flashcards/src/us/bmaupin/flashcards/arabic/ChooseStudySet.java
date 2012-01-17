@@ -429,7 +429,7 @@ public class ChooseStudySet extends FragmentActivity
 
             TextView tv1 = (TextView)v.findViewById(R.id.study_set_title);
             tv1.setText(objects.get(position).get(0));
-            TextView tv2 = (TextView)v.findViewById(R.id.study_set_new);
+            TextView tv2 = (TextView)v.findViewById(R.id.study_set_due);
             tv2.setText(objects.get(position).get(1));
             
             
@@ -447,8 +447,10 @@ public class ChooseStudySet extends FragmentActivity
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     ArrayList<String> list = new ArrayList<String>();
+                    list.add(cursor.getString(0));
                     list.add(cursor.getString(1));
-                    list.add(cursor.getString(2));
+                    
+                    
                     
                     publishProgress(list);
                     cursor.moveToNext();
