@@ -428,9 +428,10 @@ public class ChooseStudySet extends FragmentActivity
             View v = super.getView(position, convertView, parent);
 
             TextView tv1 = (TextView)v.findViewById(R.id.study_set_title);
-            tv1.setText(objects.get(position).get(0));
+            tv1.setText(objects.get(position).get(1));
             TextView tv2 = (TextView)v.findViewById(R.id.study_set_due);
-            tv2.setText(objects.get(position).get(1));
+// TODO: put this into a string resource
+            tv2.setText(objects.get(position).get(2) + " cards due");
             
             
             
@@ -450,7 +451,24 @@ public class ChooseStudySet extends FragmentActivity
                     list.add(cursor.getString(0));
                     list.add(cursor.getString(1));
                     
+                    String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
+                    System.currentTimeMillis();
                     
+                    Cursor studySetCursor = getContentResolver().query(
+                            // specify the study set ID and a limit
+                            ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                                    cursor.getInt(0)).buildUpon().appendQueryParameter(
+                                    StudySetProvider.QUERY_PARAMETER_LIMIT,
+                                    "" + Cards.MAX_CARDS_TO_SHOW).build(),
+                            new String[] {StudySetDatabaseHelper.COUNT},
+                            selection,
+                            null,
+                            StudySetDatabaseHelper.SET_DUE_TIME);
+
+                    if (studySetCursor.moveToFirst()) {
+                        list.add(studySetCursor.getString(0));
+                    }
+                    studySetCursor.close();
                     
                     publishProgress(list);
                     cursor.moveToNext();
