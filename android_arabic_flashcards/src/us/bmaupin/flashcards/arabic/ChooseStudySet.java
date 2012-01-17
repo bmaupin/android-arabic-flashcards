@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,6 +38,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -59,7 +61,7 @@ public class ChooseStudySet extends FragmentActivity
     
 // TODO
 //    SimpleCursorAdapter adapter;
-    private ArrayAdapter<ArrayList> adapter;
+    private ArrayAdapter<ArrayList<String>> adapter;
     private Cursor cursor;
     // the card set of a new study set
     private String newStudySetCardSet = "";
@@ -118,8 +120,12 @@ public class ChooseStudySet extends FragmentActivity
         // Bind to our new adapter.
         lv.setAdapter(adapter);
 */
-        
+/*        
         adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_2,
+                new ArrayList<ArrayList<String>>());
+*/        
+        adapter = new MyArrayAdapter(this,
                 android.R.layout.simple_list_item_2,
                 new ArrayList<ArrayList<String>>());
         
@@ -390,7 +396,39 @@ public class ChooseStudySet extends FragmentActivity
         Log.d(TAG, "onDestroy()");
     }
     
-    class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
+    private class MyArrayAdapter extends ArrayAdapter<ArrayList<String>> {
+        private final Context context;
+        private final List<ArrayList<String>> objects;
+
+        public MyArrayAdapter(Context context, int textViewResourceId,
+                List<ArrayList<String>> objects) {
+            super(context, android.R.id.text1, objects);
+            this.context = context;
+            this.objects = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // TODO Auto-generated method stub
+//            return super.getView(position, convertView, parent);
+            
+            View v = super.getView(position, convertView, parent);
+
+            TextView tv1 = (TextView)v.findViewById(android.R.id.text1);
+            tv1.setText(objects.get(position).get(0));
+            TextView tv2 = (TextView)v.findViewById(android.R.id.text2);
+            tv2.setText(objects.get(position).get(1));
+            
+            
+            
+//            TextView tv = (TextView)v.findViewById(android.R.id.text2);
+//            Cards.setArabicTypeface(context, tv);
+            
+            return v;
+        }
+    }
+    
+    private class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
         @Override
         protected Void doInBackground(Cursor... params) {
             if (cursor.moveToFirst()) {
