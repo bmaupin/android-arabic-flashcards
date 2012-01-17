@@ -19,7 +19,7 @@
             android:text="@string/study_set_no_results"
             />
         <TextView
-            android:id="@+id/study_set_new"
+            android:id="@+id/study_set_due"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/study_set_title"
