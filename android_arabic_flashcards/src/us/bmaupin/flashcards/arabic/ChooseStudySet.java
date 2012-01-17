@@ -125,8 +125,11 @@ public class ChooseStudySet extends FragmentActivity
                 android.R.layout.simple_list_item_2,
                 new ArrayList<ArrayList<String>>());
 */        
+     // TODO
+     // TODO
         adapter = new MyArrayAdapter(this,
-                android.R.layout.simple_list_item_2,
+                R.layout.choose_study_set_row,
+                R.id.study_set_title,
                 new ArrayList<ArrayList<String>>());
         
         lv.setAdapter(adapter);
@@ -197,8 +200,6 @@ public class ChooseStudySet extends FragmentActivity
     
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-// TODO
-// TODO
         return new CursorLoader(this,
                 StudySetProvider.CONTENT_URI_META,
                 PROJECTION,
@@ -396,16 +397,28 @@ public class ChooseStudySet extends FragmentActivity
         Log.d(TAG, "onDestroy()");
     }
     
+// TODO
+// TODO
     private class MyArrayAdapter extends ArrayAdapter<ArrayList<String>> {
         private final Context context;
         private final List<ArrayList<String>> objects;
 
-        public MyArrayAdapter(Context context, int textViewResourceId,
-                List<ArrayList<String>> objects) {
-            super(context, android.R.id.text1, objects);
+        
+        
+        public MyArrayAdapter(Context context, int resource,
+                int textViewResourceId, List<ArrayList<String>> objects) {
+            super(context, resource, textViewResourceId, objects);
             this.context = context;
             this.objects = objects;
         }
+/*
+        public MyArrayAdapter(Context context, int textViewResourceId,
+                List<ArrayList<String>> objects) {
+            super(context, textViewResourceId, objects);
+            this.context = context;
+            this.objects = objects;
+        }
+*/
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -414,9 +427,9 @@ public class ChooseStudySet extends FragmentActivity
             
             View v = super.getView(position, convertView, parent);
 
-            TextView tv1 = (TextView)v.findViewById(android.R.id.text1);
+            TextView tv1 = (TextView)v.findViewById(R.id.study_set_title);
             tv1.setText(objects.get(position).get(0));
-            TextView tv2 = (TextView)v.findViewById(android.R.id.text2);
+            TextView tv2 = (TextView)v.findViewById(R.id.study_set_new);
             tv2.setText(objects.get(position).get(1));
             
             
@@ -454,6 +467,7 @@ public class ChooseStudySet extends FragmentActivity
         
         @Override
         protected void onProgressUpdate(ArrayList<String>... item) {
+//            adapter.add(item);
             adapter.add(item[0]);
         }
         
