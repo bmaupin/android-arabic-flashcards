@@ -126,18 +126,12 @@ public class ChooseStudySet extends FragmentActivity
                 android.R.layout.simple_list_item_2,
                 new ArrayList<ArrayList<String>>());
 */        
-     // TODO
-     // TODO
-        
+// TODO
+// TODO
         adapter = new StudySetAdapter(this,
-                R.layout.choose_study_set_row,
-                new ArrayList<ArrayList<String>>());
-/*        
-        adapter = new MyArrayAdapter(this,
                 R.layout.choose_study_set_row,
                 R.id.study_set_title,
                 new ArrayList<ArrayList<String>>());
-*/
         
         lv.setAdapter(adapter);
         
@@ -150,6 +144,14 @@ public class ChooseStudySet extends FragmentActivity
             public void onItemClick(AdapterView<?> parent, View view, 
                     int position, long id) {
                 
+                String studySetId = adapter.getItem(position).get(0);
+                
+                Intent intent = new Intent(ChooseStudySet.this, ShowStudySet.class);
+                // id is the study set id
+// TODO: ShowStudySet activity is expecting an int for studySetId...
+                intent.putExtra(Cards.EXTRA_STUDY_SET_ID, studySetId);
+                startActivity(intent);
+/*                
                 Intent intent = new Intent(ChooseStudySet.this, ShowStudySet.class);
                 // id is the study set id
                 intent.putExtra(Cards.EXTRA_STUDY_SET_ID, id);
@@ -157,6 +159,7 @@ public class ChooseStudySet extends FragmentActivity
                 intent.putExtra(Cards.EXTRA_CARD_SUBGROUP, cursor.getString(3));
                 intent.putExtra(Cards.EXTRA_STUDY_SET_LANGUAGE, cursor.getString(4));
                 startActivity(intent);
+*/
             }
         });
     }
@@ -283,6 +286,11 @@ public class ChooseStudySet extends FragmentActivity
         switch (item.getItemId()) {
         case R.id.choose_study_set_delete_study_set:
             studySetToDelete = info.id;
+// TODO: remove debugging
+            Toast.makeText(getApplicationContext(), 
+                    "" + studySetToDelete, 
+                    Toast.LENGTH_SHORT).show();
+            
             showDialog(DIALOG_CONFIRM_DELETE_STUDY_SET);
             return true;
         default:
@@ -406,63 +414,48 @@ public class ChooseStudySet extends FragmentActivity
     
 // TODO
 // TODO
-    private class MyArrayAdapter extends ArrayAdapter<ArrayList<String>> {
-        private final Context context;
-        private final List<ArrayList<String>> objects;
+    private class StudySetAdapter extends ArrayAdapter<ArrayList<String>> {
+        private LayoutInflater mInflater;
+        private int resource;
+        private final List<ArrayList<String>> studySets;
 
-        public MyArrayAdapter(Context context, int resource,
-                int textViewResourceId, List<ArrayList<String>> objects) {
-            super(context, resource, textViewResourceId, objects);
-            this.context = context;
-            this.objects = objects;
+        public StudySetAdapter(Context context, int resource,
+                int textViewResourceId, List<ArrayList<String>> studySets) {
+            // textViewResourceId won't really be used since we override getView
+            super(context, resource, textViewResourceId, studySets);
+            
+            // Cache the LayoutInflate to avoid asking for a new one each time.
+            mInflater = LayoutInflater.from(context);
+
+            this.resource = resource;
+            this.studySets = studySets;
         }
-
-/*
-        public MyArrayAdapter(Context context, int textViewResourceId,
-                List<ArrayList<String>> objects) {
-            super(context, textViewResourceId, objects);
-            this.context = context;
-            this.objects = objects;
-        }
-*/
-
+        
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-//                convertView = LayoutInflater.from(context).inflate(R.layout.shelfrow, parent, false);
-
+                convertView = mInflater.inflate(resource, null);
             }
             
-            
-            // TODO Auto-generated method stub
-//            return super.getView(position, convertView, parent);
-            
-            View v = super.getView(position, convertView, parent);
-
-            TextView tv1 = (TextView)v.findViewById(R.id.study_set_title);
-            tv1.setText(objects.get(position).get(1));
-            TextView tv2 = (TextView)v.findViewById(R.id.study_set_due);
+            ((TextView) convertView.findViewById(R.id.study_set_title)).setText(
+                    studySets.get(position).get(1));
+            ((TextView) convertView.findViewById(R.id.study_set_due)).setText(
 // TODO: put this into a string resource
-            tv2.setText(objects.get(position).get(2) + " due");
-            TextView tv3 = (TextView)v.findViewById(R.id.study_set_new);
-         // TODO: put this into a string resource
-            tv3.setText("XX new today");
+                    studySets.get(position).get(2) + " due");
+            ((TextView) convertView.findViewById(R.id.study_set_new)).setText(
+// TODO: put this into a string resource
+                    "XX new today");
             
-            
-            
-//            TextView tv = (TextView)v.findViewById(android.R.id.text2);
-//            Cards.setArabicTypeface(context, tv);
-            
-            return v;
+            return convertView;
         }
     }
     
-    private class StudySetAdapter extends BaseAdapter {
+    private class StudySetAdapter2 extends BaseAdapter {
         private LayoutInflater mInflater;
         private List<ArrayList<String>> studySets;
         private int resource;
 
-        public StudySetAdapter(Context context, int resource,
+        public StudySetAdapter2(Context context, int resource,
                 List<ArrayList<String>> studySets) {
             // Cache the LayoutInflate to avoid asking for a new one each time.
             mInflater = LayoutInflater.from(context);
