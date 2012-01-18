@@ -33,6 +33,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -61,7 +62,7 @@ public class ChooseStudySet extends FragmentActivity
     
 // TODO
 //    SimpleCursorAdapter adapter;
-    private ArrayAdapter<ArrayList<String>> adapter;
+    private StudySetAdapter adapter;
     private Cursor cursor;
     // the card set of a new study set
     private String newStudySetCardSet = "";
@@ -127,10 +128,16 @@ public class ChooseStudySet extends FragmentActivity
 */        
      // TODO
      // TODO
+        
+        adapter = new StudySetAdapter(this,
+                R.layout.choose_study_set_row,
+                new ArrayList<ArrayList<String>>());
+/*        
         adapter = new MyArrayAdapter(this,
                 R.layout.choose_study_set_row,
                 R.id.study_set_title,
                 new ArrayList<ArrayList<String>>());
+*/
         
         lv.setAdapter(adapter);
         
@@ -403,14 +410,13 @@ public class ChooseStudySet extends FragmentActivity
         private final Context context;
         private final List<ArrayList<String>> objects;
 
-        
-        
         public MyArrayAdapter(Context context, int resource,
                 int textViewResourceId, List<ArrayList<String>> objects) {
             super(context, resource, textViewResourceId, objects);
             this.context = context;
             this.objects = objects;
         }
+
 /*
         public MyArrayAdapter(Context context, int textViewResourceId,
                 List<ArrayList<String>> objects) {
@@ -422,6 +428,12 @@ public class ChooseStudySet extends FragmentActivity
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+//                convertView = LayoutInflater.from(context).inflate(R.layout.shelfrow, parent, false);
+
+            }
+            
+            
             // TODO Auto-generated method stub
 //            return super.getView(position, convertView, parent);
             
@@ -443,6 +455,55 @@ public class ChooseStudySet extends FragmentActivity
             
             return v;
         }
+    }
+    
+    private class StudySetAdapter extends BaseAdapter {
+        private LayoutInflater mInflater;
+        private List<ArrayList<String>> studySets;
+        private int resource;
+
+        public StudySetAdapter(Context context, int resource,
+                List<ArrayList<String>> studySets) {
+            // Cache the LayoutInflate to avoid asking for a new one each time.
+            mInflater = LayoutInflater.from(context);
+            this.studySets = studySets;
+            this.resource = resource;
+        }
+        
+        @Override
+        public int getCount() {
+            return studySets.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            // return the first item (the study set ID)
+            return studySets.get(position).get(0);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = mInflater.inflate(resource, null);
+            }
+            
+            ((TextView) convertView.findViewById(R.id.study_set_title)).setText(
+                    studySets.get(position).get(1));
+            ((TextView) convertView.findViewById(R.id.study_set_due)).setText(
+// TODO: put this into a string resource
+                    studySets.get(position).get(2) + " due");
+            ((TextView) convertView.findViewById(R.id.study_set_new)).setText(
+// TODO: put this into a string resource
+                    "XX new today");
+            
+            return convertView;
+        }
+        
     }
     
     private class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {

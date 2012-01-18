@@ -42,6 +42,5 @@
 	            android:text="@string/study_set_no_results_details"
 	            />
         </RelativeLayout>
-
     </TwoLineListItem>
 </LinearLayout>
