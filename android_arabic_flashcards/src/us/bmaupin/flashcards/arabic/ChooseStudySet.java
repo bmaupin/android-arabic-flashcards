@@ -269,22 +269,6 @@ public class ChooseStudySet extends FragmentActivity
         }
     }
 
-// TODO
-// TODO
-    /*
-     * we're overriding this solely to set the view to be shown when the list is
-     * empty
-     */
-/*
-    @Override
-    public void onContentChanged() {
-        super.onContentChanged();
-        View ev = findViewById(R.id.study_set_empty);
-        ListView lv = (ListView) findViewById(android.R.id.list);
-        lv.setEmptyView(ev);
-    }
-*/
-
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
