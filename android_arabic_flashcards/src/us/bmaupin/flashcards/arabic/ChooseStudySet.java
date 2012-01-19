@@ -143,24 +143,14 @@ public class ChooseStudySet extends FragmentActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, 
                     int position, long id) {
-                
-                String studySetId = adapter.getItem(position).get(0);
-                
-                Intent intent = new Intent(ChooseStudySet.this, ShowStudySet.class);
+                                
+                Intent intent = new Intent(ChooseStudySet.this, 
+                        ShowStudySet.class);
                 // id is the study set id
-// TODO: ShowStudySet activity is expecting an int for studySetId...
                 intent.putExtra(Cards.EXTRA_STUDY_SET_ID, 
-                        Cards.stringToInteger(studySetId));
+                        Cards.stringToInteger(adapter.getItem(position)
+                                .get(0)));
                 startActivity(intent);
-/*                
-                Intent intent = new Intent(ChooseStudySet.this, ShowStudySet.class);
-                // id is the study set id
-                intent.putExtra(Cards.EXTRA_STUDY_SET_ID, id);
-                intent.putExtra(Cards.EXTRA_CARD_GROUP, cursor.getString(2));
-                intent.putExtra(Cards.EXTRA_CARD_SUBGROUP, cursor.getString(3));
-                intent.putExtra(Cards.EXTRA_STUDY_SET_LANGUAGE, cursor.getString(4));
-                startActivity(intent);
-*/
             }
         });
     }
@@ -228,6 +218,7 @@ public class ChooseStudySet extends FragmentActivity
         // make the cursor available to the rest of the class
         cursor = data;
         
+        adapter.clear();
         new LoadListDataTask().execute(data);
     }
     
@@ -307,6 +298,9 @@ public class ChooseStudySet extends FragmentActivity
         getContentResolver().insert(
                 StudySetProvider.CONTENT_URI_META,
                 cv);
+        // let our adapter know we added a study set
+//        adapter.notifyDataSetChanged();
+// TODO
     }
     
     private void deleteStudySet(String id) {
@@ -315,6 +309,9 @@ public class ChooseStudySet extends FragmentActivity
                         StudySetProvider.CONTENT_URI_META,
                         Cards.stringToInteger(id)),
                 null, null);
+        // let our adapter know we deleted a study set
+//        adapter.notifyDataSetChanged();
+// TODO
         Toast.makeText(getApplicationContext(), 
                 R.string.choose_study_set_study_set_deleted, 
                 Toast.LENGTH_SHORT).show();
