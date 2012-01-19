@@ -62,6 +62,7 @@ public class ChooseStudySet extends FragmentActivity
     
     private StudySetAdapter adapter;
     private Cursor cursor;
+    private ListView lv;
     // the card set of a new study set
     private String newStudySetCardSet = "";
     // the card subset of a new study set
@@ -100,7 +101,7 @@ public class ChooseStudySet extends FragmentActivity
             }
         });
         
-        ListView lv = (ListView) findViewById(android.R.id.list);
+        lv = (ListView) findViewById(android.R.id.list);
         
         adapter = new StudySetAdapter(this,
                 R.layout.choose_study_set_row,
@@ -198,6 +199,8 @@ public class ChooseStudySet extends FragmentActivity
         // make the cursor available to the rest of the class
         cursor = data;
         
+        // clear out the empty view for now, so it doesn't pop up
+        lv.setEmptyView(null);
         adapter.clear();
         new LoadListDataTask().execute(data);
     }
@@ -265,6 +268,22 @@ public class ChooseStudySet extends FragmentActivity
             return super.onContextItemSelected(item);
         }
     }
+
+// TODO
+// TODO
+    /*
+     * we're overriding this solely to set the view to be shown when the list is
+     * empty
+     */
+/*
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+        View ev = findViewById(R.id.study_set_empty);
+        ListView lv = (ListView) findViewById(android.R.id.list);
+        lv.setEmptyView(ev);
+    }
+*/
 
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
@@ -528,6 +547,13 @@ public class ChooseStudySet extends FragmentActivity
         @Override
         protected void onProgressUpdate(ArrayList<String>... item) {
             adapter.add(item[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // set the empty view after the asynctask is done
+            View ev = findViewById(R.id.study_set_empty);
+            lv.setEmptyView(ev);
         }
     }
 }
