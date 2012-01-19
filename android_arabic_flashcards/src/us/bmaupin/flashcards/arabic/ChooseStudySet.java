@@ -71,7 +71,7 @@ public class ChooseStudySet extends FragmentActivity
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
     // ID of study set to delete
-    private long studySetToDelete;
+    private String studySetToDelete;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +149,8 @@ public class ChooseStudySet extends FragmentActivity
                 Intent intent = new Intent(ChooseStudySet.this, ShowStudySet.class);
                 // id is the study set id
 // TODO: ShowStudySet activity is expecting an int for studySetId...
-                intent.putExtra(Cards.EXTRA_STUDY_SET_ID, studySetId);
+                intent.putExtra(Cards.EXTRA_STUDY_SET_ID, 
+                        Cards.stringToInteger(studySetId));
                 startActivity(intent);
 /*                
                 Intent intent = new Intent(ChooseStudySet.this, ShowStudySet.class);
@@ -282,15 +283,11 @@ public class ChooseStudySet extends FragmentActivity
     
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) 
+                item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.choose_study_set_delete_study_set:
-            studySetToDelete = info.id;
-// TODO: remove debugging
-            Toast.makeText(getApplicationContext(), 
-                    "" + studySetToDelete, 
-                    Toast.LENGTH_SHORT).show();
-            
+            studySetToDelete = adapter.getItem(info.position).get(0);
             showDialog(DIALOG_CONFIRM_DELETE_STUDY_SET);
             return true;
         default:
@@ -312,11 +309,11 @@ public class ChooseStudySet extends FragmentActivity
                 cv);
     }
     
-    private void deleteStudySet(long id) {
+    private void deleteStudySet(String id) {
         getContentResolver().delete(
                 ContentUris.withAppendedId(
                         StudySetProvider.CONTENT_URI_META,
-                        id),
+                        Cards.stringToInteger(id)),
                 null, null);
         Toast.makeText(getApplicationContext(), 
                 R.string.choose_study_set_study_set_deleted, 
@@ -424,7 +421,7 @@ public class ChooseStudySet extends FragmentActivity
             // textViewResourceId won't really be used since we override getView
             super(context, resource, textViewResourceId, studySets);
             
-            // Cache the LayoutInflate to avoid asking for a new one each time.
+            // Cache the LayoutInflater to avoid asking for a new one each time.
             mInflater = LayoutInflater.from(context);
 
             this.resource = resource;
@@ -444,7 +441,7 @@ public class ChooseStudySet extends FragmentActivity
                     studySets.get(position).get(2) + " due");
             ((TextView) convertView.findViewById(R.id.study_set_new)).setText(
 // TODO: put this into a string resource
-                    "XX new today");
+                    "XX new today");                    
             
             return convertView;
         }
@@ -457,7 +454,7 @@ public class ChooseStudySet extends FragmentActivity
 
         public StudySetAdapter2(Context context, int resource,
                 List<ArrayList<String>> studySets) {
-            // Cache the LayoutInflate to avoid asking for a new one each time.
+            // Cache the LayoutInflater to avoid asking for a new one each time.
             mInflater = LayoutInflater.from(context);
             this.studySets = studySets;
             this.resource = resource;
