@@ -542,28 +542,12 @@ public class ChooseStudySet extends FragmentActivity
                     cursor.moveToNext();
                 }
             }
-            
-            //List<String> myList = new ArrayList<String>();
-/*            
-            for (String item : items) {
-                publishProgress(item);
-//                SystemClock.sleep(200);
-            }
-*/
             return(null);
         }
         
         @Override
         protected void onProgressUpdate(ArrayList<String>... item) {
-//            adapter.add(item);
             adapter.add(item[0]);
-        }
-        
-        @Override
-        protected void onPostExecute(Void unused) {
-            Toast
-            .makeText(ChooseStudySet.this, "DEBUG: Async task done", Toast.LENGTH_SHORT)
-            .show();
         }
     }
 }
