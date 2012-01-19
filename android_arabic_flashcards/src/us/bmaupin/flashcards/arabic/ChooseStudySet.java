@@ -60,8 +60,6 @@ public class ChooseStudySet extends FragmentActivity
         StudySetDatabaseHelper.META_SET_LANGUAGE
 	};
     
-// TODO
-//    SimpleCursorAdapter adapter;
     private StudySetAdapter adapter;
     private Cursor cursor;
     // the card set of a new study set
@@ -107,27 +105,9 @@ public class ChooseStudySet extends FragmentActivity
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-/*        
-        adapter = new SimpleCursorAdapter(
-                this,
-                android.R.layout.simple_list_item_1,
-                null,
-                new String[] {StudySetDatabaseHelper.META_SET_NAME},
-                new int[] {android.R.id.text1},
-                0);
-*/        
+  
         ListView lv = (ListView) findViewById(android.R.id.list);
-/*        
-        // Bind to our new adapter.
-        lv.setAdapter(adapter);
-*/
-/*        
-        adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_2,
-                new ArrayList<ArrayList<String>>());
-*/        
-// TODO
-// TODO
+        
         adapter = new StudySetAdapter(this,
                 R.layout.choose_study_set_row,
                 R.id.study_set_title,
