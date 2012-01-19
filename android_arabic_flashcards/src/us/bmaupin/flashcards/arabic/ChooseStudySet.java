@@ -281,9 +281,6 @@ public class ChooseStudySet extends FragmentActivity
         getContentResolver().insert(
                 StudySetProvider.CONTENT_URI_META,
                 cv);
-        // let our adapter know we added a study set
-//        adapter.notifyDataSetChanged();
-// TODO
     }
     
     private void deleteStudySet(String id) {
@@ -292,9 +289,6 @@ public class ChooseStudySet extends FragmentActivity
                         StudySetProvider.CONTENT_URI_META,
                         Cards.stringToInteger(id)),
                 null, null);
-        // let our adapter know we deleted a study set
-//        adapter.notifyDataSetChanged();
-// TODO
         Toast.makeText(getApplicationContext(), 
                 R.string.choose_study_set_study_set_deleted, 
                 Toast.LENGTH_SHORT).show();
@@ -389,8 +383,6 @@ public class ChooseStudySet extends FragmentActivity
         Log.d(TAG, "onDestroy()");
     }
     
-// TODO
-// TODO
     private class StudySetAdapter extends ArrayAdapter<ArrayList<String>> {
         private LayoutInflater mInflater;
         private int resource;
@@ -443,55 +435,7 @@ public class ChooseStudySet extends FragmentActivity
         TextView tv2;
         TextView tv3;
     }
-    
-    private class StudySetAdapter2 extends BaseAdapter {
-        private LayoutInflater mInflater;
-        private List<ArrayList<String>> studySets;
-        private int resource;
 
-        public StudySetAdapter2(Context context, int resource,
-                List<ArrayList<String>> studySets) {
-            // Cache the LayoutInflater to avoid asking for a new one each time.
-            mInflater = LayoutInflater.from(context);
-            this.studySets = studySets;
-            this.resource = resource;
-        }
-        
-        @Override
-        public int getCount() {
-            return studySets.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            // return the first item (the study set ID)
-            return studySets.get(position).get(0);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = mInflater.inflate(resource, null);
-            }
-            
-            ((TextView) convertView.findViewById(R.id.study_set_title)).setText(
-                    studySets.get(position).get(1));
-            ((TextView) convertView.findViewById(R.id.study_set_due)).setText(
-// TODO: put this into a string resource
-                    studySets.get(position).get(2) + " due");
-            ((TextView) convertView.findViewById(R.id.study_set_new)).setText(
-// TODO: put this into a string resource
-                    "XX new today");
-            
-            return convertView;
-        }
-        
-    }
     
     private class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
         @Override
