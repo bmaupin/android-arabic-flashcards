@@ -427,21 +427,38 @@ public class ChooseStudySet extends FragmentActivity
         
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            // implement google's holder technique for faster adapters
+            ViewHolder holder;
+            
             if (convertView == null) {
                 convertView = mInflater.inflate(resource, null);
+                holder = new ViewHolder();
+                holder.tv1 = (TextView) convertView.findViewById(
+                        R.id.study_set_title);
+                holder.tv2 = (TextView) convertView.findViewById(
+                        R.id.study_set_due);
+                holder.tv3 = (TextView) convertView.findViewById(
+                        R.id.study_set_new);
+                
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
             }
             
-            ((TextView) convertView.findViewById(R.id.study_set_title)).setText(
-                    studySets.get(position).get(1));
-            ((TextView) convertView.findViewById(R.id.study_set_due)).setText(
+            holder.tv1.setText(studySets.get(position).get(1));
 // TODO: put this into a string resource
-                    studySets.get(position).get(2) + " due");
-            ((TextView) convertView.findViewById(R.id.study_set_new)).setText(
+            holder.tv2.setText(studySets.get(position).get(2) + " due");
 // TODO: put this into a string resource
-                    "XX new today");                    
+            holder.tv3.setText("XX new today");
             
             return convertView;
         }
+    }
+    
+    private static class ViewHolder {
+        TextView tv1;
+        TextView tv2;
+        TextView tv3;
     }
     
     private class StudySetAdapter2 extends BaseAdapter {
