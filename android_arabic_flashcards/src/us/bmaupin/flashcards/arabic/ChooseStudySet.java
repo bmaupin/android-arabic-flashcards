@@ -99,13 +99,7 @@ public class ChooseStudySet extends FragmentActivity
                 startActivityForResult(intent, REQUEST_CARD_SET_CREATE);
             }
         });
-    }
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-  
+        
         ListView lv = (ListView) findViewById(android.R.id.list);
         
         adapter = new StudySetAdapter(this,
@@ -133,6 +127,12 @@ public class ChooseStudySet extends FragmentActivity
                 startActivity(intent);
             }
         });
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume()");
     }
 
     @Override
