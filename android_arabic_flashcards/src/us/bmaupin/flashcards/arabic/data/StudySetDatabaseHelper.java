@@ -21,8 +21,8 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     // The name of each column in the database
     public static final String _ID = BaseColumns._ID;
     public static final String META_SET_NAME = "set_name";
-    public static final String META_SET_CARD_GROUP = "card_group";
-    public static final String META_SET_CARD_SUBGROUP = "card_subgroup";
+    public static final String META_CARD_GROUP = "card_group";
+    public static final String META_CARD_SUBGROUP = "card_subgroup";
     public static final String META_SET_LANGUAGE = "set_language";
     // last date new cards were shown
     public static final String META_NEW_CARDS_DATE = "new_cards_date";
@@ -44,8 +44,8 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
         "CREATE TABLE " + META_TABLE_NAME + " (" +
         _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
         META_SET_NAME + " TEXT, " +
-        META_SET_CARD_GROUP + " TEXT, " +
-        META_SET_CARD_SUBGROUP + " TEXT, " +
+        META_CARD_GROUP + " TEXT, " +
+        META_CARD_SUBGROUP + " TEXT, " +
         META_SET_LANGUAGE + " TEXT, " +
         META_NEW_CARDS_DATE + " TEXT NOT NULL, " +
         META_NEW_CARDS_SHOWN + " INTEGER);";

@@ -55,8 +55,8 @@ public class ChooseStudySet extends FragmentActivity
     private static final String[] PROJECTION = new String[] {
         StudySetDatabaseHelper._ID, 
         StudySetDatabaseHelper.META_SET_NAME,
-        StudySetDatabaseHelper.META_SET_CARD_GROUP,
-        StudySetDatabaseHelper.META_SET_CARD_SUBGROUP,
+        StudySetDatabaseHelper.META_CARD_GROUP,
+        StudySetDatabaseHelper.META_CARD_SUBGROUP,
         StudySetDatabaseHelper.META_SET_LANGUAGE
 	};
     
@@ -298,8 +298,8 @@ public class ChooseStudySet extends FragmentActivity
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
-        cv.put(StudySetDatabaseHelper.META_SET_CARD_GROUP, newStudySetCardSet);
-        cv.put(StudySetDatabaseHelper.META_SET_CARD_SUBGROUP, newStudySetCardSubset);
+        cv.put(StudySetDatabaseHelper.META_CARD_GROUP, newStudySetCardSet);
+        cv.put(StudySetDatabaseHelper.META_CARD_SUBGROUP, newStudySetCardSubset);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         // this needs a default non-null value
         cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, "0");
