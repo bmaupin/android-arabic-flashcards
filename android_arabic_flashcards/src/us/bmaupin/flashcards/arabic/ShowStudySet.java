@@ -58,8 +58,8 @@ public class ShowStudySet extends FragmentActivity
     };
     
     private int cardMode = CARD_MODE_DUE;
-    private String cardSet;
-    private String cardSubSet;
+    private String cardGroup;
+    private String cardSubgroup;
     private Cursor cardsCursor;
     private int cardsCursorPosition;
     // current card language
@@ -80,7 +80,7 @@ public class ShowStudySet extends FragmentActivity
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
             StudySetDatabaseHelper.META_NEW_CARDS_DATE_FORMAT);
     // the ID of the current study set
-    private long studySetId;
+    private int studySetId;
     private String studySetIds = "";
     private Animation slideLeftIn;
     private Animation slideLeftOut;
@@ -98,10 +98,23 @@ public class ShowStudySet extends FragmentActivity
         resources = getResources();
         
         Bundle bundle = this.getIntent().getExtras();
-        studySetId = bundle.getLong(Cards.EXTRA_STUDY_SET_ID);
-        cardSet = bundle.getString(Cards.EXTRA_CARD_GROUP);
-        cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
-        defaultLang = bundle.getString(Cards.EXTRA_STUDY_SET_LANGUAGE);
+        studySetId = bundle.getInt(Cards.EXTRA_STUDY_SET_ID);
+        
+        Cursor cursor = getContentResolver().query(
+                StudySetProvider.CONTENT_URI_META,
+                new String[] {StudySetDatabaseHelper.META_CARD_GROUP,
+                        StudySetDatabaseHelper.META_CARD_SUBGROUP,
+                        StudySetDatabaseHelper.META_SET_LANGUAGE},
+                StudySetDatabaseHelper._ID + " = ? ",
+                new String[] {"" + studySetId},
+                null
+        );
+        if (cursor.moveToFirst()) { 
+            cardGroup = cursor.getString(0);
+            cardSubgroup = cursor.getString(1);
+            defaultLang = cursor.getString(2);
+        }
+        cursor.close();
         
         String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
                 System.currentTimeMillis();
@@ -109,7 +122,7 @@ public class ShowStudySet extends FragmentActivity
         Log.d(TAG, "getStudySetCount(): " + getStudySetCount());
         Log.d(TAG, "System.currentTimeMillis(): " + System.currentTimeMillis());
         
-        Cursor cursor = getContentResolver().query(
+        cursor = getContentResolver().query(
                 // specify the study set ID and a limit
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId).buildUpon().appendQueryParameter(
@@ -232,7 +245,7 @@ public class ShowStudySet extends FragmentActivity
             
             String limitString = getStudySetCount() + "," + limit;
             
-            if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
+            if (cardGroup.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
                 /*
                  * this looks like:
                  * where cards._id in (select card_ID from aws_chapters where chapter = ?) and chapter = ?
@@ -255,18 +268,18 @@ public class ShowStudySet extends FragmentActivity
                         CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
                         CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ?) AND " + 
                         CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ? ";
-                selectionArgs = new String[] {cardSubSet, cardSubSet};
+                selectionArgs = new String[] {cardSubgroup, cardSubgroup};
                 sortOrder = CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
                         CardDatabaseHelper._ID;
                 
-            } else if (cardSet.equals(getString(R.string.card_group_categories))) {
+            } else if (cardGroup.equals(getString(R.string.card_group_categories))) {
                 selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
-                selectionArgs = new String[] {cardSubSet};
+                selectionArgs = new String[] {cardSubgroup};
                 
-            } else if (cardSet.equals(getString(
+            } else if (cardGroup.equals(getString(
                     R.string.card_group_parts_of_speech))) {
                 selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
-                selectionArgs = new String[] {cardSubSet};
+                selectionArgs = new String[] {cardSubgroup};
             }
             
             return new CursorLoader(this,
