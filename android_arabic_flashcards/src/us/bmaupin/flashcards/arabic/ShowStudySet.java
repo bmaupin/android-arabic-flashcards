@@ -627,7 +627,6 @@ public class ShowStudySet extends FragmentActivity
                 newInterval = Cards.FIRST_INTERVAL_IFFY;
                 break;
             case RESPONSE_UNKNOWN:
-// TODO: implement logic for dealing with unknown cards
                 newInterval = Cards.MIN_INTERVAL;
                 break;
             default:
