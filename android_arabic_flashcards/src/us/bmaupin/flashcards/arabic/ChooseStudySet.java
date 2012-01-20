@@ -20,7 +20,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -33,7 +32,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -421,10 +419,10 @@ public class ChooseStudySet extends FragmentActivity
             }
             
             holder.tv1.setText(studySets.get(position).get(1));
-// TODO: put this into a string resource
-            holder.tv2.setText(studySets.get(position).get(2) + " due");
-// TODO: put this into a string resource
-            holder.tv3.setText("XX new today");
+            holder.tv2.setText(studySets.get(position).get(2) + 
+                    getString(R.string.choose_study_set_cards_due));
+            holder.tv3.setText("XX" +  getString(
+                    R.string.choose_study_set_cards_new));
             
             return convertView;
         }
