@@ -667,6 +667,7 @@ public class ShowStudySet extends FragmentActivity
                 null);
         if (cursor.moveToFirst()) {
             int studySetCount = cursor.getInt(0);
+            cursor.close();
             return studySetCount;
         }
         cursor.close();
