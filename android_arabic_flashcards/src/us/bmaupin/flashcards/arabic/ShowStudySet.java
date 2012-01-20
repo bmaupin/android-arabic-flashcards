@@ -702,6 +702,23 @@ public class ShowStudySet extends FragmentActivity
          * 1. we'd need to use cardsCursor.getPosition() + 1
          * 2. we'd need to make sure it was the new cards cursor
          */
+/*
+ * TODO: this isn't going to work, because just because a cursor is on a card,
+ * doesn't mean we've seen that card.  and this can't account for the final card,
+ * because the cursor can't go past it.  maybe some kind of hybrid where we
+ * keep track of the highest cursor position...
+ * 
+ * if cursorposition + 1 > newCardCount:
+ *      newCardCount = cursorposition + 1
+ *      
+ * we'd have to do it like that because setting it at the current cursor position
+ * will make it lower than it should be if we've gone to a previous card
+ * 
+ * alternative: simply get the count of cards due in the db every time.  new cards
+ * count would be whatever it was at the beginning of the day, + 10 (or whatever)
+ * 
+ * but there are problems with that method too...
+ */
                 cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, 
                         cardsCursor.getPosition() + 1);
                 
