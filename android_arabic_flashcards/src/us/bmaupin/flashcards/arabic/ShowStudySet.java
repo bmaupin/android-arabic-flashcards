@@ -1,6 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -589,10 +588,8 @@ public class ShowStudySet extends FragmentActivity
                 SELECTIONARGS,
                 null);
 
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
+        if (cursor.moveToFirst()) {
             oldInterval = cursor.getInt(0);
-            cursor.close();
             
         	switch(response) {
         	case RESPONSE_KNOWN:
@@ -634,6 +631,7 @@ public class ShowStudySet extends FragmentActivity
                 newInterval = Cards.MIN_INTERVAL;
             }
         }
+        cursor.close();
         
         newDueTime = System.currentTimeMillis() + (newInterval * 
                 ONE_HOUR_IN_MS);
@@ -669,9 +667,9 @@ public class ShowStudySet extends FragmentActivity
                 null);
         if (cursor.moveToFirst()) {
             int studySetCount = cursor.getInt(0);
-            cursor.close();
             return studySetCount;
         }
+        cursor.close();
         
         return 0;
     }
