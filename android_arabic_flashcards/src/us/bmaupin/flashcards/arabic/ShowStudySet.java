@@ -71,6 +71,8 @@ public class ShowStudySet extends FragmentActivity
     private boolean fixArabic;
     private GestureDetector gestureDetector;
     // the number of new cards shown
+    // TODO we might be able to get rid of this as a global variable
+    // TODO
     private int newCardsShown = 0;
     private SharedPreferences preferences;
     private Resources resources;
@@ -320,7 +322,6 @@ public class ShowStudySet extends FragmentActivity
                 Toast.makeText(getApplicationContext(), "DEBUG: No new cards", Toast.LENGTH_SHORT).show();
                 break;
             }
-            
         }
     }
     
@@ -647,6 +648,8 @@ public class ShowStudySet extends FragmentActivity
                         studySetId),
                 cv);
         
+// TODO: we might be able to get rid of this
+// TODO
         // increment the counter of new cards shown
         if (cardMode == CARD_MODE_NEW) {
             newCardsShown ++;
@@ -680,21 +683,35 @@ public class ShowStudySet extends FragmentActivity
         super.onPause();
         Log.d(TAG, "onPause()");
         
-        Date now = new Date();
+        Log.d(TAG, "cardMode=" + cardMode);
+        Log.d(TAG, "cardsCursor.getPosition()=" + cardsCursor.getPosition());
         
-        String selection = StudySetDatabaseHelper._ID + " = ? ";
-        String[] selectionArgs = {"" + studySetId};
-        
-        ContentValues cv = new ContentValues();
-        cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, 
-                simpleDateFormat.format(now).toString());
-        cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, newCardsShown);
-        
-        getContentResolver().update(
-                StudySetProvider.CONTENT_URI_META,
-                cv,
-                selection,
-                selectionArgs);
+        // only update new cards shown if we've seen any new cards
+        if (cardMode == CARD_MODE_NEW) {
+            if (cardsCursor.getPosition() > -1) {
+                Date now = new Date();
+                
+                String selection = StudySetDatabaseHelper._ID + " = ? ";
+                String[] selectionArgs = {"" + studySetId};
+                
+                ContentValues cv = new ContentValues();
+                cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, 
+                        simpleDateFormat.format(now).toString());
+        /*
+         * TODO: can we use cardsCursor.getPosition() here instead of newCardsShown?
+         * 1. we'd need to use cardsCursor.getPosition() + 1
+         * 2. we'd need to make sure it was the new cards cursor
+         */
+                cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, 
+                        cardsCursor.getPosition());
+                
+                getContentResolver().update(
+                        StudySetProvider.CONTENT_URI_META,
+                        cv,
+                        selection,
+                        selectionArgs);
+            }
+        }
         
 /*        
         // store the cursor position in case we come back
