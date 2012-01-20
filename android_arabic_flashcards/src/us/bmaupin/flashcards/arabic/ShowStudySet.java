@@ -703,7 +703,7 @@ public class ShowStudySet extends FragmentActivity
          * 2. we'd need to make sure it was the new cards cursor
          */
                 cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, 
-                        cardsCursor.getPosition());
+                        cardsCursor.getPosition() + 1);
                 
                 getContentResolver().update(
                         StudySetProvider.CONTENT_URI_META,
