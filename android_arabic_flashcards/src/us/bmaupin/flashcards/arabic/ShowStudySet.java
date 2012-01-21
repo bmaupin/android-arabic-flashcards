@@ -73,7 +73,7 @@ public class ShowStudySet extends FragmentActivity
     // the number of new cards shown
     // TODO we might be able to get rid of this as a global variable
     // TODO
-    private int newCardsShown = 0;
+//    private int newCardsShown = 0;
     private SharedPreferences preferences;
     private Resources resources;
     // whether or not to show arabic vowels
@@ -207,6 +207,8 @@ public class ShowStudySet extends FragmentActivity
             Log.d(TAG, "Now showing new cards...");
             String[] selectionArgs = new String[] {};
             String sortOrder = "";
+            int studySetCount = getStudySetCount();
+            int initialStudySetCount = 0;
             
             // get info on new cards shown
             Cursor cursor = getContentResolver().query(
@@ -218,12 +220,27 @@ public class ShowStudySet extends FragmentActivity
                     null);
             
             if (cursor.moveToFirst()) {
+                String today = simpleDateFormat.format(new Date()).toString();
+                
                 // if the date found in the database is today
-                if (cursor.getString(0).equals(
-                        simpleDateFormat.format(new Date()).toString())) {
+                if (cursor.getString(0).equals(today)) {
                     // set the count of new cards shown from the database
-                    newCardsShown = cursor.getInt(1);
-                    Log.d(TAG, "newCardsShown (from db)=" + newCardsShown);
+                    initialStudySetCount = cursor.getInt(1);
+                    Log.d(TAG, "initialStudySetCount (from db)=" + initialStudySetCount);
+                    
+                } else {
+                    ContentValues cv = new ContentValues();
+                    cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, today);
+                    cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, 
+                            studySetCount);
+                    
+                    getContentResolver().update(
+                            StudySetProvider.CONTENT_URI_META,
+                            cv,
+                            StudySetDatabaseHelper._ID + " = ? ",
+                            new String[] {"" + studySetId});
+                    initialStudySetCount = studySetCount;
+                    Log.d(TAG, "initialStudySetCount=studySetCount=" + initialStudySetCount);
                 }
             }
             cursor.close();
@@ -233,8 +250,10 @@ public class ShowStudySet extends FragmentActivity
              * (minus new cards already shown today)
              */
             int limit = Cards.MAX_CARDS_TO_SHOW - dueCardCount;
-            if (limit > Cards.MAX_NEW_CARDS_TO_SHOW - newCardsShown) {
-                limit = Cards.MAX_NEW_CARDS_TO_SHOW - newCardsShown;
+            if (limit > Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 
+                    initialStudySetCount)) {
+                limit = Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 
+                        initialStudySetCount);
             }
             
             Log.d(TAG, "new cards to show=" + limit);
@@ -244,7 +263,7 @@ public class ShowStudySet extends FragmentActivity
  * are no new cards to show
  */
             
-            String limitString = getStudySetCount() + "," + limit;
+            String limitString = studySetCount + "," + limit;
             
             if (cardGroup.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
                 /*
@@ -647,13 +666,14 @@ public class ShowStudySet extends FragmentActivity
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
                 cv);
-        
+/*
 // TODO: we might be able to get rid of this
 // TODO
         // increment the counter of new cards shown
         if (cardMode == CARD_MODE_NEW) {
             newCardsShown ++;
         }
+*/
     }
     
     /*
@@ -685,7 +705,8 @@ public class ShowStudySet extends FragmentActivity
         
         Log.d(TAG, "cardMode=" + cardMode);
         Log.d(TAG, "cardsCursor.getPosition()=" + cardsCursor.getPosition());
-        
+
+/*
         // only update new cards shown if we've seen any new cards
         if (cardMode == CARD_MODE_NEW) {
             if (cardsCursor.getPosition() > -1) {
@@ -719,6 +740,7 @@ public class ShowStudySet extends FragmentActivity
  * 
  * but there are problems with that method too...
  */
+        /*
                 cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, 
                         cardsCursor.getPosition() + 1);
                 
@@ -729,6 +751,7 @@ public class ShowStudySet extends FragmentActivity
                         selectionArgs);
             }
         }
+*/
         
 /*        
         // store the cursor position in case we come back
