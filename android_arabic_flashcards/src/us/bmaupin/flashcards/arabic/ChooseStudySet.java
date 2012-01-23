@@ -274,7 +274,7 @@ public class ChooseStudySet extends FragmentActivity
         cv.put(StudySetDatabaseHelper.META_CARD_SUBGROUP, newStudySetCardSubset);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         // this needs a default non-null value
-        cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, "0");
+        cv.put(StudySetDatabaseHelper.META_INITIAL_COUNT_DATE, "0");
         
         getContentResolver().insert(
                 StudySetProvider.CONTENT_URI_META,
