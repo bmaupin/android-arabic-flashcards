@@ -13,7 +13,7 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     // The name of your database
     public static final String DATABASE_NAME = "studysets.db";
     // The version of your database (increment this every time you change something)
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     // The name of the table in your database
     public static final String META_TABLE_NAME = "studysets_meta";
     public static final String SET_TABLE_PREFIX = "set_";
@@ -24,10 +24,10 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public static final String META_CARD_GROUP = "card_group";
     public static final String META_CARD_SUBGROUP = "card_subgroup";
     public static final String META_SET_LANGUAGE = "set_language";
-    // last date new cards were shown
-    public static final String META_NEW_CARDS_DATE = "new_cards_date";
-    // how many cards were shown on META_NEW_CARDS_DATE
-    public static final String META_NEW_CARDS_SHOWN = "new_cards_shown";
+    // what date the initial card count was made
+    public static final String META_INITIAL_COUNT_DATE = "initial_count_date";
+    // how many initial cards in study set
+    public static final String META_INITIAL_COUNT = "initial_count";
     
     public static final String SET_CARD_ID = "card_id";
     // card interval (in hours)
@@ -47,8 +47,8 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
         META_CARD_GROUP + " TEXT, " +
         META_CARD_SUBGROUP + " TEXT, " +
         META_SET_LANGUAGE + " TEXT, " +
-        META_NEW_CARDS_DATE + " TEXT NOT NULL, " +
-        META_NEW_CARDS_SHOWN + " INTEGER);";
+        META_INITIAL_COUNT_DATE + " TEXT NOT NULL, " +
+        META_INITIAL_COUNT + " INTEGER);";
     
     // The constructor method
     public StudySetDatabaseHelper(Context context) {
@@ -71,9 +71,24 @@ public class StudySetDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                 + newVersion);
+        if (oldVersion == 4 && newVersion == 5) {
+            db.beginTransaction();
+            try {
+                db.execSQL("ALTER TABLE " + META_TABLE_NAME + " RENAME TO " + 
+                        META_TABLE_NAME + "_TEMP;");
+                db.execSQL(META_TABLE_CREATE);
+                db.execSQL("INSERT INTO " + META_TABLE_NAME + " SELECT * FROM " + 
+                        META_TABLE_NAME + "_TEMP;");
+                db.execSQL("DROP TABLE " + META_TABLE_NAME + "_TEMP;");
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+        
         // this is probably not the best way to do it...
-        db.execSQL("DROP TABLE IF EXISTS " + META_TABLE_NAME);
-        onCreate(db);
+//        db.execSQL("DROP TABLE IF EXISTS " + META_TABLE_NAME);
+//        onCreate(db);
     }
     
     public void createNewStudySet(SQLiteDatabase db, long studySetId) {

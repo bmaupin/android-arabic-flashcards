@@ -213,8 +213,9 @@ public class ShowStudySet extends FragmentActivity
             // get info on new cards shown
             Cursor cursor = getContentResolver().query(
                     StudySetProvider.CONTENT_URI_META,
-                    new String[] {StudySetDatabaseHelper.META_NEW_CARDS_DATE,
-                            StudySetDatabaseHelper.META_NEW_CARDS_SHOWN},
+                    new String[] {
+                            StudySetDatabaseHelper.META_INITIAL_COUNT_DATE,
+                            StudySetDatabaseHelper.META_INITIAL_COUNT},
                     StudySetDatabaseHelper._ID + " = ? ",
                     new String[] {"" + studySetId},
                     null);
@@ -230,8 +231,9 @@ public class ShowStudySet extends FragmentActivity
                     
                 } else {
                     ContentValues cv = new ContentValues();
-                    cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, today);
-                    cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, 
+                    cv.put(StudySetDatabaseHelper.META_INITIAL_COUNT_DATE, 
+                            today);
+                    cv.put(StudySetDatabaseHelper.META_INITIAL_COUNT, 
                             studySetCount);
                     
                     getContentResolver().update(
