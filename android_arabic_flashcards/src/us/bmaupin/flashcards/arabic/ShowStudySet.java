@@ -70,10 +70,6 @@ public class ShowStudySet extends FragmentActivity
     // whether or not to apply arabic fixes
     private boolean fixArabic;
     private GestureDetector gestureDetector;
-    // the number of new cards shown
-    // TODO we might be able to get rid of this as a global variable
-    // TODO
-//    private int newCardsShown = 0;
     private SharedPreferences preferences;
     private Resources resources;
     // whether or not to show arabic vowels
@@ -210,7 +206,7 @@ public class ShowStudySet extends FragmentActivity
             int studySetCount = getStudySetCount();
             int initialStudySetCount = 0;
             
-            // get info on new cards shown
+            // get initial count of cards in study set
             Cursor cursor = getContentResolver().query(
                     StudySetProvider.CONTENT_URI_META,
                     new String[] {
@@ -225,10 +221,11 @@ public class ShowStudySet extends FragmentActivity
                 
                 // if the date found in the database is today
                 if (cursor.getString(0).equals(today)) {
-                    // set the count of new cards shown from the database
+                    // set the initial count of cards in the study set for today
                     initialStudySetCount = cursor.getInt(1);
                     Log.d(TAG, "initialStudySetCount (from db)=" + initialStudySetCount);
                     
+                // otherwise update the initial study set card count in the db
                 } else {
                     ContentValues cv = new ContentValues();
                     cv.put(StudySetDatabaseHelper.META_INITIAL_COUNT_DATE, 
@@ -249,7 +246,8 @@ public class ShowStudySet extends FragmentActivity
             
             /* 
              * don't show more than the max number of total or new cards
-             * (minus new cards already shown today)
+             * (minus new cards already shown today: total cards in study set
+             * minus initial study set card count)
              */
             int limit = Cards.MAX_CARDS_TO_SHOW - dueCardCount;
             if (limit > Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 
@@ -259,11 +257,6 @@ public class ShowStudySet extends FragmentActivity
             }
             
             Log.d(TAG, "new cards to show=" + limit);
-            
-/*
- * TODO: handle here if limit = 0 (basically we showed 20 due cards, and there
- * are no new cards to show
- */
             
             String limitString = studySetCount + "," + limit;
             
@@ -668,14 +661,6 @@ public class ShowStudySet extends FragmentActivity
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
                 cv);
-/*
-// TODO: we might be able to get rid of this
-// TODO
-        // increment the counter of new cards shown
-        if (cardMode == CARD_MODE_NEW) {
-            newCardsShown ++;
-        }
-*/
     }
     
     /*
@@ -704,57 +689,6 @@ public class ShowStudySet extends FragmentActivity
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
-        
-        Log.d(TAG, "cardMode=" + cardMode);
-        Log.d(TAG, "cardsCursor.getPosition()=" + cardsCursor.getPosition());
-
-/*
-        // only update new cards shown if we've seen any new cards
-        if (cardMode == CARD_MODE_NEW) {
-            if (cardsCursor.getPosition() > -1) {
-                Date now = new Date();
-                
-                String selection = StudySetDatabaseHelper._ID + " = ? ";
-                String[] selectionArgs = {"" + studySetId};
-                
-                ContentValues cv = new ContentValues();
-                cv.put(StudySetDatabaseHelper.META_NEW_CARDS_DATE, 
-                        simpleDateFormat.format(now).toString());
-        /*
-         * TODO: can we use cardsCursor.getPosition() here instead of newCardsShown?
-         * 1. we'd need to use cardsCursor.getPosition() + 1
-         * 2. we'd need to make sure it was the new cards cursor
-         */
-/*
- * TODO: this isn't going to work, because just because a cursor is on a card,
- * doesn't mean we've seen that card.  and this can't account for the final card,
- * because the cursor can't go past it.  maybe some kind of hybrid where we
- * keep track of the highest cursor position...
- * 
- * if cursorposition + 1 > newCardCount:
- *      newCardCount = cursorposition + 1
- *      
- * we'd have to do it like that because setting it at the current cursor position
- * will make it lower than it should be if we've gone to a previous card
- * 
- * alternative: simply get the count of cards due in the db every time.  new cards
- * count would be whatever it was at the beginning of the day, + 10 (or whatever)
- * 
- * but there are problems with that method too...
- */
-        /*
-                cv.put(StudySetDatabaseHelper.META_NEW_CARDS_SHOWN, 
-                        cardsCursor.getPosition() + 1);
-                
-                getContentResolver().update(
-                        StudySetProvider.CONTENT_URI_META,
-                        cv,
-                        selection,
-                        selectionArgs);
-            }
-        }
-*/
-        
 /*        
         // store the cursor position in case we come back
         cardsCursorPosition = cardsCursor.getPosition();
