@@ -1,7 +1,6 @@
 package us.bmaupin.flashcards.arabic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
@@ -436,7 +435,7 @@ public class ChooseStudySet extends FragmentActivity
     }
 
     
-    private class LoadListDataTask extends AsyncTask<Cursor, String[], Void> {
+    private class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
         @Override
         protected Void doInBackground(Cursor... params) {
             if (cursor.moveToFirst()) {
@@ -463,8 +462,8 @@ public class ChooseStudySet extends FragmentActivity
                         list.add(studySetCursor.getString(0));
                     }
                     studySetCursor.close();
-// TODO: got to be a better way to fix this...                    
-                    publishProgress(list.toArray(new String[]{}));
+                    
+                    publishProgress(list);
                     cursor.moveToNext();
                 }
             }
@@ -472,8 +471,8 @@ public class ChooseStudySet extends FragmentActivity
         }
         
         @Override
-        protected void onProgressUpdate(String[]... item) {
-            adapter.add(new ArrayList<String>(Arrays.asList(item[0])));
+        protected void onProgressUpdate(ArrayList<String>... item) {
+            adapter.add(item[0]);
         }
 
         @Override
