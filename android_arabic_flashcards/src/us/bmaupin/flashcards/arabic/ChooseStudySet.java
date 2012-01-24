@@ -436,6 +436,7 @@ public class ChooseStudySet extends FragmentActivity
 
     
     private class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
+        @SuppressWarnings("unchecked")
         @Override
         protected Void doInBackground(Cursor... params) {
             if (cursor.moveToFirst()) {
