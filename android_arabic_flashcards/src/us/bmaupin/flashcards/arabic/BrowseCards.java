@@ -91,11 +91,11 @@ public class BrowseCards extends Activity {
         tv1.setTypeface(tf);
         tv2.setTypeface(tf);
         
-        Bundle bundle = this.getIntent().getExtras();
-        String cardSet = bundle.getString(Cards.EXTRA_CARD_GROUP);
-        String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
+        Bundle bundle = this.getIntent().getExtras(); 
         
-        CardQueryHelper cqh = new CardQueryHelper(this, cardSet, cardSubSet);
+        CardQueryHelper cqh = new CardQueryHelper(this, 
+                bundle.getString(Cards.EXTRA_CARD_GROUP), 
+                bundle.getString(Cards.EXTRA_CARD_SUBGROUP));
         
         cursor = managedQuery(
                 CardProvider.CONTENT_URI,
