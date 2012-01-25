@@ -5,6 +5,7 @@ import java.util.Date;
 
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
+import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.content.ContentUris;
@@ -201,8 +202,6 @@ public class ShowStudySet extends FragmentActivity
             
         } else {
             Log.d(TAG, "Now showing new cards...");
-            String[] selectionArgs = new String[] {};
-            String sortOrder = "";
             int studySetCount = getStudySetCount();
             int initialStudySetCount = 0;
             
@@ -259,7 +258,7 @@ public class ShowStudySet extends FragmentActivity
             Log.d(TAG, "new cards to show=" + limit);
             
             String limitString = studySetCount + "," + limit;
-            
+/*            
             if (cardGroup.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
                 /*
                  * this looks like:
@@ -277,6 +276,7 @@ public class ShowStudySet extends FragmentActivity
                  * instead of this:
                  * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where chapter = 4 order by aws_chapters._id;
                  */
+/*
                 selection = CardDatabaseHelper.CARDS_TABLE + "." + 
                         CardDatabaseHelper._ID + " IN (SELECT " + 
                         CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
@@ -296,6 +296,10 @@ public class ShowStudySet extends FragmentActivity
                 selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
                 selectionArgs = new String[] {cardSubgroup};
             }
+*/
+            
+            CardQueryHelper cqh = new CardQueryHelper(this, cardGroup, 
+                    cardSubgroup);
             
             return new CursorLoader(this,
                     // add the limit to the content uri
@@ -303,9 +307,9 @@ public class ShowStudySet extends FragmentActivity
                             CardProvider.QUERY_PARAMETER_LIMIT,
                             limitString).build(),
                     PROJECTION_CARDS,
-                    selection,
-                    selectionArgs,
-                    sortOrder
+                    cqh.getSelection(),
+                    cqh.getSelectionArgs(),
+                    cqh.getSortOrder()
             );
         }
     }
