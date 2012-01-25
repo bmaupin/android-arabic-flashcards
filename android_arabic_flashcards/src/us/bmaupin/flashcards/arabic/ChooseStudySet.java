@@ -1,6 +1,8 @@
 package us.bmaupin.flashcards.arabic;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
@@ -55,7 +57,9 @@ public class ChooseStudySet extends FragmentActivity
         StudySetDatabaseHelper.META_SET_NAME,
         StudySetDatabaseHelper.META_CARD_GROUP,
         StudySetDatabaseHelper.META_CARD_SUBGROUP,
-        StudySetDatabaseHelper.META_SET_LANGUAGE
+        StudySetDatabaseHelper.META_SET_LANGUAGE,
+        StudySetDatabaseHelper.META_INITIAL_COUNT_DATE,
+        StudySetDatabaseHelper.META_INITIAL_COUNT,
 	};
     
     private StudySetAdapter adapter;
@@ -67,6 +71,8 @@ public class ChooseStudySet extends FragmentActivity
     private String newStudySetCardSubset = "";
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+            StudySetDatabaseHelper.META_NEW_CARDS_DATE_FORMAT);
     // ID of study set to delete
     private String studySetToDelete;
     
@@ -445,9 +451,9 @@ public class ChooseStudySet extends FragmentActivity
                     list.add(cursor.getString(0));
                     list.add(cursor.getString(1));
                     
-                    String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
-                    System.currentTimeMillis();
-                    
+                    // get the count of due cards
+                    String selection = StudySetDatabaseHelper.SET_DUE_TIME + 
+                            " < " + System.currentTimeMillis();
                     Cursor studySetCursor = getContentResolver().query(
                             // specify the study set ID and a limit
                             ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
@@ -463,6 +469,13 @@ public class ChooseStudySet extends FragmentActivity
                         list.add(studySetCursor.getString(0));
                     }
                     studySetCursor.close();
+                    
+                    // get the count of new cards
+                    String today = simpleDateFormat.format(new Date()).toString();
+                    // if the date found in the database is today
+                    if (cursor.getString(5).equals(today)) {
+                        
+                    }
                     
                     publishProgress(list);
                     cursor.moveToNext();
