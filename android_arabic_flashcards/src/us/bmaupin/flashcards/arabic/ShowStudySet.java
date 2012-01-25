@@ -188,15 +188,11 @@ public class ShowStudySet extends FragmentActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String selection = "";
-
         if (cardMode == CARD_MODE_DUE) {
-            selection = CardDatabaseHelper._ID + " IN " + studySetIds;
-
             return new CursorLoader(this,
                     CardProvider.CONTENT_URI,
                     PROJECTION_CARDS,
-                    selection,
+                    CardDatabaseHelper._ID + " IN " + studySetIds,
                     null,
                     null);
             
@@ -258,45 +254,6 @@ public class ShowStudySet extends FragmentActivity
             Log.d(TAG, "new cards to show=" + limit);
             
             String limitString = studySetCount + "," + limit;
-/*            
-            if (cardGroup.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
-                /*
-                 * this looks like:
-                 * where cards._id in (select card_ID from aws_chapters where chapter = ?) and chapter = ?
-                 * 
-                 * it may seem terribly redundant, but it's much faster than:
-                 * where chapter = ?
-                 * 
-                 * because it doesn't do the left join (in the provider class) 
-                 * on both entire tables
-                 * 
-                 * the entire query ends up looking like this:
-                 * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where cards._id in (select card_ID from aws_chapters where chapter = 4) and chapter = 4 order by aws_chapters._id;
-                 * 
-                 * instead of this:
-                 * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where chapter = 4 order by aws_chapters._id;
-                 */
-/*
-                selection = CardDatabaseHelper.CARDS_TABLE + "." + 
-                        CardDatabaseHelper._ID + " IN (SELECT " + 
-                        CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
-                        CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
-                        CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ?) AND " + 
-                        CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ? ";
-                selectionArgs = new String[] {cardSubgroup, cardSubgroup};
-                sortOrder = CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
-                        CardDatabaseHelper._ID;
-                
-            } else if (cardGroup.equals(getString(R.string.card_group_categories))) {
-                selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
-                selectionArgs = new String[] {cardSubgroup};
-                
-            } else if (cardGroup.equals(getString(
-                    R.string.card_group_parts_of_speech))) {
-                selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
-                selectionArgs = new String[] {cardSubgroup};
-            }
-*/
             
             CardQueryHelper cqh = new CardQueryHelper(this, cardGroup, 
                     cardSubgroup);
