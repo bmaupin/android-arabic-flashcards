@@ -2,6 +2,7 @@ package us.bmaupin.flashcards.arabic;
 
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
+import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -94,53 +95,14 @@ public class BrowseCards extends Activity {
         String cardSet = bundle.getString(Cards.EXTRA_CARD_GROUP);
         String cardSubSet = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         
-        String selection = "";
-        String[] selectionArgs = new String[] {};
-        String sortOrder = "";
-                
-        if (cardSet.equals(getString(R.string.card_group_ahlan_wa_sahlan))) {
-        	/*
-        	 * this looks like:
-        	 * where cards._id in (select card_ID from aws_chapters where chapter = ?) and chapter = ?
-        	 * 
-        	 * it may seem terribly redundant, but it's much faster than:
-        	 * where chapter = ?
-        	 * 
-        	 * because it doesn't do the left join (in the provider class) 
-        	 * on both entire tables
-        	 * 
-        	 * the entire query ends up looking like this:
-        	 * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where cards._id in (select card_ID from aws_chapters where chapter = 4) and chapter = 4 order by aws_chapters._id;
-        	 * 
-        	 * instead of this:
-        	 * select * from cards left join aws_chapters on cards._id = aws_chapters.card_id where chapter = 4 order by aws_chapters._id;
-        	 */
-        	selection = CardDatabaseHelper.CARDS_TABLE + "." + 
-        			CardDatabaseHelper._ID + " IN (SELECT " + 
-        			CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
-        			CardDatabaseHelper.AWS_CHAPTERS_TABLE + " WHERE " + 
-        			CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ?) AND " + 
-        			CardDatabaseHelper.AWS_CHAPTERS_CHAPTER + " = ? ";
-        	selectionArgs = new String[] {cardSubSet, cardSubSet};
-        	sortOrder = CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
-        			CardDatabaseHelper._ID;
-        	
-        } else if (cardSet.equals(getString(R.string.card_group_categories))) {
-        	selection = CardDatabaseHelper.CARDS_CATEGORY + " = ? ";
-        	selectionArgs = new String[] {cardSubSet};
-        	
-        } else if (cardSet.equals(getString(
-        		R.string.card_group_parts_of_speech))) {
-        	selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
-        	selectionArgs = new String[] {cardSubSet};
-        }
+        CardQueryHelper cqh = new CardQueryHelper(this, cardSet, cardSubSet);
         
         cursor = managedQuery(
                 CardProvider.CONTENT_URI,
                 PROJECTION,
-                selection,
-                selectionArgs,
-                sortOrder
+                cqh.getSelection(),
+                cqh.getSelectionArgs(),
+                cqh.getSortOrder()
         );
 
         // make sure the cursor isn't empty
