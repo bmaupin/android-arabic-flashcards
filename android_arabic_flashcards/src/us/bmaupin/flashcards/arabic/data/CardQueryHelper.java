@@ -3,24 +3,24 @@ package us.bmaupin.flashcards.arabic.data;
 import android.content.Context;
 import us.bmaupin.flashcards.arabic.R;
 
-class CardQueryHelper {
+public class CardQueryHelper {
     private String selection;
     private String[] selectionArgs;
     private String sortOrder;
     
-    String getSelection() {
+    public String getSelection() {
         return selection;
     }
 
-    String[] getSelectionArgs() {
+    public String[] getSelectionArgs() {
         return selectionArgs;
     }
 
-    String getSortOrder() {
+    public String getSortOrder() {
         return sortOrder;
     }
 
-    CardQueryHelper(Context context, String cardGroup, String cardSubgroup) {
+    public CardQueryHelper(Context context, String cardGroup, String cardSubgroup) {
         if (cardGroup.equals(context.getString(
                 R.string.card_group_ahlan_wa_sahlan))) {
             /*
