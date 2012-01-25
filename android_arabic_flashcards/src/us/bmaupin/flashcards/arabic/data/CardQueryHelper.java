@@ -4,9 +4,9 @@ import android.content.Context;
 import us.bmaupin.flashcards.arabic.R;
 
 public class CardQueryHelper {
-    private String selection;
-    private String[] selectionArgs;
-    private String sortOrder;
+    private String selection = "";
+    private String[] selectionArgs = new String[] {};
+    private String sortOrder = "";
     
     public String getSelection() {
         return selection;
