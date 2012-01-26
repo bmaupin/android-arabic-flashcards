@@ -33,6 +33,8 @@ public class CardDatabaseHelper extends SQLiteOpenHelper {
     
     public static final String AWS_CHAPTERS_CHAPTER = "chapter";
     public static final String AWS_CHAPTERS_CARD_ID = "card_ID";
+    
+    public static final String COUNT = "COUNT()";
 	
 	// variable to tell us whether onCreate() or onUpgrade() has been called
 	boolean dbNeedsRefreshing = false;

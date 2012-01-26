@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
+import us.bmaupin.flashcards.arabic.data.CardProvider;
+import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.app.Activity;
@@ -474,7 +477,21 @@ public class ChooseStudySet extends FragmentActivity
                     String today = simpleDateFormat.format(new Date()).toString();
                     // if the date found in the database is today
                     if (cursor.getString(5).equals(today)) {
+                        CardQueryHelper cqh = new CardQueryHelper(
+                                ChooseStudySet.this,
+                                cursor.getString(2),
+                                cursor.getString(3));
                         
+                        studySetCursor = getContentResolver().query(
+                                CardProvider.CONTENT_URI,
+                                new String[] {CardDatabaseHelper.COUNT},
+                                cqh.getSelection(),
+                                cqh.getSelectionArgs(),
+                                cqh.getSortOrder());
+                        int studySetCount = studySetCursor.getInt(0);
+                        studySetCursor.close();
+                        
+                        Log.d(TAG, "studySetCount=" + studySetCount);
                     }
                     
                     publishProgress(list);
