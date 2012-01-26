@@ -7,6 +7,7 @@ import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
+import us.bmaupin.flashcards.arabic.data.StudySetHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -75,9 +76,6 @@ public class ShowStudySet extends FragmentActivity
     private Resources resources;
     // whether or not to show arabic vowels
     private boolean showVowels;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-            StudySetDatabaseHelper.META_NEW_CARDS_DATE_FORMAT);
-    // the ID of the current study set
     private int studySetId;
     private String studySetIds = "";
     private Animation slideLeftIn;
@@ -199,45 +197,8 @@ public class ShowStudySet extends FragmentActivity
         } else {
             Log.d(TAG, "Now showing new cards...");
             int studySetCount = getStudySetCount();
-            int initialStudySetCount = 0;
-            
-            // get initial count of cards in study set
-            Cursor cursor = getContentResolver().query(
-                    StudySetProvider.CONTENT_URI_META,
-                    new String[] {
-                            StudySetDatabaseHelper.META_INITIAL_COUNT_DATE,
-                            StudySetDatabaseHelper.META_INITIAL_COUNT},
-                    StudySetDatabaseHelper._ID + " = ? ",
-                    new String[] {"" + studySetId},
-                    null);
-            
-            if (cursor.moveToFirst()) {
-                String today = simpleDateFormat.format(new Date()).toString();
-                
-                // if the date found in the database is today
-                if (cursor.getString(0).equals(today)) {
-                    // set the initial count of cards in the study set for today
-                    initialStudySetCount = cursor.getInt(1);
-                    Log.d(TAG, "initialStudySetCount (from db)=" + initialStudySetCount);
-                    
-                // otherwise update the initial study set card count in the db
-                } else {
-                    ContentValues cv = new ContentValues();
-                    cv.put(StudySetDatabaseHelper.META_INITIAL_COUNT_DATE, 
-                            today);
-                    cv.put(StudySetDatabaseHelper.META_INITIAL_COUNT, 
-                            studySetCount);
-                    
-                    getContentResolver().update(
-                            StudySetProvider.CONTENT_URI_META,
-                            cv,
-                            StudySetDatabaseHelper._ID + " = ? ",
-                            new String[] {"" + studySetId});
-                    initialStudySetCount = studySetCount;
-                    Log.d(TAG, "initialStudySetCount=studySetCount=" + initialStudySetCount);
-                }
-            }
-            cursor.close();
+            int initialStudySetCount = StudySetHelper.getInitialStudySetCount(
+                    this, studySetId, studySetCount);
             
             /* 
              * don't show more than the max number of total or new cards
