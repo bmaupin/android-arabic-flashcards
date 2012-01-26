@@ -12,7 +12,7 @@ import android.util.Log;
 public class StudySetHelper {
     private static final String TAG = "StudySetHelper";
     
-    public static int getInitialStudySetCount(Context context, 
+    public static int maybeUpdateInitialStudySetCount(Context context, 
             int studySetId, int studySetCount, String initialStudySetCountDate, 
             int initialStudySetCount) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
