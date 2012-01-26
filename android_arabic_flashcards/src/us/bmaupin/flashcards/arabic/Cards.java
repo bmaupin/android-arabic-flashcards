@@ -191,8 +191,10 @@ public class Cards {
         return unicodeString;
     }
     
+    @SuppressWarnings("serial")
     static String splitString(String s) {
-        Map<Character, String> miscCodes = new HashMap<Character, String>() {{
+        Map<Character, String> miscCodes = new HashMap<Character, String>() {
+        {
             put('\u200e', "LTR");
             put('\u200f', "RTL");
             put('\u202a', "LTRE");
