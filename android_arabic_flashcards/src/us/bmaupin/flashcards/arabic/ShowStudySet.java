@@ -210,7 +210,7 @@ public class ShowStudySet extends FragmentActivity
             
             if (cursor.moveToFirst()) {
                 initialStudySetCount = 
-                    StudySetHelper.getInitialStudySetCount(
+                    StudySetHelper.maybeUpdateInitialStudySetCount(
                             this, studySetId, studySetCount, 
                             cursor.getString(0), cursor.getInt(1));
             }
