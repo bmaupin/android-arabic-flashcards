@@ -9,6 +9,7 @@ import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
+import us.bmaupin.flashcards.arabic.data.StudySetHelper;
 import us.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -74,8 +75,6 @@ public class ChooseStudySet extends FragmentActivity
     private String newStudySetCardSubset = "";
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-            StudySetDatabaseHelper.META_NEW_CARDS_DATE_FORMAT);
     // ID of study set to delete
     private String studySetToDelete;
     
@@ -473,10 +472,18 @@ public class ChooseStudySet extends FragmentActivity
                     }
                     studySetCursor.close();
                     
+/*                    
+                    int studySetCount = StudySetHelper.getStudySetCount(
+                            ChooseStudySet.this, cursor.getInt(0));
+                    int initialStudySetCount = 
+                        StudySetHelper.getInitialStudySetCount(
+                                ChooseStudySet.this, cursor.getInt(0), 
+                                studySetCount);
+                    
                     // get the count of new cards
-                    String today = simpleDateFormat.format(new Date()).toString();
+//                    String today = simpleDateFormat.format(new Date()).toString();
                     // if the date found in the database is today
-                    if (cursor.getString(5).equals(today)) {
+//                    if (cursor.getString(5).equals(today)) {
                         CardQueryHelper cqh = new CardQueryHelper(
                                 ChooseStudySet.this,
                                 cursor.getString(2),
@@ -493,6 +500,7 @@ public class ChooseStudySet extends FragmentActivity
                         
                         Log.d(TAG, "studySetCount=" + studySetCount);
                     }
+*/
                     
                     publishProgress(list);
                     cursor.moveToNext();
