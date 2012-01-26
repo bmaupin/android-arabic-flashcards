@@ -472,35 +472,38 @@ public class ChooseStudySet extends FragmentActivity
                     }
                     studySetCursor.close();
                     
-/*                    
+                    // get the count of new cards
                     int studySetCount = StudySetHelper.getStudySetCount(
                             ChooseStudySet.this, cursor.getInt(0));
                     int initialStudySetCount = 
-                        StudySetHelper.getInitialStudySetCount(
+                        StudySetHelper.maybeUpdateInitialStudySetCount(
                                 ChooseStudySet.this, cursor.getInt(0), 
-                                studySetCount);
+                                studySetCount, cursor.getString(5), 
+                                cursor.getInt(6));
                     
-                    // get the count of new cards
-//                    String today = simpleDateFormat.format(new Date()).toString();
-                    // if the date found in the database is today
-//                    if (cursor.getString(5).equals(today)) {
-                        CardQueryHelper cqh = new CardQueryHelper(
-                                ChooseStudySet.this,
-                                cursor.getString(2),
-                                cursor.getString(3));
-                        
-                        studySetCursor = getContentResolver().query(
-                                CardProvider.CONTENT_URI,
-                                new String[] {CardDatabaseHelper.COUNT},
-                                cqh.getSelection(),
-                                cqh.getSelectionArgs(),
-                                cqh.getSortOrder());
-                        int studySetCount = studySetCursor.getInt(0);
-                        studySetCursor.close();
-                        
-                        Log.d(TAG, "studySetCount=" + studySetCount);
-                    }
-*/
+/*
+ *  TODO: calculate limit here:
+ *  new cards limit = study set - initial, no greater than MAX new or MAX cards
+ *  per day
+ */
+                    
+
+                    CardQueryHelper cqh = new CardQueryHelper(
+                            ChooseStudySet.this,
+                            cursor.getString(2),
+                            cursor.getString(3));
+                    
+                    studySetCursor = getContentResolver().query(
+                            CardProvider.CONTENT_URI,
+                            new String[] {CardDatabaseHelper.COUNT},
+                            cqh.getSelection(),
+                            cqh.getSelectionArgs(),
+                            cqh.getSortOrder());
+                    // this is the count of new cards due
+                    list.add("" + studySetCursor.getInt(0));
+                    studySetCursor.close();
+                    
+                    Log.d(TAG, "studySetCount=" + studySetCount);
                     
                     publishProgress(list);
                     cursor.moveToNext();
