@@ -114,8 +114,6 @@ public class ShowStudySet extends FragmentActivity
         
         String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
                 System.currentTimeMillis();
-        
-        Log.d(TAG, "getStudySetCount(): " + getStudySetCount());
         Log.d(TAG, "System.currentTimeMillis(): " + System.currentTimeMillis());
         
         cursor = getContentResolver().query(
@@ -196,9 +194,27 @@ public class ShowStudySet extends FragmentActivity
             
         } else {
             Log.d(TAG, "Now showing new cards...");
-            int studySetCount = getStudySetCount();
-            int initialStudySetCount = StudySetHelper.getInitialStudySetCount(
-                    this, studySetId, studySetCount);
+            int initialStudySetCount = 0;
+            int studySetCount = StudySetHelper.getStudySetCount(this,
+                    studySetId);
+            
+            // get initial count of cards in study set
+            Cursor cursor = getContentResolver().query(
+                    StudySetProvider.CONTENT_URI_META,
+                    new String[] {
+                            StudySetDatabaseHelper.META_INITIAL_COUNT_DATE,
+                            StudySetDatabaseHelper.META_INITIAL_COUNT},
+                    StudySetDatabaseHelper._ID + " = ? ",
+                    new String[] {"" + studySetId},
+                    null);
+            
+            if (cursor.moveToFirst()) {
+                initialStudySetCount = 
+                    StudySetHelper.getInitialStudySetCount(
+                            this, studySetId, studySetCount, 
+                            cursor.getString(0), cursor.getInt(1));
+            }
+            cursor.close();
             
             /* 
              * don't show more than the max number of total or new cards
@@ -583,28 +599,6 @@ public class ShowStudySet extends FragmentActivity
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
                 cv);
-    }
-    
-    /*
-     * get the total count of rows in the study set table, to be used as an
-     * offset for new cards
-     */
-    private int getStudySetCount() {
-        Cursor cursor = getContentResolver().query(
-                ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
-                        studySetId),
-                new String[] {StudySetDatabaseHelper.COUNT},
-                null,
-                null,
-                null);
-        if (cursor.moveToFirst()) {
-            int studySetCount = cursor.getInt(0);
-            cursor.close();
-            return studySetCount;
-        }
-        cursor.close();
-        
-        return 0;
     }
     
     @Override
