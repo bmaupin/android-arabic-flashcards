@@ -1,8 +1,6 @@
 package us.bmaupin.flashcards.arabic;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
@@ -429,8 +427,8 @@ public class ChooseStudySet extends FragmentActivity
             holder.tv1.setText(studySets.get(position).get(1));
             holder.tv2.setText(studySets.get(position).get(2) + 
                     getString(R.string.choose_study_set_cards_due));
-            holder.tv3.setText("XX" +  getString(
-                    R.string.choose_study_set_cards_new));
+            holder.tv3.setText(studySets.get(position).get(3) + 
+                    getString(R.string.choose_study_set_cards_new));
             
             return convertView;
         }
@@ -472,7 +470,7 @@ public class ChooseStudySet extends FragmentActivity
                     }
                     studySetCursor.close();
                     
-                    // get the count of new cards
+                    // figure out how many new cards we've already seen today
                     int studySetCount = StudySetHelper.getStudySetCount(
                             ChooseStudySet.this, cursor.getInt(0));
                     int initialStudySetCount = 
@@ -480,40 +478,34 @@ public class ChooseStudySet extends FragmentActivity
                                 ChooseStudySet.this, cursor.getInt(0), 
                                 studySetCount, cursor.getString(5), 
                                 cursor.getInt(6));
+                    int newCardsDue = Cards.MAX_NEW_CARDS_TO_SHOW - 
+                            (studySetCount - initialStudySetCount);
+                    Log.d(TAG, "max new cards to show=" + newCardsDue);
                     
-                    int limit = Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 
-                            initialStudySetCount);
-                    
-                    Log.d(TAG, "new cards to show=" + limit);
-                    
-                    String limitString = studySetCount + "," + limit;
-                    
-                    Log.d(TAG, "limitString=" + limitString);
-                    
+                    // get the total count of cards in the card group
+                    int cardGroupCount = 0;
                     CardQueryHelper cqh = new CardQueryHelper(
                             ChooseStudySet.this,
                             cursor.getString(2),
                             cursor.getString(3));
-                    
                     studySetCursor = getContentResolver().query(
-                            // add the limit to the content uri
-                            CardProvider.CONTENT_URI.buildUpon().
-                            appendQueryParameter(
-                                    CardProvider.QUERY_PARAMETER_LIMIT,
-                                    limitString).build(),
+                            CardProvider.CONTENT_URI,
                             new String[] {CardDatabaseHelper.COUNT},
                             cqh.getSelection(),
                             cqh.getSelectionArgs(),
                             cqh.getSortOrder());
-                    
                     if (studySetCursor.moveToFirst()) {
-                        // this is the count of new cards due
-                        list.add("" + studySetCursor.getInt(0));
-                        Log.d(TAG, "new cards due=" + studySetCursor.getInt(0));
+                        cardGroupCount = studySetCursor.getInt(0);
                     }
                     studySetCursor.close();
                     
-                    Log.d(TAG, "studySetCount=" + studySetCount);
+                    // can't have more cards due than are in the card group
+                    if (newCardsDue > (cardGroupCount - studySetCount)) {
+                        newCardsDue = cardGroupCount - studySetCount;
+                    }
+                    Log.d(TAG, "newCardsDue=" + newCardsDue);
+                    
+                    list.add("" + newCardsDue);
                     
                     publishProgress(list);
                     cursor.moveToNext();
