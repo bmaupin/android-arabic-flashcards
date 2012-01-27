@@ -481,26 +481,36 @@ public class ChooseStudySet extends FragmentActivity
                                 studySetCount, cursor.getString(5), 
                                 cursor.getInt(6));
                     
-/*
- *  TODO: calculate limit here:
- *  new cards limit = study set - initial, no greater than MAX new or MAX cards
- *  per day
- */
+                    int limit = Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 
+                            initialStudySetCount);
                     
-
+                    Log.d(TAG, "new cards to show=" + limit);
+                    
+                    String limitString = studySetCount + "," + limit;
+                    
+                    Log.d(TAG, "limitString=" + limitString);
+                    
                     CardQueryHelper cqh = new CardQueryHelper(
                             ChooseStudySet.this,
                             cursor.getString(2),
                             cursor.getString(3));
                     
                     studySetCursor = getContentResolver().query(
-                            CardProvider.CONTENT_URI,
+                            // add the limit to the content uri
+                            CardProvider.CONTENT_URI.buildUpon().
+                            appendQueryParameter(
+                                    CardProvider.QUERY_PARAMETER_LIMIT,
+                                    limitString).build(),
                             new String[] {CardDatabaseHelper.COUNT},
                             cqh.getSelection(),
                             cqh.getSelectionArgs(),
                             cqh.getSortOrder());
-                    // this is the count of new cards due
-                    list.add("" + studySetCursor.getInt(0));
+                    
+                    if (studySetCursor.moveToFirst()) {
+                        // this is the count of new cards due
+                        list.add("" + studySetCursor.getInt(0));
+                        Log.d(TAG, "new cards due=" + studySetCursor.getInt(0));
+                    }
                     studySetCursor.close();
                     
                     Log.d(TAG, "studySetCount=" + studySetCount);
