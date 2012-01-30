@@ -24,6 +24,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -64,7 +65,7 @@ public class ChooseStudySet extends FragmentActivity
         StudySetDatabaseHelper.META_INITIAL_COUNT,
 	};
     
-    private StudySetAdapter adapter;
+    private SimpleCursorAdapter adapter;
     private Cursor cursor;
     private ListView lv;
     // the card set of a new study set
@@ -106,11 +107,19 @@ public class ChooseStudySet extends FragmentActivity
         });
         
         lv = (ListView) findViewById(android.R.id.list);
-        
+// TODO
+/*        
         adapter = new StudySetAdapter(this,
                 R.layout.choose_study_set_row,
                 R.id.study_set_title,
                 new ArrayList<ArrayList<String>>());
+*/
+        adapter = new SimpleCursorAdapter(this,
+                R.layout.choose_study_set_row,
+                null,
+                new String[] {StudySetDatabaseHelper.META_SET_NAME},
+                new int[] {R.id.study_set_title},
+                0);
         
         lv.setAdapter(adapter);
         
@@ -122,7 +131,8 @@ public class ChooseStudySet extends FragmentActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, 
                     int position, long id) {
-                                
+// TODO
+/*
                 Intent intent = new Intent(ChooseStudySet.this, 
                         ShowStudySet.class);
                 // id is the study set id
@@ -130,6 +140,7 @@ public class ChooseStudySet extends FragmentActivity
                         Cards.stringToInteger(adapter.getItem(position)
                                 .get(0)));
                 startActivity(intent);
+*/
             }
         });
     }
@@ -199,14 +210,17 @@ public class ChooseStudySet extends FragmentActivity
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
-//        adapter.swapCursor(data);
+        adapter.swapCursor(data);
         // make the cursor available to the rest of the class
-        cursor = data;
+//        cursor = data;
         
         // clear out the empty view for now, so it doesn't pop up
+// TODO
+/*
         lv.setEmptyView(null);
         adapter.clear();
         new LoadListDataTask().execute(data);
+*/
     }
     
     @Override
@@ -214,7 +228,7 @@ public class ChooseStudySet extends FragmentActivity
         // This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
-//        adapter.swapCursor(null);
+        adapter.swapCursor(null);
     }
     
 	/* Inflates the menu */
@@ -265,7 +279,8 @@ public class ChooseStudySet extends FragmentActivity
                 item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.choose_study_set_delete_study_set:
-            studySetToDelete = adapter.getItem(info.position).get(0);
+// TODO            
+//            studySetToDelete = adapter.getItem(info.position).get(0);
             showDialog(DIALOG_CONFIRM_DELETE_STUDY_SET);
             return true;
         default:
@@ -516,7 +531,7 @@ public class ChooseStudySet extends FragmentActivity
         
         @Override
         protected void onProgressUpdate(ArrayList<String>... item) {
-            adapter.add(item[0]);
+//            adapter.add(item[0]);
         }
 
         @Override
