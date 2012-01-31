@@ -552,6 +552,35 @@ public class ChooseStudySet extends FragmentActivity
         TextView tv3;
     }
 
+// TODO
+// http://stackoverflow.com/questions/4885350/how-to-pass-different-objects-as-a-parameter-to-asyctask
+    private class LoadDueCards extends AsyncTask<Cursor, Integer, Void> {
+        @Override
+        protected Void doInBackground(Cursor... params) {
+         // get the count of due cards
+            String selection = StudySetDatabaseHelper.SET_DUE_TIME + 
+                    " < " + System.currentTimeMillis();
+            Cursor studySetCursor = getContentResolver().query(
+                    // specify the study set ID and a limit
+                    ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                            cursor.getInt(0)).buildUpon().appendQueryParameter(
+                            StudySetProvider.QUERY_PARAMETER_LIMIT,
+                            "" + Cards.MAX_CARDS_TO_SHOW).build(),
+                    new String[] {StudySetDatabaseHelper.COUNT},
+                    selection,
+                    null,
+                    StudySetDatabaseHelper.SET_DUE_TIME);
+        
+            if (studySetCursor.moveToFirst()) {
+//                list.add(studySetCursor.getString(0));
+            }
+            studySetCursor.close();
+            
+            
+            return null;
+        }
+        
+    }
     
     private class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
         @SuppressWarnings("unchecked")
