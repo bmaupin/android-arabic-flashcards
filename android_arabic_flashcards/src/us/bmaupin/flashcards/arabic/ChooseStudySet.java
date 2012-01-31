@@ -39,6 +39,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -403,16 +404,18 @@ public class ChooseStudySet extends FragmentActivity
     }
     
     class StudySetCursorAdapter extends SimpleCursorAdapter {
+/*
         private Cursor c;
         private String[] from;
         private int layout;
         private LayoutInflater mInflater;
         private int[] to;
+*/
         
         public StudySetCursorAdapter(Context context, int layout, Cursor c,
                 String[] from, int[] to, int flags) {
             super(context, layout, c, from, to, flags);
-            
+/*            
             // Cache the LayoutInflater to avoid asking for a new one each time.
             mInflater = LayoutInflater.from(context);
             
@@ -420,8 +423,9 @@ public class ChooseStudySet extends FragmentActivity
             this.from = from;
             this.layout = layout;
             this.to = to;
+*/
         }
-
+/*
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 // TOD implement google's holder technique for faster adapters
@@ -435,6 +439,64 @@ public class ChooseStudySet extends FragmentActivity
             
             return v;
         }
+*/
+
+        /* 
+         * taken from android 4.0.3_r1 source
+         * http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android/4.0.3_r1/android/widget/SimpleCursorAdapter.java
+         */
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            final ViewBinder binder = getViewBinder();
+            final int[] from = mFrom;
+            final int[] to = mTo;
+
+            final View v = view.findViewById(to[0]);
+            if (v != null) {
+                boolean bound = false;
+                if (binder != null) {
+                    bound = binder.setViewValue(v, cursor, from[0]);
+                }
+
+                if (!bound) {
+                    String text = cursor.getString(from[0]);
+                    if (text == null) {
+                        text = "";
+                    }
+                    setViewText((TextView) v, text);
+                }
+            }
+            
+/*            
+            for (int i = 0; i < count; i++) {
+                final View v = view.findViewById(to[i]);
+                if (v != null) {
+                    boolean bound = false;
+                    if (binder != null) {
+                        bound = binder.setViewValue(v, cursor, from[i]);
+                    }
+
+                    if (!bound) {
+                        String text = cursor.getString(from[i]);
+                        if (text == null) {
+                            text = "";
+                        }
+
+                        if (v instanceof TextView) {
+                            setViewText((TextView) v, text);
+                        } else if (v instanceof ImageView) {
+                            setViewImage((ImageView) v, text);
+                        } else {
+                            throw new IllegalStateException(v.getClass().getName() + " is not a " +
+                                    " view that can be bounds by this SimpleCursorAdapter");
+                        }
+                    }
+                }
+            }
+*/
+        }
+        
+        
     }
     
     private class StudySetAdapter extends ArrayAdapter<ArrayList<String>> {
