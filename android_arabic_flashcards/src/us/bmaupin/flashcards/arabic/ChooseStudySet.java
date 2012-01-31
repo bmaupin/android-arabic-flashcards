@@ -65,7 +65,7 @@ public class ChooseStudySet extends FragmentActivity
         StudySetDatabaseHelper.META_INITIAL_COUNT,
 	};
     
-    private SimpleCursorAdapter adapter;
+    private StudySetCursorAdapter adapter;
     private Cursor cursor;
     private ListView lv;
     // the card set of a new study set
@@ -114,7 +114,7 @@ public class ChooseStudySet extends FragmentActivity
                 R.id.study_set_title,
                 new ArrayList<ArrayList<String>>());
 */
-        adapter = new SimpleCursorAdapter(this,
+        adapter = new StudySetCursorAdapter(this,
                 R.layout.choose_study_set_row,
                 null,
                 new String[] {StudySetDatabaseHelper.META_SET_NAME},
@@ -400,6 +400,41 @@ public class ChooseStudySet extends FragmentActivity
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
+    }
+    
+    class StudySetCursorAdapter extends SimpleCursorAdapter {
+        private Cursor c;
+        private String[] from;
+        private int layout;
+        private LayoutInflater mInflater;
+        private int[] to;
+        
+        public StudySetCursorAdapter(Context context, int layout, Cursor c,
+                String[] from, int[] to, int flags) {
+            super(context, layout, c, from, to, flags);
+            
+            // Cache the LayoutInflater to avoid asking for a new one each time.
+            mInflater = LayoutInflater.from(context);
+            
+            this.c = c;
+            this.from = from;
+            this.layout = layout;
+            this.to = to;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+// TOD implement google's holder technique for faster adapters
+            ViewHolder holder;
+            
+            View v = mInflater.inflate(layout, null);
+            
+            if (c != null) { 
+                ((TextView) v.findViewById(to[0])).setText(c.getString(c.getColumnIndex(from[0])));
+            }
+            
+            return v;
+        }
     }
     
     private class StudySetAdapter extends ArrayAdapter<ArrayList<String>> {
