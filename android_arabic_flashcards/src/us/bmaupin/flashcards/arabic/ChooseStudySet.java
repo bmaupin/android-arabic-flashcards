@@ -119,7 +119,9 @@ public class ChooseStudySet extends FragmentActivity
                 R.layout.choose_study_set_row,
                 null,
                 new String[] {StudySetDatabaseHelper.META_SET_NAME},
-                new int[] {R.id.study_set_title, R.id.study_set_due},
+                new int[] {R.id.study_set_title,
+                        R.id.study_set_due,
+                        R.id.study_set_new},
                 0);
         
         lv.setAdapter(adapter);
@@ -452,7 +454,8 @@ public class ChooseStudySet extends FragmentActivity
             final ViewBinder binder = getViewBinder();
             final int[] from = mFrom;
             final int[] to = mTo;
-
+            
+            // update the study set title
             final View v = view.findViewById(to[0]);
             if (v != null) {
                 boolean bound = false;
@@ -468,8 +471,10 @@ public class ChooseStudySet extends FragmentActivity
                     setViewText((TextView) v, text);
                 }
             }
-            
-            new LoadDueCardsTask().execute(cursor.getInt(0), view.findViewById(to[1])); 
+            // update the study set new and due card counts
+            new LoadDueCardsTask().execute(cursor.getInt(0), 
+                    view.findViewById(to[1]),
+                    view.findViewById(to[2])); 
             
 /*            
             for (int i = 0; i < count; i++) {
@@ -559,16 +564,20 @@ public class ChooseStudySet extends FragmentActivity
 // TODO
 // TODO
 // http://stackoverflow.com/questions/4885350/how-to-pass-different-objects-as-a-parameter-to-asyctask
-    private class LoadDueCardsTask extends AsyncTask<Object, Void, Integer> {
-        private TextView tv;
+    private class LoadDueCardsTask extends AsyncTask<Object, Void, Integer[]> {
+        private TextView tv1;
+        private TextView tv2;
         
         @Override
-        protected Integer doInBackground(Object... studySetItems) {
+        protected Integer[] doInBackground(Object... studySetItems) {
             int studySetId = (Integer) studySetItems[0];
-            tv = (TextView) studySetItems[1];
+            tv1 = (TextView) studySetItems[1];
+            tv2 = (TextView) studySetItems[2];
+            
+            Integer[] dueCardsCount = new Integer[2];
             
             Log.d(TAG, "LoadDueCards: studySetId=" + studySetId);
-            Log.d(TAG, "LoadDueCards: tv text=" + tv.getText());
+            Log.d(TAG, "LoadDueCards: tv text=" + tv1.getText());
             
             // get the count of due cards
             String selection = StudySetDatabaseHelper.SET_DUE_TIME + 
@@ -585,24 +594,68 @@ public class ChooseStudySet extends FragmentActivity
                     StudySetDatabaseHelper.SET_DUE_TIME);
         
             if (studySetCursor.moveToFirst()) {
-                return studySetCursor.getInt(0);
+                dueCardsCount[0] = studySetCursor.getInt(0);
             }
             studySetCursor.close();
             
-            return null;
+            // figure out how many new cards we've already seen today
+            int studySetCount = StudySetHelper.getStudySetCount(
+                    ChooseStudySet.this, studySetId);
+            studySetCursor = getContentResolver().query(
+                    StudySetProvider.CONTENT_URI_META,
+                    new String[] {
+                            StudySetDatabaseHelper.META_CARD_GROUP,
+                            StudySetDatabaseHelper.META_CARD_SUBGROUP,
+                            StudySetDatabaseHelper.META_INITIAL_COUNT_DATE,
+                            StudySetDatabaseHelper.META_INITIAL_COUNT},
+                    StudySetDatabaseHelper._ID + " = ? ",
+                    new String[] {"" + studySetId},
+                    null);
+            if (studySetCursor.moveToFirst()) {
+                int initialStudySetCount = 
+                    StudySetHelper.maybeUpdateInitialStudySetCount(
+                            ChooseStudySet.this, studySetId, 
+                            studySetCount, studySetCursor.getString(2), 
+                            studySetCursor.getInt(3));
+                int newCardsDue = Cards.MAX_NEW_CARDS_TO_SHOW - 
+                        (studySetCount - initialStudySetCount);
+                Log.d(TAG, "max new cards to show=" + newCardsDue);
+                
+                // get the total count of cards in the card group
+                int cardGroupCount = 0;
+                CardQueryHelper cqh = new CardQueryHelper(
+                        ChooseStudySet.this,
+                        studySetCursor.getString(0),
+                        studySetCursor.getString(1));
+                studySetCursor.close();
+                studySetCursor = getContentResolver().query(
+                        CardProvider.CONTENT_URI,
+                        new String[] {CardDatabaseHelper.COUNT},
+                        cqh.getSelection(),
+                        cqh.getSelectionArgs(),
+                        cqh.getSortOrder());
+                if (studySetCursor.moveToFirst()) {
+                    cardGroupCount = studySetCursor.getInt(0);
+                }
+                
+                // can't have more cards due than are in the card group
+                if (newCardsDue > (cardGroupCount - studySetCount)) {
+                    newCardsDue = cardGroupCount - studySetCount;
+                }
+                dueCardsCount[1] = newCardsDue;
+            }
+            studySetCursor.close();
+            
+            return dueCardsCount;
         }
 
-        /* (non-Javadoc)
-         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-         */
         @Override
-        protected void onPostExecute(Integer dueCards) {
-            adapter.setViewText(tv, "" + dueCards + getString(
+        protected void onPostExecute(Integer[] dueCardsCount) {
+            adapter.setViewText(tv1, "" + dueCardsCount[0] + getString(
                     R.string.choose_study_set_cards_due));
+            adapter.setViewText(tv2, "" + dueCardsCount[1] + getString(
+                    R.string.choose_study_set_cards_new));
         }
-        
-        
-        
     }
     
     private class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
