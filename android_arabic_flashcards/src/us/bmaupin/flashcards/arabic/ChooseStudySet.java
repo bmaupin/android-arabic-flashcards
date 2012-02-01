@@ -119,7 +119,7 @@ public class ChooseStudySet extends FragmentActivity
                 R.layout.choose_study_set_row,
                 null,
                 new String[] {StudySetDatabaseHelper.META_SET_NAME},
-                new int[] {R.id.study_set_title},
+                new int[] {R.id.study_set_title, R.id.study_set_due},
                 0);
         
         lv.setAdapter(adapter);
@@ -447,6 +447,8 @@ public class ChooseStudySet extends FragmentActivity
          */
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+// TODO
+// TODO
             final ViewBinder binder = getViewBinder();
             final int[] from = mFrom;
             final int[] to = mTo;
@@ -466,6 +468,8 @@ public class ChooseStudySet extends FragmentActivity
                     setViewText((TextView) v, text);
                 }
             }
+            
+            new LoadDueCardsTask().execute(cursor.getInt(0), view.findViewById(to[1])); 
             
 /*            
             for (int i = 0; i < count; i++) {
@@ -553,17 +557,26 @@ public class ChooseStudySet extends FragmentActivity
     }
 
 // TODO
+// TODO
 // http://stackoverflow.com/questions/4885350/how-to-pass-different-objects-as-a-parameter-to-asyctask
-    private class LoadDueCards extends AsyncTask<Cursor, Integer, Void> {
+    private class LoadDueCardsTask extends AsyncTask<Object, Void, Integer> {
+        private TextView tv;
+        
         @Override
-        protected Void doInBackground(Cursor... params) {
-         // get the count of due cards
+        protected Integer doInBackground(Object... studySetItems) {
+            int studySetId = (Integer) studySetItems[0];
+            tv = (TextView) studySetItems[1];
+            
+            Log.d(TAG, "LoadDueCards: studySetId=" + studySetId);
+            Log.d(TAG, "LoadDueCards: tv text=" + tv.getText());
+            
+            // get the count of due cards
             String selection = StudySetDatabaseHelper.SET_DUE_TIME + 
                     " < " + System.currentTimeMillis();
             Cursor studySetCursor = getContentResolver().query(
                     // specify the study set ID and a limit
                     ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
-                            cursor.getInt(0)).buildUpon().appendQueryParameter(
+                            studySetId).buildUpon().appendQueryParameter(
                             StudySetProvider.QUERY_PARAMETER_LIMIT,
                             "" + Cards.MAX_CARDS_TO_SHOW).build(),
                     new String[] {StudySetDatabaseHelper.COUNT},
@@ -572,13 +585,23 @@ public class ChooseStudySet extends FragmentActivity
                     StudySetDatabaseHelper.SET_DUE_TIME);
         
             if (studySetCursor.moveToFirst()) {
-//                list.add(studySetCursor.getString(0));
+                return studySetCursor.getInt(0);
             }
             studySetCursor.close();
             
-            
             return null;
         }
+
+        /* (non-Javadoc)
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
+        @Override
+        protected void onPostExecute(Integer dueCards) {
+            adapter.setViewText(tv, "" + dueCards + getString(
+                    R.string.choose_study_set_cards_due));
+        }
+        
+        
         
     }
     
