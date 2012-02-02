@@ -471,6 +471,10 @@ public class ChooseStudySet extends FragmentActivity
                     setViewText((TextView) v, text);
                 }
             }
+// TODO put this (or whatever the final text is) into a constant            
+            setViewText((TextView) view.findViewById(to[1]), "Loading...");
+            setViewText((TextView) view.findViewById(to[2]), "");
+            
             // update the study set new and due card counts
             new LoadDueCardsTask().execute(cursor.getInt(0), 
                     view.findViewById(to[1]),
