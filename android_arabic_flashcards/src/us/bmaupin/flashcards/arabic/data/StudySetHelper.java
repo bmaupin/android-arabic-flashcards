@@ -34,7 +34,12 @@ public class StudySetHelper {
                     studySetCount);
             
             context.getContentResolver().update(
-                    StudySetProvider.CONTENT_URI_META,
+                    // don't notify the resolver that the content's changed so 
+                    // the cursors bound to this data don't reload
+                    StudySetProvider.CONTENT_URI_META.buildUpon().appendQueryParameter(
+                            StudySetProvider.QUERY_PARAMETER_NOTIFY, 
+                            StudySetProvider.QUERY_PARAMETER_NOTIFY_FALSE
+                            ).build(),
                     cv,
                     StudySetDatabaseHelper._ID + " = ? ",
                     new String[] {"" + studySetId});

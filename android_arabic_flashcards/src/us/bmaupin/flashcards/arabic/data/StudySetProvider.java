@@ -40,6 +40,9 @@ public class StudySetProvider extends ContentProvider {
     private static final int STUDYSETS_META_ID_PATH_POSITION = 2;
     // query parameter for limiting the results of the query
     public static final String QUERY_PARAMETER_LIMIT = "limit";
+    // query parameter for whether or not to notify the content resolver of a change
+    public static final String QUERY_PARAMETER_NOTIFY = "notify";
+    public static final String QUERY_PARAMETER_NOTIFY_FALSE = "0";
     
     private static final UriMatcher sUriMatcher;
 
@@ -186,7 +189,11 @@ public class StudySetProvider extends ContentProvider {
             throw new IllegalArgumentException("Unknown URI " + uri);
         }
         
-        getContext().getContentResolver().notifyChange(uri, null);
+        // don't notify the resolver that the content's changed if we tell it not to
+        String notify = uri.getQueryParameter(QUERY_PARAMETER_NOTIFY);
+        if (notify == null || !notify.equals(QUERY_PARAMETER_NOTIFY_FALSE)) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
         return count;
     }
 	
