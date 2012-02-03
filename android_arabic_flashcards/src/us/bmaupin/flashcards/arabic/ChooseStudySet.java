@@ -149,6 +149,10 @@ public class ChooseStudySet extends FragmentActivity
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
+        
+        // force the adapter to reload the study set list in case anything's 
+        // changed
+        adapter.notifyDataSetChanged();
     }
 
     @Override
