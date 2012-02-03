@@ -76,7 +76,7 @@ public class ChooseStudySet extends FragmentActivity
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
     // ID of study set to delete
-    private String studySetToDelete;
+    private long studySetToDelete;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,8 +283,7 @@ public class ChooseStudySet extends FragmentActivity
                 item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.choose_study_set_delete_study_set:
-// TODO            
-//            studySetToDelete = adapter.getItem(info.position).get(0);
+            studySetToDelete = info.id;
             showDialog(DIALOG_CONFIRM_DELETE_STUDY_SET);
             return true;
         default:
@@ -306,11 +305,10 @@ public class ChooseStudySet extends FragmentActivity
                 cv);
     }
     
-    private void deleteStudySet(String id) {
+    private void deleteStudySet(long id) {
         getContentResolver().delete(
                 ContentUris.withAppendedId(
-                        StudySetProvider.CONTENT_URI_META,
-                        Cards.stringToInteger(id)),
+                        StudySetProvider.CONTENT_URI_META, id),
                 null, null);
         Toast.makeText(getApplicationContext(), 
                 R.string.choose_study_set_study_set_deleted, 
