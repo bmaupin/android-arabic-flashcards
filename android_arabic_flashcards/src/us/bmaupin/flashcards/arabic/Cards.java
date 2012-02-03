@@ -165,6 +165,14 @@ public class Cards {
         tv.setTypeface(tf);
     }
     
+    static int longToInteger(long l) {
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException
+                (l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
+    }
+    
     static int stringToInteger(String s) {
         try {
             int i = Integer.parseInt(s.trim());
