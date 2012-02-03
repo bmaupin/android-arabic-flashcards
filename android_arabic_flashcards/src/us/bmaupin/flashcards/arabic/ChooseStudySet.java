@@ -1,8 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
@@ -36,10 +33,8 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -67,7 +62,6 @@ public class ChooseStudySet extends FragmentActivity
 	};
     
     private StudySetCursorAdapter adapter;
-    private Cursor cursor;
     private ListView lv;
     // the card set of a new study set
     private String newStudySetCardSet = "";
@@ -108,13 +102,7 @@ public class ChooseStudySet extends FragmentActivity
         });
         
         lv = (ListView) findViewById(android.R.id.list);
-// TODO
-/*        
-        adapter = new StudySetAdapter(this,
-                R.layout.choose_study_set_row,
-                R.id.study_set_title,
-                new ArrayList<ArrayList<String>>());
-*/
+
         adapter = new StudySetCursorAdapter(this,
                 R.layout.choose_study_set_row,
                 null,
@@ -215,16 +203,6 @@ public class ChooseStudySet extends FragmentActivity
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
         adapter.swapCursor(data);
-        // make the cursor available to the rest of the class
-//        cursor = data;
-        
-        // clear out the empty view for now, so it doesn't pop up
-// TODO
-/*
-        lv.setEmptyView(null);
-        adapter.clear();
-        new LoadListDataTask().execute(data);
-*/
     }
     
     @Override
@@ -405,42 +383,10 @@ public class ChooseStudySet extends FragmentActivity
     }
     
     class StudySetCursorAdapter extends SimpleCursorAdapter {
-/*
-        private Cursor c;
-        private String[] from;
-        private int layout;
-        private LayoutInflater mInflater;
-        private int[] to;
-*/
-        
         public StudySetCursorAdapter(Context context, int layout, Cursor c,
                 String[] from, int[] to, int flags) {
             super(context, layout, c, from, to, flags);
-/*            
-            // Cache the LayoutInflater to avoid asking for a new one each time.
-            mInflater = LayoutInflater.from(context);
-            
-            this.c = c;
-            this.from = from;
-            this.layout = layout;
-            this.to = to;
-*/
         }
-/*
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-// TOD implement google's holder technique for faster adapters
-            ViewHolder holder;
-            
-            View v = mInflater.inflate(layout, null);
-            
-            if (c != null) { 
-                ((TextView) v.findViewById(to[0])).setText(c.getString(c.getColumnIndex(from[0])));
-            }
-            
-            return v;
-        }
-*/
 
         /* 
          * taken from android 4.0.3_r1 source
@@ -448,8 +394,6 @@ public class ChooseStudySet extends FragmentActivity
          */
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-// TODO
-// TODO
             final ViewBinder binder = getViewBinder();
             final int[] from = mFrom;
             final int[] to = mTo;
@@ -478,95 +422,9 @@ public class ChooseStudySet extends FragmentActivity
             new LoadDueCardsTask().execute(cursor.getInt(0), 
                     view.findViewById(to[1]),
                     view.findViewById(to[2])); 
-            
-/*            
-            for (int i = 0; i < count; i++) {
-                final View v = view.findViewById(to[i]);
-                if (v != null) {
-                    boolean bound = false;
-                    if (binder != null) {
-                        bound = binder.setViewValue(v, cursor, from[i]);
-                    }
-
-                    if (!bound) {
-                        String text = cursor.getString(from[i]);
-                        if (text == null) {
-                            text = "";
-                        }
-
-                        if (v instanceof TextView) {
-                            setViewText((TextView) v, text);
-                        } else if (v instanceof ImageView) {
-                            setViewImage((ImageView) v, text);
-                        } else {
-                            throw new IllegalStateException(v.getClass().getName() + " is not a " +
-                                    " view that can be bounds by this SimpleCursorAdapter");
-                        }
-                    }
-                }
-            }
-*/
-        }
-        
-        
-    }
-    
-    private class StudySetAdapter extends ArrayAdapter<ArrayList<String>> {
-        private LayoutInflater mInflater;
-        private int resource;
-        private final List<ArrayList<String>> studySets;
-
-        public StudySetAdapter(Context context, int resource,
-                int textViewResourceId, List<ArrayList<String>> studySets) {
-            // textViewResourceId won't really be used since we override getView
-            super(context, resource, textViewResourceId, studySets);
-            
-            // Cache the LayoutInflater to avoid asking for a new one each time.
-            mInflater = LayoutInflater.from(context);
-
-            this.resource = resource;
-            this.studySets = studySets;
-        }
-        
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // implement google's holder technique for faster adapters
-            ViewHolder holder;
-            
-            if (convertView == null) {
-                convertView = mInflater.inflate(resource, null);
-                holder = new ViewHolder();
-                holder.tv1 = (TextView) convertView.findViewById(
-                        R.id.study_set_title);
-                holder.tv2 = (TextView) convertView.findViewById(
-                        R.id.study_set_due);
-                holder.tv3 = (TextView) convertView.findViewById(
-                        R.id.study_set_new);
-                
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            
-            holder.tv1.setText(studySets.get(position).get(1));
-            holder.tv2.setText(studySets.get(position).get(2) + 
-                    getString(R.string.choose_study_set_cards_due));
-            holder.tv3.setText(studySets.get(position).get(3) + 
-                    getString(R.string.choose_study_set_cards_new));
-            
-            return convertView;
         }
     }
-    
-    private static class ViewHolder {
-        TextView tv1;
-        TextView tv2;
-        TextView tv3;
-    }
 
-// TODO
-// TODO
-// http://stackoverflow.com/questions/4885350/how-to-pass-different-objects-as-a-parameter-to-asyctask
     private class LoadDueCardsTask extends AsyncTask<Object, Void, Integer[]> {
         private TextView tv1;
         private TextView tv2;
@@ -658,92 +516,6 @@ public class ChooseStudySet extends FragmentActivity
                     R.string.choose_study_set_cards_due));
             adapter.setViewText(tv2, "" + dueCardsCount[1] + getString(
                     R.string.choose_study_set_cards_new));
-        }
-    }
-    
-    private class LoadListDataTask extends AsyncTask<Cursor, ArrayList<String>, Void> {
-        @SuppressWarnings("unchecked")
-        @Override
-        protected Void doInBackground(Cursor... params) {
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    ArrayList<String> list = new ArrayList<String>();
-                    list.add(cursor.getString(0));
-                    list.add(cursor.getString(1));
-                    
-                    // get the count of due cards
-                    String selection = StudySetDatabaseHelper.SET_DUE_TIME + 
-                            " < " + System.currentTimeMillis();
-                    Cursor studySetCursor = getContentResolver().query(
-                            // specify the study set ID and a limit
-                            ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
-                                    cursor.getInt(0)).buildUpon().appendQueryParameter(
-                                    StudySetProvider.QUERY_PARAMETER_LIMIT,
-                                    "" + Cards.MAX_CARDS_TO_SHOW).build(),
-                            new String[] {StudySetDatabaseHelper.COUNT},
-                            selection,
-                            null,
-                            StudySetDatabaseHelper.SET_DUE_TIME);
-
-                    if (studySetCursor.moveToFirst()) {
-                        list.add(studySetCursor.getString(0));
-                    }
-                    studySetCursor.close();
-                    
-                    // figure out how many new cards we've already seen today
-                    int studySetCount = StudySetHelper.getStudySetCount(
-                            ChooseStudySet.this, cursor.getInt(0));
-                    int initialStudySetCount = 
-                        StudySetHelper.maybeUpdateInitialStudySetCount(
-                                ChooseStudySet.this, cursor.getInt(0), 
-                                studySetCount, cursor.getString(5), 
-                                cursor.getInt(6));
-                    int newCardsDue = Cards.MAX_NEW_CARDS_TO_SHOW - 
-                            (studySetCount - initialStudySetCount);
-                    Log.d(TAG, "max new cards to show=" + newCardsDue);
-                    
-                    // get the total count of cards in the card group
-                    int cardGroupCount = 0;
-                    CardQueryHelper cqh = new CardQueryHelper(
-                            ChooseStudySet.this,
-                            cursor.getString(2),
-                            cursor.getString(3));
-                    studySetCursor = getContentResolver().query(
-                            CardProvider.CONTENT_URI,
-                            new String[] {CardDatabaseHelper.COUNT},
-                            cqh.getSelection(),
-                            cqh.getSelectionArgs(),
-                            cqh.getSortOrder());
-                    if (studySetCursor.moveToFirst()) {
-                        cardGroupCount = studySetCursor.getInt(0);
-                    }
-                    studySetCursor.close();
-                    
-                    // can't have more cards due than are in the card group
-                    if (newCardsDue > (cardGroupCount - studySetCount)) {
-                        newCardsDue = cardGroupCount - studySetCount;
-                    }
-                    Log.d(TAG, "newCardsDue=" + newCardsDue);
-                    
-                    list.add("" + newCardsDue);
-                    
-                    publishProgress(list);
-                    cursor.moveToNext();
-                }
-            }
-            return(null);
-        }
-        
-        @Override
-        protected void onProgressUpdate(ArrayList<String>... item) {
-//            adapter.add(item[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            // set the empty view after the asynctask is done
-            View ev = findViewById(R.id.study_set_empty);
-            lv.setEmptyView(ev);
         }
     }
 }
