@@ -134,16 +134,13 @@ public class ChooseStudySet extends FragmentActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, 
                     int position, long id) {
-// TODO
-/*
                 Intent intent = new Intent(ChooseStudySet.this, 
                         ShowStudySet.class);
-                // id is the study set id
+                // id is the study set id.  convert it from long to int (I 
+                // think it's safe to say it will never be > 2,147,483,647)
                 intent.putExtra(Cards.EXTRA_STUDY_SET_ID, 
-                        Cards.stringToInteger(adapter.getItem(position)
-                                .get(0)));
+                        Cards.longToInteger(id));
                 startActivity(intent);
-*/
             }
         });
     }
