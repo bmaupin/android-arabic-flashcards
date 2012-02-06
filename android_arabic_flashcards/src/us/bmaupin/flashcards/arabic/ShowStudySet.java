@@ -1,8 +1,5 @@
 package us.bmaupin.flashcards.arabic;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
@@ -48,6 +45,7 @@ public class ShowStudySet extends FragmentActivity
     private static final int CARD_MODE_NEW = 1;
     private static final int CARD_MODE_NONE_DUE = 2;
     // constants for swipe
+    private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     private static final int ONE_HOUR_IN_MS = 3600000;
@@ -345,24 +343,30 @@ public class ShowStudySet extends FragmentActivity
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
-                // from http://stackoverflow.com/questions/4098198/adding-fling-gesture-to-an-image-view-android
-                // right to left
-                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    showNextCard(RESPONSE_IFFY);
-                    return true;
-                // left to right
-                }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    showPrevCard();
-                    return true;
+                // if the swipe goes too far up or down, don't count it as a horizontal swipe
+                if (Math.abs(e1.getY() - e2.getY()) < SWIPE_MAX_OFF_PATH) {
+                    // from http://stackoverflow.com/questions/4098198/adding-fling-gesture-to-an-image-view-android
+                    // right to left
+                    if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                        showNextCard(RESPONSE_IFFY);
+                        return true;
+                    // left to right
+                    }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                        showPrevCard();
+                        return true;
+                    }
                 }
-                // bottom to top
-                if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                    showNextCard(RESPONSE_KNOWN);
-                    return true;
-                // top to bottom
-                }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                    showNextCard(RESPONSE_UNKNOWN);
-                    return true;
+                // if the swipe goes too far left or right, don't count it as a vertical swipe
+                if (Math.abs(e1.getX() - e2.getX()) < SWIPE_MAX_OFF_PATH) {
+                    // bottom to top
+                    if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                        showNextCard(RESPONSE_KNOWN);
+                        return true;
+                    // top to bottom
+                    }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                        showNextCard(RESPONSE_UNKNOWN);
+                        return true;
+                    }
                 }
                 return false;
             } catch (Exception e) {
