@@ -190,7 +190,7 @@ public class ShowStudySet extends FragmentActivity
                     PROJECTION_CARDS,
                     CardDatabaseHelper._ID + " IN " + studySetIds,
                     null,
-                    null);
+                    CardDatabaseHelper.RANDOM);
             
         } else {
             Log.d(TAG, "Now showing new cards...");
