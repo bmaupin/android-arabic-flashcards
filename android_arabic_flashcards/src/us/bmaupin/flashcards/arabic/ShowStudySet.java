@@ -169,21 +169,6 @@ public class ShowStudySet extends FragmentActivity
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
         }
-        
-        if (fixArabic) {
-            // set the typeface for the TextViews within the ViewFlipper
-            Typeface tf = Typeface.createFromAsset(getAssets(), 
-                    Cards.ARABIC_TYPEFACE);
-            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(tf);
-            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(tf);
-
-        } else {
-            // reset to the default typeface
-            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(
-                    Typeface.DEFAULT);
-            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(
-                    Typeface.DEFAULT);
-        }
 
 /*
 // TODO: do we want to do this if the order is random?
@@ -420,6 +405,33 @@ public class ShowStudySet extends FragmentActivity
                 R.anim.slide_right_out);
         
         gestureDetector = new GestureDetector(new MyGestureDetector());
+
+/* TODO
+ * problems with this:
+ * 1. fixArabic is loaded in onResume, is this guaranteed to be called by then?
+ * 2. if fixArabic changes after the first card, typeface won't get updated
+ * 
+ * we could:
+ * 1. create a function that does this
+ * 2. in that function, make sure fixArabic is assigned, and make sure vf is 
+ * assigned
+ * 3. call the function here (to set typeface initially), and in onresume (to
+ * set typeface when app is being resumed)
+ */
+        if (fixArabic) {
+            // set the typeface for the TextViews within the ViewFlipper
+            Typeface tf = Typeface.createFromAsset(getAssets(), 
+                    Cards.ARABIC_TYPEFACE);
+            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(tf);
+            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(tf);
+
+        } else {
+            // reset to the default typeface
+            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(
+                    Typeface.DEFAULT);
+            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(
+                    Typeface.DEFAULT);
+        }
         
         setCurrentCardText();
     }
