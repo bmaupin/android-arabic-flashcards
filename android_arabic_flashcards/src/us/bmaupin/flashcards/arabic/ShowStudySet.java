@@ -169,6 +169,21 @@ public class ShowStudySet extends FragmentActivity
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
         }
+        
+        if (fixArabic) {
+            // set the typeface for the TextViews within the ViewFlipper
+            Typeface tf = Typeface.createFromAsset(getAssets(), 
+                    Cards.ARABIC_TYPEFACE);
+            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(tf);
+            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(tf);
+
+        } else {
+            // reset to the default typeface
+            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(
+                    Typeface.DEFAULT);
+            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(
+                    Typeface.DEFAULT);
+        }
 
 /*
 // TODO: do we want to do this if the order is random?
@@ -405,14 +420,6 @@ public class ShowStudySet extends FragmentActivity
                 R.anim.slide_right_out);
         
         gestureDetector = new GestureDetector(new MyGestureDetector());
-
-        // set the typeface for the TextViews within the ViewFlipper
-        Typeface tf = Typeface.createFromAsset(getAssets(), 
-                Cards.ARABIC_TYPEFACE);
-        TextView tv1 = (TextView)vf.findViewById(R.id.textview1);
-        TextView tv2 = (TextView)vf.findViewById(R.id.textview2);
-        tv1.setTypeface(tf);
-        tv2.setTypeface(tf);
         
         setCurrentCardText();
     }
