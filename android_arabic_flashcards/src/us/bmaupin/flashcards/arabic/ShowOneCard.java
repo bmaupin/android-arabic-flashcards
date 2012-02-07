@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -50,8 +51,6 @@ public class ShowOneCard extends Activity {
         resources = getResources();
         
         tv = (TextView) findViewById(R.id.textview);
-        Cards.setArabicTypeface(this, tv);
-        
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +99,15 @@ public class ShowOneCard extends Activity {
          * in the future, show whichever language wasn't searched for
          */
         currentLang = Cards.LANGUAGE_ARABIC;
+        
+        if (fixArabic) {
+            tv.setTypeface(Typeface.createFromAsset(getAssets(), 
+                    Cards.ARABIC_TYPEFACE));
+        } else {
+            // reset to the default typeface
+            tv.setTypeface(Typeface.DEFAULT);
+        }
+        
         setCardText();
     }
     

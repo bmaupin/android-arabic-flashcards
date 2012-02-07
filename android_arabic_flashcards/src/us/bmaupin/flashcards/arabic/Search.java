@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -34,6 +35,13 @@ public class Search extends ListActivity {
     // whether or not to show arabic vowels
     private boolean showVowels;
     
+    /**
+     * @return the fixArabic
+     */
+    public boolean isFixArabic() {
+        return fixArabic;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +101,8 @@ public class Search extends ListActivity {
                 android.R.layout.simple_list_item_2,
                 cursor,
                 new String[] {CardDatabaseHelper.CARDS_ENGLISH, CardDatabaseHelper.CARDS_ARABIC},
-                new int[] { android.R.id.text1, android.R.id.text2 });
+                new int[] { android.R.id.text1, android.R.id.text2 },
+                fixArabic);
 
         // http://stackoverflow.com/questions/3609126/changing-values-from-cursor-using-simplecursoradapter
         adapter.setViewBinder(new ViewBinder() {
@@ -157,19 +166,24 @@ public class Search extends ListActivity {
  */
 class MySimpleCursorAdapter extends SimpleCursorAdapter {
     private Context context;
+    private boolean fixArabic;
     
     public MySimpleCursorAdapter(Context context, int layout, Cursor c,
-            String[] from, int[] to) {
+            String[] from, int[] to, boolean fixArabic) {
         super(context, layout, c, from, to);
         this.context = context;
+        this.fixArabic = fixArabic;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = super.getView(position, convertView, parent);
-        
-        TextView tv = (TextView)v.findViewById(android.R.id.text2);
-        Cards.setArabicTypeface(context, tv);
+
+        if (fixArabic) {
+            ((TextView) v.findViewById(android.R.id.text2)).setTypeface(
+                    Typeface.createFromAsset(context.getAssets(), 
+                            Cards.ARABIC_TYPEFACE));
+        }
         
         return v;
     }

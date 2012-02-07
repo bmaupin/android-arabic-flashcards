@@ -154,17 +154,6 @@ public class Cards {
         return vowelsRemoved;
     }
     
-    /**
-     * An attempt at eliminating redundancy and making sure we use the same 
-     * typeface everywhere.
-     * @param context
-     * @param tv
-     */
-    static void setArabicTypeface(Context context, TextView tv) {
-        Typeface tf = Typeface.createFromAsset(context.getAssets(), Cards.ARABIC_TYPEFACE);
-        tv.setTypeface(tf);
-    }
-    
     static int longToInteger(long l) {
         if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
             throw new IllegalArgumentException
