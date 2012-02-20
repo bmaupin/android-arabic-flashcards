@@ -6,10 +6,7 @@ import java.util.Map;
 
 import org.amr.arabic.ArabicUtilities;
 
-import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
-import android.widget.TextView;
 
 public class Cards {
 	private static final String TAG = "Cards";
@@ -60,8 +57,8 @@ public class Cards {
         // direction (diacritics, parentheses, etc.)
         s += '\u200f';
         
-        Log.d(TAG, "UNICODE: " + splitString(s));
-        Log.d(TAG, "UNICODE: " + getUnicodeCodes(s));
+//        Log.d(TAG, "UNICODE: " + splitString(s));
+//        Log.d(TAG, "UNICODE: " + getUnicodeCodes(s));
         
         // only fix the sheddas if we're showing the vowels
         if (showVowels) {
@@ -167,7 +164,7 @@ public class Cards {
             int i = Integer.parseInt(s.trim());
             return i;
         } catch (NumberFormatException e) {
-            Log.d(TAG, "stringToInteger: error: " + e.getMessage());
+            Log.e(TAG, "stringToInteger: error: " + e.getMessage());
             return 0;
         }
     }
