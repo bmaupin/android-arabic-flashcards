@@ -48,7 +48,7 @@ public class ShowStudySet extends FragmentActivity
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-    private static final int ONE_HOUR_IN_MS = 3600000;
+    private static final long ONE_HOUR_IN_MS = 3600000;
     
     private static final String[] PROJECTION_CARDS = new String[] {
         CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
@@ -608,9 +608,13 @@ public class ShowStudySet extends FragmentActivity
             }
         }
         cursor.close();
-        
+
         newDueTime = System.currentTimeMillis() + (newInterval * 
                 ONE_HOUR_IN_MS);
+        
+        Log.d(TAG, "cardId=" + cardId);
+        Log.d(TAG, "newInterval=" + newInterval);
+        Log.d(TAG, "newDueTime=" + newDueTime);
         
         ContentValues cv = new ContentValues();
         cv.put(StudySetDatabaseHelper.SET_CARD_ID, cardId);
