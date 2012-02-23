@@ -60,7 +60,6 @@ public class ShowStudySet extends FragmentActivity
     private String cardGroup;
     private String cardSubgroup;
     private Cursor cardsCursor;
-    private int cardsCursorPosition;
     // current card language
     private String currentLang;
     // default card language 
@@ -172,15 +171,6 @@ public class ShowStudySet extends FragmentActivity
         
         // set the typeface when the app is resumed in case it's changed
         setCardTypeface();
-
-/*
-// TODO: do we want to do this if the order is random?
-        // if we're coming back to this activity from another, we've probably
-        // lost our cursor postion
-        if (cardsCursor.isBeforeFirst()) {
-            cardsCursor.moveToPosition(cardsCursorPosition);
-        }
-*/
     }
 
     @Override
@@ -636,10 +626,6 @@ public class ShowStudySet extends FragmentActivity
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
-/*        
-        // store the cursor position in case we come back
-        cardsCursorPosition = cardsCursor.getPosition();
-*/
     }
     
     @Override
