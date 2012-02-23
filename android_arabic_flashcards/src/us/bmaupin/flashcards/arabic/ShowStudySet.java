@@ -68,7 +68,7 @@ public class ShowStudySet extends FragmentActivity
     // the number of due cards to show
     private int dueCardCount = 0;
     // whether or not to apply arabic fixes
-    private boolean fixArabic;
+    private Boolean fixArabic;
     private GestureDetector gestureDetector;
     private SharedPreferences preferences;
     private Resources resources;
@@ -169,6 +169,9 @@ public class ShowStudySet extends FragmentActivity
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
         }
+        
+        // set the typeface when the app is resumed in case it's changed
+        setCardTypeface();
 
 /*
 // TODO: do we want to do this if the order is random?
@@ -405,35 +408,36 @@ public class ShowStudySet extends FragmentActivity
                 R.anim.slide_right_out);
         
         gestureDetector = new GestureDetector(new MyGestureDetector());
-
-/* TODO
- * problems with this:
- * 1. fixArabic is loaded in onResume, is this guaranteed to be called by then?
- * 2. if fixArabic changes after the first card, typeface won't get updated
- * 
- * we could:
- * 1. create a function that does this
- * 2. in that function, make sure fixArabic is assigned, and make sure vf is 
- * assigned
- * 3. call the function here (to set typeface initially), and in onresume (to
- * set typeface when app is being resumed)
- */
-        if (fixArabic) {
-            // set the typeface for the TextViews within the ViewFlipper
-            Typeface tf = Typeface.createFromAsset(getAssets(), 
-                    Cards.ARABIC_TYPEFACE);
-            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(tf);
-            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(tf);
-
-        } else {
-            // reset to the default typeface
-            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(
-                    Typeface.DEFAULT);
-            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(
-                    Typeface.DEFAULT);
-        }
+        
+        // set the typeface when the app is initially opened
+        setCardTypeface();
         
         setCurrentCardText();
+    }
+
+    private void setCardTypeface() {
+        /*
+         * fixArabic is initialized in onResume(), and vf is initialized in 
+         * showFirstCard().  the first time the app is run, onResume() will get 
+         * called before showFirstCard(), so double-check that fixArabic and vf are 
+         * both initialized
+         */
+        if (fixArabic != null && vf != null) {
+            if (fixArabic) {
+                // set the typeface for the TextViews within the ViewFlipper
+                Typeface tf = Typeface.createFromAsset(getAssets(), 
+                        Cards.ARABIC_TYPEFACE);
+                ((TextView) vf.findViewById(R.id.textview1)).setTypeface(tf);
+                ((TextView) vf.findViewById(R.id.textview2)).setTypeface(tf);
+    
+            } else {
+                // reset to the default typeface
+                ((TextView) vf.findViewById(R.id.textview1)).setTypeface(
+                        Typeface.DEFAULT);
+                ((TextView) vf.findViewById(R.id.textview2)).setTypeface(
+                        Typeface.DEFAULT);
+            }
+        }
     }
     
     private void setCardText(int layoutIndexToShow) {
