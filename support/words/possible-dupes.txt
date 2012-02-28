@@ -1,7 +1,4 @@
 TO FIX
-470(11)-1410(23)
-    close, near/relative
-    one an adj, one a noun
 
 
 LEAVING ALONE FOR NOW
@@ -42,6 +39,7 @@ dupes removed:
     1358
     1358
     1397
+    1410
     1436
     1470
     1529
