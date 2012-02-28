@@ -185,7 +185,7 @@ wife|زَوْجَة|noun|family|f|n
 wives|زَوْجات|noun|family|f|y
 seventh|سابع|adj|numbers||n
 sixth|سادِس|adj|numbers||n
-small; young|صَغير|adj|common|m|n
+small; young; small child, young child|صَغير|adj|common|m|n
 child|طِفْل|noun|people|m|n
 children|أطْفال|noun|people|m|y
 tenth|عاشِر|adj|numbers||n
@@ -373,8 +373,7 @@ market|سوق|noun|locations|f|n
 markets|أسْواق|noun|locations|f|y
 friend|صَديق|noun|people|m|n
 friends|أصْدِقاء|noun|people|m|y
-small child, young child|صَغير|noun|people|m|n
-small children, young children|صِغار|noun|people|m|y
+small (pl); young (pl); small children, young children|صِغار|adj|common|m|y
 tall|طَويل|noun|descriptive|m|n
 tall (pl)|طِوال|noun|descriptive|m|y
 cord used to hold a headdress in place|عِقال|noun|clothing|m|n
