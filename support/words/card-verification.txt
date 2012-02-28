@@ -10,10 +10,10 @@
     ends with 1047 (present, gift)
 
 24:
-    starts with 1048 (to select)
+    starts with "to select"
     contains 884 (top, highest point, upper)
         678 (to be late)
         23 (store, shop; place, location)
-    ends with 1097 (ministry, department in an administration)
+    ends with "ministries, departments in an administration"
 
 587 638

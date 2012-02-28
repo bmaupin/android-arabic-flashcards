@@ -160,7 +160,7 @@ elementary|ابْتِدائيّ|adj|education||n
 son|ابْنٌ|noun|family|m|n
 sons|أبْناء|noun|family|m|y
 daughter|ابْنَة|noun|family|f|n
-daughters|بَنات|noun|family|f|y
+daughters; girls|بَنات|noun|family|f|y
 brother|أَخ|noun|family|m|n
 brothers|إخوة|noun|family|m|y
 sister|أُخْت|noun|family|f|n
@@ -171,7 +171,6 @@ English|إنْكليزيّ|noun|subjects|m|n
 first|أوَّل|noun|numbers|m|n
 first (pl)|أوائِل|noun|numbers|m|y
 girl|بِنْت|noun|people|f|n
-girls|بَنات|noun|people|f|y
 ninth|تاسِع|adj|numbers||n
 differential equations|تَفاضُل|noun|subjects|m|n
 second|ثانٍ (الثاني)|noun|numbers|m|n
