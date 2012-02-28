@@ -1,8 +1,5 @@
 TO FIX
-1009-1140
-    white (pl)
-    one a noun m, one an adj f
-470(11)-1411(23)
+470(11)-1410(23)
     close, near/relative
     one an adj, one a noun
 
@@ -18,7 +15,7 @@ UNSURE
 
 
 NOT DUPES
-251-266-1388 (to bring; to attain, to get, to acquire; to attend, to be present)
+251-266-1387 (to bring; to attain, to get, to acquire; to attend, to be present)
 329-364 (conversation; modern)
 570-680 (tooth; age)
 
@@ -40,6 +37,7 @@ dupes removed:
     1061
     1061
     1136
+    1140
     1345
     1358
     1358

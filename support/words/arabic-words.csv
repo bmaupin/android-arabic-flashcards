@@ -1005,8 +1005,8 @@ to be located; fall down|وَقَعَ (يَقَعُ) وُقوع/وَقْع|verb|
 left|يَسار|noun|directions|m|n
 right|يَمين|noun|directions|m|n
 to return|آبَ (يَؤوبُ) إياب|verb|||n
-white|أبيَض|noun|colors|m|n
-white (pl)|بيض|noun|colors|m|y
+white (m)|أبيَض|adj|colors|m|n
+white (m/f pl)|بيض|adj|colors||y
 ruin, antiquity, artifact, relic|أثَر|noun||m|n
 ruins, antiquities, artifacts, relics|آثار|noun||m|y
 to respond, to answer|أجابَ (يُجيبُ) إجابة|verb|||n
@@ -1136,8 +1136,7 @@ watermelon|بِطّيخ|noun|food|m|n
 cow, cattle|بَقَرة|noun|animals|f|n
 cows, cattle|أبْقار/بَقَر|noun|animals|f|y
 tomato|بَنَدورة (طَماطِم في مصر)|noun|food|f|n
-white|بَيضاء|adj|colors|f|n
-white (pl)|بيض|adj|colors|f|y
+white (f)|بَيضاء|adj|colors|f|n
 spice, condiment, seasoning|تابِل|noun|food|m|n
 spices, condiments, seasonings|تَوابِل|noun|food|m|y
 approximately, about, nearly, roughly|تَقريباً|adv|||n
