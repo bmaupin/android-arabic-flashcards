@@ -2,10 +2,10 @@
 
 import sys
 
-infile_name = 'arabic-words-separated-vowels.csv'
-outfile_name = 'arabic-words-separated-vowels2.csv'
-aws_chapters_name = 'aws-chapters-new.csv'
-aws_chapters_new_name = 'aws-chapters-new2.csv'
+infile_name = 'arabic-words.csv'
+outfile_name = 'arabic-words-new.csv'
+aws_chapters_name = 'aws-chapters.csv'
+aws_chapters_new_name = 'aws-chapters-new.csv'
 
 
 def main():
