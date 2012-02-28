@@ -1,38 +1,36 @@
 TO FIX
-198-392
-    big
-    one an adj, one a noun
-188-375
+188-376
     small, young
     one an adj, one a noun
-1011-1142
+1010-1141
     white (pl)
     one a noun m, one an adj f
-472(11)-1413(23)
+471(11)-1412(23)
     close, near/relative
     one an adj, one a noun
 
 
 LEAVING ALONE FOR NOW
-430(11)-838(17)
+429(11)-837(17)
     sitting
     need to mark one as verbal noun?
 
 
 UNSURE
-107-626 (to equal; to do (Syrian colloquial))
+107-625 (to equal; to do (Syrian colloquial))
 
 
 NOT DUPES
-251-266-1390 (to bring; to attain, to get, to acquire; to attend, to be present)
+251-266-1389 (to bring; to attain, to get, to acquire; to attend, to be present)
 329-364 (conversation; modern)
-572-682 (tooth; age)
+571-681 (tooth; age)
 
 
 dupes removed:
     174
     381
     381
+    393
     487
     562
     623
