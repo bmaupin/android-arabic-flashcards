@@ -70,8 +70,6 @@ public class ShowStudySet extends FragmentActivity
     private Boolean fixArabic;
     private GestureDetector gestureDetector;
     private SharedPreferences preferences;
-    // how many previous cards we've gone back
-    private int prevCardCount = 0;
     private Resources resources;
     // whether or not to show arabic vowels
     private boolean showVowels;
@@ -478,9 +476,6 @@ public class ShowStudySet extends FragmentActivity
     }
     
     private void showNextCard(int response) {
-        if (prevCardCount > 0) {
-            prevCardCount --;
-        }
         updateCardInterval(cardsCursor.getString(0), response);
         showNextCard(true);
     }
@@ -524,7 +519,6 @@ public class ShowStudySet extends FragmentActivity
             Toast.makeText(getApplicationContext(), "No previous cards!", 
                     Toast.LENGTH_SHORT).show();
         } else {
-            prevCardCount ++;
             cardsCursor.moveToPrevious();
             // reset the card language that will show first
             currentLang = defaultLang;
