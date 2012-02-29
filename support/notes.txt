@@ -1,5 +1,3 @@
-$Id$
-
 DO:
 ranks
     ranks db takes >5 seconds to create, either fix this or show progress
@@ -133,6 +131,7 @@ CREATE TABLE cards (
     "plural" TEXT
 );
 
+--then import the data into temp
 
 insert into cards (english, arabic, type, category, gender, plural) select english, arabic, type, category, gender, plural from temp;
 
@@ -154,9 +153,11 @@ CREATE TABLE aws_chapters (
     "card_ID" INTEGER NOT NULL
 );
 
+--then import the data into temp
 
 insert into aws_chapters (chapter, card_ID) select chapter, card_ID from temp;
 
+drop table temp;
 
 
 type: adj, adv, conj, interj, noun, prep, pronoun, verb, particle, phrase
