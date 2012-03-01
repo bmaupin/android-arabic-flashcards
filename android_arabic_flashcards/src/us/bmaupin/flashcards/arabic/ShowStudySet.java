@@ -83,6 +83,31 @@ public class ShowStudySet extends FragmentActivity
     private Animation slideRightOut;
     private ViewFlipper vf;
     
+// FOR TESTING
+    Toast currentToast;
+    
+    void showToast(String text) {
+        if(currentToast == null) {
+            currentToast = Toast.makeText(this, text, Toast.LENGTH_LONG);
+        }
+
+        currentToast.setText(text);
+        currentToast.setDuration(Toast.LENGTH_LONG);
+        currentToast.show();
+    }
+/*    
+    void showToast(String text)
+    {
+        if(currentToast != null)
+        {
+            currentToast.cancel();
+        }
+        currentToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        currentToast.show();
+
+    }
+*/
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -480,8 +505,13 @@ public class ShowStudySet extends FragmentActivity
     private void showNextCard(int response) {
         if (prevCardCount > 0) {
             prevCardCount --;
+        } else {
+            // only update the card interval if we're seeing the card for the 
+            // first time this session
+            updateCardInterval(cardsCursor.getString(0), response);
         }
-        updateCardInterval(cardsCursor.getString(0), response);
+        showToast("" + prevCardCount);
+        
         showNextCard(true);
     }
     
@@ -534,6 +564,7 @@ public class ShowStudySet extends FragmentActivity
             vf.setOutAnimation(slideRightOut);
             vf.showPrevious();
         }
+        showToast("" + prevCardCount);
     }
     
     private void flipCard() {
