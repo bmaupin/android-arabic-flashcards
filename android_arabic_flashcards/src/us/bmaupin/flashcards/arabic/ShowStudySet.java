@@ -62,6 +62,8 @@ public class ShowStudySet extends FragmentActivity
     private Cursor cardsCursor;
     // current card language
     private String currentLang;
+    // to hold the current toast so we can update it
+    Toast currentToast;
     // default card language 
     private String defaultLang;
     // the number of due cards to show
@@ -82,31 +84,6 @@ public class ShowStudySet extends FragmentActivity
     private Animation slideRightIn;
     private Animation slideRightOut;
     private ViewFlipper vf;
-    
-// FOR TESTING
-    Toast currentToast;
-    
-    void showToast(String text) {
-        if(currentToast == null) {
-            currentToast = Toast.makeText(this, text, Toast.LENGTH_LONG);
-        }
-
-        currentToast.setText(text);
-        currentToast.setDuration(Toast.LENGTH_LONG);
-        currentToast.show();
-    }
-/*    
-    void showToast(String text)
-    {
-        if(currentToast != null)
-        {
-            currentToast.cancel();
-        }
-        currentToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-        currentToast.show();
-
-    }
-*/
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -510,7 +487,6 @@ public class ShowStudySet extends FragmentActivity
             // first time this session
             updateCardInterval(cardsCursor.getString(0), response);
         }
-        showToast("" + prevCardCount);
         
         showNextCard(true);
     }
@@ -550,9 +526,7 @@ public class ShowStudySet extends FragmentActivity
     
     private void showPrevCard() {
         if (cardsCursor.isFirst()) {
-// TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
-            Toast.makeText(getApplicationContext(), "No previous cards!", 
-                    Toast.LENGTH_SHORT).show();
+            currentToast = Cards.showToast(this, currentToast, "No previous cards!");
         } else {
             prevCardCount ++;
             cardsCursor.moveToPrevious();
@@ -564,7 +538,6 @@ public class ShowStudySet extends FragmentActivity
             vf.setOutAnimation(slideRightOut);
             vf.showPrevious();
         }
-        showToast("" + prevCardCount);
     }
     
     private void flipCard() {

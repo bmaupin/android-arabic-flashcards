@@ -6,7 +6,10 @@ import java.util.Map;
 
 import org.amr.arabic.ArabicUtilities;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class Cards {
 	private static final String TAG = "Cards";
@@ -167,6 +170,22 @@ public class Cards {
             Log.e(TAG, "stringToInteger: error: " + e.getMessage());
             return 0;
         }
+    }
+    
+    /*
+     * method that allows us to not pile up tons of toasts which take forever to
+     * go away by resetting the toast duration each time a new one is shown.
+     */
+    static Toast showToast(Context context, Toast currentToast, String text) {
+        if (currentToast == null) {
+            currentToast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        }
+        
+        currentToast.setText(text);
+        currentToast.setDuration(Toast.LENGTH_SHORT);
+        currentToast.show();
+        
+        return currentToast;
     }
     
 //******************************************* DEBUGGING ************************    
