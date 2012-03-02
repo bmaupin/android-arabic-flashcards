@@ -1,5 +1,7 @@
 package us.bmaupin.flashcards.arabic;
 
+import com.googlecode.chartdroid.pie.ChartPanelActivity;
+
 import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import us.bmaupin.flashcards.arabic.data.CardProvider;
 import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
@@ -270,10 +272,10 @@ public class ShowStudySet extends FragmentActivity
                 break;
             case CARD_MODE_NONE_DUE:
             case CARD_MODE_NEW:
-// TODO: handle if there are no new cards
 // TODO: handle if there are no cards at all to show
+                // either no new cards or no cards to show at all, show the 
+                // summary activity
                 showSummary();
-                Toast.makeText(getApplicationContext(), "DEBUG: No new cards", Toast.LENGTH_SHORT).show();
                 break;
             }
         }
@@ -509,13 +511,10 @@ public class ShowStudySet extends FragmentActivity
                 cardMode = CARD_MODE_NEW;
                 
                 getSupportLoaderManager().restartLoader(0, null, this);
-            
-            // we'll make it here if there are no more new cards 
+             
             } else {
-// TODO: handle if there are no more cards
+                // no more new cards, show the summary activity
                 showSummary();
-                // for now let's at least let people know there are no more cards...
-                Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
             }
             
         } else {
@@ -653,12 +652,31 @@ public class ShowStudySet extends FragmentActivity
     }
     
     private void showSummary() {
-        Toast.makeText(
-                getApplicationContext(),
-                "known cards: " + knownCardCount + "\n" + 
-                "iffy cards: " + iffyCardCount + "\n" + 
-                "unknown cards: " + unknownCardCount,
-                Toast.LENGTH_SHORT).show();
+        final String[] demo_pie_labels = new String[] {
+                "known",
+                "iffy",
+                "unknown"
+            };
+            final int[] demo_pie_data = new int[] {
+                    knownCardCount, 
+                    iffyCardCount,
+                    unknownCardCount
+                    };
+            int[] colors = {-10027162, -3276954, -39322};
+            // color-blind safe colors
+/*                int[] colors = {
+                    Color.parseColor("#1BA1E2"),
+                    -3276954,
+                    Color.parseColor("#674f00")
+                    };
+*/
+            Intent i = new Intent(this, ChartPanelActivity.class);
+            i.putExtra(Intent.EXTRA_TITLE, "Summary");
+            i.putExtra(ChartPanelActivity.EXTRA_LABELS, demo_pie_labels);
+            i.putExtra(ChartPanelActivity.EXTRA_DATA, demo_pie_data);
+            i.putExtra(ChartPanelActivity.EXTRA_COLORS, colors);
+            startActivity(i);
+            finish();
     }
     
     @Override
