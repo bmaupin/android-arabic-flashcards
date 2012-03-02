@@ -71,6 +71,8 @@ public class ShowStudySet extends FragmentActivity
     // whether or not to apply arabic fixes
     private Boolean fixArabic;
     private GestureDetector gestureDetector;
+    private int iffyCardCount = 0;
+    private int knownCardCount = 0;
     private SharedPreferences preferences;
     // how many previous cards we've gone back
     private int prevCardCount = 0;
@@ -83,6 +85,7 @@ public class ShowStudySet extends FragmentActivity
     private Animation slideLeftOut;
     private Animation slideRightIn;
     private Animation slideRightOut;
+    private int unknownCardCount = 0;
     private ViewFlipper vf;
     
     @Override
@@ -251,9 +254,11 @@ public class ShowStudySet extends FragmentActivity
             case CARD_MODE_NONE_DUE:
                 cardMode = CARD_MODE_NEW;
             case CARD_MODE_DUE:
+                // call showFirstCard() so that no animations are shown
                 showFirstCard();
                 break;
             case CARD_MODE_NEW:
+                // show the next card animations, but don't move the cursor 
                 showNextCard(false);
                 break;
             }
@@ -265,7 +270,9 @@ public class ShowStudySet extends FragmentActivity
                 break;
             case CARD_MODE_NONE_DUE:
             case CARD_MODE_NEW:
-// TODO: handle here if no new cards?
+// TODO: handle if there are no new cards
+// TODO: handle if there are no cards at all to show
+                showSummary();
                 Toast.makeText(getApplicationContext(), "DEBUG: No new cards", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -502,10 +509,11 @@ public class ShowStudySet extends FragmentActivity
                 cardMode = CARD_MODE_NEW;
                 
                 getSupportLoaderManager().restartLoader(0, null, this);
-                
+            
+            // we'll make it here if there are no more new cards 
             } else {
-// TODO: do something if no more cards to show
-                int doSomethingHere;
+// TODO: handle if there are no more cards
+                showSummary();
                 // for now let's at least let people know there are no more cards...
                 Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
             }
@@ -552,6 +560,18 @@ public class ShowStudySet extends FragmentActivity
     }
     
     private void updateCardInterval(String cardId, int response) {
+        switch(response) {
+        case RESPONSE_KNOWN:
+            knownCardCount ++;
+            break;
+        case RESPONSE_IFFY:
+            iffyCardCount ++;
+            break;
+        case RESPONSE_UNKNOWN:
+            unknownCardCount ++;
+            break;
+        }
+        
         final String[] COLUMNS = {StudySetDatabaseHelper.SET_INTERVAL};
         final String SELECTION = StudySetDatabaseHelper.SET_CARD_ID + " = ? ";
         final String[] SELECTIONARGS = {cardId};
@@ -559,7 +579,7 @@ public class ShowStudySet extends FragmentActivity
         long newDueTime;
         int newInterval;
         int oldInterval;
-    	
+        
         Cursor cursor = getContentResolver().query(
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                 studySetId),
@@ -571,18 +591,18 @@ public class ShowStudySet extends FragmentActivity
         if (cursor.moveToFirst()) {
             oldInterval = cursor.getInt(0);
             
-        	switch(response) {
-        	case RESPONSE_KNOWN:
-        		// create the new interval and round it
-        	    newInterval = Math.round(oldInterval * Cards.MULTIPLIER_KNOWN);
-        	    break;
-        	case RESPONSE_IFFY:
-        		newInterval = Math.round(oldInterval * Cards.MULTIPLIER_IFFY);
-        	    break;
-        	case RESPONSE_UNKNOWN:
-        		newInterval = Math.round(oldInterval * 
-        				Cards.MULTIPLIER_UNKNOWN);
-        		
+            switch(response) {
+            case RESPONSE_KNOWN:
+                // create the new interval and round it
+                newInterval = Math.round(oldInterval * Cards.MULTIPLIER_KNOWN);
+                break;
+            case RESPONSE_IFFY:
+                newInterval = Math.round(oldInterval * Cards.MULTIPLIER_IFFY);
+                break;
+            case RESPONSE_UNKNOWN:
+                newInterval = Math.round(oldInterval * 
+                        Cards.MULTIPLIER_UNKNOWN);
+                
                 // don't allow the interval to go below the minimum
                 if (newInterval < Cards.MIN_INTERVAL) {
                     newInterval = Cards.MIN_INTERVAL;
@@ -590,11 +610,11 @@ public class ShowStudySet extends FragmentActivity
                 } else if (newInterval > Cards.MAX_UNKNOWN_INTERVAL) {
                     newInterval = Cards.MAX_UNKNOWN_INTERVAL;
                 }
-        	    break;
-        	default:
-        		Log.e(TAG, "ERROR: unknown response");
-        	    newInterval = oldInterval;
-        	}
+                break;
+            default:
+                Log.e(TAG, "ERROR: unknown response");
+                newInterval = oldInterval;
+            }
         } else {
             switch(response) {
             case RESPONSE_KNOWN:
@@ -607,7 +627,7 @@ public class ShowStudySet extends FragmentActivity
                 newInterval = Cards.MIN_INTERVAL;
                 break;
             default:
-            	Log.e(TAG, "ERROR: unknown response");
+                Log.e(TAG, "ERROR: unknown response");
                 newInterval = Cards.MIN_INTERVAL;
             }
         }
@@ -630,6 +650,15 @@ public class ShowStudySet extends FragmentActivity
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId),
                 cv);
+    }
+    
+    private void showSummary() {
+        Toast.makeText(
+                getApplicationContext(),
+                "known cards: " + knownCardCount + "\n" + 
+                "iffy cards: " + iffyCardCount + "\n" + 
+                "unknown cards: " + unknownCardCount,
+                Toast.LENGTH_SHORT).show();
     }
     
     @Override
