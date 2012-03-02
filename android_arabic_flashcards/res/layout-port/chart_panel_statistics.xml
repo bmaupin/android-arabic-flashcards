@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Source originally from the chartdroid project, revision 299
+ * http://code.google.com/p/chartdroid/
+ * 
+ * This file has been modified from the original source by bmaupin:
+ * - background removed
+ * - chart resources renamed
+-->
+<com.googlecode.chartdroid.pie.ChartLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chart_panel_statictics"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:padding="20px"
+    android:focusable="true"
+    >
+	<include layout="@layout/chart_chart"
+		android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_weight="1"
+	/>
+	<include layout="@layout/chart_key" />
+</com.googlecode.chartdroid.pie.ChartLinearLayout>
