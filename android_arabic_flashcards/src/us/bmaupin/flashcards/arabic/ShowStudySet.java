@@ -652,16 +652,18 @@ public class ShowStudySet extends FragmentActivity
     }
     
     private void showSummary() {
-        final String[] demo_pie_labels = new String[] {
+// TODO: put these into string resources
+        final String[] summary_pie_labels = new String[] {
                 "known",
                 "iffy",
                 "unknown"
             };
-            final int[] demo_pie_data = new int[] {
+            final int[] summary_pie_data = new int[] {
                     knownCardCount, 
                     iffyCardCount,
                     unknownCardCount
                     };
+// TODO: put these into int or color resources
             int[] colors = {-10027162, -3276954, -39322};
             // color-blind safe colors
 /*                int[] colors = {
@@ -671,9 +673,10 @@ public class ShowStudySet extends FragmentActivity
                     };
 */
             Intent i = new Intent(this, ChartPanelActivity.class);
+// TODO: put this into string resource
             i.putExtra(Intent.EXTRA_TITLE, "Summary");
-            i.putExtra(ChartPanelActivity.EXTRA_LABELS, demo_pie_labels);
-            i.putExtra(ChartPanelActivity.EXTRA_DATA, demo_pie_data);
+            i.putExtra(ChartPanelActivity.EXTRA_LABELS, summary_pie_labels);
+            i.putExtra(ChartPanelActivity.EXTRA_DATA, summary_pie_data);
             i.putExtra(ChartPanelActivity.EXTRA_COLORS, colors);
             startActivity(i);
             finish();
