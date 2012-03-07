@@ -1,7 +1,7 @@
-package us.bmaupin.flashcards.arabic.data;
+package ca.bmaupin.flashcards.arabic.data;
 
 import android.content.Context;
-import us.bmaupin.flashcards.arabic.R;
+import ca.bmaupin.flashcards.arabic.R;
 
 public class CardQueryHelper {
     private String selection = "";

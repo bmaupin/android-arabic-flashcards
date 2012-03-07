@@ -1,11 +1,11 @@
-package us.bmaupin.flashcards.arabic.old;
+package ca.bmaupin.flashcards.arabic.old;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import us.bmaupin.flashcards.arabic.R;
-import us.bmaupin.flashcards.arabic.R.string;
-import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
+import ca.bmaupin.flashcards.arabic.R;
+import ca.bmaupin.flashcards.arabic.R.string;
+import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 
 import android.content.ContentValues;
 import android.content.Context;

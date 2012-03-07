@@ -11,7 +11,7 @@ package com.googlecode.chartdroid.pie;
 import java.util.ArrayList;
 import java.util.List;
 
-import us.bmaupin.flashcards.arabic.R;
+import ca.bmaupin.flashcards.arabic.R;
 
 //import com.googlecode.chartdroid.R;
 //import com.googlecode.chartdroid.R.id;

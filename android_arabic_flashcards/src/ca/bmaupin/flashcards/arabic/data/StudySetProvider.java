@@ -1,4 +1,4 @@
-package us.bmaupin.flashcards.arabic.data;
+package ca.bmaupin.flashcards.arabic.data;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -15,7 +15,7 @@ public class StudySetProvider extends ContentProvider {
 	private static final String TAG = "StudySetProvider";
 	
     public static final String AUTHORITY = 
-        "us.bmaupin.flashcards.arabic.studysetprovider";
+        "ca.bmaupin.flashcards.arabic.studysetprovider";
     // uri path constants
     private static final String PATH_STUDYSETS = "studysets";
     private static final String PATH_CARDS = "cards";

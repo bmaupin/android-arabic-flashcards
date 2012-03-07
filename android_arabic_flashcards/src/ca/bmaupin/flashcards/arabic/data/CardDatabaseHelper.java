@@ -1,4 +1,4 @@
-package us.bmaupin.flashcards.arabic.data;
+package ca.bmaupin.flashcards.arabic.data;
 
 import java.io.File;
 import java.io.FileOutputStream;

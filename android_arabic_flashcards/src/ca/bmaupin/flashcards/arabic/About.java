@@ -1,4 +1,4 @@
-package us.bmaupin.flashcards.arabic;
+package ca.bmaupin.flashcards.arabic;
 
 import android.app.Activity;
 import android.content.pm.PackageInfo;

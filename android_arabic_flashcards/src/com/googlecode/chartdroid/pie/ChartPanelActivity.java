@@ -17,7 +17,7 @@ import java.util.List;
 
 import com.googlecode.chartdroid.pie.ColorSwatchKeyAdapter.PieDataElement;
 
-import us.bmaupin.flashcards.arabic.R;
+import ca.bmaupin.flashcards.arabic.R;
 
 import android.app.ListActivity;
 import android.content.Intent;

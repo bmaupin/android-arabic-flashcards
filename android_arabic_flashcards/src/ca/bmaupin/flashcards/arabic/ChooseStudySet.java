@@ -1,11 +1,11 @@
-package us.bmaupin.flashcards.arabic;
+package ca.bmaupin.flashcards.arabic;
 
-import us.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
-import us.bmaupin.flashcards.arabic.data.CardProvider;
-import us.bmaupin.flashcards.arabic.data.CardQueryHelper;
-import us.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
-import us.bmaupin.flashcards.arabic.data.StudySetHelper;
-import us.bmaupin.flashcards.arabic.data.StudySetProvider;
+import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
+import ca.bmaupin.flashcards.arabic.data.CardProvider;
+import ca.bmaupin.flashcards.arabic.data.CardQueryHelper;
+import ca.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
+import ca.bmaupin.flashcards.arabic.data.StudySetHelper;
+import ca.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

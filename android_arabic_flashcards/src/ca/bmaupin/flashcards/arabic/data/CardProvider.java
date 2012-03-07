@@ -1,4 +1,4 @@
-package us.bmaupin.flashcards.arabic.data;
+package ca.bmaupin.flashcards.arabic.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -13,7 +13,7 @@ public class CardProvider extends ContentProvider {
     private static final String TAG = "CardProvider";
     // various constants
     public static final String AUTHORITY = 
-            "us.bmaupin.flashcards.arabic.cardprovider";
+            "ca.bmaupin.flashcards.arabic.cardprovider";
     private static final int CARD_ID_PATH_POSITION = 1;
     private static final String PATH_CARDS = "cards";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY 
