@@ -1,20 +1,20 @@
-package us.bmaupin.flashcards.arabic.old;
+package ca.bmaupin.flashcards.arabic.old;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import us.bmaupin.flashcards.arabic.Cards;
-import us.bmaupin.flashcards.arabic.ChooseCardGroup;
-import us.bmaupin.flashcards.arabic.ChooseStudySet;
-import us.bmaupin.flashcards.arabic.Help;
-import us.bmaupin.flashcards.arabic.Preferences;
-import us.bmaupin.flashcards.arabic.R;
-import us.bmaupin.flashcards.arabic.R.anim;
-import us.bmaupin.flashcards.arabic.R.array;
-import us.bmaupin.flashcards.arabic.R.id;
-import us.bmaupin.flashcards.arabic.R.layout;
-import us.bmaupin.flashcards.arabic.R.menu;
-import us.bmaupin.flashcards.arabic.R.string;
+import ca.bmaupin.flashcards.arabic.Cards;
+import ca.bmaupin.flashcards.arabic.ChooseCardGroup;
+import ca.bmaupin.flashcards.arabic.ChooseStudySet;
+import ca.bmaupin.flashcards.arabic.Help;
+import ca.bmaupin.flashcards.arabic.Preferences;
+import ca.bmaupin.flashcards.arabic.R;
+import ca.bmaupin.flashcards.arabic.R.anim;
+import ca.bmaupin.flashcards.arabic.R.array;
+import ca.bmaupin.flashcards.arabic.R.id;
+import ca.bmaupin.flashcards.arabic.R.layout;
+import ca.bmaupin.flashcards.arabic.R.menu;
+import ca.bmaupin.flashcards.arabic.R.string;
 
 import android.app.Activity;
 import android.app.AlertDialog;

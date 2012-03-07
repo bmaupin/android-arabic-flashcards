@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="us.bmaupin.flashcards.arabic"
+      package="ca.bmaupin.flashcards.arabic"
       android:versionCode="26"
       android:versionName="0.6.1">
     <application android:icon="@drawable/icon"
@@ -54,12 +54,12 @@
                        android:resource="@xml/searchable" />
         </activity>
         <provider android:name=".data.CardProvider"
-                  android:authorities="us.bmaupin.flashcards.arabic.cardprovider"
+                  android:authorities="ca.bmaupin.flashcards.arabic.cardprovider"
                   android:exported="false" >
                   <grant-uri-permission android:pathPattern=".*" />
         </provider>
         <provider android:name=".data.StudySetProvider"
-                  android:authorities="us.bmaupin.flashcards.arabic.studysetprovider"
+                  android:authorities="ca.bmaupin.flashcards.arabic.studysetprovider"
                   android:exported="false" >
                   <grant-uri-permission android:pathPattern=".*" />
         </provider>

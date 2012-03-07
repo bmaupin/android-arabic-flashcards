@@ -1,4 +1,4 @@
-package us.bmaupin.flashcards.arabic;
+package ca.bmaupin.flashcards.arabic;
 
 import java.util.HashMap;
 import java.util.List;

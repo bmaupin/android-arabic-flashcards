@@ -1,4 +1,4 @@
-package us.bmaupin.flashcards.arabic;
+package ca.bmaupin.flashcards.arabic;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
