@@ -46,16 +46,17 @@
     <string name="dialog_create_study_set_title">Create a new study set</string>
     
     <string name="help_title">Help</string>
-    <string name="help_text"><b>Navigation</b>\n
-&#8226; Tap the card/press the center button to see the other side of the card.\n
-&#8226; Swipe up/press the up key if you know the card.\n
-&#8226; Swipe down/press the down key if you don\'t know it.\n
-&#8226; Swipe right/press the right key to go to the next card.\n
-&#8226; Swipe left/press the left key to go to the previous card.\n
+    <string name="help_text"><b>Study sets</b>\n
+&#8226; A study set is a set of cards you wish to learn that are scheduled for you based on how well you know them.\n 
+&#8226; To create a study set, from the main screen click <b>Create new</b>.\n
+&#8226; When viewing a study set:\n
+\t&#8226; Swipe up/press the up key if you know the card well.\n
+\t&#8226; Swipe down/press the down key if you don\'t know the card.\n
+\t&#8226; Swipe left/press the left key if you know the card, but not well (it\'s \"iffy\").\n
+\t&#8226; Swipe right/press the right key to view previous cards.\n
 \n
-<b>Other</b>\n
-&#8226; Go to Menu --> Choose cards to choose cards.\n
-&#8226; Go to Menu --> Settings to change settings.</string>
+<b>Browsing cards</b>\n
+&#8226; To browse cards freely, from the main screen click <b>Browse cards</b>, then swipe left and right or press the left and right keys to change cards.\n</string>
 
 <!--
     <string name="menu_choose_cards_label">Choose cards</string>
@@ -116,7 +117,9 @@
     <string name="search_hint">Search cards</string>
     <string name="search_no_results">No results found</string>
     
+    <!-- update help_text string if you change this string -->
     <string name="study_set_browse_cards">Browse cards</string>
+    <!-- update help_text string if you change this string -->
     <string name="study_set_create_new">Create new</string>
     <string name="study_set_heading">Please choose a study set</string>
     <string name="study_set_no_results">No study sets</string>
