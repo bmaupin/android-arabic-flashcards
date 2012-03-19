@@ -321,8 +321,7 @@ public class ShowStudySet extends FragmentActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event="
-                + event);
+        Log.d(TAG, "onKeyDown: keycode=" + keyCode + ", event=" + event);
         switch (keyCode) {
         case KeyEvent.KEYCODE_DPAD_UP:
             showNextCard(RESPONSE_KNOWN);
@@ -331,10 +330,10 @@ public class ShowStudySet extends FragmentActivity
             showNextCard(RESPONSE_UNKNOWN);
             break;
         case KeyEvent.KEYCODE_DPAD_LEFT:
-            showPrevCard();
+            showNextCard(RESPONSE_IFFY);
             break;
         case KeyEvent.KEYCODE_DPAD_RIGHT:
-            showNextCard(RESPONSE_IFFY);
+            showPrevCard();
             break;
         case KeyEvent.KEYCODE_DPAD_CENTER:
             flipCard();
