@@ -656,11 +656,10 @@ public class ShowStudySet extends FragmentActivity
     }
     
     private void showSummary() {
-// TODO: put these into string resources
         final String[] summary_pie_labels = new String[] {
-                "known",
-                "iffy",
-                "unknown"
+                getString(R.string.chart_label_known),
+                getString(R.string.chart_label_iffy),
+                getString(R.string.chart_label_unknown)
             };
             final int[] summary_pie_data = new int[] {
                     knownCardCount,
@@ -677,8 +676,7 @@ public class ShowStudySet extends FragmentActivity
                     };
 */
             Intent i = new Intent(this, ChartPanelActivity.class);
-// TODO: put this into string resource
-            i.putExtra(Intent.EXTRA_TITLE, "Summary");
+            i.putExtra(Intent.EXTRA_TITLE, getString(R.string.chart_title));
             i.putExtra(ChartPanelActivity.EXTRA_LABELS, summary_pie_labels);
             i.putExtra(ChartPanelActivity.EXTRA_DATA, summary_pie_data);
             i.putExtra(ChartPanelActivity.EXTRA_COLORS, colors);
