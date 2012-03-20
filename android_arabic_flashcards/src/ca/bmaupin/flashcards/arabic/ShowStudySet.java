@@ -261,7 +261,7 @@ public class ShowStudySet extends FragmentActivity
                 break;
             case CARD_MODE_NEW:
                 // show the next card animations, but don't move the cursor 
-                showNextCard(false);
+                showNextCard();
                 break;
             }
         } else {
@@ -496,13 +496,6 @@ public class ShowStudySet extends FragmentActivity
             updateCardInterval(cardsCursor.getString(0), response);
         }
         
-        showNextCard(true);
-    }
-    
-    /*
-     * takes a boolean: whether or not to move the cursor to the next item
-     */
-    private void showNextCard(boolean moveCursor) {
         if (cardsCursor.isLast()) {
             // if we're out of due cards
             if (cardMode == CARD_MODE_DUE) {
@@ -517,17 +510,23 @@ public class ShowStudySet extends FragmentActivity
             }
             
         } else {
-            if (moveCursor) {
-                cardsCursor.moveToNext();
-            }
-            // reset the card language that will show first
-            currentLang = defaultLang;
-            setUnseenCardText();
-            
-            vf.setInAnimation(slideLeftIn);
-            vf.setOutAnimation(slideLeftOut);
-            vf.showNext();
+            cardsCursor.moveToNext();
+            showNextCard();
         }
+    }
+    
+    /*
+     * this method updates the next card's text and then shows it, with a 
+     * sliding animation
+     */
+    private void showNextCard() {
+        // reset the card language that will show first
+        currentLang = defaultLang;
+        setUnseenCardText();
+        
+        vf.setInAnimation(slideLeftIn);
+        vf.setOutAnimation(slideLeftOut);
+        vf.showNext();
     }
     
     private void showPrevCard() {
