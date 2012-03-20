@@ -25,6 +25,11 @@
     <string name="card_order_in_order">in order</string>
     <string name="card_order_in_order_entry">In order</string>
 
+    <string name="chart_label_iffy">iffy</string>
+    <string name="chart_label_known">known</string>
+    <string name="chart_label_unknown">unknown</string>
+    <string name="chart_title">Session summary</string>
+        
     <string name="choose_cards_heading">Choose cards</string>
     
     <string name="choose_study_set_cards_due">\u0020due</string>
