@@ -117,6 +117,8 @@
     <string name="search_hint">Search cards</string>
     <string name="search_no_results">No results found</string>
     
+    <string name="show_study_set_no_cards_due">There are no cards due at this time</string>
+        
     <!-- update help_text string if you change this string -->
     <string name="study_set_browse_cards">Browse cards</string>
     <!-- update help_text string if you change this string -->

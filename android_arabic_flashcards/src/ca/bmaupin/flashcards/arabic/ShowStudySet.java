@@ -272,10 +272,16 @@ public class ShowStudySet extends FragmentActivity
                 break;
             case CARD_MODE_NONE_DUE:
             case CARD_MODE_NEW:
-// TODO: handle if there are no cards at all to show
-                // either no new cards or no cards to show at all, show the 
-                // summary activity
-                showSummary();
+                // no new cards
+                if (knownCardCount + iffyCardCount + unknownCardCount != 0) {
+                    showSummary();
+                // no cards to show at all
+                } else {
+                    Toast.makeText(getApplicationContext(), 
+                            getString(R.string.show_study_set_no_cards_due), 
+                            Toast.LENGTH_SHORT).show();
+                    finish();
+                }
                 break;
             }
         }
@@ -657,7 +663,7 @@ public class ShowStudySet extends FragmentActivity
                 "unknown"
             };
             final int[] summary_pie_data = new int[] {
-                    knownCardCount, 
+                    knownCardCount,
                     iffyCardCount,
                     unknownCardCount
                     };
