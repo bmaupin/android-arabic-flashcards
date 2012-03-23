@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="chart_blue">#1BA1E2</color>
+    <color name="chart_brown">#674F00</color>
+    <color name="chart_green">#66FF66</color>
+    <color name="chart_red">#FF6666</color>
+    <color name="chart_yellow">#CDFF66</color>
     <color name="custom_blue">#1BA1E2</color>
 </resources>

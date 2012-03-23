@@ -666,14 +666,19 @@ public class ShowStudySet extends FragmentActivity
                     iffyCardCount,
                     unknownCardCount
                     };
-// TODO: put these into int or color resources
-            int[] colors = {-10027162, -3276954, -39322};
+            int[] colors = {
+                    resources.getColor(R.color.chart_green),
+                    resources.getColor(R.color.chart_yellow),
+                    resources.getColor(R.color.chart_red)
+            };
+// TODO: implement these
+/*
             // color-blind safe colors
-/*                int[] colors = {
-                    Color.parseColor("#1BA1E2"),
-                    -3276954,
-                    Color.parseColor("#674f00")
-                    };
+            int[] colors = {
+                    resources.getColor(R.color.chart_blue),
+                    resources.getColor(R.color.chart_yellow),
+                    resources.getColor(R.color.chart_brown)
+            };
 */
             Intent i = new Intent(this, ChartPanelActivity.class);
             i.putExtra(Intent.EXTRA_TITLE, getString(R.string.chart_title));
