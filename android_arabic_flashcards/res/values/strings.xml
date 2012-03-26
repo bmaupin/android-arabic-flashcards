@@ -28,6 +28,7 @@
     <string name="chart_label_iffy">iffy</string>
     <string name="chart_label_known">known</string>
     <string name="chart_label_unknown">unknown</string>
+    <string name="chart_message">Tap anywhere or press back to continue</string>
     <string name="chart_title">Session summary</string>
         
     <string name="choose_cards_heading">Choose cards</string>
