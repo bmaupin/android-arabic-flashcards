@@ -28,6 +28,10 @@
         android:orientation="vertical"
         >
         <include layout="@layout/chart_key" />
-        <include layout="@layout/chart_message" />
+        <include layout="@layout/chart_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dip"
+            />
     </LinearLayout>
 </com.googlecode.chartdroid.pie.ChartLinearLayout>
