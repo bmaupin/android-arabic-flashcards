@@ -336,10 +336,10 @@ public class ShowStudySet extends FragmentActivity
             showNextCard(RESPONSE_UNKNOWN);
             break;
         case KeyEvent.KEYCODE_DPAD_LEFT:
-            showNextCard(RESPONSE_IFFY);
+            showPrevCard();
             break;
         case KeyEvent.KEYCODE_DPAD_RIGHT:
-            showPrevCard();
+            showNextCard(RESPONSE_IFFY);
             break;
         case KeyEvent.KEYCODE_DPAD_CENTER:
             flipCard();
