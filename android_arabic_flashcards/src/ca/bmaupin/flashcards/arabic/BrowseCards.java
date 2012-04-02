@@ -202,10 +202,10 @@ public class BrowseCards extends Activity {
                 + event);
         switch (keyCode) {
         case KeyEvent.KEYCODE_DPAD_LEFT:
-            showNextCard();
+            showPrevCard();
             break;
         case KeyEvent.KEYCODE_DPAD_RIGHT:
-            showPrevCard();
+            showNextCard();
             break;
         case KeyEvent.KEYCODE_DPAD_CENTER:
             flipCard();
