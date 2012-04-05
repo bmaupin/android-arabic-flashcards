@@ -14,9 +14,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -62,6 +65,7 @@ public class ChooseStudySet extends FragmentActivity
 	};
     
     private StudySetCursorAdapter adapter;
+    private int cardsPerSession = 0;
     private ListView lv;
     // the card set of a new study set
     private String newStudySetCardSet = "";
@@ -69,6 +73,8 @@ public class ChooseStudySet extends FragmentActivity
     private String newStudySetCardSubset = "";
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
+    private SharedPreferences preferences;
+    private Resources resources;
     // ID of study set to delete
     private long studySetToDelete;
     
@@ -76,6 +82,15 @@ public class ChooseStudySet extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
+        
+        // create objects for shared preferences and resources
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        resources = getResources();
+        
+        cardsPerSession = Cards.stringToInteger(preferences.getString(
+                getString(R.string.preferences_cards_per_session),
+                resources.getString(
+                        R.integer.preferences_cards_per_session_default)));
         
         setContentView(R.layout.choose_study_set);
         
@@ -448,7 +463,7 @@ public class ChooseStudySet extends FragmentActivity
                     ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                             studySetId).buildUpon().appendQueryParameter(
                             StudySetProvider.QUERY_PARAMETER_LIMIT,
-                            "" + Cards.MAX_CARDS_TO_SHOW).build(),
+                            "" + cardsPerSession).build(),
                     new String[] {StudySetDatabaseHelper.COUNT},
                     selection,
                     null,
