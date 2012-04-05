@@ -61,6 +61,7 @@ public class ShowStudySet extends FragmentActivity
     private int cardMode = CARD_MODE_DUE;
     private String cardGroup;
     private String cardSubgroup;
+    private int cardsPerSession = 0;
     private Cursor cardsCursor;
     // current card language
     private String currentLang;
@@ -99,6 +100,11 @@ public class ShowStudySet extends FragmentActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
         
+        cardsPerSession = Cards.stringToInteger(preferences.getString(
+                getString(R.string.preferences_cards_per_session),
+                resources.getString(
+                        R.integer.preferences_cards_per_session_default)));
+        
         Bundle bundle = this.getIntent().getExtras();
         studySetId = bundle.getInt(Cards.EXTRA_STUDY_SET_ID);
         
@@ -127,7 +133,7 @@ public class ShowStudySet extends FragmentActivity
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId).buildUpon().appendQueryParameter(
                         StudySetProvider.QUERY_PARAMETER_LIMIT,
-                        "" + Cards.MAX_CARDS_TO_SHOW).build(),
+                        "" + cardsPerSession).build(),
                 new String[] {StudySetDatabaseHelper.SET_CARD_ID},
                 selection,
                 null,
@@ -221,7 +227,7 @@ public class ShowStudySet extends FragmentActivity
              * (minus new cards already shown today: total cards in study set
              * minus initial study set card count)
              */
-            int limit = Cards.MAX_CARDS_TO_SHOW - dueCardCount;
+            int limit = cardsPerSession - dueCardCount;
             if (limit > Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 
                     initialStudySetCount)) {
                 limit = Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 

@@ -2,45 +2,61 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <PreferenceCategory
-        android:title="@string/preferenece_category_arabic_title">
+        android:title="@string/preferences_category_arabic_title">
         <CheckBoxPreference
             android:key="@string/preferences_show_vowels"
             android:title="@string/preferences_show_vowels_title"
             android:summary="@string/preferences_show_vowels_summary"
-            android:defaultValue="@bool/preferences_show_vowels_default" />
+            android:defaultValue="@bool/preferences_show_vowels_default"
+            />
         <CheckBoxPreference
             android:key="@string/preferences_fix_arabic"
             android:title="@string/preferences_fix_arabic_title"
             android:summary="@string/preferences_fix_arabic_summary"
-            android:defaultValue="@bool/preferences_fix_arabic_default" />
+            android:defaultValue="@bool/preferences_fix_arabic_default"
+            />
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="@string/preferenece_category_browse_cards_title">
+        android:title="@string/preferences_category_study_sets_title">
+        <EditTextPreference
+            android:key="@string/preferences_cards_per_session"
+            android:title="@string/preferences_cards_per_session_title"
+            android:summary="@string/preferences_cards_per_session_summary"
+            android:defaultValue="@integer/preferences_cards_per_session_default"
+            android:numeric="integer"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/preferences_category_browse_cards_title">
         <ListPreference
             android:key="@string/preferences_default_lang"
             android:title="@string/preferences_default_lang_title"
             android:summary="@string/preferences_default_lang_summary"
             android:entries="@array/preferences_default_lang_entries"
             android:entryValues="@array/preferences_default_lang_values"
-            android:defaultValue="@string/preferences_default_lang_default" />
+            android:defaultValue="@string/preferences_default_lang_default"
+            />
         <!-- <CheckBoxPreference
             android:key="@string/preferences_ask_card_order"
             android:title="@string/preferences_ask_card_order_title"
             android:summary="@string/preferences_ask_card_order_summary"
-            android:defaultValue="@bool/preferences_ask_card_order_default" />
+            android:defaultValue="@bool/preferences_ask_card_order_default"
+            />
         <ListPreference
             android:key="@string/preferences_default_card_order"
             android:title="@string/preferences_default_card_order_title"
             android:summary="@string/preferences_default_card_order_summary"
             android:entries="@array/preferences_default_card_order_entries"
             android:entryValues="@array/preferences_default_card_order_values"
-            android:defaultValue="@string/preferences_default_card_order_default" />
+            android:defaultValue="@string/preferences_default_card_order_default"
+            />
          -->
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="@string/preferenece_category_about_title">
+        android:title="@string/preferences_category_about_title">
         <Preference
             android:key="@string/preferences_about"
-            android:title="@string/preferences_about_title" />
+            android:title="@string/preferences_about_title"
+            />
     </PreferenceCategory>
 </PreferenceScreen>
