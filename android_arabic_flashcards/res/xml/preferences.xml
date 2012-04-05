@@ -23,7 +23,7 @@
             android:entries="@array/preferences_default_lang_entries"
             android:entryValues="@array/preferences_default_lang_values"
             android:defaultValue="@string/preferences_default_lang_default" />
-        <CheckBoxPreference
+        <!-- <CheckBoxPreference
             android:key="@string/preferences_ask_card_order"
             android:title="@string/preferences_ask_card_order_title"
             android:summary="@string/preferences_ask_card_order_summary"
@@ -35,6 +35,7 @@
             android:entries="@array/preferences_default_card_order_entries"
             android:entryValues="@array/preferences_default_card_order_values"
             android:defaultValue="@string/preferences_default_card_order_default" />
+         -->
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/preferenece_category_about_title">
