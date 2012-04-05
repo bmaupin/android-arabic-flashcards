@@ -8,7 +8,6 @@ import org.amr.arabic.ArabicUtilities;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class Cards {
