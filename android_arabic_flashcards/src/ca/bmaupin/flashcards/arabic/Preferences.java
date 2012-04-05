@@ -22,7 +22,8 @@ public class Preferences extends PreferenceActivity
         // get the default preferences from XML
         addPreferencesFromResource(R.xml.preferences);
         // determine whether default card order preference should be enabled
-        toggleDefaultCardOrder();
+// TODO: cleanup
+//        toggleDefaultCardOrder();
         // set up a listener whenever a key changes            
         getPreferenceScreen().getSharedPreferences().
         		registerOnSharedPreferenceChangeListener(this);
@@ -38,17 +39,23 @@ public class Preferences extends PreferenceActivity
         });
     }
     
+
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, 
     		String key) {
+// TODO: cleanup
+/*
         // when the ask card order preference value changes
         if (key.equals(getString(R.string.preferences_ask_card_order))) {
             toggleDefaultCardOrder();
         }
+*/
     }
-    
+
+// TODO: cleanup
     /*
      * disables default card order preference if ask card order is checked
      */
+/*
     private void toggleDefaultCardOrder() {
         CheckBoxPreference askCardOrder = (CheckBoxPreference)
             findPreference(getString(R.string.preferences_ask_card_order));
@@ -56,4 +63,5 @@ public class Preferences extends PreferenceActivity
             findPreference(getString(R.string.preferences_default_card_order));
         defaultCardOrder.setEnabled(!askCardOrder.isChecked());
     }
+*/
 }
