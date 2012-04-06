@@ -61,6 +61,7 @@ public class ShowStudySet extends FragmentActivity
     private int cardMode = CARD_MODE_DUE;
     private String cardGroup;
     private String cardSubgroup;
+    // max number of cards to show per session
     private int cardsPerSession = 0;
     private Cursor cardsCursor;
     // current card language
@@ -76,6 +77,7 @@ public class ShowStudySet extends FragmentActivity
     private GestureDetector gestureDetector;
     private int iffyCardCount = 0;
     private int knownCardCount = 0;
+    // max number of new cards to show per day per study set
     private int newCardsPerDay = 0;
     private SharedPreferences preferences;
     // how many previous cards we've gone back
@@ -236,6 +238,13 @@ public class ShowStudySet extends FragmentActivity
             if (limit > newCardsPerDay - (studySetCount - 
                     initialStudySetCount)) {
                 limit = newCardsPerDay - (studySetCount - initialStudySetCount);
+            }
+            // limit can be negative if we saw some new cards and then
+            // changed the preference for max new cards per day to less than
+            // what we had already seen.  keep that from happening because it
+            // breaks stuff.
+            if (limit < 0) {
+                limit = 0;
             }
             
             Log.d(TAG, "new cards to show=" + limit);

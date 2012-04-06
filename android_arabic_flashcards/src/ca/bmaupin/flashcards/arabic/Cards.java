@@ -40,9 +40,6 @@ public class Cards {
 	static final int MIN_INTERVAL = 8;
 	// maximum interval for a card marked as unknown in a study set
 	static final int MAX_UNKNOWN_INTERVAL = 144;
-    // we'll probably replace these later using shared preferences
-    // max new cards to show (per day)
-    static final int MAX_NEW_CARDS_TO_SHOW = 10;
     
     /**
      * apply a bunch of modifications to arabic text so it doesn't look terrible

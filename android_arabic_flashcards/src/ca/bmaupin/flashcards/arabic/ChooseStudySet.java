@@ -65,8 +65,11 @@ public class ChooseStudySet extends FragmentActivity
 	};
     
     private StudySetCursorAdapter adapter;
+    // max number of cards to show per session
     private int cardsPerSession = 0;
     private ListView lv;
+    // max number of new cards to show per day per study set
+    private int newCardsPerDay = 0;
     // the card set of a new study set
     private String newStudySetCardSet = "";
     // the card subset of a new study set
@@ -91,6 +94,10 @@ public class ChooseStudySet extends FragmentActivity
                 getString(R.string.preferences_cards_per_session),
                 resources.getString(
                         R.integer.preferences_cards_per_session_default)));
+        newCardsPerDay = Cards.stringToInteger(preferences.getString(
+                getString(R.string.preferences_new_cards_per_day),
+                resources.getString(
+                        R.integer.preferences_new_cards_per_day_default)));
         
         setContentView(R.layout.choose_study_set);
         
@@ -493,8 +500,15 @@ public class ChooseStudySet extends FragmentActivity
                             ChooseStudySet.this, studySetId, 
                             studySetCount, studySetCursor.getString(2), 
                             studySetCursor.getInt(3));
-                int newCardsDue = Cards.MAX_NEW_CARDS_TO_SHOW - 
-                        (studySetCount - initialStudySetCount);
+                int newCardsDue = newCardsPerDay - (studySetCount - 
+                        initialStudySetCount);
+                // newCardsDue can be negative if we saw some new cards and then
+                // changed the preference for max new cards per day to less than
+                // what we had already seen. keep that from hapenning because it
+                // breaks stuff.
+                if (newCardsDue < 0) {
+                    newCardsDue = 0;
+                }
                 Log.d(TAG, "max new cards to show=" + newCardsDue);
                 
                 // get the total count of cards in the card group
