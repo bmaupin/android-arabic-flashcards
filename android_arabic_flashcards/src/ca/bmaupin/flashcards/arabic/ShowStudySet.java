@@ -76,6 +76,7 @@ public class ShowStudySet extends FragmentActivity
     private GestureDetector gestureDetector;
     private int iffyCardCount = 0;
     private int knownCardCount = 0;
+    private int newCardsPerDay = 0;
     private SharedPreferences preferences;
     // how many previous cards we've gone back
     private int prevCardCount = 0;
@@ -104,6 +105,10 @@ public class ShowStudySet extends FragmentActivity
                 getString(R.string.preferences_cards_per_session),
                 resources.getString(
                         R.integer.preferences_cards_per_session_default)));
+        newCardsPerDay = Cards.stringToInteger(preferences.getString(
+                getString(R.string.preferences_new_cards_per_day),
+                resources.getString(
+                        R.integer.preferences_new_cards_per_day_default)));
         
         Bundle bundle = this.getIntent().getExtras();
         studySetId = bundle.getInt(Cards.EXTRA_STUDY_SET_ID);
@@ -228,10 +233,9 @@ public class ShowStudySet extends FragmentActivity
              * minus initial study set card count)
              */
             int limit = cardsPerSession - dueCardCount;
-            if (limit > Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 
+            if (limit > newCardsPerDay - (studySetCount - 
                     initialStudySetCount)) {
-                limit = Cards.MAX_NEW_CARDS_TO_SHOW - (studySetCount - 
-                        initialStudySetCount);
+                limit = newCardsPerDay - (studySetCount - initialStudySetCount);
             }
             
             Log.d(TAG, "new cards to show=" + limit);
