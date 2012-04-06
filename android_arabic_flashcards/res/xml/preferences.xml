@@ -25,6 +25,13 @@
             android:defaultValue="@integer/preferences_cards_per_session_default"
             android:numeric="integer"
             />
+        <EditTextPreference
+            android:key="@string/preferences_new_cards_per_day"
+            android:title="@string/preferences_new_cards_per_day_title"
+            android:summary="@string/preferences_new_cards_per_day_summary"
+            android:defaultValue="@integer/preferences_new_cards_per_day_default"
+            android:numeric="integer"
+            />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/preferences_category_browse_cards_title">

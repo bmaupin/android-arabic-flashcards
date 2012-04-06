@@ -119,6 +119,9 @@
     <string name="preferences_fix_arabic">fix_arabic</string>
     <string name="preferences_fix_arabic_summary">Uncheck this for ROMs that support Arabic such as CyanogenMod</string>
     <string name="preferences_fix_arabic_title">Apply Arabic fixes</string>
+    <string name="preferences_new_cards_per_day">new_cards_per_day</string>
+    <string name="preferences_new_cards_per_day_summary">Max number of new cards to show per study set each day</string>
+    <string name="preferences_new_cards_per_day_title">New cards per day</string>
     <string name="preferences_show_vowels">show_vowels</string>
     <string name="preferences_show_vowels_summary">Show vowels and other diacritics</string>
     <string name="preferences_show_vowels_title">Show vowels</string>
