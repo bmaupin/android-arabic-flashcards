@@ -65,8 +65,6 @@ public class ChooseStudySet extends FragmentActivity
 	};
     
     private StudySetCursorAdapter adapter;
-    // max number of cards to show per session
-    private int cardsPerSession = 0;
     private ListView lv;
     // max number of new cards to show per day per study set
     private int newCardsPerDay = 0;
@@ -90,10 +88,6 @@ public class ChooseStudySet extends FragmentActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
         
-        cardsPerSession = Cards.stringToInteger(preferences.getString(
-                getString(R.string.preferences_cards_per_session),
-                resources.getString(
-                        R.integer.preferences_cards_per_session_default)));
         newCardsPerDay = Cards.stringToInteger(preferences.getString(
                 getString(R.string.preferences_new_cards_per_day),
                 resources.getString(
@@ -457,6 +451,8 @@ public class ChooseStudySet extends FragmentActivity
             tv1 = (TextView) studySetItems[1];
             tv2 = (TextView) studySetItems[2];
             
+            // the first item in this array is the number of due cards
+            // the second item is the number of new cards due today
             Integer[] dueCardsCount = new Integer[2];
             
             Log.d(TAG, "LoadDueCards: studySetId=" + studySetId);
@@ -468,9 +464,7 @@ public class ChooseStudySet extends FragmentActivity
             Cursor studySetCursor = getContentResolver().query(
                     // specify the study set ID and a limit
                     ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
-                            studySetId).buildUpon().appendQueryParameter(
-                            StudySetProvider.QUERY_PARAMETER_LIMIT,
-                            "" + cardsPerSession).build(),
+                            studySetId),
                     new String[] {StudySetDatabaseHelper.COUNT},
                     selection,
                     null,
