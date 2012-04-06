@@ -154,6 +154,12 @@ public class ChooseStudySet extends FragmentActivity
         super.onResume();
         Log.d(TAG, "onResume()");
         
+        // get any preferences that may have changed
+        newCardsPerDay = Cards.stringToInteger(preferences.getString(
+                getString(R.string.preferences_new_cards_per_day),
+                resources.getString(
+                        R.integer.preferences_new_cards_per_day_default)));
+        
         // force the adapter to reload the study set list in case anything's 
         // changed
         adapter.notifyDataSetChanged();
