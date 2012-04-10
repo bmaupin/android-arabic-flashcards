@@ -51,6 +51,7 @@ public class ChooseStudySet extends FragmentActivity
 
     private static final int DIALOG_CREATE_STUDY_SET = 0;
     private static final int DIALOG_CONFIRM_DELETE_STUDY_SET = 1;
+    private static final int DIALOG_RENAME_STUDY_SET = 2;
 	private static final int REQUEST_CARD_SET_BROWSE = 0;
     private static final int REQUEST_CARD_SET_CREATE = 1;
     
@@ -286,6 +287,9 @@ public class ChooseStudySet extends FragmentActivity
             studySetToDelete = info.id;
             showDialog(DIALOG_CONFIRM_DELETE_STUDY_SET);
             return true;
+        case R.id.choose_study_set_rename_study_set:
+            showDialog(DIALOG_RENAME_STUDY_SET);
+            return true;
         default:
             return super.onContextItemSelected(item);
         }
@@ -322,6 +326,8 @@ public class ChooseStudySet extends FragmentActivity
 	            return createCreateStudySetDialog();
             case DIALOG_CONFIRM_DELETE_STUDY_SET:
                 return createConfirmDeleteStudySetDialog();
+            case DIALOG_RENAME_STUDY_SET:
+                return createRenameStudySetDialog();
         }
         return null;
 	}
@@ -388,6 +394,37 @@ public class ChooseStudySet extends FragmentActivity
                    }
                });
 	    
+        AlertDialog ad = builder.create();
+        return ad;
+	}
+	
+	private Dialog createRenameStudySetDialog() {
+	    View layout = getLayoutInflater().inflate(
+	            R.layout.dialog_rename_study_set, 
+                (ViewGroup) findViewById(R.id.dialog_rename_study_set_name));
+	    
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.choose_study_set_rename_study_set)
+               .setMessage(R.string.dialog_rename_study_set_message)
+               .setView(layout)
+               .setCancelable(true)
+               .setPositiveButton(getString(
+                       R.string.dialog_rename_study_set_positive_button), 
+                       new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+//                       deleteStudySet(studySetToDelete);
+// TODO cleanup
+                       Toast.makeText(getApplicationContext(), "test!", Toast.LENGTH_SHORT).show();
+                   }
+               })
+               .setNegativeButton(getString(
+                       R.string.dialog_rename_study_set_negative_button), 
+                       new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                   }
+               });
+        
         AlertDialog ad = builder.create();
         return ad;
 	}

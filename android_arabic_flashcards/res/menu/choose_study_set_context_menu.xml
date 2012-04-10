@@ -2,4 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/choose_study_set_delete_study_set"
           android:title="@string/choose_study_set_delete_study_set" />
+    <item android:id="@+id/choose_study_set_rename_study_set"
+          android:title="@string/choose_study_set_rename_study_set" />
 </menu>
