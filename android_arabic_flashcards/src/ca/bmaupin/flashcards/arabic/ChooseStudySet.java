@@ -73,12 +73,12 @@ public class ChooseStudySet extends FragmentActivity
     private String newStudySetCardSet = "";
     // the card subset of a new study set
     private String newStudySetCardSubset = "";
-    // string to hold the new study set name based on set and subset
+    // string to hold the name of a new study set based on set and subset
     private String newStudySetName = "";
-    // string to hold old study set name when renaming a study set
-    private String oldStudySetName = "";
     private SharedPreferences preferences;
     private Resources resources;
+    // string to hold current study set name when renaming a study set
+    private String studySetCurrentName = "";
     // ID of study set to delete
     private long studySetToDelete;
     // ID of study set to rename
@@ -293,7 +293,7 @@ public class ChooseStudySet extends FragmentActivity
             return true;
         case R.id.choose_study_set_rename_study_set:
             studySetToRename = info.id;
-            oldStudySetName = ((TextView) info.targetView.findViewById(
+            studySetCurrentName = ((TextView) info.targetView.findViewById(
                     R.id.study_set_title)).getText().toString();
             showDialog(DIALOG_RENAME_STUDY_SET);
             return true;
@@ -326,6 +326,13 @@ public class ChooseStudySet extends FragmentActivity
                 Toast.LENGTH_SHORT).show();
     }
     
+    private void renameStudySet(long id, String studySetNewName) {
+// TODO
+        Toast.makeText(getApplicationContext(), 
+                id + ": " + studySetNewName,
+                Toast.LENGTH_SHORT).show();
+    }
+    
     @Override
 	protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -354,7 +361,7 @@ public class ChooseStudySet extends FragmentActivity
 	            // set the text of the text box to the current study set name
 	            et = (EditText) (EditText) dialog.findViewById(
 	                    R.id.dialog_rename_study_set_name);
-	            et.setText(oldStudySetName);
+	            et.setText(studySetCurrentName);
 	    }
 	}
 
@@ -414,7 +421,7 @@ public class ChooseStudySet extends FragmentActivity
 	}
 	
 	private Dialog createRenameStudySetDialog() {
-	    View layout = getLayoutInflater().inflate(
+	    final View layout = getLayoutInflater().inflate(
 	            R.layout.dialog_rename_study_set, 
                 (ViewGroup) findViewById(R.id.dialog_rename_study_set_name));
 	    
@@ -427,9 +434,10 @@ public class ChooseStudySet extends FragmentActivity
                        R.string.dialog_rename_study_set_positive_button), 
                        new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-//                       deleteStudySet(studySetToDelete);
-// TODO cleanup
-                       Toast.makeText(getApplicationContext(), "test!", Toast.LENGTH_SHORT).show();
+                       String studySetNewName = ((EditText) layout.findViewById(
+                               R.id.dialog_rename_study_set_name)).getText().
+                               toString();
+                       renameStudySet(studySetToRename, studySetNewName);
                    }
                })
                .setNegativeButton(getString(
