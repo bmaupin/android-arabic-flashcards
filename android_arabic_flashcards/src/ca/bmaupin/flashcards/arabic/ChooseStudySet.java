@@ -75,10 +75,14 @@ public class ChooseStudySet extends FragmentActivity
     private String newStudySetCardSubset = "";
     // string to hold the new study set name based on set and subset
     private String newStudySetName = "";
+    // string to hold old study set name when renaming a study set
+    private String oldStudySetName = "";
     private SharedPreferences preferences;
     private Resources resources;
     // ID of study set to delete
     private long studySetToDelete;
+    // ID of study set to rename
+    private long studySetToRename;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,6 +292,9 @@ public class ChooseStudySet extends FragmentActivity
             showDialog(DIALOG_CONFIRM_DELETE_STUDY_SET);
             return true;
         case R.id.choose_study_set_rename_study_set:
+            studySetToRename = info.id;
+            oldStudySetName = ((TextView) info.targetView.findViewById(
+                    R.id.study_set_title)).getText().toString();
             showDialog(DIALOG_RENAME_STUDY_SET);
             return true;
         default:
@@ -336,10 +343,18 @@ public class ChooseStudySet extends FragmentActivity
 	protected void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
 	        case DIALOG_CREATE_STUDY_SET:
+	            // this code must be here because in onCreateDialog it will
+	            // only get set once and won't change if you click a different
+	            // list item and create a different dialog for it
 	            EditText et = (EditText) dialog.findViewById(
 	            		R.id.dialog_create_study_set_name);
 	            et.setText(newStudySetName);
 	            break;
+	        case DIALOG_RENAME_STUDY_SET:
+	            // set the text of the text box to the current study set name
+	            et = (EditText) (EditText) dialog.findViewById(
+	                    R.id.dialog_rename_study_set_name);
+	            et.setText(oldStudySetName);
 	    }
 	}
 
