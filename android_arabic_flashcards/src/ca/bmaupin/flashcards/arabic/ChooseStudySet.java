@@ -327,10 +327,14 @@ public class ChooseStudySet extends FragmentActivity
     }
     
     private void renameStudySet(long id, String studySetNewName) {
-// TODO
-        Toast.makeText(getApplicationContext(), 
-                id + ": " + studySetNewName,
-                Toast.LENGTH_SHORT).show();
+        ContentValues cv = new ContentValues();
+        cv.put(StudySetDatabaseHelper.META_SET_NAME, 
+                studySetNewName);
+        getContentResolver().update(
+                StudySetProvider.CONTENT_URI_META,
+                cv,
+                StudySetDatabaseHelper._ID + " = ? ",
+                new String[] {"" + id});
     }
     
     @Override
