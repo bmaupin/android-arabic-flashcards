@@ -441,7 +441,10 @@ public class ChooseStudySet extends FragmentActivity
                        String studySetNewName = ((EditText) layout.findViewById(
                                R.id.dialog_rename_study_set_name)).getText().
                                toString();
-                       renameStudySet(studySetToRename, studySetNewName);
+                       // make sure the new name is different before we do anything
+                       if (!studySetNewName.equals(studySetCurrentName)) {
+                           renameStudySet(studySetToRename, studySetNewName);
+                       }
                    }
                })
                .setNegativeButton(getString(
