@@ -70,9 +70,9 @@ public class ChooseStudySet extends FragmentActivity
     // max number of new cards to show per day per study set
     private int newCardsPerDay = 0;
     // the card set of a new study set
-    private String newStudySetCardSet = "";
+    private String newStudySetCardGroup = "";
     // the card subset of a new study set
-    private String newStudySetCardSubset = "";
+    private String newStudySetCardSubgroup = "";
     // string to hold the name of a new study set based on set and subset
     private String newStudySetName = "";
     private SharedPreferences preferences;
@@ -196,16 +196,16 @@ public class ChooseStudySet extends FragmentActivity
                     		Cards.EXTRA_CARD_GROUP);
                     Log.d(TAG, "onActivityResult: cardSet=" + cardSet);
                     
-                    newStudySetCardSet = data.getStringExtra(
+                    newStudySetCardGroup = data.getStringExtra(
                             Cards.EXTRA_CARD_GROUP);
-                    newStudySetCardSubset = data.getStringExtra(
+                    newStudySetCardSubgroup = data.getStringExtra(
                             Cards.EXTRA_CARD_SUBGROUP);
                     
                     // create a study set name to prefill our create study set dialog
-                    newStudySetName = newStudySetCardSet;
+                    newStudySetName = newStudySetCardGroup;
                     
-                    if (newStudySetCardSubset != null) {
-                    	newStudySetName += " - " + newStudySetCardSubset;
+                    if (newStudySetCardSubgroup != null) {
+                    	newStudySetName += " - " + newStudySetCardSubgroup;
                     }
 
                     showDialog(DIALOG_CREATE_STUDY_SET);
@@ -305,8 +305,8 @@ public class ChooseStudySet extends FragmentActivity
     private void createStudySet(String studySetName, String language) {
         ContentValues cv=new ContentValues();
         cv.put(StudySetDatabaseHelper.META_SET_NAME, studySetName);
-        cv.put(StudySetDatabaseHelper.META_CARD_GROUP, newStudySetCardSet);
-        cv.put(StudySetDatabaseHelper.META_CARD_SUBGROUP, newStudySetCardSubset);
+        cv.put(StudySetDatabaseHelper.META_CARD_GROUP, newStudySetCardGroup);
+        cv.put(StudySetDatabaseHelper.META_CARD_SUBGROUP, newStudySetCardSubgroup);
         cv.put(StudySetDatabaseHelper.META_SET_LANGUAGE, language);
         // this needs a default non-null value
         cv.put(StudySetDatabaseHelper.META_INITIAL_COUNT_DATE, "0");
