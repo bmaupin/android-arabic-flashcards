@@ -7,29 +7,29 @@
         <item>@string/card_group_parts_of_speech</item>
     </string-array>
     
-    <string-array name="dialog_parts_of_speech_entries">
-        <item>@string/parts_of_speech_adj_entry</item>
-        <item>@string/parts_of_speech_adv_entry</item>
-        <item>@string/parts_of_speech_conj_entry</item>
-        <item>@string/parts_of_speech_noun_entry</item>
-        <item>@string/parts_of_speech_participle_entry</item>
-        <item>@string/parts_of_speech_particle_entry</item>
-        <item>@string/parts_of_speech_phrase_entry</item>
-        <item>@string/parts_of_speech_prep_entry</item>
-        <item>@string/parts_of_speech_pronoun_entry</item>
-        <item>@string/parts_of_speech_verb_entry</item>
+    <string-array name="dialog_parts_of_speech_long">
+        <item>@string/parts_of_speech_adj_long</item>
+        <item>@string/parts_of_speech_adv_long</item>
+        <item>@string/parts_of_speech_conj_long</item>
+        <item>@string/parts_of_speech_noun_long</item>
+        <item>@string/parts_of_speech_participle_long</item>
+        <item>@string/parts_of_speech_particle_long</item>
+        <item>@string/parts_of_speech_phrase_long</item>
+        <item>@string/parts_of_speech_prep_long</item>
+        <item>@string/parts_of_speech_pronoun_long</item>
+        <item>@string/parts_of_speech_verb_long</item>
     </string-array>
-    <string-array name="dialog_parts_of_speech_values">
-        <item>@string/parts_of_speech_adj_value</item>
-        <item>@string/parts_of_speech_adv_value</item>
-        <item>@string/parts_of_speech_conj_value</item>
-        <item>@string/parts_of_speech_noun_value</item>
-        <item>@string/parts_of_speech_participle_value</item>
-        <item>@string/parts_of_speech_particle_value</item>
-        <item>@string/parts_of_speech_phrase_value</item>
-        <item>@string/parts_of_speech_prep_value</item>
-        <item>@string/parts_of_speech_pronoun_value</item>
-        <item>@string/parts_of_speech_verb_value</item>
+    <string-array name="dialog_parts_of_speech_short">
+        <item>@string/parts_of_speech_adj_short</item>
+        <item>@string/parts_of_speech_adv_short</item>
+        <item>@string/parts_of_speech_conj_short</item>
+        <item>@string/parts_of_speech_noun_short</item>
+        <item>@string/parts_of_speech_participle_short</item>
+        <item>@string/parts_of_speech_particle_short</item>
+        <item>@string/parts_of_speech_phrase_short</item>
+        <item>@string/parts_of_speech_prep_short</item>
+        <item>@string/parts_of_speech_pronoun_short</item>
+        <item>@string/parts_of_speech_verb_short</item>
     </string-array>
     
     <string-array name="preferences_default_card_order_entries">

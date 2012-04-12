@@ -149,9 +149,9 @@ public class ChooseCardGroup extends Activity {
         
         Resources res = getResources();
         final String[] partsOfSpeechEntries = res.getStringArray(
-                R.array.dialog_parts_of_speech_entries);
+                R.array.dialog_parts_of_speech_long);
         final String[] partsOfSpeechValues = res.getStringArray(
-                R.array.dialog_parts_of_speech_values);
+                R.array.dialog_parts_of_speech_short);
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_choose_part_of_speech_title);
