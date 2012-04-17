@@ -123,6 +123,7 @@ public class ChooseStudySet extends FragmentActivity
         });
         
         lv = (ListView) findViewById(android.R.id.list);
+//        lv.setEmptyView(findViewById(R.id.study_set_empty));
 
         adapter = new StudySetCursorAdapter(this,
                 R.layout.choose_study_set_row,
@@ -245,6 +246,15 @@ public class ChooseStudySet extends FragmentActivity
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
         adapter.swapCursor(data);
+        
+        // if there are no study sets
+        if (data.getCount() == 0) {
+            // set the empty view
+            lv.setEmptyView(findViewById(R.id.study_set_empty));
+        } else {
+            // otherwise clear it, so it won't flash in between cursor loads
+            lv.setEmptyView(null);
+        }
     }
     
     @Override
