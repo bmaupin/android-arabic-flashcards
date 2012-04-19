@@ -41,7 +41,8 @@
             <meta-data android:name="android.app.default_searchable"
                        android:value=".Search" />
         </activity>
-        <activity android:name=".ShowStudySet" >
+        <activity android:name=".ShowStudySet"
+                  android:configChanges="orientation|keyboardHidden" >
             <meta-data android:name="android.app.default_searchable"
                        android:value=".Search" />
         </activity>
