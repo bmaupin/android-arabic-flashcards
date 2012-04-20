@@ -178,6 +178,10 @@ public class ShowStudySet extends FragmentActivity
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
+// TODO        
+        Log.d(TAG, "knownCardCount=" + knownCardCount);
+        Log.d(TAG, "iffyCardCount=" + iffyCardCount);
+        Log.d(TAG, "unknownCardCount=" + unknownCardCount);
         
         // get any preferences that may have changed
         fixArabic = preferences.getBoolean(
@@ -593,6 +597,10 @@ public class ShowStudySet extends FragmentActivity
             unknownCardCount ++;
             break;
         }
+// TODO        
+        Log.d(TAG, "knownCardCount=" + knownCardCount);
+        Log.d(TAG, "iffyCardCount=" + iffyCardCount);
+        Log.d(TAG, "unknownCardCount=" + unknownCardCount);
         
         final String[] COLUMNS = {StudySetDatabaseHelper.SET_INTERVAL};
         final String SELECTION = StudySetDatabaseHelper.SET_CARD_ID + " = ? ";
@@ -715,8 +723,23 @@ public class ShowStudySet extends FragmentActivity
     }
     
     @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop()");
+    }
+/*
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        // TODO Auto-generated method stub
+        return super.onRetainCustomNonConfigurationInstance();
+    }
+*/
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
+    }
+    
+    private class MyDataObject {
     }
 }
