@@ -99,6 +99,12 @@ public class ShowStudySet extends FragmentActivity
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         
+        if (savedInstanceState != null) {
+// TODO: put these keys into constants
+//            Toast.makeText(getApplicationContext(), savedInstanceState.getString("test"), Toast.LENGTH_SHORT).show();
+//            Log.d(TAG, savedInstanceState.getString("test"));
+        }
+        
         // create objects for shared preferences and resources
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
@@ -727,19 +733,22 @@ public class ShowStudySet extends FragmentActivity
         super.onStop();
         Log.d(TAG, "onStop()");
     }
-/*
+
     @Override
-    public Object onRetainCustomNonConfigurationInstance() {
-        // TODO Auto-generated method stub
-        return super.onRetainCustomNonConfigurationInstance();
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.d(TAG, "onSaveInstanceState()");
+// TODO: put these keys into constants
+        savedInstanceState.putInt("knownCardCount", knownCardCount);
+        savedInstanceState.putInt("iffyCardCount", iffyCardCount);
+        savedInstanceState.putInt("unknownCardCount", unknownCardCount);
+        
+        super.onSaveInstanceState(savedInstanceState);
     }
-*/
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
-    }
-    
-    private class MyDataObject {
     }
 }
