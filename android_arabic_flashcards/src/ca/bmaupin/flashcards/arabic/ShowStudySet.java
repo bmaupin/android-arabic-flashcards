@@ -46,6 +46,12 @@ public class ShowStudySet extends FragmentActivity
     private static final int CARD_MODE_DUE = 0;
     private static final int CARD_MODE_NEW = 1;
     private static final int CARD_MODE_NONE_DUE = 2;
+    // keys for items to store in bundles
+    private static final String KEY_CARDS_SHOWN = "cardsShown";
+    private static final String KEY_IFFY_CARD_COUNT = "iffyCardCount";
+    private static final String KEY_KNOWN_CARD_COUNT = "knownCardCount";
+    private static final String KEY_UNKNOWN_CARD_COUNT = "unknownCardCount";
+    
     // constants for swipe
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_MIN_DISTANCE = 120;
@@ -99,14 +105,14 @@ public class ShowStudySet extends FragmentActivity
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         
+        // if the activity was in the background and killed in the middle of a 
+        // study session, get our previous counts so we can resume the session
         if (savedInstanceState != null) {
-// TODO: put these keys into constants
-//            Toast.makeText(getApplicationContext(), savedInstanceState.getString("test"), Toast.LENGTH_SHORT).show();
-//            Log.d(TAG, savedInstanceState.getString("test"));
-            cardsShown = savedInstanceState.getInt("cardsShown");
-            knownCardCount = savedInstanceState.getInt("knownCardCount");
-            iffyCardCount = savedInstanceState.getInt("iffyCardCount");
-            unknownCardCount = savedInstanceState.getInt("unknownCardCount");
+            cardsShown = savedInstanceState.getInt(KEY_CARDS_SHOWN);
+            knownCardCount = savedInstanceState.getInt(KEY_KNOWN_CARD_COUNT);
+            iffyCardCount = savedInstanceState.getInt(KEY_IFFY_CARD_COUNT);
+            unknownCardCount = savedInstanceState.getInt(
+                    KEY_UNKNOWN_CARD_COUNT);
         }
         
         // create objects for shared preferences and resources
@@ -745,11 +751,13 @@ public class ShowStudySet extends FragmentActivity
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         Log.d(TAG, "onSaveInstanceState()");
-// TODO: put these keys into constants
-        savedInstanceState.putInt("cardsShown", cardsShown);
-        savedInstanceState.putInt("knownCardCount", knownCardCount);
-        savedInstanceState.putInt("iffyCardCount", iffyCardCount);
-        savedInstanceState.putInt("unknownCardCount", unknownCardCount);
+        
+        // save any necessary values in case the activity gets sent to the 
+        // background and killed in the middle of a study set session
+        savedInstanceState.putInt(KEY_CARDS_SHOWN, cardsShown);
+        savedInstanceState.putInt(KEY_KNOWN_CARD_COUNT, knownCardCount);
+        savedInstanceState.putInt(KEY_IFFY_CARD_COUNT, iffyCardCount);
+        savedInstanceState.putInt(KEY_UNKNOWN_CARD_COUNT, unknownCardCount);
         
         super.onSaveInstanceState(savedInstanceState);
     }
