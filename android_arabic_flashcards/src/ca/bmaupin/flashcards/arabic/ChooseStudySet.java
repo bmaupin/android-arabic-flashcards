@@ -497,9 +497,13 @@ public class ChooseStudySet extends FragmentActivity
     }
     
     class StudySetCursorAdapter extends SimpleCursorAdapter {
+        private final String loadingMessage = getString(
+                R.string.choose_study_set_loading_message);
+        
         public StudySetCursorAdapter(Context context, int layout, Cursor c,
                 String[] from, int[] to, int flags) {
             super(context, layout, c, from, to, flags);
+            
         }
 
         /* 
@@ -528,8 +532,7 @@ public class ChooseStudySet extends FragmentActivity
                     setViewText((TextView) v, text);
                 }
             }
-// TODO put this (or whatever the final text is) into a constant            
-            setViewText((TextView) view.findViewById(to[1]), "Loading...");
+            setViewText((TextView) view.findViewById(to[1]), loadingMessage);
             setViewText((TextView) view.findViewById(to[2]), "");
             
             // update the study set new and due card counts
