@@ -103,6 +103,10 @@ public class ShowStudySet extends FragmentActivity
 // TODO: put these keys into constants
 //            Toast.makeText(getApplicationContext(), savedInstanceState.getString("test"), Toast.LENGTH_SHORT).show();
 //            Log.d(TAG, savedInstanceState.getString("test"));
+            cardsShown = savedInstanceState.getInt("cardsShown");
+            knownCardCount = savedInstanceState.getInt("knownCardCount");
+            iffyCardCount = savedInstanceState.getInt("iffyCardCount");
+            unknownCardCount = savedInstanceState.getInt("unknownCardCount");
         }
         
         // create objects for shared preferences and resources
@@ -137,6 +141,8 @@ public class ShowStudySet extends FragmentActivity
         }
         cursor.close();
         
+        int limit = cardsPerSession - cardsShown;
+        
         String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
                 System.currentTimeMillis();
         Log.d(TAG, "System.currentTimeMillis(): " + System.currentTimeMillis());
@@ -146,7 +152,7 @@ public class ShowStudySet extends FragmentActivity
                 ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
                         studySetId).buildUpon().appendQueryParameter(
                         StudySetProvider.QUERY_PARAMETER_LIMIT,
-                        "" + cardsPerSession).build(),
+                        "" + limit).build(),
                 new String[] {StudySetDatabaseHelper.SET_CARD_ID},
                 selection,
                 null,
@@ -740,6 +746,7 @@ public class ShowStudySet extends FragmentActivity
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         Log.d(TAG, "onSaveInstanceState()");
 // TODO: put these keys into constants
+        savedInstanceState.putInt("cardsShown", cardsShown);
         savedInstanceState.putInt("knownCardCount", knownCardCount);
         savedInstanceState.putInt("iffyCardCount", iffyCardCount);
         savedInstanceState.putInt("unknownCardCount", unknownCardCount);
