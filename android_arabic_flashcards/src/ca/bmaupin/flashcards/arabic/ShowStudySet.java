@@ -60,6 +60,8 @@ public class ShowStudySet extends FragmentActivity
     
     private int cardMode = CARD_MODE_DUE;
     private String cardGroup;
+    // number of cards shown, incremented after the card is shown
+    private int cardsShown = 0;
     private String cardSubgroup;
     // max number of cards to show per session
     private int cardsPerSession = 0;
@@ -70,8 +72,6 @@ public class ShowStudySet extends FragmentActivity
     Toast currentToast;
     // default card language 
     private String defaultLang;
-    // the number of due cards to show
-    private int dueCardCount = 0;
     // whether or not to apply arabic fixes
     private Boolean fixArabic;
     private GestureDetector gestureDetector;
@@ -162,7 +162,6 @@ public class ShowStudySet extends FragmentActivity
         if (cursor.moveToFirst()) {
             studySetIds = "(";
             while (!cursor.isAfterLast()) {
-                dueCardCount ++;
                 studySetIds += cursor.getString(0) + ", ";
                 cursor.moveToNext();
             }
@@ -170,7 +169,7 @@ public class ShowStudySet extends FragmentActivity
             studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + 
                     ")";
             Log.d(TAG, "studySetIds: " + studySetIds);
-            Log.d(TAG, "dueCardCount: " + dueCardCount);
+            Log.d(TAG, "dueCardCount: " + cursor.getCount());
             
         } else {
             cardMode = CARD_MODE_NONE_DUE;
@@ -244,7 +243,7 @@ public class ShowStudySet extends FragmentActivity
              * (minus new cards already shown today: total cards in study set
              * minus initial study set card count)
              */
-            int limit = cardsPerSession - dueCardCount;
+            int limit = cardsPerSession - cardsShown;
             if (limit > newCardsPerDay - (studySetCount - 
                     initialStudySetCount)) {
                 limit = newCardsPerDay - (studySetCount - initialStudySetCount);
@@ -603,7 +602,10 @@ public class ShowStudySet extends FragmentActivity
             unknownCardCount ++;
             break;
         }
-// TODO        
+        // regardless, increment the count of cards shown
+        cardsShown ++;
+// TODO
+        Log.d(TAG, "cardsShown=" + cardsShown);
         Log.d(TAG, "knownCardCount=" + knownCardCount);
         Log.d(TAG, "iffyCardCount=" + iffyCardCount);
         Log.d(TAG, "unknownCardCount=" + unknownCardCount);
