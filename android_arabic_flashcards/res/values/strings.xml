@@ -35,6 +35,7 @@
     
     <string name="choose_study_set_cards_due">\u0020due</string>
     <string name="choose_study_set_cards_new">\u0020new today</string>
+    <string name="choose_study_set_chapter_abbreviation">ch</string>
     <string name="choose_study_set_confirm_delete_study_set">All your progress on this study set will be lost!  Are you sure you want to delete this study set?</string>
     <string name="choose_study_set_context_menu_title">Edit study set</string>
     <string name="choose_study_set_delete_study_set">Delete study set</string>
