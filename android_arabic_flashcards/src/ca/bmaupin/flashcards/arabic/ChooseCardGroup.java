@@ -93,21 +93,29 @@ public class ChooseCardGroup extends Activity {
 	private Dialog createChooseAWSChapterDialog() {
 		Log.d(TAG, "createAWSChapterDialog");
 		
+		// get the aws chapters and put them into an array
 		final String[] chapters = getColumnValues(
 		        CardDatabaseHelper.AWS_CHAPTERS_TABLE, 
 		        CardDatabaseHelper.AWS_CHAPTERS_CHAPTER);
+		// make a new array to store the chapters plus "All"
+		final String[] chaptersPlusAll = new String[chapters.length + 1];
+        // put "All" into the new array
+		chaptersPlusAll[0] = getString(R.string.choose_cards_all_chapters);
+		// copy the chapters into the new array
+		System.arraycopy(chapters, 0, chaptersPlusAll, 1, chapters.length);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.dialog_choose_aws_chapter_title);
-		builder.setItems(chapters, new DialogInterface.OnClickListener() {
+		builder.setItems(chaptersPlusAll, new DialogInterface.OnClickListener() {
 		    public void onClick(DialogInterface dialog, int item) {
 				Log.d(TAG, "createAWSChapterDialog: int=" + item);
-				Log.d(TAG, "createAWSChapterDialog: chapter=" + chapters[item]);
+				Log.d(TAG, "createAWSChapterDialog: chapter=" + chaptersPlusAll[item]);
 				
 				Intent result = new Intent();
 				result.putExtra(Cards.EXTRA_CARD_GROUP, 
 				        getString(R.string.card_group_ahlan_wa_sahlan));
-				result.putExtra(Cards.EXTRA_CARD_SUBGROUP, chapters[item]);
+				result.putExtra(Cards.EXTRA_CARD_SUBGROUP, chaptersPlusAll[item]
+				                                                           );
 				
 				setResult(RESULT_OK, result);
 				finish();
