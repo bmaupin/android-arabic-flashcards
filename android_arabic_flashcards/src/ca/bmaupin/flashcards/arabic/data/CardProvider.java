@@ -26,6 +26,9 @@ public class CardProvider extends ContentProvider {
             "vnd.android.cursor.dir/vnd.bmaupin.card";
     public static final String CONTENT_ITEM_TYPE = 
             "vnd.android.cursor.item/vnd.bmaupin.card";
+    // query parameter for whether or not to do a join
+    public static final String QUERY_PARAMETER_JOIN = "join";
+    public static final String QUERY_PARAMETER_JOIN_FALSE = "0";
     // query parameter for limiting the results of the query
     public static final String QUERY_PARAMETER_LIMIT = "limit";
     
@@ -67,16 +70,20 @@ public class CardProvider extends ContentProvider {
             // if we're searching for cards by ahlan wa sahlan chapter
             if (selection.indexOf(CardDatabaseHelper.AWS_CHAPTERS_CHAPTER)
                     != -1) {
-                /*
-                 * this looks like:
-                 * cards left join aws_chapters on cards._id = aws_chapters.card_id
-                 */
-                qb.setTables(CardDatabaseHelper.CARDS_TABLE + " LEFT " +
-                        "JOIN " + CardDatabaseHelper.AWS_CHAPTERS_TABLE + 
-                        " ON " + CardDatabaseHelper.CARDS_TABLE + "." + 
-                        CardDatabaseHelper._ID + " = " + 
-                        CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
-                        CardDatabaseHelper.AWS_CHAPTERS_CARD_ID);
+                String join = uri.getQueryParameter(QUERY_PARAMETER_JOIN);
+                // only do the join if we haven't specified in a query parameter not to
+                if (join == null || !join.equals(QUERY_PARAMETER_JOIN_FALSE)) {
+                    /*
+                     * this looks like:
+                     * cards left join aws_chapters on cards._id = aws_chapters.card_id
+                     */
+                    qb.setTables(CardDatabaseHelper.CARDS_TABLE + " LEFT " +
+                            "JOIN " + CardDatabaseHelper.AWS_CHAPTERS_TABLE + 
+                            " ON " + CardDatabaseHelper.CARDS_TABLE + "." + 
+                            CardDatabaseHelper._ID + " = " + 
+                            CardDatabaseHelper.AWS_CHAPTERS_TABLE + "." + 
+                            CardDatabaseHelper.AWS_CHAPTERS_CARD_ID);
+                }
             }
             break;
         
