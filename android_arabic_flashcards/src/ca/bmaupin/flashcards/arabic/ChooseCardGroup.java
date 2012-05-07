@@ -100,7 +100,7 @@ public class ChooseCardGroup extends Activity {
 		// make a new array to store the chapters plus "All"
 		final String[] chaptersPlusAll = new String[chapters.length + 1];
         // put "All" into the new array
-		chaptersPlusAll[0] = getString(R.string.choose_cards_all_chapters);
+		chaptersPlusAll[0] = getString(R.string.card_group_all_chapters);
 		// copy the chapters into the new array
 		System.arraycopy(chapters, 0, chaptersPlusAll, 1, chapters.length);
 		
