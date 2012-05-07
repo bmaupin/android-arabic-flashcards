@@ -3,6 +3,7 @@ package ca.bmaupin.flashcards.arabic;
 import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import ca.bmaupin.flashcards.arabic.data.CardProvider;
 import ca.bmaupin.flashcards.arabic.data.CardQueryHelper;
+import ca.bmaupin.flashcards.arabic.data.StudySetProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -91,7 +93,7 @@ public class BrowseCards extends Activity {
                 bundle.getString(Cards.EXTRA_CARD_SUBGROUP));
         
         cursor = managedQuery(
-                CardProvider.CONTENT_URI,
+                cqh.getContentUri(),
                 PROJECTION,
                 cqh.getSelection(),
                 cqh.getSelectionArgs(),

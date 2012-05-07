@@ -1,12 +1,18 @@
 package ca.bmaupin.flashcards.arabic.data;
 
 import android.content.Context;
+import android.net.Uri;
 import ca.bmaupin.flashcards.arabic.R;
 
 public class CardQueryHelper {
+    private Uri contentUri = CardProvider.CONTENT_URI;
     private String selection = "";
     private String[] selectionArgs = new String[] {};
     private String sortOrder = "";
+    
+    public Uri getContentUri() {
+        return contentUri;
+    }
     
     public String getSelection() {
         return selection;
@@ -34,6 +40,10 @@ public class CardQueryHelper {
                         CardDatabaseHelper._ID + " IN (SELECT DISTINCT " +
                         CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
                         CardDatabaseHelper.AWS_CHAPTERS_TABLE + ") ";
+                // make sure we don't do a join in the query
+                contentUri = contentUri.buildUpon().appendQueryParameter(
+                        CardProvider.QUERY_PARAMETER_JOIN,
+                        CardProvider.QUERY_PARAMETER_JOIN_FALSE).build();
             
             // otherwise, get cards for a specific aws chapter
             } else {
