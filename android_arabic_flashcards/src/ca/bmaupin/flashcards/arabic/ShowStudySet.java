@@ -277,7 +277,7 @@ public class ShowStudySet extends FragmentActivity
             
             return new CursorLoader(this,
                     // add the limit to the content uri
-                    CardProvider.CONTENT_URI.buildUpon().appendQueryParameter(
+                    cqh.getContentUri().buildUpon().appendQueryParameter(
                             CardProvider.QUERY_PARAMETER_LIMIT,
                             limitString).build(),
                     PROJECTION_CARDS,

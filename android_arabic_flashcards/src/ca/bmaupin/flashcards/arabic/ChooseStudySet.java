@@ -614,7 +614,7 @@ public class ChooseStudySet extends FragmentActivity
                         studySetCursor.getString(1));
                 studySetCursor.close();
                 studySetCursor = getContentResolver().query(
-                        CardProvider.CONTENT_URI,
+                        cqh.getContentUri(),
                         new String[] {CardDatabaseHelper.COUNT},
                         cqh.getSelection(),
                         cqh.getSelectionArgs(),
