@@ -24,6 +24,7 @@ public class CardQueryHelper {
         if (cardGroup.equals(context.getString(
                 R.string.card_group_ahlan_wa_sahlan))) {
             
+            // if we want to get all aws cards
             if (cardSubgroup.equals(context.getString(R.string.card_group_all_chapters))) {
                 /*
                  * this looks like:
@@ -33,7 +34,8 @@ public class CardQueryHelper {
                         CardDatabaseHelper._ID + " IN (SELECT DISTINCT " +
                         CardDatabaseHelper.AWS_CHAPTERS_CARD_ID + " FROM " + 
                         CardDatabaseHelper.AWS_CHAPTERS_TABLE + ") ";
-                
+            
+            // otherwise, get cards for a specific aws chapter
             } else {
                 /*
                  * this looks like:
