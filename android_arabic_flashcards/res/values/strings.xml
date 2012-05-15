@@ -47,7 +47,9 @@
     <string name="dialog_choose_card_category_title">Please select a category:</string>
     <string name="dialog_choose_part_of_speech_title">Please select one:</string>
     <string name="dialog_create_study_set_arabic">Arabic</string>
+    <string name="dialog_create_study_set_arabic_short">(ar)</string>
     <string name="dialog_create_study_set_english">English</string>
+    <string name="dialog_create_study_set_english_short">(en)</string>
     <string name="dialog_create_study_set_language">Language on front of cards:</string>
     <string name="dialog_create_study_set_name">Study set name:</string>
     <string name="dialog_create_study_set_negative_button">Cancel</string>
