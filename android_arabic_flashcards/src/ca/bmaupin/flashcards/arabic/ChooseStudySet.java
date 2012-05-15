@@ -223,6 +223,11 @@ public class ChooseStudySet extends FragmentActivity
                             newStudySetName += " - " + newStudySetCardSubgroup;
                         }
                     }
+                    
+                    // arabic is the default study set language.  see 
+                    // res/layout/dialog_create_study_set.xml
+// TODO put this in a string resource
+                    newStudySetName += " (ar)";
 
                     showDialog(DIALOG_CREATE_STUDY_SET);
                 }
@@ -398,6 +403,41 @@ public class ChooseStudySet extends FragmentActivity
         final View layout = LayoutInflater.from(this).inflate(
         		R.layout.dialog_create_study_set, 
         		(ViewGroup) findViewById(R.id.dialog_create_study_set_layout));
+        
+        final RadioGroup studySetLanguage = (RadioGroup) layout.findViewById(
+                R.id.dialog_create_study_set_language);
+        final EditText studySetName = (EditText) layout.findViewById(
+                R.id.dialog_create_study_set_name);
+        
+        studySetLanguage.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup rg, int checkedId) {
+                /*
+                Toast.makeText(getApplicationContext(), "" + checkedId, Toast.LENGTH_SHORT).show();
+                studySetLanguage.findViewById(checkedId).
+                */
+                if (checkedId == R.id.dialog_create_study_set_arabic) {
+                    studySetName.setText(newStudySetName);
+                    //studySetName.setText(R.string.dialog_create_study_set_arabic_short);
+                    Toast.makeText(getApplicationContext(), "(ar)", Toast.LENGTH_SHORT).show();
+                } else if (checkedId == R.id.dialog_create_study_set_english) {
+                    //Toast.makeText(getApplicationContext(), studySetName.getText(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), newStudySetName, Toast.LENGTH_SHORT).show();
+                    if (studySetName.getText().equals(newStudySetName)) {
+                        Toast.makeText(getApplicationContext(), "(en)", Toast.LENGTH_SHORT).show();
+                        studySetName.setText(newStudySetName.substring(newStudySetName.length() - 4) +
+                                R.string.dialog_create_study_set_english_short);
+                    }
+                    //Toast.makeText(getApplicationContext(), "(en)", Toast.LENGTH_SHORT).show();
+                }
+            }
+            
+        });
+                
+/*                
+                RadioGroup studySetLanguage, int checkedId) {
+            Toast.makeText(getApplicationContext(), "" + checkedId, Toast.LENGTH_SHORT).show();
+        }*/
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(layout)
