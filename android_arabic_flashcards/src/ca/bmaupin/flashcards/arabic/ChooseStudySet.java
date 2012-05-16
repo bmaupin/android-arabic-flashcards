@@ -1,7 +1,6 @@
 package ca.bmaupin.flashcards.arabic;
 
 import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
-import ca.bmaupin.flashcards.arabic.data.CardProvider;
 import ca.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import ca.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import ca.bmaupin.flashcards.arabic.data.StudySetHelper;
@@ -224,10 +223,11 @@ public class ChooseStudySet extends FragmentActivity
                         }
                     }
                     
-                    // arabic is the default study set language.  see 
+                    // arabic is the default study set language, so add "(ar)" 
+                    // to the end of the study set name.  see 
                     // res/layout/dialog_create_study_set.xml
-// TODO put this in a string resource
-                    newStudySetName += " (ar)";
+                    newStudySetName += " " + getString(
+                            R.string.dialog_create_study_set_arabic_short);
 
                     showDialog(DIALOG_CREATE_STUDY_SET);
                 }
@@ -408,36 +408,36 @@ public class ChooseStudySet extends FragmentActivity
                 R.id.dialog_create_study_set_language);
         final EditText studySetName = (EditText) layout.findViewById(
                 R.id.dialog_create_study_set_name);
-        
-        studySetLanguage.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+        // if one of the study set language radio buttons is clicked
+        studySetLanguage.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup rg, int checkedId) {
-                /*
-                Toast.makeText(getApplicationContext(), "" + checkedId, Toast.LENGTH_SHORT).show();
-                studySetLanguage.findViewById(checkedId).
-                */
+                // the study set name with "(en)" at the end instead of "(ar)"
+                String newStudySetNameEnglish = newStudySetName.substring(0, 
+                        newStudySetName.length() - 4) + getString(
+                        R.string.dialog_create_study_set_english_short);
+                
+                // if arabic is checked
                 if (checkedId == R.id.dialog_create_study_set_arabic) {
-                    studySetName.setText(newStudySetName);
-                    //studySetName.setText(R.string.dialog_create_study_set_arabic_short);
-                    Toast.makeText(getApplicationContext(), "(ar)", Toast.LENGTH_SHORT).show();
-                } else if (checkedId == R.id.dialog_create_study_set_english) {
-                    //Toast.makeText(getApplicationContext(), studySetName.getText(), Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getApplicationContext(), newStudySetName, Toast.LENGTH_SHORT).show();
-                    if (studySetName.getText().equals(newStudySetName)) {
-                        Toast.makeText(getApplicationContext(), "(en)", Toast.LENGTH_SHORT).show();
-                        studySetName.setText(newStudySetName.substring(newStudySetName.length() - 4) +
-                                R.string.dialog_create_study_set_english_short);
+                    // if study set name is the default english study set name
+                    if (studySetName.getText().toString().equals(
+                            newStudySetNameEnglish)) {
+                        // change it to the default study set name
+                        studySetName.setText(newStudySetName);
                     }
-                    //Toast.makeText(getApplicationContext(), "(en)", Toast.LENGTH_SHORT).show();
+                // if english is checked
+                } else if (checkedId == R.id.dialog_create_study_set_english) {
+                    // if the study set name hasn't changed from the default
+                    if (studySetName.getText().toString().equals(
+                            newStudySetName)) {
+                        // replace it with the default english study set name
+                        studySetName.setText(newStudySetNameEnglish);
+                    }
                 }
             }
-            
         });
-                
-/*                
-                RadioGroup studySetLanguage, int checkedId) {
-            Toast.makeText(getApplicationContext(), "" + checkedId, Toast.LENGTH_SHORT).show();
-        }*/
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(layout)
