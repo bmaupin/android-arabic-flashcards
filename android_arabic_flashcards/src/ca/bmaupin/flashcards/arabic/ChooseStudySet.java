@@ -18,6 +18,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -42,6 +43,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TwoLineListItem;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class ChooseStudySet extends FragmentActivity 
@@ -133,8 +135,21 @@ public class ChooseStudySet extends FragmentActivity
                 0);
         
         lv.setAdapter(adapter);
+// TODO        
+        View loadingView = (View) getLayoutInflater().inflate(R.layout.choose_study_set_loading_row, null);
+//        lv.addView(loadingView);
+        lv.setEmptyView(null);
+        lv.setEmptyView(loadingView);
         
-        getSupportLoaderManager().initLoader(0, null, this);
+// TODO // SLEEP 2 SECONDS HERE ...
+        Handler handler = new Handler(); 
+        handler.postDelayed(new Runnable() { 
+             public void run() { 
+                 getSupportLoaderManager().initLoader(0, null, ChooseStudySet.this);
+             } 
+        }, 2000); 
+        
+//        getSupportLoaderManager().initLoader(0, null, this);
         
         registerForContextMenu(lv);
         
