@@ -122,7 +122,6 @@ public class ChooseStudySet extends FragmentActivity
         });
         
         lv = (ListView) findViewById(android.R.id.list);
-//        lv.setEmptyView(findViewById(R.id.study_set_empty));
 
         adapter = new StudySetCursorAdapter(this,
                 R.layout.choose_study_set_row,
