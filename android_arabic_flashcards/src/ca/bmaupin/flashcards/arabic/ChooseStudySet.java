@@ -43,7 +43,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TwoLineListItem;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class ChooseStudySet extends FragmentActivity 
@@ -67,6 +66,8 @@ public class ChooseStudySet extends FragmentActivity
 	};
     
     private StudySetCursorAdapter adapter;
+    // view to show while study sets are loading, or if there are none
+    private View emptyView;
     private ListView lv;
     // max number of new cards to show per day per study set
     private int newCardsPerDay = 0;
@@ -133,23 +134,17 @@ public class ChooseStudySet extends FragmentActivity
                         R.id.study_set_due,
                         R.id.study_set_new},
                 0);
-        
+
         lv.setAdapter(adapter);
-// TODO        
-        View loadingView = (View) getLayoutInflater().inflate(R.layout.choose_study_set_loading_row, null);
-//        lv.addView(loadingView);
-        lv.setEmptyView(null);
-        lv.setEmptyView(loadingView);
+        // show a loading message while we wait for the study sets to load
+        emptyView = findViewById(R.id.study_set_empty);
+        ((TextView) emptyView.findViewById(R.id.study_set_empty_text1)).setText(
+                R.string.choose_study_set_loading_message);
+        ((TextView) emptyView.findViewById(R.id.study_set_empty_text2)).setText(
+                "");
+        lv.setEmptyView(emptyView); 
         
-// TODO // SLEEP 2 SECONDS HERE ...
-        Handler handler = new Handler(); 
-        handler.postDelayed(new Runnable() { 
-             public void run() { 
-                 getSupportLoaderManager().initLoader(0, null, ChooseStudySet.this);
-             } 
-        }, 2000); 
-        
-//        getSupportLoaderManager().initLoader(0, null, this);
+        getSupportLoaderManager().initLoader(0, null, this);
         
         registerForContextMenu(lv);
         
@@ -268,7 +263,11 @@ public class ChooseStudySet extends FragmentActivity
         
         // if there are no study sets
         if (data.getCount() == 0) {
-            // set the empty view
+            // set the empty view text and the empty view
+            ((TextView) emptyView.findViewById(R.id.study_set_empty_text1)).
+                    setText(R.string.study_set_no_results);
+            ((TextView) emptyView.findViewById(R.id.study_set_empty_text2)).
+                    setText(R.string.study_set_no_results_details);
             lv.setEmptyView(findViewById(R.id.study_set_empty));
         } else {
             // otherwise clear it, so it won't flash in between cursor loads
