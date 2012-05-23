@@ -135,6 +135,8 @@ CREATE TABLE cards (
 
 insert into cards (english, arabic, type, category, gender, plural) select english, arabic, type, category, gender, plural from temp;
 
+drop table temp;
+
 
 
 AWS CHAPTER DATA IMPORT PROCESS:
@@ -158,6 +160,7 @@ CREATE TABLE aws_chapters (
 insert into aws_chapters (chapter, card_ID) select chapter, card_ID from temp;
 
 drop table temp;
+
 
 
 type: adj, adv, conj, interj, noun, prep, pronoun, verb, particle, phrase
