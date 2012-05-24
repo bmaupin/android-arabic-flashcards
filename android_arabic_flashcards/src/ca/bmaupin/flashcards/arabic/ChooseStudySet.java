@@ -225,9 +225,17 @@ public class ChooseStudySet extends FragmentActivity
                                 java.util.Arrays.asList(partsOfSpeechShort).
                                 indexOf(newStudySetCardSubgroup)];
                     
+                    // for categories just use the subgroup
                     } else if (newStudySetCardGroup.equals(getString(
                             R.string.card_group_categories))) {
                         newStudySetName = newStudySetCardSubgroup;
+                    
+                    // for ahlan wa sahlan - all just use ahlan wa sahlan
+                    } else if (newStudySetCardGroup.equals(getString(
+                            R.string.card_group_ahlan_wa_sahlan)) && 
+                            newStudySetCardSubgroup.equals(getString(
+                            R.string.card_group_all_chapters))) {
+                        newStudySetName = newStudySetCardGroup;
                     
                     } else {
                         newStudySetName = newStudySetCardGroup;
