@@ -212,7 +212,7 @@ public class ChooseStudySet extends FragmentActivity
                     // create a study set name to prefill our create study set dialog
                     // if the group is parts of speech
                     if (newStudySetCardGroup.equals(getString(
-                            R.string.card_group_parts_of_speech))) {                        
+                            R.string.card_group_parts_of_speech))) {
                         final String[] partsOfSpeechLong = 
                                 resources.getStringArray(
                                 R.array.dialog_parts_of_speech_long);
@@ -224,6 +224,11 @@ public class ChooseStudySet extends FragmentActivity
                         newStudySetName = partsOfSpeechLong[
                                 java.util.Arrays.asList(partsOfSpeechShort).
                                 indexOf(newStudySetCardSubgroup)];
+                    
+                    } else if (newStudySetCardGroup.equals(getString(
+                            R.string.card_group_categories))) {
+                        newStudySetName = newStudySetCardSubgroup;
+                    
                     } else {
                         newStudySetName = newStudySetCardGroup;
                         if (newStudySetCardSubgroup != null) {
