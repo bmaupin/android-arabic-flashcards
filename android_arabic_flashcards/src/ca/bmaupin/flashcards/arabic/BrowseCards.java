@@ -1,10 +1,7 @@
 package ca.bmaupin.flashcards.arabic;
 
 import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
-import ca.bmaupin.flashcards.arabic.data.CardProvider;
 import ca.bmaupin.flashcards.arabic.data.CardQueryHelper;
-import ca.bmaupin.flashcards.arabic.data.StudySetProvider;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,9 +10,11 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -32,7 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class BrowseCards extends Activity {
+public class BrowseCards extends FragmentActivity 
+        implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String TAG = "ShowCards";
     // dialog id constants
     private static final int DIALOG_NO_CARDS = 0;
@@ -165,6 +165,24 @@ public class BrowseCards extends Activity {
         } else {
         	showFirstCard();
         }
+    }
+    
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // TODO Auto-generated method stub
+        
     }
     
 	/* Inflates the menu */
