@@ -1,6 +1,7 @@
 package ca.bmaupin.flashcards.arabic;
 
 import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
+import ca.bmaupin.flashcards.arabic.data.CardProvider;
 import ca.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -48,6 +50,8 @@ public class BrowseCards extends FragmentActivity
         CardDatabaseHelper.CARDS_ARABIC,
     };
     
+    private String cardGroup;
+    private String cardSubgroup;
     // current card language
     private String currentLang;
     private Cursor cursor;
@@ -88,23 +92,10 @@ public class BrowseCards extends FragmentActivity
         
         Bundle bundle = this.getIntent().getExtras(); 
         
-        CardQueryHelper cqh = new CardQueryHelper(this, 
-                bundle.getString(Cards.EXTRA_CARD_GROUP), 
-                bundle.getString(Cards.EXTRA_CARD_SUBGROUP));
+        cardGroup = bundle.getString(Cards.EXTRA_CARD_GROUP);
+        cardSubgroup = bundle.getString(Cards.EXTRA_CARD_SUBGROUP);
         
-        cursor = managedQuery(
-                cqh.getContentUri(),
-                PROJECTION,
-                cqh.getSelection(),
-                cqh.getSelectionArgs(),
-                cqh.getSortOrder()
-        );
-
-        // make sure the cursor isn't empty
-        // if it is empty, we take care of that in onResume
-        if (cursor != null && cursor.getCount() != 0) {
-            cursor.moveToFirst();
-        }
+        getSupportLoaderManager().initLoader(0, null, this);
     }
     
     @Override
@@ -156,33 +147,45 @@ public class BrowseCards extends FragmentActivity
 // TODO: do we want to do this if the order is random?
         // if we're coming back to this activity from another, we've probably
         // lost our cursor postion
+// TODO: do we need this with cursorLoader?
+/*
         if (cursor.isBeforeFirst()) {
         	cursor.moveToPosition(cursorPosition);
         }
-        
-        if (cursor == null || cursor.getCount() == 0) {
-        	showDialog(DIALOG_NO_CARDS);
-        } else {
-        	showFirstCard();
-        }
+*/
     }
     
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // TODO Auto-generated method stub
-        return null;
+        CardQueryHelper cqh = new CardQueryHelper(this, cardGroup, 
+                cardSubgroup);
+        
+        return new CursorLoader(this,
+                cqh.getContentUri(),
+                PROJECTION,
+                cqh.getSelection(),
+                cqh.getSelectionArgs(),
+                cqh.getSortOrder()
+        );
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // TODO Auto-generated method stub
-        
+        cursor = data;
+// TODO
+        // make sure the cursor isn't empty
+        if (cursor.moveToFirst()) {
+            showFirstCard();
+        } else {
+            showDialog(DIALOG_NO_CARDS);
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // TODO Auto-generated method stub
-        
+        // This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
     }
     
 	/* Inflates the menu */
