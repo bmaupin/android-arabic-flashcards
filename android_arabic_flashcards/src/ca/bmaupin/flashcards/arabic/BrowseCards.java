@@ -1,7 +1,6 @@
 package ca.bmaupin.flashcards.arabic;
 
 import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
-import ca.bmaupin.flashcards.arabic.data.CardProvider;
 import ca.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -59,7 +58,7 @@ public class BrowseCards extends FragmentActivity
     // default card language 
     private String defaultLang;
     // whether or not to apply arabic fixes
-    private boolean fixArabic;
+    private Boolean fixArabic;
     private GestureDetector gestureDetector;
     private SharedPreferences preferences;
     private Resources resources;
@@ -75,17 +74,7 @@ public class BrowseCards extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        
-        setContentView(R.layout.cards);
-        
-        vf = (ViewFlipper)findViewById(R.id.flipper);
-        slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
-        slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
-        slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
-        slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
-        
-        gestureDetector = new GestureDetector(new MyGestureDetector());
-        
+
         // create objects for shared preferences and resources
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
@@ -129,20 +118,8 @@ public class BrowseCards extends FragmentActivity
             currentLang = defaultLang;
         }
         
-        if (fixArabic) {
-            // set the typeface for the TextViews within the ViewFlipper
-            Typeface tf = Typeface.createFromAsset(getAssets(), 
-                    Cards.ARABIC_TYPEFACE);
-            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(tf);
-            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(tf);
-
-        } else {
-            // reset to the default typeface
-            ((TextView) vf.findViewById(R.id.textview1)).setTypeface(
-                    Typeface.DEFAULT);
-            ((TextView) vf.findViewById(R.id.textview2)).setTypeface(
-                    Typeface.DEFAULT);
-        }
+        // set the typeface when the app is resumed in case it's changed
+        setCardTypeface();
         
 // TODO: do we want to do this if the order is random?
         // if we're coming back to this activity from another, we've probably
@@ -279,7 +256,48 @@ public class BrowseCards extends FragmentActivity
     }
     
     private void showFirstCard() {
-		setCurrentCardText();
+        setContentView(R.layout.cards);
+        
+        vf = (ViewFlipper)findViewById(R.id.flipper);
+        slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+        slideLeftOut = AnimationUtils.loadAnimation(this, 
+                R.anim.slide_left_out);
+        slideRightIn = AnimationUtils.loadAnimation(this, 
+                R.anim.slide_right_in);
+        slideRightOut = AnimationUtils.loadAnimation(this, 
+                R.anim.slide_right_out);
+        
+        gestureDetector = new GestureDetector(new MyGestureDetector());
+        
+        // set the typeface when the app is initially opened
+        setCardTypeface();
+        
+        setCurrentCardText();
+    }
+    
+    private void setCardTypeface() {
+        /*
+         * fixArabic is initialized in onResume(), and vf is initialized in 
+         * showFirstCard().  the first time the app is run, onResume() will get 
+         * called before showFirstCard(), so double-check that fixArabic and vf are 
+         * both initialized
+         */
+        if (fixArabic != null && vf != null) {
+            if (fixArabic) {
+                // set the typeface for the TextViews within the ViewFlipper
+                Typeface tf = Typeface.createFromAsset(getAssets(), 
+                        Cards.ARABIC_TYPEFACE);
+                ((TextView) vf.findViewById(R.id.textview1)).setTypeface(tf);
+                ((TextView) vf.findViewById(R.id.textview2)).setTypeface(tf);
+    
+            } else {
+                // reset to the default typeface
+                ((TextView) vf.findViewById(R.id.textview1)).setTypeface(
+                        Typeface.DEFAULT);
+                ((TextView) vf.findViewById(R.id.textview2)).setTypeface(
+                        Typeface.DEFAULT);
+            }
+        }
     }
     
     private void setCardText(int layoutIndexToShow) {
