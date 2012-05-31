@@ -44,7 +44,7 @@ public class BrowseCards extends FragmentActivity
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     
     private static final String[] PROJECTION = new String[] {
-    	CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
+        CardDatabaseHelper.CARDS_TABLE + "." + CardDatabaseHelper._ID,
         CardDatabaseHelper.CARDS_ENGLISH,
         CardDatabaseHelper.CARDS_ARABIC,
     };
@@ -54,7 +54,6 @@ public class BrowseCards extends FragmentActivity
     // current card language
     private String currentLang;
     private Cursor cursor;
-    private int cursorPosition;
     // default card language 
     private String defaultLang;
     // whether or not to apply arabic fixes
@@ -120,16 +119,6 @@ public class BrowseCards extends FragmentActivity
         
         // set the typeface when the app is resumed in case it's changed
         setCardTypeface();
-        
-// TODO: do we want to do this if the order is random?
-        // if we're coming back to this activity from another, we've probably
-        // lost our cursor postion
-// TODO: do we need this with cursorLoader?
-/*
-        if (cursor.isBeforeFirst()) {
-        	cursor.moveToPosition(cursorPosition);
-        }
-*/
     }
     
     @Override
@@ -165,7 +154,7 @@ public class BrowseCards extends FragmentActivity
         // longer using it.
     }
     
-	/* Inflates the menu */
+    /* Inflates the menu */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -176,24 +165,24 @@ public class BrowseCards extends FragmentActivity
     /* Handles menu selections */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
+        switch (item.getItemId()) {
 // TODO: do we want to add a way to go back to ChooseStudySet?
 /*
-        	case R.id.menu_choose_cards:
-        		chooseCardSet();
-        		return true;
+            case R.id.menu_choose_cards:
+                chooseCardSet();
+                return true;
 */
-        	case R.id.menu_help:
-        		startActivity(new Intent(this, Help.class));
-        		return true;
-        	case R.id.menu_settings:
-        		startActivity(new Intent(this, Preferences.class));
-        		return true;
-        	case R.id.menu_search:
-        	    onSearchRequested();
-        	    return true;
-    	}
-    	return false;
+            case R.id.menu_help:
+                startActivity(new Intent(this, Help.class));
+                return true;
+            case R.id.menu_settings:
+                startActivity(new Intent(this, Preferences.class));
+                return true;
+            case R.id.menu_search:
+                onSearchRequested();
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -312,18 +301,18 @@ public class BrowseCards extends FragmentActivity
             tv.setTextSize(Cards.ARABIC_CARD_TEXT_SIZE);
             String arabic = cursor.getString(2);
             if (fixArabic) {
-            	arabic = Cards.fixArabic(arabic, showVowels);
+                arabic = Cards.fixArabic(arabic, showVowels);
             }
             if (showVowels) {
-            	tv.setText(arabic);
+                tv.setText(arabic);
             } else {
-            	tv.setText(Cards.removeVowels(arabic));
+                tv.setText(Cards.removeVowels(arabic));
             }
         }
     }
     
     private void setCurrentCardText() {
-    	setCardText(vf.getDisplayedChild());
+        setCardText(vf.getDisplayedChild());
     }
     
     /*
@@ -390,21 +379,21 @@ public class BrowseCards extends FragmentActivity
         setCurrentCardText();
     }
     
-	@Override
-	protected Dialog onCreateDialog(int id) {
-	    switch (id) {
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
         case DIALOG_NO_CARDS:
             return createNoCardsDialog();
-	    case DIALOG_NO_MORE_CARDS:
-//	        return createNoMoreCardsDialog();
-	    }
-	    return null;
-	}
-	
+        case DIALOG_NO_MORE_CARDS:
+//          return createNoMoreCardsDialog();
+        }
+        return null;
+    }
+    
     private Dialog createNoCardsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Sorry, the set of cards you selected is empty.  " +
-        		"Please choose a different set of cards.")
+                "Please choose a different set of cards.")
                 .setCancelable(false)
                 .setPositiveButton("Choose new cards", 
                         new DialogInterface.OnClickListener() {
@@ -420,9 +409,6 @@ public class BrowseCards extends FragmentActivity
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
-        
-        // store the cursor position in case we come back
-        cursorPosition = cursor.getPosition();
     }
     
     @Override
