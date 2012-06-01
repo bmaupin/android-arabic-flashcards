@@ -360,7 +360,7 @@ secondary|ثانَوِيّ|adj|||n
 new|جَديد|adj|Common|m|n
 new (pl)|جُدُد|adj|Common|m|y
 beautiful, good-looking|جَميل|adj|Common||n
-beautiful, good-looking (pl)|ون|adj|Common||y
+beautiful, good-looking (pl)|جَميلون|adj|Common||y
 modern|حَديث|adj|||n
 house|دار|noun|Household|f|n
 houses|دور|noun|Household|f|y
@@ -397,7 +397,7 @@ particle used negate past-tense verbs|ما|particle|||n
 engine, motor|مُحَرِّك|noun|Transportation|f|n
 engines, motors|مَحَرِّكات|noun|Transportation|f|y
 handsome|وَسيم|adj||m|n
-handsome (pl)|ون|adj||m|y
+handsome (pl)|وَسيمون|adj||m|y
 India|الهِنْد|noun|Places|f|n
 Japan|اليابان|noun|Places|f|n
 August|آب|noun|Months|m|n
@@ -1197,7 +1197,7 @@ sodas|مِياه غازيّة|noun|Food|f|y
 match, game|مُباراة|noun|Sports|f|n
 matches, games|مُبارَيات|noun|Sports|f|y
 spectator|مُتَفَرِّج|noun|Sports|m|n
-spectators|ون|noun|Sports|m|y
+spectators|مُتَفَرِّجون|noun|Sports|m|y
 roasted, toasted|مُحَمَّص|adj|Food|m|n
 grill, gridiron|مِشواة|noun||f|n
 grills, gridirons|مَشاوٍ|noun||f|y
@@ -1314,7 +1314,7 @@ middle, central|وَسَط|noun|Common|m|n
 middle, central (pl)|أوساط|noun|Common|m|y
 for the sake of, because of|أجْل (مِن أجْلِ)|conj|||n
 broadcasting station|إذاعَة|noun|Entertainment|f|n
-broadcasting stations|ات|noun|Entertainment|f|y
+broadcasting stations|إذاعَات|noun|Entertainment|f|y
 to listen|اِسْتَمَعَ (يَسْتَمِعُ) اِسْتِماع|verb|||n
 to enroll in, to subscribe to|اِشْتَرَكَ (يَشْتَرِكُ)اِشْتِراك|verb|||n
 song|أُغبِية|noun|Entertainment|f|n
@@ -1351,20 +1351,20 @@ cable|كيبِل|noun||m|n
 to die|ماتَ (يموتُ) مَوْت|verb|||n
 free of charge|مَجّانيّ|adj|||n
 announcer|مُذيع|noun|Occupations|m|n
-announcers|ون|noun|Occupations|m|y
+announcers|مُذيعون|noun|Occupations|m|y
 entertainer|مُطْرِب|noun|Occupations|m|n
 entertainers|مُطْرِبون|noun|Occupations|m|y
 singer|مُغَنٍّ|noun|Occupations|m|n
-singers|ون|noun|Occupations|m|y
+singers|مُغَنٍّون|noun|Occupations|m|y
 interview|مُقابَلة|noun||f|n
-interviews|ات|noun||f|y
+interviews|مُقابَلات|noun||f|y
 excellent|مُمْتاز|adj|Common||n
-excellent (pl)|ون|adj|Common||y
+excellent (pl)|مُمْتازون|adj|Common||y
 actor, representative|مُمَثِّل|noun|Occupations|m|n
-actors, representatives|ون|noun|Occupations|m|y
+actors, representatives|مُمَثِّلون|noun|Occupations|m|y
 by means of, via|مِن خِلالِ|prep|||n
 wave|مَوْجة|noun||f|n
-waves|ات|noun||f|y
+waves|مَوْجات|noun||f|y
 bulletin, report|نَشْرة|noun||f|n
 bulletins, reports|نَشَرات|noun||f|y
 system|نِظام|noun||f|n
@@ -1398,14 +1398,14 @@ surfaces, levels|سُطوح|noun||m|y
 political|سِياسيّ|adj|||n
 interesting, thrilling|شَيِّق|adj|||n
 journalist|صَحَفِيّ|noun|Occupations|m|n
-journalists|ون|noun|Occupations|m|y
+journalists|صَحَفِيّون|noun|Occupations|m|y
 newspaper|صَحيفة|noun|Entertainment|f|n
 newspapers|صُحُف|noun|Entertainment|f|y
 to cross|عَبَرَ (يَعبُرُ) عُبور|verb|||n
 opposite, reverse, contrary|عَكْس|noun|||n
 to leave|غادَرَ (يُغادِرُ) مُغادَرة|verb|||n
 peasant, farmworker|فَلاّح|noun|People|m|n
-peasants, farmworkers|ون|noun|People|m|y
+peasants, farmworkers|فَلاّحون|noun|People|m|y
 denotes completed action, emphasis, or possibility|قَد|particle|||n
 relatives|أقارِب|noun|Family|m|y
 heart|قَلْل|noun|Body|m|n
@@ -1413,12 +1413,12 @@ hearts|قُلوب|noun|Body|m|y
 hospitality, generosity|كَرَم|noun|Abstract|m|n
 speech, speaking|كَلام|noun||m|n
 player|لاعِب|noun|Sports|m|n
-players|ون|noun|Sports|m|y
+players|لاعِبون|noun|Sports|m|y
 expresses completed action with a perfect tense verb|لَقَد|particle|||n
 society, community|مُجْتَمَع|noun||m|n
 societies, communities|مُجْتَمَعات|noun||m|y
 accountant|مُحاسِب|noun|Occupations|m|n
-accountants|ون|noun|Occupations|m|y
+accountants|مُحاسِبون|noun|Occupations|m|y
 farm|مَزْرَعة|noun|Locations|f|n
 farms|مَزارع|noun|Locations|f|y
 recorded|مُسَجَّل|adj|||n
