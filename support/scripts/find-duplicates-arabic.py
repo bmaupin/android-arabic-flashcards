@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-
-# $Id$
+# coding=utf8
 
 '''Use this script to find possible duplicates in one arabic words source file
 '''
