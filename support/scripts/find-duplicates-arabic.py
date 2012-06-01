@@ -109,6 +109,7 @@ def split_strings(strings, separators):
 def compare_strings(string1, string2):
     if string1 == '' and string2 == '':
         return False
+    # skip 'ون' (plural ending by itself)
     if string1 == '\xd9\x88\xd9\x86' and string2 == '\xd9\x88\xd9\x86':
         return False
     
