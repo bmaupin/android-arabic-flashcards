@@ -19,14 +19,11 @@ import android.view.View;
 import android.widget.TextView;
 
 public class ShowOneCard extends Activity {
-    private static final String TAG = "ShowSearchResult";
+    private static final String TAG = "ShowOneCard";
     
     private String arabic = "";
-    private int cardId;
     // current card language
     private String currentLang;
-    private SQLiteDatabase db;
-    private CardDatabaseHelper dbHelper;
     private String english = "";
     // whether or not to apply arabic fixes
     private boolean fixArabic;
@@ -41,8 +38,7 @@ public class ShowOneCard extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         
-        Bundle bundle = this.getIntent().getExtras();
-        cardId = bundle.getInt(Search.EXTRA_CARD_ID);
+        int cardId = this.getIntent().getExtras().getInt(Search.EXTRA_CARD_ID);
         
         setContentView(R.layout.show_one_card);
         
@@ -62,8 +58,8 @@ public class ShowOneCard extends Activity {
          * onPause, but we don't need to here since we're only accessing the db
          * once
          */
-        dbHelper = new CardDatabaseHelper(this);
-        db = dbHelper.getReadableDatabase();
+        CardDatabaseHelper dbHelper = new CardDatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
         
         String[] columns = new String[] {CardDatabaseHelper.CARDS_ENGLISH, 
                 CardDatabaseHelper.CARDS_ARABIC};
