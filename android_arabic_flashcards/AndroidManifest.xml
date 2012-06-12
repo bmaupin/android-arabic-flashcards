@@ -37,7 +37,8 @@
                   android:label="@string/preferences_title"
                   android:theme="@android:style/Theme" >
         </activity>
-        <activity android:name=".ShowOneCard" >
+        <activity android:name=".ShowOneCard"
+                  android:launchMode="singleTop" >
             <meta-data android:name="android.app.default_searchable"
                        android:value=".Search" />
         </activity>
@@ -47,7 +48,7 @@
                        android:value=".Search" />
         </activity>
         <activity android:name=".Search"
-                  android:launchMode="singleTop" >
+                  android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
