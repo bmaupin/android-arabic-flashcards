@@ -703,37 +703,39 @@ public class ShowStudySet extends FragmentActivity
     }
     
     private void showSummary() {
+        int [] colors = new int[3];
+        
         final String[] summary_pie_labels = new String[] {
-                getString(R.string.chart_label_known),
-                getString(R.string.chart_label_iffy),
-                getString(R.string.chart_label_unknown)
+            getString(R.string.chart_label_known),
+            getString(R.string.chart_label_iffy),
+            getString(R.string.chart_label_unknown)
+        };
+        final int[] summary_pie_data = new int[] {
+            knownCardCount,
+            iffyCardCount,
+            unknownCardCount
             };
-            final int[] summary_pie_data = new int[] {
-                    knownCardCount,
-                    iffyCardCount,
-                    unknownCardCount
-                    };
-            int[] colors = {
-                    resources.getColor(R.color.chart_green),
-                    resources.getColor(R.color.chart_yellow),
-                    resources.getColor(R.color.chart_red)
-            };
-// TODO: implement these
-/*
-            // color-blind safe colors
-            int[] colors = {
-                    resources.getColor(R.color.chart_blue),
-                    resources.getColor(R.color.chart_yellow),
-                    resources.getColor(R.color.chart_brown)
-            };
-*/
-            Intent i = new Intent(this, ChartPanelActivity.class);
-            i.putExtra(Intent.EXTRA_TITLE, getString(R.string.chart_title));
-            i.putExtra(ChartPanelActivity.EXTRA_LABELS, summary_pie_labels);
-            i.putExtra(ChartPanelActivity.EXTRA_DATA, summary_pie_data);
-            i.putExtra(ChartPanelActivity.EXTRA_COLORS, colors);
-            startActivity(i);
-            finish();
+        // use color blind friendly colors if specified in preferences
+        if (preferences.getBoolean(getString(
+                R.string.preferences_use_color_blind_colors), 
+                resources.getBoolean(
+                R.bool.preferences_use_color_blind_colors_default))) {
+            colors[0] = resources.getColor(R.color.chart_blue);
+            colors[1] = resources.getColor(R.color.chart_yellow);
+            colors[2] = resources.getColor(R.color.chart_brown);
+        } else {
+            colors[0] = resources.getColor(R.color.chart_green);
+            colors[1] = resources.getColor(R.color.chart_yellow);
+            colors[2] = resources.getColor(R.color.chart_red);
+        }
+
+        Intent i = new Intent(this, ChartPanelActivity.class);
+        i.putExtra(Intent.EXTRA_TITLE, getString(R.string.chart_title));
+        i.putExtra(ChartPanelActivity.EXTRA_LABELS, summary_pie_labels);
+        i.putExtra(ChartPanelActivity.EXTRA_DATA, summary_pie_data);
+        i.putExtra(ChartPanelActivity.EXTRA_COLORS, colors);
+        startActivity(i);
+        finish();
     }
     
     @Override

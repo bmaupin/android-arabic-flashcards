@@ -32,6 +32,12 @@
             android:defaultValue="@integer/preferences_new_cards_per_day_default"
             android:numeric="integer"
             />
+        <CheckBoxPreference
+            android:key="@string/preferences_use_color_blind_colors"
+            android:title="@string/preferences_use_color_blind_colors_title"
+            android:summary="@string/preferences_use_color_blind_colors_summary"
+            android:defaultValue="@bool/preferences_use_color_blind_colors_default"
+            />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/preferences_category_browse_cards_title">
