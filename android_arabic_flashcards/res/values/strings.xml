@@ -134,6 +134,9 @@
     <string name="preferences_show_vowels_summary">Show vowels and other diacritics</string>
     <string name="preferences_show_vowels_title">Show vowels</string>
     <string name="preferences_title">Settings</string>
+    <string name="preferences_use_color_blind_colors">use_color_blind_colors</string>
+    <string name="preferences_use_color_blind_colors_summary">Use color blind friendly colors for study session summary chart</string>
+    <string name="preferences_use_color_blind_colors_title">Use color blind colors</string>
     
     <string name="search_hint">Search cards</string>
     <string name="search_no_results">No results found</string>
@@ -148,3 +151,4 @@
     <string name="study_set_no_results">No study sets</string>
     <string name="study_set_no_results_details">Click below to create a new study set</string>
 </resources>
+
