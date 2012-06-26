@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-'''Find the longest english and arabic words and print them
+'''Find the longest english and arabic cards and print them
 '''
 
 
