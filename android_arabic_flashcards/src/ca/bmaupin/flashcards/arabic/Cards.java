@@ -14,7 +14,7 @@ public class Cards {
 	private static final String TAG = "Cards";
 	
     static final float ARABIC_CARD_TEXT_SIZE = 56f;
-    static final float ENGLISH_CARD_TEXT_SIZE = 42f;
+    static final float ENGLISH_CARD_TEXT_SIZE = 38f;
     
     static final String ARABIC_TYPEFACE = "fonts/KacstOne.ttf";
     
