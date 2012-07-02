@@ -71,7 +71,6 @@ public class AutofitTextView extends TextView {
             Log.d(TAG, "text resized; new size=" + tp.getTextSize());
             // force the view to be redrawn and the line wrapping to be 
             // recalculated
-// TODO: not sure where honeycomb falls in this
             // pre ICS
             if (Integer.parseInt(Build.VERSION.SDK) < 14) {
                 setEllipsize(null);
