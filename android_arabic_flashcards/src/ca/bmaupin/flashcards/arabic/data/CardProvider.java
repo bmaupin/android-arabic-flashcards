@@ -1,5 +1,6 @@
 package ca.bmaupin.flashcards.arabic.data;
 
+import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -22,6 +23,7 @@ public class CardProvider extends ContentProvider {
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
+    private static final int SEARCH_SUGGEST = 2;
     
     // content provider mime type constants
     public static final String CONTENT_TYPE = 
@@ -47,6 +49,7 @@ public class CardProvider extends ContentProvider {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(AUTHORITY, PATH_CARDS, CARDS);
         sUriMatcher.addURI(AUTHORITY, PATH_CARDS + "/#", CARD_ID);
+        sUriMatcher.addURI(AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY + "/*", SEARCH_SUGGEST);
     }
     
     @Override
