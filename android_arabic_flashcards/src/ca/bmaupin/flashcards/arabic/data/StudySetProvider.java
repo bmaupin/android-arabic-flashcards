@@ -16,15 +16,18 @@ public class StudySetProvider extends ContentProvider {
 	
     public static final String AUTHORITY = 
         "ca.bmaupin.flashcards.arabic.studysetprovider";
+    
     // uri path constants
     private static final String PATH_STUDYSETS = "studysets";
     private static final String PATH_CARDS = "cards";
     private static final String PATH_META = "meta";
+    
     // content uris
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + 
     		"/" + PATH_STUDYSETS);
     public static final Uri CONTENT_URI_META = Uri.parse("content://" + 
     		AUTHORITY + "/" + PATH_STUDYSETS + "/" + PATH_META);
+    
     // uri pattern constants
     private static final int STUDYSETS = 1;
     // a specific study set
@@ -35,9 +38,11 @@ public class StudySetProvider extends ContentProvider {
     private static final int STUDYSETS_META = 4;
     // a particular entry in the meta table
     private static final int STUDYSETS_META_ID = 5;
+    
     // 0-relative uri path positions
     private static final int STUDYSETS_ID_PATH_POSITION = 1;
     private static final int STUDYSETS_META_ID_PATH_POSITION = 2;
+    
     // query parameter for limiting the results of the query
     public static final String QUERY_PARAMETER_LIMIT = "limit";
     // query parameter for whether or not to notify the content resolver of a change

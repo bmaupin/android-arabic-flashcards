@@ -18,14 +18,17 @@ public class CardProvider extends ContentProvider {
     private static final String PATH_CARDS = "cards";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY 
             + "/" + PATH_CARDS);
+    
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
+    
     // content provider mime type constants
     public static final String CONTENT_TYPE = 
             "vnd.android.cursor.dir/vnd.bmaupin.card";
     public static final String CONTENT_ITEM_TYPE = 
             "vnd.android.cursor.item/vnd.bmaupin.card";
+    
     // query parameter for whether or not to do a join
     public static final String QUERY_PARAMETER_JOIN = "join";
     public static final String QUERY_PARAMETER_JOIN_FALSE = "0";
