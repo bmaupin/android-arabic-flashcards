@@ -118,7 +118,7 @@ thank you|شُكْراً|phrase|Common||n
 zero|صِفْر|noun|Numbers|m|n
 zero (pl)|أصْفار|noun|Numbers|m|y
 Arabic (language)|العَرَبيّة|adj|Subjects|f|n
-to know|عَرَفَ (يَعرِقُ) مَعْرِفة|verb|||n
+to know|عَرَفَ (يَعرِفُ) مَعْرِفة|verb|||n
 ten|عَشَرة|noun|Numbers|f|n
 address|عُنوان|noun|Directions|m|n
 addresses|عَناوين|noun|Directions|m|y
@@ -232,7 +232,7 @@ workers; employees|مُوَظَّفون|noun|Occupations|m|y
 hundred|مِئة|noun|Numbers|f|n
 hundreds|مِئات|noun|Numbers|f|y
 you (m. sg.) are able|يُمْكِنُكَ|verb|||n
-to like|أحَبَّ (يُحِبُّ) جُبّ، مَحَبّة|verb|Common||n
+to like|أحَبَّ (يُحِبُّ) حُبّ، مَحَبّة|verb|Common||n
 sometimes|أحياناً|adv|Common||n
 to want|أرادَ (يُريدَ) إرادة|verb|Common||n
 to give|أعطى (يُعطي) أَعْطِ|verb|Common||n
@@ -295,13 +295,13 @@ piece|قِطْعة|noun||f|n
 pieces|قِطَع|noun||f|y
 coffee|قَهْوة|noun|Food|f|n
 glass|كَأس|noun|Dishes|f|n
-glasses|كُؤوس|noun|Dishes|f|y
+glass (pl)|كُؤوس|noun|Dishes|f|y
 a great deal|كَثيراً|adv|||n
 meat|لحْم|noun|Food|m|n
 meats|لُحوم|noun|Food|m|y
 What’s your opinion?|ما رأيُك|phrase|||n
 water|ماء|noun|Food|m|n
-waters|مِياه|noun|Food|m|y
+water (pl)|مِياه|noun|Food|m|y
 when|مَتى|particle|Common||n
 jam, preserve|مُرَبّى|noun|Food|m|n
 jams, preserves|مُرَبَّيات|noun|Food|m|y
@@ -1316,7 +1316,7 @@ for the sake of, because of|أجْل (مِن أجْلِ)|conj|||n
 broadcasting station|إذاعَة|noun|Entertainment|f|n
 broadcasting stations|إذاعَات|noun|Entertainment|f|y
 to listen|اِسْتَمَعَ (يَسْتَمِعُ) اِسْتِماع|verb|||n
-to enroll in, to subscribe to|اِشْتَرَكَ (يَشْتَرِكُ)اِشْتِراك|verb|||n
+to enroll in, to subscribe to|اِشْتَرَكَ (يَشْتَرِكُ) اِشْتِراك|verb|||n
 song|أُغبِية|noun|Entertainment|f|n
 songs|أغانٍ|noun|Entertainment|f|y
 to be possible|أمْكَنَ (يُمكِنُ) إمْكان|verb|||n
@@ -1408,7 +1408,7 @@ peasant, farmworker|فَلاّح|noun|People|m|n
 peasants, farmworkers|فَلاّحون|noun|People|m|y
 denotes completed action, emphasis, or possibility|قَد|particle|||n
 relatives|أقارِب|noun|Family|m|y
-heart|قَلْل|noun|Body|m|n
+heart|قَلْب|noun|Body|m|n
 hearts|قُلوب|noun|Body|m|y
 hospitality, generosity|كَرَم|noun|Abstract|m|n
 speech, speaking|كَلام|noun||m|n
@@ -1519,7 +1519,7 @@ good evening|مَساع الخَيْر|phrase|||n
 fine, well|بِخَيْر|adj|Common||n
 tired|تَعْبان|adj|Common||n
 perfect, great|تَمام|adj|Common||n
-what’s new? what’s going on?|ما أخْبلرُك؟|phrase|Common||n
+what’s new? what’s going on?|ما أخْبارُك؟|phrase|Common||n
 how are you?|كَيفَ الحال؟|phrase|Common||n
 where?|أَيْنَ|adv|Common||n
 television|تِلفاز|noun|Technology||n
