@@ -71,8 +71,7 @@ public class ShowOneCard extends Activity {
         
         cursor.moveToFirst();
         english = cursor.getString(0);
-//        arabic = cursor.getString(1);
-        arabic = "(n) حَديث";
+        arabic = cursor.getString(1);
         
         // close the database connection
         cursor.close();
