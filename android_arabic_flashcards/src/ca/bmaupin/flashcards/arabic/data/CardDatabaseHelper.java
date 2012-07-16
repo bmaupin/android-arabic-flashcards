@@ -17,7 +17,7 @@ public class CardDatabaseHelper extends SQLiteOpenHelper {
 	private static final String TAG = "DatabaseHelper";
 	
 	public static final String DATABASE_NAME = "cards.db";
-	public static final int DATABASE_VERSION = 18;
+	public static final int DATABASE_VERSION = 19;
 	public static final String CARDS_TABLE = "cards";
 	public static final String AWS_CHAPTERS_TABLE = "aws_chapters";
 
