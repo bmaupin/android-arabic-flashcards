@@ -5,13 +5,12 @@ LEAVING ALONE FOR NOW
 
 
 UNSURE
-107-624 (to equal; to do (Syrian colloquial))
 
 
 NOT DUPES
-251-266-1387 (to bring; to attain, to get, to acquire; to attend, to be present)
+251-266-1386 (to bring; to attain, to get, to acquire; to attend, to be present)
 329-364 (conversation; modern)
-570-680 (tooth; age)
+570-679 (tooth; age)
 
 
 dupes removed:
@@ -24,6 +23,7 @@ dupes removed:
     562
     623
     623
+	624
     641
     834
     835
