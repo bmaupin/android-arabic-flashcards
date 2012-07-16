@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+'''use it like this:
+cd android-arabic-flashcards/support/words
+python ../scripts/fix-duplicate.py 107 624
+'''
+
 import sys
 
 infile_name = 'arabic-words.csv'
