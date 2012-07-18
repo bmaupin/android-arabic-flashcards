@@ -65,6 +65,9 @@ public class CardProvider extends ContentProvider {
             String[] selectionArgs, String sortOrder) {
         Log.d(TAG, "query()");
         
+//
+        Log.d(TAG, "uri=" + uri);
+        
         String limit = null;
         
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -99,16 +102,19 @@ public class CardProvider extends ContentProvider {
             break;
         
         case SEARCH_SUGGEST:
-            // append a percent sign for partial matches
-            String query = uri.getLastPathSegment().toLowerCase() + "%";
+            // append percent signs for partial matches
+            String query = "%" + uri.getLastPathSegment().toLowerCase() + "%";
             selection = CardDatabaseHelper.CARDS_ENGLISH + " LIKE ?";
             selectionArgs = new String[] {query};
             
             projection = new String[] {
                     CardDatabaseHelper._ID,
                     CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
-                            SearchManager.SUGGEST_COLUMN_TEXT_1
+                            SearchManager.SUGGEST_COLUMN_TEXT_1,
+                    CardDatabaseHelper.CARDS_ARABIC + " AS " + 
+                            SearchManager.SUGGEST_COLUMN_TEXT_2
             };
+            break;
             
         default:
             // If the URI doesn't match any of the known patterns, throw an exception.
