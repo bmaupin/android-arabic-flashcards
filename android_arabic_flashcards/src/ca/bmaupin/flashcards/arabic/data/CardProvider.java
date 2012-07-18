@@ -23,7 +23,7 @@ public class CardProvider extends ContentProvider {
     // content provider data type constants
     private static final int CARDS = 1;
     private static final int CARD_ID = 2;
-    private static final int SEARCH_SUGGEST = 2;
+    private static final int SEARCH_SUGGEST = 3;
     
     // content provider mime type constants
     public static final String CONTENT_TYPE = 
@@ -97,6 +97,18 @@ public class CardProvider extends ContentProvider {
             qb.appendWhere(CardDatabaseHelper._ID + "=" + 
                     uri.getPathSegments().get(CARD_ID_PATH_POSITION));
             break;
+        
+        case SEARCH_SUGGEST:
+            // append a percent sign for partial matches
+            String query = uri.getLastPathSegment().toLowerCase() + "%";
+            selection = CardDatabaseHelper.CARDS_ENGLISH + " LIKE ?";
+            selectionArgs = new String[] {query};
+            
+            projection = new String[] {
+                    CardDatabaseHelper._ID,
+                    CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
+                            SearchManager.SUGGEST_COLUMN_TEXT_1
+            };
             
         default:
             // If the URI doesn't match any of the known patterns, throw an exception.
