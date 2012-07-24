@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Search extends ListActivity {
     static final String EXTRA_CARD_ID = "android.intent.extra.CARD_ID";
@@ -56,7 +58,8 @@ public class Search extends ListActivity {
         resources = getResources();
         
         this.intent = getIntent();
-        
+
+// TODO: don't think we need to open the db if we're using search suggestions
         dbHelper = new CardDatabaseHelper(this);
         db = dbHelper.getReadableDatabase();
     }
@@ -76,16 +79,21 @@ public class Search extends ListActivity {
         
         String query = "";
         
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = intent.getStringExtra(SearchManager.QUERY);
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            int cardId = Cards.stringToInteger(intent.getDataString());
+            Intent intent = new Intent(this, ShowOneCard.class);
+            intent.putExtra(EXTRA_CARD_ID, cardId);
+            startActivity(intent);
+        }
+        
         fixArabic = preferences.getBoolean(
                 getString(R.string.preferences_fix_arabic),
                 resources.getBoolean(R.bool.preferences_fix_arabic_default));
         showVowels = preferences.getBoolean(
                 getString(R.string.preferences_show_vowels),
                 resources.getBoolean(R.bool.preferences_show_vowels_default));
-        
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            query = intent.getStringExtra(SearchManager.QUERY);
-        }
         
         String[] columns = new String[] {CardDatabaseHelper._ID, 
                 CardDatabaseHelper.CARDS_ENGLISH, CardDatabaseHelper.CARDS_ARABIC};
