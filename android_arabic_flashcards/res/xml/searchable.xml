@@ -3,6 +3,6 @@
     android:label="@string/app_name"
     android:hint="@string/search_hint"
     android:searchSuggestAuthority="ca.bmaupin.flashcards.arabic.cardprovider"
-    android:searchSuggestIntentAction="android.Intent.action.VIEW"
+    android:searchSuggestIntentAction="android.intent.action.VIEW"
     >
 </searchable>

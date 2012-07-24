@@ -112,7 +112,9 @@ public class CardProvider extends ContentProvider {
                     CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
                             SearchManager.SUGGEST_COLUMN_TEXT_1,
                     CardDatabaseHelper.CARDS_ARABIC + " AS " + 
-                            SearchManager.SUGGEST_COLUMN_TEXT_2
+                            SearchManager.SUGGEST_COLUMN_TEXT_2,
+                    CardDatabaseHelper._ID + " AS " + 
+                            SearchManager.SUGGEST_COLUMN_INTENT_DATA
             };
             break;
             
