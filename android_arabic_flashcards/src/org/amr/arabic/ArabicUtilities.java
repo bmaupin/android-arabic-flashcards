@@ -44,7 +44,7 @@ public class ArabicUtilities {
 	 * @param target The Character to check Against
 	 * @return true if the Character is Arabic letter, otherwise returns false
 	 */
-	private static boolean isArabicCharacter(char target){
+	public static boolean isArabicCharacter(char target){
 
 		//Iterate over the 36 Characters in ARABIC_GLPHIES Matrix
 		for(int i = 0; i < ArabicReshaper.ARABIC_GLPHIES.length;i++){
