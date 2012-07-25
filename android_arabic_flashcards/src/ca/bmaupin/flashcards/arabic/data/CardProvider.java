@@ -1,5 +1,7 @@
 package ca.bmaupin.flashcards.arabic.data;
 
+import org.amr.arabic.ArabicUtilities;
+
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -102,20 +104,46 @@ public class CardProvider extends ContentProvider {
             break;
         
         case SEARCH_SUGGEST:
-            // append percent signs for partial matches
-            String query = "%" + uri.getLastPathSegment().toLowerCase() + "%";
-            selection = CardDatabaseHelper.CARDS_ENGLISH + " LIKE ?";
-            selectionArgs = new String[] {query};
+            String query = uri.getLastPathSegment().toLowerCase();
             
-            projection = new String[] {
-                    CardDatabaseHelper._ID,
-                    CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
-                            SearchManager.SUGGEST_COLUMN_TEXT_1,
-                    CardDatabaseHelper.CARDS_ARABIC + " AS " + 
-                            SearchManager.SUGGEST_COLUMN_TEXT_2,
-                    CardDatabaseHelper._ID + " AS " + 
-                            SearchManager.SUGGEST_COLUMN_INTENT_DATA
-            };
+            // if the first character of the query is arabic
+            if (ArabicUtilities.isArabicCharacter(query.charAt(0))) {
+                String arabicQuery = "%";
+                // insert % between each character to account for vowels
+                for (int i=0; i < query.length(); i++) {
+                    arabicQuery += query.charAt(i) + "%";
+                }
+                
+                selection = CardDatabaseHelper.CARDS_ARABIC + " LIKE ?";
+                selectionArgs = new String[] {arabicQuery};
+                
+                projection = new String[] {
+                        CardDatabaseHelper._ID,
+                        CardDatabaseHelper.CARDS_ARABIC + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_TEXT_1,
+                        CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_TEXT_2,
+                        CardDatabaseHelper._ID + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_INTENT_DATA
+                };
+            
+            // if the query is for an english word
+            } else {
+                // append percent signs for partial matches
+                query = "%" + query + "%";
+                selection = CardDatabaseHelper.CARDS_ENGLISH + " LIKE ?";
+                selectionArgs = new String[] {query};
+                
+                projection = new String[] {
+                        CardDatabaseHelper._ID,
+                        CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_TEXT_1,
+                        CardDatabaseHelper.CARDS_ARABIC + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_TEXT_2,
+                        CardDatabaseHelper._ID + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_INTENT_DATA
+                };
+            }
             break;
             
         default:
