@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Search extends FragmentActivity 
         implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -120,11 +121,22 @@ public class Search extends FragmentActivity
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             getSupportLoaderManager().initLoader(0, null, this);
             
+//
+            Toast.makeText(getApplicationContext(), "search intent", Toast.LENGTH_SHORT).show();
+            
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             int cardId = Cards.stringToInteger(intent.getDataString());
             Intent intent = new Intent(this, ShowOneCard.class);
             intent.putExtra(EXTRA_CARD_ID, cardId);
             startActivity(intent);
+            
+//
+            Toast.makeText(getApplicationContext(), "view intent", Toast.LENGTH_SHORT).show();
+        }
+//        
+        else {
+//
+            Toast.makeText(getApplicationContext(), "no intent", Toast.LENGTH_SHORT).show();
         }
         
         fixArabic = preferences.getBoolean(
@@ -140,12 +152,50 @@ public class Search extends FragmentActivity
 //                selectionArgs, null, null, null);
 //        startManagingCursor(cursor);
         
+
+    }
+    
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)  {
+        // string containing the columns to map to the adapter
+        String[] from = new String[] {};
+        String selection = "";
+        String[] selectionArgs = new String[] {};
+        
+        String query = intent.getStringExtra(SearchManager.QUERY);
+        
+//
+        Toast.makeText(getApplicationContext(), "query=" + query, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "query=" + query);
+        
+        // if the query is arabic
+        if (ArabicUtilities.isArabicWord(query)) {
+            String arabicQuery = "%";
+            // insert % between each character to account for vowels
+            for (int i=0; i < query.length(); i++) {
+                arabicQuery += query.charAt(i) + "%";
+            }
+            
+            selection = CardDatabaseHelper.CARDS_ARABIC + " LIKE ?";
+            selectionArgs = new String[] {arabicQuery};
+            from = new String[] {CardDatabaseHelper.CARDS_ARABIC,
+                    CardDatabaseHelper.CARDS_ENGLISH};
+            
+        // otherwise, the query is english
+        } else {
+            selection = CardDatabaseHelper.CARDS_ENGLISH + " LIKE ?";
+            selectionArgs = new String[] {"%" + query + "%"};
+            from = new String[] {CardDatabaseHelper.CARDS_ENGLISH, 
+                    CardDatabaseHelper.CARDS_ARABIC};
+        }
+
+        // create the adapter here so we can make arabic or english the primary 
+        // field for the cursor depending on the query
         adapter = new MySimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_2,
                 null,
-                new String[] {CardDatabaseHelper.CARDS_ENGLISH, 
-                        CardDatabaseHelper.CARDS_ARABIC},
+                from,
                 new int[] {android.R.id.text1, android.R.id.text2},
                 0,
                 fixArabic);
@@ -157,12 +207,12 @@ public class Search extends FragmentActivity
                     String arabic = aCursor.getString(aColumnIndex);
                     TextView tv = (TextView) aView;
                     if (fixArabic) {
-                    	arabic = Cards.fixArabic(arabic, showVowels);
+                        arabic = Cards.fixArabic(arabic, showVowels);
                     }
                     if (showVowels) {
-                    	tv.setText(arabic);
+                        tv.setText(arabic);
                     } else {
-                    	tv.setText(Cards.removeVowels(arabic));
+                        tv.setText(Cards.removeVowels(arabic));
                     }
                     return true;
                 }
@@ -173,26 +223,7 @@ public class Search extends FragmentActivity
         
         // Bind to our new adapter.
         lv.setAdapter(adapter);
-    }
-    
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args)  {
-        String selection = "";
-        String[] selectionArgs = new String[] {};
         
-        String query = intent.getStringExtra(SearchManager.QUERY);
-        
-        // if the query is arabic
-        if (ArabicUtilities.isArabicWord(query)) {
-// TODO
-//            String selection = CardDatabaseHelper.CARDS_ARABIC + " LIKE ?";
-            
-        // otherwise, the query is english
-        } else {
-            selection = CardDatabaseHelper.CARDS_ENGLISH + " LIKE ?";
-            selectionArgs = new String[] {"%" + query + "%"};            
-        }
-
         return new CursorLoader(this,
                 CardProvider.CONTENT_URI,
                 PROJECTION,
