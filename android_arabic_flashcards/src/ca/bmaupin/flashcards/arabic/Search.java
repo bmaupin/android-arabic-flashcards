@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Search extends FragmentActivity 
         implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -76,9 +75,6 @@ public class Search extends FragmentActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, 
                     int position, long id) {
-//                Cursor cursor = (Cursor) this.getListAdapter().getItem(position);
-//                int cardId = cursor.getInt(cursor.getColumnIndex("_id"));
-                
                 Intent intent = new Intent(Search.this, ShowOneCard.class);
                 // id is the card id.  convert it from long to int (I 
                 // think it's safe to say it will never be > 2,147,483,647)
@@ -86,23 +82,6 @@ public class Search extends FragmentActivity
                 startActivity(intent);
             }
         });
-        
-// TODO
-        /*
-        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, 
-                    int position, long id) {
-                Intent intent = new Intent(ChooseStudySet.this, 
-                        ShowStudySet.class);
-                // id is the study set id.  convert it from long to int (I 
-                // think it's safe to say it will never be > 2,147,483,647)
-                intent.putExtra(Cards.EXTRA_STUDY_SET_ID, 
-                        Cards.longToInteger(id));
-                startActivity(intent);
-            }
-        });
-        */
     }
     
     @Override
@@ -121,22 +100,11 @@ public class Search extends FragmentActivity
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             getSupportLoaderManager().initLoader(0, null, this);
             
-//
-            Toast.makeText(getApplicationContext(), "search intent", Toast.LENGTH_SHORT).show();
-            
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             int cardId = Cards.stringToInteger(intent.getDataString());
             Intent intent = new Intent(this, ShowOneCard.class);
             intent.putExtra(EXTRA_CARD_ID, cardId);
             startActivity(intent);
-            
-//
-            Toast.makeText(getApplicationContext(), "view intent", Toast.LENGTH_SHORT).show();
-        }
-//        
-        else {
-//
-            Toast.makeText(getApplicationContext(), "no intent", Toast.LENGTH_SHORT).show();
         }
         
         fixArabic = preferences.getBoolean(
@@ -145,14 +113,6 @@ public class Search extends FragmentActivity
         showVowels = preferences.getBoolean(
                 getString(R.string.preferences_show_vowels),
                 resources.getBoolean(R.bool.preferences_show_vowels_default));
-        
-
-        
-//        cursor = db.query(CardDatabaseHelper.CARDS_TABLE, columns, selection, 
-//                selectionArgs, null, null, null);
-//        startManagingCursor(cursor);
-        
-
     }
     
     @Override
@@ -163,10 +123,6 @@ public class Search extends FragmentActivity
         String[] selectionArgs = new String[] {};
         
         String query = intent.getStringExtra(SearchManager.QUERY);
-        
-//
-        Toast.makeText(getApplicationContext(), "query=" + query, Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "query=" + query);
         
         // if the query is arabic
         if (ArabicUtilities.isArabicWord(query)) {
