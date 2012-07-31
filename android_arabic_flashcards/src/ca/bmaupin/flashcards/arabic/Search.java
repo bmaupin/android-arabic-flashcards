@@ -5,7 +5,6 @@ import org.amr.arabic.ArabicUtilities;
 import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import ca.bmaupin.flashcards.arabic.data.CardProvider;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -21,11 +20,9 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Search extends FragmentActivity 
         implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -42,7 +39,6 @@ public class Search extends FragmentActivity
     // whether or not to apply arabic fixes
     private boolean fixArabic;
     private String[] from = new String[] {};
-//    private Intent intent;
     private ListView lv;
     private SharedPreferences preferences;
     private Resources resources;
@@ -120,16 +116,6 @@ public class Search extends FragmentActivity
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-
-//
-        if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
-            Log.d(TAG, "search intent");
-            
-        } else if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
-            Log.d(TAG, "view intent");
-        }
-//
-        Log.d(TAG, "query=" + getIntent().getStringExtra(SearchManager.QUERY));
         
         // if there's no query (e.g. we're returning to search from showing a 
         // search suggestion)
@@ -146,8 +132,6 @@ public class Search extends FragmentActivity
                 getString(R.string.preferences_show_vowels),
                 resources.getBoolean(R.bool.preferences_show_vowels_default)) 
                 != showVowels) {
-//            
-            Toast.makeText(getApplicationContext(), "preferences changed", Toast.LENGTH_SHORT).show();
             
             // update them
             fixArabic = preferences.getBoolean(
@@ -209,11 +193,8 @@ public class Search extends FragmentActivity
         Log.d(TAG, "onLoadFinished()");
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
-//        adapter.swapCursor(data);
         adapter.changeCursorAndColumns(data, from, 
                 new int[] {android.R.id.text1, android.R.id.text2});
-// TODO swap adapter columns
-// http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html#changeCursorAndColumns(android.database.Cursor, java.lang.String[], int[])
     }
 
     @Override
@@ -276,45 +257,3 @@ public class Search extends FragmentActivity
         Log.d(TAG, "onDestroy()");
     }
 }
-
-/**
- * http://stackoverflow.com/questions/5399781/change-text-color-in-listview/5399965#5399965
- * @author bmaupin
- *
- */
-/*
-class MySimpleCursorAdapter extends SimpleCursorAdapter {
-    private Context context;
-    private boolean fixArabic;
-    private int arabicViewId;
-    
-    public MySimpleCursorAdapter(Context context, int layout, Cursor c,
-            String[] from, int[] to, int flags, boolean fixArabic) {
-        super(context, layout, c, from, to, flags);
-        this.context = context;
-        this.fixArabic = fixArabic;
-        // get the view id in the to array corresponding with the arabic side
-        // of the card in the from array
-        this.arabicViewId = to[java.util.Arrays.asList(from).indexOf(
-                CardDatabaseHelper.CARDS_ARABIC)];
-        Log.d("MySimpleCursorAdapter", "arabicViewId=" + arabicViewId);
-        for (int temp : to) {
-            Log.d("MySimpleCursorAdapter", "to=" + temp);
-        }
-    }
-
-    
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v = super.getView(position, convertView, parent);
-// TODO: android.R.id.text2 may not work if we swap the arabic and english columns
-        if (fixArabic) {
-            ((TextView) v.findViewById(arabicViewId)).setTypeface(
-                    Typeface.createFromAsset(context.getAssets(), 
-                            Cards.ARABIC_TYPEFACE));
-        }
-        
-        return v;
-    }
-    
-*/
