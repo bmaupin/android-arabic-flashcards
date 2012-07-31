@@ -209,7 +209,9 @@ public class Search extends FragmentActivity
         Log.d(TAG, "onLoadFinished()");
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
-        adapter.swapCursor(data);
+//        adapter.swapCursor(data);
+        adapter.changeCursorAndColumns(data, from, 
+                new int[] {android.R.id.text1, android.R.id.text2});
 // TODO swap adapter columns
 // http://developer.android.com/reference/android/widget/SimpleCursorAdapter.html#changeCursorAndColumns(android.database.Cursor, java.lang.String[], int[])
     }
@@ -226,25 +228,25 @@ public class Search extends FragmentActivity
     private void createAdapter() {
         // create the adapter here so we can make arabic or english the primary 
         // field for the cursor depending on the query
-        adapter = new MySimpleCursorAdapter(
+        adapter = new SimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_2,
                 null,
                 new String[] {CardDatabaseHelper.CARDS_ENGLISH, 
                         CardDatabaseHelper.CARDS_ARABIC},
                 new int[] {android.R.id.text1, android.R.id.text2},
-                0,
-                fixArabic);
+                0);
 
         // http://stackoverflow.com/questions/3609126/changing-values-from-cursor-using-simplecursoradapter
         adapter.setViewBinder(new ViewBinder() {
             public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-// TODO: aColumnIndex == 2 may not work if we swap the arabic and english columns
                 if (aColumnIndex == 2) {
                     String arabic = aCursor.getString(aColumnIndex);
                     TextView tv = (TextView) aView;
                     if (fixArabic) {
                         arabic = Cards.fixArabic(arabic, showVowels);
+                        tv.setTypeface(Typeface.createFromAsset(getAssets(), 
+                                        Cards.ARABIC_TYPEFACE));
                     }
                     if (showVowels) {
                         tv.setText(arabic);
@@ -280,27 +282,39 @@ public class Search extends FragmentActivity
  * @author bmaupin
  *
  */
+/*
 class MySimpleCursorAdapter extends SimpleCursorAdapter {
     private Context context;
     private boolean fixArabic;
+    private int arabicViewId;
     
     public MySimpleCursorAdapter(Context context, int layout, Cursor c,
             String[] from, int[] to, int flags, boolean fixArabic) {
         super(context, layout, c, from, to, flags);
         this.context = context;
         this.fixArabic = fixArabic;
+        // get the view id in the to array corresponding with the arabic side
+        // of the card in the from array
+        this.arabicViewId = to[java.util.Arrays.asList(from).indexOf(
+                CardDatabaseHelper.CARDS_ARABIC)];
+        Log.d("MySimpleCursorAdapter", "arabicViewId=" + arabicViewId);
+        for (int temp : to) {
+            Log.d("MySimpleCursorAdapter", "to=" + temp);
+        }
     }
 
+    
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = super.getView(position, convertView, parent);
 // TODO: android.R.id.text2 may not work if we swap the arabic and english columns
         if (fixArabic) {
-            ((TextView) v.findViewById(android.R.id.text2)).setTypeface(
+            ((TextView) v.findViewById(arabicViewId)).setTypeface(
                     Typeface.createFromAsset(context.getAssets(), 
                             Cards.ARABIC_TYPEFACE));
         }
         
         return v;
     }
-}
+    
+*/
