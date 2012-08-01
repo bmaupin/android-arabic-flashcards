@@ -87,7 +87,43 @@ public class Search extends FragmentActivity
             }
         });
         
-        createAdapter();
+        adapter = new SimpleCursorAdapter(
+                this,
+                android.R.layout.simple_list_item_2,
+                null,
+                new String[] {CardDatabaseHelper.CARDS_ENGLISH, 
+                        CardDatabaseHelper.CARDS_ARABIC},
+                new int[] {android.R.id.text1, android.R.id.text2},
+                0);
+
+        // http://stackoverflow.com/questions/3609126/changing-values-from-cursor-using-simplecursoradapter
+        adapter.setViewBinder(new ViewBinder() {
+            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
+                if (aColumnIndex == 2) {
+                    String arabic = aCursor.getString(aColumnIndex);
+                    TextView tv = (TextView) aView;
+                    if (fixArabic) {
+                        arabic = Cards.fixArabic(arabic, showVowels);
+                        tv.setTypeface(Typeface.createFromAsset(getAssets(), 
+                                        Cards.ARABIC_TYPEFACE));
+                    } else {
+                        tv.setTypeface(Typeface.DEFAULT);
+                    }
+                    if (showVowels) {
+                        tv.setText(arabic);
+                    } else {
+                        tv.setText(Cards.removeVowels(arabic));
+                    }
+                    return true;
+                }
+                
+                return false;
+            }
+        });
+        
+        // Bind to our new adapter.
+        lv.setAdapter(adapter);
+        
         handleIntent(getIntent());
     }
     
@@ -140,9 +176,6 @@ public class Search extends FragmentActivity
             showVowels = preferences.getBoolean(
                     getString(R.string.preferences_show_vowels),
                     resources.getBoolean(R.bool.preferences_show_vowels_default));
-
-            // recreate the adapter to reflect changes
-            createAdapter();
 
             getSupportLoaderManager().restartLoader(0, null, this);
         }
@@ -204,45 +237,6 @@ public class Search extends FragmentActivity
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
         adapter.swapCursor(null);
-    }
-    
-    private void createAdapter() {
-        // create the adapter here so we can make arabic or english the primary 
-        // field for the cursor depending on the query
-        adapter = new SimpleCursorAdapter(
-                this,
-                android.R.layout.simple_list_item_2,
-                null,
-                new String[] {CardDatabaseHelper.CARDS_ENGLISH, 
-                        CardDatabaseHelper.CARDS_ARABIC},
-                new int[] {android.R.id.text1, android.R.id.text2},
-                0);
-
-        // http://stackoverflow.com/questions/3609126/changing-values-from-cursor-using-simplecursoradapter
-        adapter.setViewBinder(new ViewBinder() {
-            public boolean setViewValue(View aView, Cursor aCursor, int aColumnIndex) {
-                if (aColumnIndex == 2) {
-                    String arabic = aCursor.getString(aColumnIndex);
-                    TextView tv = (TextView) aView;
-                    if (fixArabic) {
-                        arabic = Cards.fixArabic(arabic, showVowels);
-                        tv.setTypeface(Typeface.createFromAsset(getAssets(), 
-                                        Cards.ARABIC_TYPEFACE));
-                    }
-                    if (showVowels) {
-                        tv.setText(arabic);
-                    } else {
-                        tv.setText(Cards.removeVowels(arabic));
-                    }
-                    return true;
-                }
-                
-                return false;
-            }
-        });
-        
-        // Bind to our new adapter.
-        lv.setAdapter(adapter);
     }
 
     @Override
