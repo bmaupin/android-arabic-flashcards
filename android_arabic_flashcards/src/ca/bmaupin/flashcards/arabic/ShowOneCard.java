@@ -38,8 +38,6 @@ public class ShowOneCard extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         
-        int cardId = this.getIntent().getExtras().getInt(Search.EXTRA_CARD_ID);
-        
         setContentView(R.layout.show_one_card);
         
         // create objects for shared preferences and resources
@@ -53,6 +51,21 @@ public class ShowOneCard extends Activity {
                 flipCard();
             }
         });
+        
+        handleIntent(getIntent());
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d(TAG, "onNewIntent()");
+        
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        int cardId = intent.getExtras().getInt(Search.EXTRA_CARD_ID);
         
         /* ordinarily we'd put all the db open code in onResume and close in 
          * onPause, but we don't need to here since we're only accessing the db
