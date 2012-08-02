@@ -228,6 +228,15 @@ public class Search extends FragmentActivity
         // old cursor once we return.)
         adapter.changeCursorAndColumns(data, from, 
                 new int[] {android.R.id.text1, android.R.id.text2});
+        
+        // if there are no results
+        if (data.getCount() == 0) {
+            // let the user know
+            lv.setEmptyView(findViewById(android.R.id.empty));
+        } else {
+            // otherwise clear it, so it won't flash in between cursor loads
+            lv.setEmptyView(null);
+        }
     }
 
     @Override
