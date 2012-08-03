@@ -19,7 +19,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -27,7 +26,6 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class ChooseStudySet extends FragmentActivity 
+public class ChooseStudySet extends BaseActivity 
         implements LoaderManager.LoaderCallbacks<Cursor> {
 	private static final String TAG = "ChooseStudySet";
 
@@ -293,37 +291,6 @@ public class ChooseStudySet extends FragmentActivity
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
         adapter.swapCursor(null);
-    }
-    
-	/* Inflates the menu */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    
-    /* Handles menu selections */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-        	case R.id.menu_help:
-        		startActivity(new Intent(this, Help.class));
-        		return true;
-        	case R.id.menu_settings:
-        		startActivity(new Intent(this, Preferences.class));
-        		return true;
-        	case R.id.menu_search:
-        	    onSearchRequested();
-        	    return true;
-        	// uncomment this (and the res/menu/menu.xml entry) for testing
-        	/*
-        	case R.id.menu_choose_card:
-        	    showDialog(DIALOG_TESTING_CHOOSE_CARDS);
-        	    return true;
-        	*/
-    	}
-    	return false;
     }
     
     @Override

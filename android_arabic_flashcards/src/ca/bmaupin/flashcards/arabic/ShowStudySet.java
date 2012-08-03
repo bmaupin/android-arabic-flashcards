@@ -17,16 +17,12 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -37,7 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class ShowStudySet extends FragmentActivity 
+public class ShowStudySet extends BaseActivity 
         implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "ShowStudySet";
     private static final int RESPONSE_KNOWN = 0;
@@ -332,37 +328,6 @@ public class ShowStudySet extends FragmentActivity
         // This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
-    }
-
-    /* Inflates the menu */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-    
-    /* Handles menu selections */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-// TODO: do we want to add a way to go back to ChooseStudySet?
-/*
-            case R.id.menu_choose_cards:
-                chooseCardSet();
-                return true;
-*/
-            case R.id.menu_help:
-                startActivity(new Intent(this, Help.class));
-                return true;
-            case R.id.menu_settings:
-                startActivity(new Intent(this, Preferences.class));
-                return true;
-            case R.id.menu_search:
-                onSearchRequested();
-                return true;
-        }
-        return false;
     }
 
     @Override

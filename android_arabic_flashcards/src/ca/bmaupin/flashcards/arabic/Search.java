@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -24,7 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class Search extends FragmentActivity 
+public class Search extends BaseActivity 
         implements LoaderManager.LoaderCallbacks<Cursor>{
     static final String EXTRA_CARD_ID = "android.intent.extra.CARD_ID";
     private static final String TAG = "Search";
