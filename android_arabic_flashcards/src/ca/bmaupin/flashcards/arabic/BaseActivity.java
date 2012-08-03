@@ -6,6 +6,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+/*
+ * we inflate and handle the menu here and subclass this activity so we only 
+ * have to write the menu code once
+ */
 public class BaseActivity extends FragmentActivity {
     /* Inflates the menu */
     @Override

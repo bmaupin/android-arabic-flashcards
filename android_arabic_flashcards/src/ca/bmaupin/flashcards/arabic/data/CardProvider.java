@@ -7,7 +7,10 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
+import android.database.sqlite.SQLiteCursorDriver;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
@@ -66,9 +69,6 @@ public class CardProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
             String[] selectionArgs, String sortOrder) {
         Log.d(TAG, "query()");
-        
-//
-        Log.d(TAG, "uri=" + uri);
         
         String limit = null;
         
@@ -144,6 +144,17 @@ public class CardProvider extends ContentProvider {
                                 SearchManager.SUGGEST_COLUMN_INTENT_DATA
                 };
             }
+/*            
+            if (fixArabic && Integer.parseInt(Build.VERSION.SDK) < 8) {
+                projection = new String[] {
+                        CardDatabaseHelper._ID,
+                        CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_TEXT_1,
+                        CardDatabaseHelper._ID + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_INTENT_DATA
+                };
+            }
+*/            
             break;
             
         default:
@@ -201,5 +212,15 @@ public class CardProvider extends ContentProvider {
            default:
                throw new IllegalArgumentException("Unknown URI " + uri);
        }
+    }
+    
+    private class MyCursor extends SQLiteCursor {
+
+        public MyCursor(SQLiteDatabase db, SQLiteCursorDriver driver,
+                String editTable, SQLiteQuery query) {
+            super(db, driver, editTable, query);
+            // TODO Auto-generated constructor stub
+        }
+        
     }
 }
