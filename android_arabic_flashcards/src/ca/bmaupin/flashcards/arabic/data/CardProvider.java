@@ -6,7 +6,10 @@ import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
+import android.database.AbstractCursor;
+import android.database.AbstractWindowedCursor;
 import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteCursorDriver;
 import android.database.sqlite.SQLiteDatabase;
@@ -174,10 +177,18 @@ public class CardProvider extends ContentProvider {
                 sortOrder,      // The sort order
                 limit           // limit 
             );
-
+        
         // Tells the Cursor what URI to watch, so it knows when its source data changes
         c.setNotificationUri(getContext().getContentResolver(), uri);
-        return c;
+        
+        if (sUriMatcher.match(uri) == SEARCH_SUGGEST) {
+// TODO this only really needs to be done in cases where we're reshaping arabic or removing vowels
+            return new MyCursorWrapper(c);
+//            return c;
+            
+        } else {
+            return c;
+        }
     }
     
     @Override
@@ -214,13 +225,22 @@ public class CardProvider extends ContentProvider {
        }
     }
     
-    private class MyCursor extends SQLiteCursor {
-
-        public MyCursor(SQLiteDatabase db, SQLiteCursorDriver driver,
-                String editTable, SQLiteQuery query) {
-            super(db, driver, editTable, query);
-            // TODO Auto-generated constructor stub
+// TODO
+    private class MyCursorWrapper extends CursorWrapper {
+        public MyCursorWrapper(Cursor cursor) {
+            super(cursor);
         }
-        
+
+        @Override
+        public String getString(int columnIndex) {
+            Log.d(TAG, "columnIndex=" + columnIndex);
+            
+// TODO Auto-generated method stub
+            if (columnIndex != 3) {
+                return super.getString(columnIndex) + "hahaha";
+            } else {
+                return super.getString(columnIndex);
+            }
+        }
     }
 }
