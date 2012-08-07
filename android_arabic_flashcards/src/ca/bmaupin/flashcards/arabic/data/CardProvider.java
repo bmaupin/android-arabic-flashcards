@@ -8,9 +8,7 @@ import ca.bmaupin.flashcards.arabic.R;
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
-import android.content.SharedPreferences;
 import android.content.UriMatcher;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
@@ -76,7 +74,6 @@ public class CardProvider extends ContentProvider {
         Log.d(TAG, "query()");
         
         String arabicColumn = "";
-        boolean fixArabic;
         String limit = null;
         
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -207,8 +204,20 @@ public class CardProvider extends ContentProvider {
             		getResources().getBoolean(
             		R.bool.preferences_fix_arabic_default))) {
         		// return a custom cursor wrapper that reshapes the arabic
-        		return new MyCursorWrapper(c, arabicColumn);
-        	}
+        	    // and removes the vowels
+        		return new MyCursorWrapper(c, arabicColumn, true);
+        		
+        	// for android 3 - 4.0, if the fix arabic preference is true
+        	} else if (Integer.parseInt(Build.VERSION.SDK) >= 11 &&
+                    Integer.parseInt(Build.VERSION.SDK) <= 15 &&
+                    PreferenceManager.getDefaultSharedPreferences(
+                    getContext()).getBoolean(getContext().getString(
+                    R.string.preferences_fix_arabic), getContext().
+                    getResources().getBoolean(
+                    R.bool.preferences_fix_arabic_default))) {
+                // return a custom cursor wrapper that removes the vowels
+                return new MyCursorWrapper(c, arabicColumn, false);
+            }
         }
         
         return c;
@@ -250,18 +259,25 @@ public class CardProvider extends ContentProvider {
     
     private class MyCursorWrapper extends CursorWrapper {
     	private String arabicColumn;
+    	private boolean reshapeArabic;
     	
-        public MyCursorWrapper(Cursor cursor, String arabicColumn) {
+        public MyCursorWrapper(Cursor cursor, String arabicColumn, 
+                boolean reshapeArabic) {
             super(cursor);
             
             this.arabicColumn = arabicColumn;
+            this.reshapeArabic = reshapeArabic;
         }
 
         @Override
         public String getString(int columnIndex) {
         	if (getColumnName(columnIndex).equals(arabicColumn)) {
-// TODO: need to remove vowels or not fix sheddas
-                return Cards.fixArabic(super.getString(columnIndex), true);
+        	    if (reshapeArabic) {
+        	        return Cards.fixArabic(Cards.removeVowels(super.getString(
+        	                columnIndex)), false);
+        	    } else {
+        	        return Cards.removeVowels(super.getString(columnIndex));
+        	    }
             } else {
                 return super.getString(columnIndex);
             }
