@@ -2,20 +2,22 @@ package ca.bmaupin.flashcards.arabic.data;
 
 import org.amr.arabic.ArabicUtilities;
 
+import ca.bmaupin.flashcards.arabic.Cards;
+import ca.bmaupin.flashcards.arabic.R;
+
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.content.UriMatcher;
-import android.database.AbstractCursor;
-import android.database.AbstractWindowedCursor;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.CursorWrapper;
-import android.database.sqlite.SQLiteCursor;
-import android.database.sqlite.SQLiteCursorDriver;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class CardProvider extends ContentProvider {
@@ -41,9 +43,9 @@ public class CardProvider extends ContentProvider {
     
     // query parameter for whether or not to do a join
     public static final String QUERY_PARAMETER_JOIN = "join";
-    public static final String QUERY_PARAMETER_JOIN_FALSE = "0";
     // query parameter for limiting the results of the query
     public static final String QUERY_PARAMETER_LIMIT = "limit";
+    public static final String QUERY_PARAMETER_VALUE_FALSE = "0";
     
     private CardDatabaseHelper cardDbHelper;
 
@@ -73,6 +75,7 @@ public class CardProvider extends ContentProvider {
             String[] selectionArgs, String sortOrder) {
         Log.d(TAG, "query()");
         
+        String arabicColumn = "";
         String limit = null;
         
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -86,7 +89,7 @@ public class CardProvider extends ContentProvider {
                     != -1) {
                 String join = uri.getQueryParameter(QUERY_PARAMETER_JOIN);
                 // only do the join if we haven't specified in a query parameter not to
-                if (join == null || !join.equals(QUERY_PARAMETER_JOIN_FALSE)) {
+                if (join == null || !join.equals(QUERY_PARAMETER_VALUE_FALSE)) {
                     /*
                      * this looks like:
                      * cards left join aws_chapters on cards._id = aws_chapters.card_id
@@ -129,6 +132,8 @@ public class CardProvider extends ContentProvider {
                         CardDatabaseHelper._ID + " AS " + 
                                 SearchManager.SUGGEST_COLUMN_INTENT_DATA
                 };
+                
+                arabicColumn = SearchManager.SUGGEST_COLUMN_TEXT_1;
             
             // if the query is for an english word
             } else {
@@ -146,6 +151,8 @@ public class CardProvider extends ContentProvider {
                         CardDatabaseHelper._ID + " AS " + 
                                 SearchManager.SUGGEST_COLUMN_INTENT_DATA
                 };
+                
+                arabicColumn = SearchManager.SUGGEST_COLUMN_TEXT_2;
             }
 /*            
             if (fixArabic && Integer.parseInt(Build.VERSION.SDK) < 8) {
@@ -182,13 +189,37 @@ public class CardProvider extends ContentProvider {
         c.setNotificationUri(getContext().getContentResolver(), uri);
         
         if (sUriMatcher.match(uri) == SEARCH_SUGGEST) {
+//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+//            Resources resources = getContext().getResources();
+            
+//            Boolean fixArabic = preferences.getBoolean(
+//                    getContext().getString(R.string.preferences_fix_arabic),
+//                    resources.getBoolean(R.bool.preferences_fix_arabic_default));
+            
+        	// if the fix arabic preference is true
+            if (PreferenceManager.getDefaultSharedPreferences(getContext()).
+            		getBoolean(getContext().getString(
+            		R.string.preferences_fix_arabic), getContext().
+            		getResources().getBoolean(
+            		R.bool.preferences_fix_arabic_default))) {
+            	
+            	// android 2.1 and below
+            	if (Integer.parseInt(Build.VERSION.SDK) <= 7) {
+            		
+            	// android 2.2 - 2.3
+            	} else if (Integer.parseInt(Build.VERSION.SDK) >= 8 &&
+            			Integer.parseInt(Build.VERSION.SDK) <= 10) {
+            		return new MyCursorWrapper(c, arabicColumn);
+            	}
+            }
+            
 // TODO this only really needs to be done in cases where we're reshaping arabic or removing vowels
-            return new MyCursorWrapper(c);
+            
 //            return c;
             
-        } else {
-            return c;
         }
+        
+        return c;
     }
     
     @Override
@@ -227,17 +258,18 @@ public class CardProvider extends ContentProvider {
     
 // TODO
     private class MyCursorWrapper extends CursorWrapper {
-        public MyCursorWrapper(Cursor cursor) {
+    	private String arabicColumn;
+    	
+        public MyCursorWrapper(Cursor cursor, String arabicColumn) {
             super(cursor);
+            
+            this.arabicColumn = arabicColumn;
         }
 
         @Override
         public String getString(int columnIndex) {
-            Log.d(TAG, "columnIndex=" + columnIndex);
-            
-// TODO Auto-generated method stub
-            if (columnIndex != 3) {
-                return super.getString(columnIndex) + "hahaha";
+        	if (getColumnName(columnIndex).equals(arabicColumn)) {
+                return Cards.fixArabic(super.getString(columnIndex), true);
             } else {
                 return super.getString(columnIndex);
             }
