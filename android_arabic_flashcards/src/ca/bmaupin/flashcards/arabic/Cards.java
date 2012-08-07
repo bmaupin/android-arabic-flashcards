@@ -125,7 +125,7 @@ public class Cards {
      * @param s
      * @return
      */
-    static String removeVowels(String s) {
+    public static String removeVowels(String s) {
         Character[] vowels = {
                 '\u064e',  // fatha, short a
                 '\u064b',  // double fatha
