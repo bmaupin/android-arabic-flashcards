@@ -47,7 +47,7 @@ public class Cards {
      * @param showVowels
      * @return
      */
-    static String fixArabic(String s, boolean showVowels) {
+    public static String fixArabic(String s, boolean showVowels) {
         // reshape the card
         s = ArabicUtilities.reshape(s);
         // this fixes issues with the final character having neutral 

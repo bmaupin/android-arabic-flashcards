@@ -43,7 +43,7 @@ public class CardQueryHelper {
                 // make sure we don't do a join in the query
                 contentUri = contentUri.buildUpon().appendQueryParameter(
                         CardProvider.QUERY_PARAMETER_JOIN,
-                        CardProvider.QUERY_PARAMETER_JOIN_FALSE).build();
+                        CardProvider.QUERY_PARAMETER_VALUE_FALSE).build();
             
             // otherwise, get cards for a specific aws chapter
             } else {
