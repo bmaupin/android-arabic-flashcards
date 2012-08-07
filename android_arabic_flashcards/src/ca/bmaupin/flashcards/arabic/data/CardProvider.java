@@ -155,33 +155,14 @@ public class CardProvider extends ContentProvider {
                 
                 arabicColumn = SearchManager.SUGGEST_COLUMN_TEXT_2;
             }
-/*            
-            if (fixArabic && Integer.parseInt(Build.VERSION.SDK) < 8) {
-                projection = new String[] {
-                        CardDatabaseHelper._ID,
-                        CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
-                                SearchManager.SUGGEST_COLUMN_TEXT_1,
-                        CardDatabaseHelper._ID + " AS " + 
-                                SearchManager.SUGGEST_COLUMN_INTENT_DATA
-                };
-            }
-*/            
-            break;
             
-        default:
-            // If the URI doesn't match any of the known patterns, throw an exception.
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
-        
-        if (sUriMatcher.match(uri) == SEARCH_SUGGEST) {
-        	// if the fix arabic preference is true
-            if (PreferenceManager.getDefaultSharedPreferences(getContext()).
+        	// for android 2.1 and below, if the fix arabic preference is true
+            if (Integer.parseInt(Build.VERSION.SDK) <= 7 &&
+            		PreferenceManager.getDefaultSharedPreferences(getContext()).
             		getBoolean(getContext().getString(
             		R.string.preferences_fix_arabic), getContext().
             		getResources().getBoolean(
-            		R.bool.preferences_fix_arabic_default)) &&
-                	// android 2.1 and below
-            		Integer.parseInt(Build.VERSION.SDK) <= 7) {
+            		R.bool.preferences_fix_arabic_default))) {
         		// hide arabic from the search suggestions. it just shows
         		// up as rectangular boxes anyway
                 projection = new String[] {
@@ -192,6 +173,12 @@ public class CardProvider extends ContentProvider {
                                 SearchManager.SUGGEST_COLUMN_INTENT_DATA
                 };
             }
+            
+            break;
+            
+        default:
+            // If the URI doesn't match any of the known patterns, throw an exception.
+            throw new IllegalArgumentException("Unknown URI " + uri);
         }
         
         SQLiteDatabase db = cardDbHelper.getReadableDatabase();
@@ -211,27 +198,17 @@ public class CardProvider extends ContentProvider {
         c.setNotificationUri(getContext().getContentResolver(), uri);
         
         if (sUriMatcher.match(uri) == SEARCH_SUGGEST) {
-//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-//            Resources resources = getContext().getResources();
-            
-//            Boolean fixArabic = preferences.getBoolean(
-//                    getContext().getString(R.string.preferences_fix_arabic),
-//                    resources.getBoolean(R.bool.preferences_fix_arabic_default));
-            
-        	// if the fix arabic preference is true
-            if (PreferenceManager.getDefaultSharedPreferences(getContext()).
-            		getBoolean(getContext().getString(
+        	// for android 2.2 - 2.3, if the fix arabic preference is true
+        	if (Integer.parseInt(Build.VERSION.SDK) >= 8 &&
+        			Integer.parseInt(Build.VERSION.SDK) <= 10 &&
+        			PreferenceManager.getDefaultSharedPreferences(
+        			getContext()).getBoolean(getContext().getString(
             		R.string.preferences_fix_arabic), getContext().
             		getResources().getBoolean(
             		R.bool.preferences_fix_arabic_default))) {
-            	
-            	// android 2.2 - 2.3
-            	if (Integer.parseInt(Build.VERSION.SDK) >= 8 &&
-            			Integer.parseInt(Build.VERSION.SDK) <= 10) {
-            		// return a custom cursor wrapper that reshapes the arabic
-            		return new MyCursorWrapper(c, arabicColumn);
-            	}
-            }
+        		// return a custom cursor wrapper that reshapes the arabic
+        		return new MyCursorWrapper(c, arabicColumn);
+        	}
         }
         
         return c;
@@ -271,7 +248,6 @@ public class CardProvider extends ContentProvider {
        }
     }
     
-// TODO
     private class MyCursorWrapper extends CursorWrapper {
     	private String arabicColumn;
     	
@@ -284,6 +260,7 @@ public class CardProvider extends ContentProvider {
         @Override
         public String getString(int columnIndex) {
         	if (getColumnName(columnIndex).equals(arabicColumn)) {
+// TODO: need to remove vowels or not fix sheddas
                 return Cards.fixArabic(super.getString(columnIndex), true);
             } else {
                 return super.getString(columnIndex);
