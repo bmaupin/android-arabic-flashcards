@@ -76,6 +76,7 @@ public class CardProvider extends ContentProvider {
         Log.d(TAG, "query()");
         
         String arabicColumn = "";
+        boolean fixArabic;
         String limit = null;
         
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -171,7 +172,28 @@ public class CardProvider extends ContentProvider {
             // If the URI doesn't match any of the known patterns, throw an exception.
             throw new IllegalArgumentException("Unknown URI " + uri);
         }
-
+        
+        if (sUriMatcher.match(uri) == SEARCH_SUGGEST) {
+        	// if the fix arabic preference is true
+            if (PreferenceManager.getDefaultSharedPreferences(getContext()).
+            		getBoolean(getContext().getString(
+            		R.string.preferences_fix_arabic), getContext().
+            		getResources().getBoolean(
+            		R.bool.preferences_fix_arabic_default)) &&
+                	// android 2.1 and below
+            		Integer.parseInt(Build.VERSION.SDK) <= 7) {
+        		// hide arabic from the search suggestions. it just shows
+        		// up as rectangular boxes anyway
+                projection = new String[] {
+                        CardDatabaseHelper._ID,
+                        CardDatabaseHelper.CARDS_ENGLISH + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_TEXT_1,
+                        CardDatabaseHelper._ID + " AS " + 
+                                SearchManager.SUGGEST_COLUMN_INTENT_DATA
+                };
+            }
+        }
+        
         SQLiteDatabase db = cardDbHelper.getReadableDatabase();
 
         Cursor c = qb.query(
@@ -203,20 +225,13 @@ public class CardProvider extends ContentProvider {
             		getResources().getBoolean(
             		R.bool.preferences_fix_arabic_default))) {
             	
-            	// android 2.1 and below
-            	if (Integer.parseInt(Build.VERSION.SDK) <= 7) {
-            		
             	// android 2.2 - 2.3
-            	} else if (Integer.parseInt(Build.VERSION.SDK) >= 8 &&
+            	if (Integer.parseInt(Build.VERSION.SDK) >= 8 &&
             			Integer.parseInt(Build.VERSION.SDK) <= 10) {
+            		// return a custom cursor wrapper that reshapes the arabic
             		return new MyCursorWrapper(c, arabicColumn);
             	}
             }
-            
-// TODO this only really needs to be done in cases where we're reshaping arabic or removing vowels
-            
-//            return c;
-            
         }
         
         return c;
