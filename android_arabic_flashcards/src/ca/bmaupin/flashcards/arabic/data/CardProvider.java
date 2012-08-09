@@ -108,9 +108,8 @@ public class CardProvider extends ContentProvider {
             break;
         
         case SEARCH_SUGGEST:
-            String query = uri.getLastPathSegment().toLowerCase();
-            // trim whitespace
-            query = query.trim();
+            // get the query and trim whitespace
+            String query = uri.getLastPathSegment().toLowerCase().trim();
             
             // if the first character of the query is arabic
             if (ArabicUtilities.isArabicCharacter(query.charAt(0))) {
