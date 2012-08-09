@@ -188,9 +188,8 @@ public class Search extends BaseActivity
         String selection = "";
         String[] selectionArgs = new String[] {};
         
-        String query = getIntent().getStringExtra(SearchManager.QUERY);
-        // trim whitespace
-        query = query.trim();
+        // get the query and trim whitespace
+        String query = getIntent().getStringExtra(SearchManager.QUERY).trim();
         
         // if the query is arabic
         if (ArabicUtilities.isArabicWord(query)) {
