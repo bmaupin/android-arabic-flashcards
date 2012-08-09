@@ -125,7 +125,7 @@
     <string name="preferences_default_lang_summary">Language to show on front of cards</string>
     <string name="preferences_default_lang_title">Default card language</string>
     <string name="preferences_fix_arabic">fix_arabic</string>
-    <string name="preferences_fix_arabic_summary">Uncheck this for ROMs that support Arabic such as CyanogenMod</string>
+    <string name="preferences_fix_arabic_summary">Uncheck this for versions of Android that support Arabic such as Jelly Bean or CyanogenMod</string>
     <string name="preferences_fix_arabic_title">Apply Arabic fixes</string>
     <string name="preferences_new_cards_per_day">new_cards_per_day</string>
     <string name="preferences_new_cards_per_day_summary">Max number of new cards to show per study set each day</string>
