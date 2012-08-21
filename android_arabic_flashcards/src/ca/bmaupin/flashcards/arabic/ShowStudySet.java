@@ -489,23 +489,16 @@ public class ShowStudySet extends BaseActivity
             showSummary();
             
         } else {
+            // update the next card's text
             cardsCursor.moveToNext();
-            showNextCard();
+            // reset the card language that will show first
+            currentLang = defaultLang;
+            setUnseenCardText();
+            // show the sliding animation
+            vf.setInAnimation(slideLeftIn);
+            vf.setOutAnimation(slideLeftOut);
+            vf.showNext();
         }
-    }
-    
-    /*
-     * this method updates the next card's text and then shows it, with a 
-     * sliding animation
-     */
-    private void showNextCard() {
-        // reset the card language that will show first
-        currentLang = defaultLang;
-        setUnseenCardText();
-        
-        vf.setInAnimation(slideLeftIn);
-        vf.setOutAnimation(slideLeftOut);
-        vf.showNext();
     }
     
     private void showPrevCard() {
