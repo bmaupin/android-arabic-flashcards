@@ -60,7 +60,7 @@ public class ShowStudySet extends BaseActivity
         CardDatabaseHelper.CARDS_ARABIC,
     };
     
-    private int cardMode = CARD_MODE_DUE;
+//    private int cardMode = CARD_MODE_DUE;
     private String cardGroup;
     // number of cards shown, incremented after the card is shown
     private int cardsShown = 0;
@@ -200,6 +200,7 @@ public class ShowStudySet extends BaseActivity
  */
                 StudySetDatabaseHelper.SET_DUE_TIME);
 
+        // if there are due cards to show
         if (cursor.moveToFirst()) {
             studySetIds = "(";
             while (!cursor.isAfterLast()) {
@@ -251,6 +252,17 @@ public class ShowStudySet extends BaseActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         cardsCursor = data;
+        
+        if (cardsCursor.moveToFirst()) {
+            showFirstCard();
+        } else {
+            Toast.makeText(getApplicationContext(), 
+                    getString(R.string.show_study_set_no_cards_due), 
+                    Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        
+/*        
         if (cardsCursor.moveToFirst()) {
             switch (cardMode) {
             case CARD_MODE_NONE_DUE:
@@ -285,6 +297,7 @@ public class ShowStudySet extends BaseActivity
                 break;
             }
         }
+*/
     }
     
     @Override
