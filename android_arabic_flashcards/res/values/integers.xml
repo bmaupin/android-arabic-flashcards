@@ -2,4 +2,6 @@
 <resources>
     <integer name="preferences_cards_per_session_default">20</integer>
     <integer name="preferences_new_cards_per_day_default">10</integer>
+    <integer name="preferences_max_due_cards_default">20</integer>
+    <integer name="preferences_max_new_cards_default">10</integer>
 </resources>

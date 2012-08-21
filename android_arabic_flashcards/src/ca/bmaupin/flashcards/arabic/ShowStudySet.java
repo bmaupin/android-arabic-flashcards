@@ -66,7 +66,7 @@ public class ShowStudySet extends BaseActivity
     private int cardsShown = 0;
     private String cardSubgroup;
     // max number of cards to show per session
-    private int cardsPerSession = 0;
+    private int maxDueCards = 0;
     private Cursor cardsCursor;
     // current card language
     private String currentLang;
@@ -80,7 +80,7 @@ public class ShowStudySet extends BaseActivity
     private int iffyCardCount = 0;
     private int knownCardCount = 0;
     // max number of new cards to show per day per study set
-    private int newCardsPerDay = 0;
+    private int maxNewCards = 0;
     private SharedPreferences preferences;
     // how many previous cards we've gone back
     private int prevCardCount = 0;
@@ -115,74 +115,17 @@ public class ShowStudySet extends BaseActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
         
-        cardsPerSession = Cards.stringToInteger(preferences.getString(
-                getString(R.string.preferences_cards_per_session),
+        maxDueCards = Cards.stringToInteger(preferences.getString(
+                getString(R.string.preferences_max_due_cards),
                 resources.getString(
-                        R.integer.preferences_cards_per_session_default)));
-        newCardsPerDay = Cards.stringToInteger(preferences.getString(
+                        R.integer.preferences_max_due_cards_default)));
+        maxNewCards = Cards.stringToInteger(preferences.getString(
                 getString(R.string.preferences_new_cards_per_day),
                 resources.getString(
                         R.integer.preferences_new_cards_per_day_default)));
         
         Bundle bundle = this.getIntent().getExtras();
         studySetId = bundle.getInt(Cards.EXTRA_STUDY_SET_ID);
-        
-        Cursor cursor = getContentResolver().query(
-                StudySetProvider.CONTENT_URI_META,
-                new String[] {StudySetDatabaseHelper.META_CARD_GROUP,
-                        StudySetDatabaseHelper.META_CARD_SUBGROUP,
-                        StudySetDatabaseHelper.META_SET_LANGUAGE},
-                StudySetDatabaseHelper._ID + " = ? ",
-                new String[] {"" + studySetId},
-                null
-        );
-        if (cursor.moveToFirst()) { 
-            cardGroup = cursor.getString(0);
-            cardSubgroup = cursor.getString(1);
-            defaultLang = cursor.getString(2);
-        }
-        cursor.close();
-        
-        int limit = cardsPerSession - cardsShown;
-        
-        String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
-                System.currentTimeMillis();
-        Log.d(TAG, "System.currentTimeMillis(): " + System.currentTimeMillis());
-        
-        cursor = getContentResolver().query(
-                // specify the study set ID and a limit
-                ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
-                        studySetId).buildUpon().appendQueryParameter(
-                        StudySetProvider.QUERY_PARAMETER_LIMIT,
-                        "" + limit).build(),
-                new String[] {StudySetDatabaseHelper.SET_CARD_ID},
-                selection,
-                null,
-/*
- *  okay, so apparently ordering by due time here doesn't matter, because
- *  the order is ignored when getting the cards.  maybe not worth worrying 
- *  about (would probably require a join to get working)...  but we'll keep it 
- *  anyway so at least the cards due soonest will be in the set of shown cards, 
- *  even if not in order by due time
- */
-                StudySetDatabaseHelper.SET_DUE_TIME);
-
-        if (cursor.moveToFirst()) {
-            studySetIds = "(";
-            while (!cursor.isAfterLast()) {
-                studySetIds += cursor.getString(0) + ", ";
-                cursor.moveToNext();
-            }
-            // drop the separator from the last part of the string
-            studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + 
-                    ")";
-            Log.d(TAG, "studySetIds: " + studySetIds);
-            Log.d(TAG, "dueCardCount: " + cursor.getCount());
-            
-        } else {
-            cardMode = CARD_MODE_NONE_DUE;
-        }
-        cursor.close();
 
         getSupportLoaderManager().initLoader(0, null, this);
     }
@@ -214,74 +157,95 @@ public class ShowStudySet extends BaseActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (cardMode == CARD_MODE_DUE) {
+        // get the card group, subgroup for the study set so we can figure out
+        // how many cards are due
+        Cursor cursor = getContentResolver().query(
+                StudySetProvider.CONTENT_URI_META,
+                new String[] {StudySetDatabaseHelper.META_CARD_GROUP,
+                        StudySetDatabaseHelper.META_CARD_SUBGROUP,
+                        StudySetDatabaseHelper.META_SET_LANGUAGE},
+                StudySetDatabaseHelper._ID + " = ? ",
+                new String[] {"" + studySetId},
+                null
+        );
+        if (cursor.moveToFirst()) { 
+            cardGroup = cursor.getString(0);
+            cardSubgroup = cursor.getString(1);
+            defaultLang = cursor.getString(2);
+        }
+        cursor.close();
+        
+        int limit = maxDueCards - cardsShown;
+        
+        String selection = StudySetDatabaseHelper.SET_DUE_TIME + " < " + 
+                System.currentTimeMillis();
+        Log.d(TAG, "System.currentTimeMillis(): " + System.currentTimeMillis());
+        
+        // see if there are any cards due
+        cursor = getContentResolver().query(
+                // specify the study set ID and a limit
+                ContentUris.withAppendedId(StudySetProvider.CONTENT_URI,
+                        studySetId).buildUpon().appendQueryParameter(
+                        StudySetProvider.QUERY_PARAMETER_LIMIT,
+                        "" + limit).build(),
+                new String[] {StudySetDatabaseHelper.SET_CARD_ID},
+                selection,
+                null,
+/*
+ *  okay, so apparently ordering by due time here doesn't matter, because
+ *  the order is ignored when getting the cards.  maybe not worth worrying 
+ *  about (would probably require a join to get working)...  but we'll keep it 
+ *  anyway so at least the cards due soonest will be in the set of shown cards, 
+ *  even if not in order by due time
+ */
+                StudySetDatabaseHelper.SET_DUE_TIME);
+
+        if (cursor.moveToFirst()) {
+            studySetIds = "(";
+            while (!cursor.isAfterLast()) {
+                studySetIds += cursor.getString(0) + ", ";
+                cursor.moveToNext();
+            }
+            // drop the separator from the last part of the string
+            studySetIds = studySetIds.substring(0, studySetIds.length() - 2) + 
+                    ")";
+            Log.d(TAG, "studySetIds: " + studySetIds);
+            Log.d(TAG, "dueCardCount: " + cursor.getCount());
+            
             return new CursorLoader(this,
                     CardProvider.CONTENT_URI,
                     PROJECTION_CARDS,
                     CardDatabaseHelper._ID + " IN " + studySetIds,
                     null,
                     CardDatabaseHelper.RANDOM);
-            
-        } else {
-            Log.d(TAG, "Now showing new cards...");
-            int initialStudySetCount = 0;
-            int studySetCount = StudySetHelper.getStudySetCount(this,
-                    studySetId);
-            
-            // get initial count of cards in study set
-            Cursor cursor = getContentResolver().query(
-                    StudySetProvider.CONTENT_URI_META,
-                    new String[] {
-                            StudySetDatabaseHelper.META_INITIAL_COUNT_DATE,
-                            StudySetDatabaseHelper.META_INITIAL_COUNT},
-                    StudySetDatabaseHelper._ID + " = ? ",
-                    new String[] {"" + studySetId},
-                    null);
-            
-            if (cursor.moveToFirst()) {
-                initialStudySetCount = 
-                    StudySetHelper.maybeUpdateInitialStudySetCount(
-                            this, studySetId, studySetCount, 
-                            cursor.getString(0), cursor.getInt(1));
-            }
-            cursor.close();
-            
-            /* 
-             * don't show more than the max number of total or new cards
-             * (minus new cards already shown today: total cards in study set
-             * minus initial study set card count)
-             */
-            int limit = cardsPerSession - cardsShown;
-            if (limit > newCardsPerDay - (studySetCount - 
-                    initialStudySetCount)) {
-                limit = newCardsPerDay - (studySetCount - initialStudySetCount);
-            }
-            // limit can be negative if we saw some new cards and then
-            // changed the preference for max new cards per day to less than
-            // what we had already seen.  keep that from happening because it
-            // breaks stuff.
-            if (limit < 0) {
-                limit = 0;
-            }
-            
-            Log.d(TAG, "new cards to show=" + limit);
-            
-            String limitString = studySetCount + "," + limit;
-            
-            CardQueryHelper cqh = new CardQueryHelper(this, cardGroup, 
-                    cardSubgroup);
-            
-            return new CursorLoader(this,
-                    // add the limit to the content uri
-                    cqh.getContentUri().buildUpon().appendQueryParameter(
-                            CardProvider.QUERY_PARAMETER_LIMIT,
-                            limitString).build(),
-                    PROJECTION_CARDS,
-                    cqh.getSelection(),
-                    cqh.getSelectionArgs(),
-                    cqh.getSortOrder()
-            );
         }
+        cursor.close();
+
+        // if there are no due cards, show new cards
+//
+        Log.d(TAG, "Now showing new cards...");
+
+        limit = maxNewCards - cardsShown;
+//        
+        Log.d(TAG, "new cards to show=" + limit);
+        
+        // skip all the cards already shown to show new ones
+        String limitString = StudySetHelper.getStudySetCount(this,
+                studySetId) + "," + limit;
+        
+        CardQueryHelper cqh = new CardQueryHelper(this, cardGroup, 
+                cardSubgroup);
+        
+        return new CursorLoader(this,
+                // add the limit to the content uri
+                cqh.getContentUri().buildUpon().appendQueryParameter(
+                        CardProvider.QUERY_PARAMETER_LIMIT,
+                        limitString).build(),
+                PROJECTION_CARDS,
+                cqh.getSelection(),
+                cqh.getSelectionArgs(),
+                cqh.getSortOrder()
+        );
     }
 
     @Override
@@ -508,17 +472,8 @@ public class ShowStudySet extends BaseActivity
         }
         
         if (cardsCursor.isLast()) {
-            // if we're out of due cards
-            if (cardMode == CARD_MODE_DUE) {
-                // show new cards
-                cardMode = CARD_MODE_NEW;
-                
-                getSupportLoaderManager().restartLoader(0, null, this);
-             
-            } else {
-                // no more new cards, show the summary activity
-                showSummary();
-            }
+            // no more cards, show the summary activity
+            showSummary();
             
         } else {
             cardsCursor.moveToNext();

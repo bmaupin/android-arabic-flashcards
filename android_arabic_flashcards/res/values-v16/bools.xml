@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="preferences_ask_card_order_default">true</bool>
+    <!-- default for jelly bean and above: don't apply arabic fixes -->
     <bool name="preferences_fix_arabic_default">false</bool>
     <bool name="preferences_show_vowels_default">true</bool>
     <bool name="preferences_use_color_blind_colors_default">false</bool>
