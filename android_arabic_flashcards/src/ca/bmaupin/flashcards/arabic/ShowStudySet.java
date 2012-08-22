@@ -115,6 +115,14 @@ public class ShowStudySet extends BaseActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
         
+        // get initial values of preferences
+        fixArabic = preferences.getBoolean(
+                getString(R.string.preferences_fix_arabic),
+                resources.getBoolean(R.bool.preferences_fix_arabic_default));
+        showVowels = preferences.getBoolean(
+                getString(R.string.preferences_show_vowels),
+                resources.getBoolean(R.bool.preferences_show_vowels_default));
+        
         // get these values in onCreate and don't change them until the activity
         // is created again.  that will hopefully prevent things from getting 
         // screwy if these preferences are changed in the middle of a study set
@@ -142,20 +150,47 @@ public class ShowStudySet extends BaseActivity
         Log.d(TAG, "iffyCardCount=" + iffyCardCount);
         Log.d(TAG, "unknownCardCount=" + unknownCardCount);
         
-        // get any preferences that may have changed
-        fixArabic = preferences.getBoolean(
-                getString(R.string.preferences_fix_arabic),
-                resources.getBoolean(R.bool.preferences_fix_arabic_default));
-        showVowels = preferences.getBoolean(
-                getString(R.string.preferences_show_vowels),
-                resources.getBoolean(R.bool.preferences_show_vowels_default));
-        
+        // make sure currentLang is set first
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
         }
         
-        // set the typeface when the app is resumed in case it's changed
-        setCardTypeface();
+        // if the fixArabic preference has changed
+        if (preferences.getBoolean(getString(R.string.preferences_fix_arabic),
+                resources.getBoolean(R.bool.preferences_fix_arabic_default))
+                != fixArabic) {
+            // update it
+            fixArabic = preferences.getBoolean(
+                    getString(R.string.preferences_fix_arabic),
+                    resources.getBoolean(R.bool.preferences_fix_arabic_default));
+            // set the typeface when the app is resumed in case it's changed
+            setCardTypeface();
+            // make sure the first card has been shown (vf is initialized in
+            // showFirstCard())
+            if (vf != null) {
+                // and refresh the current card text
+                setCurrentCardText();
+            }
+        
+        // since we change the current card text either way, we only need to 
+        // check if showVowels has changed if fixArabic hasn't changed
+        } else {
+            // if the showVowels preference has changed
+            if (preferences.getBoolean(getString(R.string.preferences_show_vowels),
+                    resources.getBoolean(R.bool.preferences_show_vowels_default))
+                    != showVowels) {
+                // update it
+                showVowels = preferences.getBoolean(
+                        getString(R.string.preferences_show_vowels),
+                        resources.getBoolean(R.bool.preferences_show_vowels_default));
+                // make sure the first card has been shown (vf is initialized in
+                // showFirstCard())
+                if (vf != null) {
+                    // and refresh the current card text
+                    setCurrentCardText();
+                }
+            }
+        }
     }
 
     @Override
