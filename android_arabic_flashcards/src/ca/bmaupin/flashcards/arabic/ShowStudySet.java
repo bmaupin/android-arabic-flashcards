@@ -150,7 +150,7 @@ public class ShowStudySet extends BaseActivity
         Log.d(TAG, "iffyCardCount=" + iffyCardCount);
         Log.d(TAG, "unknownCardCount=" + unknownCardCount);
         
-        // make sure currentLang is set first
+        // make sure currentLang gets set right away
         if (currentLang == null || currentLang.equals("")) {
             currentLang = defaultLang;
         }
