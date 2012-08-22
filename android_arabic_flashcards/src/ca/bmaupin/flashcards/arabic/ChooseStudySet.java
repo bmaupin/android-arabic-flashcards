@@ -89,14 +89,9 @@ public class ChooseStudySet extends BaseActivity
         Log.d(TAG, "onCreate()");
         
         // create objects for shared preferences and resources
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        resources = getResources();
-/*        
-        newCardsPerDay = Cards.stringToInteger(preferences.getString(
-                getString(R.string.preferences_new_cards_per_day),
-                resources.getString(
-                        R.integer.preferences_new_cards_per_day_default)));
-*/        
+//        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        resources = getResources();
+
         setContentView(R.layout.choose_study_set);
         
         Button browseCardsButton = (Button) findViewById(
@@ -164,13 +159,7 @@ public class ChooseStudySet extends BaseActivity
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-/*        
-        // get any preferences that may have changed
-        newCardsPerDay = Cards.stringToInteger(preferences.getString(
-                getString(R.string.preferences_new_cards_per_day),
-                resources.getString(
-                        R.integer.preferences_new_cards_per_day_default)));
-*/        
+
         // force the adapter to reload the study set list in case anything's 
         // changed
         adapter.notifyDataSetChanged();
@@ -585,7 +574,7 @@ public class ChooseStudySet extends BaseActivity
             tv2 = (TextView) studySetItems[2];
             
             // the first item in this array is the number of due cards
-            // the second item is the number of new cards due today
+            // the second item is the number of new cards seen today
             Integer[] dueCardsCount = new Integer[2];
             
             Log.d(TAG, "LoadDueCards: studySetId=" + studySetId);
@@ -627,39 +616,11 @@ public class ChooseStudySet extends BaseActivity
                             ChooseStudySet.this, studySetId, 
                             studySetCount, studySetCursor.getString(2), 
                             studySetCursor.getInt(3));
-                int newCardsDue = newCardsPerDay - (studySetCount - 
-                        initialStudySetCount);
-                // newCardsDue can be negative if we saw some new cards and then
-                // changed the preference for max new cards per day to less than
-                // what we had already seen. keep that from hapenning because it
-                // breaks stuff.
-                if (newCardsDue < 0) {
-                    newCardsDue = 0;
-                }
-                Log.d(TAG, "max new cards to show=" + newCardsDue);
+//
+                Log.d(TAG, "studySetCount=" + studySetCount);
+                Log.d(TAG, "initialstudySetCount=" + initialStudySetCount);
                 
-                // get the total count of cards in the card group
-                int cardGroupCount = 0;
-                CardQueryHelper cqh = new CardQueryHelper(
-                        ChooseStudySet.this,
-                        studySetCursor.getString(0),
-                        studySetCursor.getString(1));
-                studySetCursor.close();
-                studySetCursor = getContentResolver().query(
-                        cqh.getContentUri(),
-                        new String[] {CardDatabaseHelper.COUNT},
-                        cqh.getSelection(),
-                        cqh.getSelectionArgs(),
-                        cqh.getSortOrder());
-                if (studySetCursor.moveToFirst()) {
-                    cardGroupCount = studySetCursor.getInt(0);
-                }
-                
-                // can't have more cards due than are in the card group
-                if (newCardsDue > (cardGroupCount - studySetCount)) {
-                    newCardsDue = cardGroupCount - studySetCount;
-                }
-                dueCardsCount[1] = newCardsDue;
+                dueCardsCount[1] = studySetCount - initialStudySetCount;
             }
             studySetCursor.close();
             
