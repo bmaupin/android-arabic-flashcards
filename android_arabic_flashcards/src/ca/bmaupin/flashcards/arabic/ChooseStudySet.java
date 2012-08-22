@@ -91,12 +91,12 @@ public class ChooseStudySet extends BaseActivity
         // create objects for shared preferences and resources
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
-        
+/*        
         newCardsPerDay = Cards.stringToInteger(preferences.getString(
                 getString(R.string.preferences_new_cards_per_day),
                 resources.getString(
                         R.integer.preferences_new_cards_per_day_default)));
-        
+*/        
         setContentView(R.layout.choose_study_set);
         
         Button browseCardsButton = (Button) findViewById(
@@ -164,13 +164,13 @@ public class ChooseStudySet extends BaseActivity
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-        
+/*        
         // get any preferences that may have changed
         newCardsPerDay = Cards.stringToInteger(preferences.getString(
                 getString(R.string.preferences_new_cards_per_day),
                 resources.getString(
                         R.integer.preferences_new_cards_per_day_default)));
-        
+*/        
         // force the adapter to reload the study set list in case anything's 
         // changed
         adapter.notifyDataSetChanged();

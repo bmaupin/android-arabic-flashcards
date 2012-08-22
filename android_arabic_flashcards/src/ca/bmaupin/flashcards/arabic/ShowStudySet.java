@@ -115,14 +115,17 @@ public class ShowStudySet extends BaseActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         resources = getResources();
         
+        // get these values in onCreate and don't change them until the activity
+        // is created again.  that will hopefully prevent things from getting 
+        // screwy if these preferences are changed in the middle of a study set
         maxDueCards = Cards.stringToInteger(preferences.getString(
                 getString(R.string.preferences_max_due_cards),
                 resources.getString(
                         R.integer.preferences_max_due_cards_default)));
         maxNewCards = Cards.stringToInteger(preferences.getString(
-                getString(R.string.preferences_new_cards_per_day),
+                getString(R.string.preferences_max_new_cards),
                 resources.getString(
-                        R.integer.preferences_new_cards_per_day_default)));
+                        R.integer.preferences_max_new_cards_default)));
         
         Bundle bundle = this.getIntent().getExtras();
         studySetId = bundle.getInt(Cards.EXTRA_STUDY_SET_ID);
