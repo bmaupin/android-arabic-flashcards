@@ -48,6 +48,8 @@ public class BrowseCards extends BaseActivity
     private String cardSubgroup;
     // current card language
     private String currentLang;
+    // to hold the current toast so we can update it
+    Toast currentToast;
     private Cursor cursor;
     // default card language 
     private String defaultLang;
@@ -174,7 +176,10 @@ public class BrowseCards extends BaseActivity
         if (cursor.moveToFirst()) {
             showFirstCard();
         } else {
-            showDialog(DIALOG_NO_CARDS);
+            currentToast = Cards.showToast(this, currentToast, "No cards to show!");
+            finish();
+            
+//            showDialog(DIALOG_NO_CARDS);
         }
     }
 
@@ -333,13 +338,10 @@ public class BrowseCards extends BaseActivity
     
     private void showNextCard() {
         if (cursor.isLast()) {
-            // return a blank card so we can show the user a message that
-            // there aren't any more cards (or any cards at all)
-// TODO: do something if no more cards to show
-            int doSomethingHere;
+// TODO: should we do something if no more cards to show?
 //            showDialog(DIALOG_NO_MORE_CARDS);
             // for now let's at least let people know there are no more cards...
-            Toast.makeText(getApplicationContext(), "No more cards!", Toast.LENGTH_SHORT).show();
+            currentToast = Cards.showToast(this, currentToast, "No more cards!");
         } else {
             cursor.moveToNext();
             // reset the card language that will show first
@@ -354,8 +356,7 @@ public class BrowseCards extends BaseActivity
     
     private void showPrevCard() {
         if (cursor.isFirst()) {
-// TODO: if back is clicked a bunch of times this will show a bunch of times (but even as you're browsing next)
-            Toast.makeText(getApplicationContext(), "No previous cards!", Toast.LENGTH_SHORT).show();
+            currentToast = Cards.showToast(this, currentToast, "No previous cards!");
         } else {
             cursor.moveToPrevious();
             // reset the card language that will show first
