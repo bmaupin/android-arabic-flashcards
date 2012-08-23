@@ -2,9 +2,6 @@ package ca.bmaupin.flashcards.arabic;
 
 import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
 import ca.bmaupin.flashcards.arabic.data.CardQueryHelper;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -30,9 +27,6 @@ import android.widget.ViewFlipper;
 public class BrowseCards extends BaseActivity 
         implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String TAG = "ShowCards";
-    // dialog id constants
-    private static final int DIALOG_NO_CARDS = 0;
-    private static final int DIALOG_NO_MORE_CARDS = 1;
     // constants for swipe
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_MIN_DISTANCE = 120;
@@ -171,15 +165,13 @@ public class BrowseCards extends BaseActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         cursor = data;
-// TODO
+
         // make sure the cursor isn't empty
         if (cursor.moveToFirst()) {
             showFirstCard();
         } else {
             currentToast = Cards.showToast(this, currentToast, "No cards to show!");
             finish();
-            
-//            showDialog(DIALOG_NO_CARDS);
         }
     }
 
@@ -338,9 +330,7 @@ public class BrowseCards extends BaseActivity
     
     private void showNextCard() {
         if (cursor.isLast()) {
-// TODO: should we do something if no more cards to show?
-//            showDialog(DIALOG_NO_MORE_CARDS);
-            // for now let's at least let people know there are no more cards...
+            // let people know there are no more cards...
             currentToast = Cards.showToast(this, currentToast, "No more cards!");
         } else {
             cursor.moveToNext();
@@ -378,32 +368,6 @@ public class BrowseCards extends BaseActivity
         }
         // update the text of the current card
         setCurrentCardText();
-    }
-    
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case DIALOG_NO_CARDS:
-            return createNoCardsDialog();
-        case DIALOG_NO_MORE_CARDS:
-//          return createNoMoreCardsDialog();
-        }
-        return null;
-    }
-    
-    private Dialog createNoCardsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Sorry, the set of cards you selected is empty.  " +
-                "Please choose a different set of cards.")
-                .setCancelable(false)
-                .setPositiveButton("Choose new cards", 
-                        new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                    }
-                });
-        AlertDialog ad = builder.create();
-        return ad;
     }
     
     @Override
