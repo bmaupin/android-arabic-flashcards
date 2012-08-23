@@ -39,9 +39,6 @@ public class ShowStudySet extends BaseActivity
     private static final int RESPONSE_KNOWN = 0;
     private static final int RESPONSE_IFFY = 1;
     private static final int RESPONSE_UNKNOWN = 2;
-    private static final int CARD_MODE_DUE = 0;
-    private static final int CARD_MODE_NEW = 1;
-    private static final int CARD_MODE_NONE_DUE = 2;
     // keys for items to store in bundles
     private static final String KEY_CARDS_SHOWN = "cardsShown";
     private static final String KEY_IFFY_CARD_COUNT = "iffyCardCount";
@@ -60,7 +57,6 @@ public class ShowStudySet extends BaseActivity
         CardDatabaseHelper.CARDS_ARABIC,
     };
     
-//    private int cardMode = CARD_MODE_DUE;
     private String cardGroup;
     // number of cards shown, incremented after the card is shown
     private int cardsShown = 0;
@@ -261,12 +257,7 @@ public class ShowStudySet extends BaseActivity
         cursor.close();
 
         // if there are no due cards, show new cards
-//
-        Log.d(TAG, "Now showing new cards...");
-
         limit = maxNewCards - cardsShown;
-//        
-        Log.d(TAG, "new cards to show=" + limit);
         
         // skip all the cards already shown to show new ones
         String limitString = StudySetHelper.getStudySetCount(this,
@@ -299,43 +290,6 @@ public class ShowStudySet extends BaseActivity
                     Toast.LENGTH_SHORT).show();
             finish();
         }
-        
-/*        
-        if (cardsCursor.moveToFirst()) {
-            switch (cardMode) {
-            case CARD_MODE_NONE_DUE:
-                cardMode = CARD_MODE_NEW;
-            case CARD_MODE_DUE:
-                // call showFirstCard() so that no animations are shown
-                showFirstCard();
-                break;
-            case CARD_MODE_NEW:
-                // show the next card animations, but don't move the cursor 
-                showNextCard();
-                break;
-            }
-        } else {
-            switch (cardMode) {
-            case CARD_MODE_DUE:
-                // we should never get here
-                Log.e(TAG, "for some reason the cursor is empty...");
-                break;
-            case CARD_MODE_NONE_DUE:
-            case CARD_MODE_NEW:
-                // no new cards
-                if (knownCardCount + iffyCardCount + unknownCardCount != 0) {
-                    showSummary();
-                // no cards to show at all
-                } else {
-                    Toast.makeText(getApplicationContext(), 
-                            getString(R.string.show_study_set_no_cards_due), 
-                            Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-                break;
-            }
-        }
-*/
     }
     
     @Override

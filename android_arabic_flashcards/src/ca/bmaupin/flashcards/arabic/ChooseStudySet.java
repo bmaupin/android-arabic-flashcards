@@ -1,7 +1,5 @@
 package ca.bmaupin.flashcards.arabic;
 
-import ca.bmaupin.flashcards.arabic.data.CardDatabaseHelper;
-import ca.bmaupin.flashcards.arabic.data.CardQueryHelper;
 import ca.bmaupin.flashcards.arabic.data.StudySetDatabaseHelper;
 import ca.bmaupin.flashcards.arabic.data.StudySetHelper;
 import ca.bmaupin.flashcards.arabic.data.StudySetProvider;
@@ -13,12 +11,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -66,15 +62,12 @@ public class ChooseStudySet extends BaseActivity
     // view to show while study sets are loading, or if there are none
     private View emptyView;
     private ListView lv;
-    // max number of new cards to show per day per study set
-    private int newCardsPerDay = 0;
     // the card set of a new study set
     private String newStudySetCardGroup = "";
     // the card subset of a new study set
     private String newStudySetCardSubgroup = "";
     // string to hold the name of a new study set based on set and subset
     private String newStudySetName = "";
-    private SharedPreferences preferences;
     private Resources resources;
     // string to hold current study set name when renaming a study set
     private String studySetCurrentName = "";
@@ -87,10 +80,6 @@ public class ChooseStudySet extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        
-        // create objects for shared preferences and resources
-//        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        resources = getResources();
 
         setContentView(R.layout.choose_study_set);
         
@@ -616,9 +605,6 @@ public class ChooseStudySet extends BaseActivity
                             ChooseStudySet.this, studySetId, 
                             studySetCount, studySetCursor.getString(2), 
                             studySetCursor.getInt(3));
-//
-                Log.d(TAG, "studySetCount=" + studySetCount);
-                Log.d(TAG, "initialstudySetCount=" + initialStudySetCount);
                 
                 dueCardsCount[1] = studySetCount - initialStudySetCount;
             }
