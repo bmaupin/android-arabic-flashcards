@@ -1,9 +1,79 @@
 #/usr/bin/env python
 # coding=utf8
 
+import pyfribidi
+
+'''
+class ArabicString(str):
+    def __init__(self):
+        self._value = None
+    def set(self, value):
+        self._value = value
+    def __repr__(self):
+        return self._value
+    def __str__(self):
+        return pyfribidi.log2vis(self._value)
+
+
 class Card(object):
     def __init__(self):
-        pass
+        self._arabic = ArabicString()
+    @property
+    def arabic(self):
+        return self._arabic
+    @arabic.setter
+    def arabic(self, value):
+        self._arabic.set(value)
+'''
+        
+class ArabicString(str):
+    def __init__(self, value):
+        self._value = value
+    def __repr__(self):
+        return self._value
+# TODO: this might cause us major trouble when we just want to write to a file...
+    def __str__(self):
+        return pyfribidi.log2vis(self._value)
+
+
+class Card(object):
+    @property
+    def arabic(self):
+        return self._arabic
+    @arabic.setter
+    def arabic(self, value):
+        self._arabic = ArabicString(value)
+
+#c = Card()
+#c.arabic = 'الأَدَب'
+#c.arabic
+#print c.arabic
+
+
+def process_cards_file(file_name, separator, parts_of_speech=False):
+    '''Input file: english should come first, then arabic, then part of speech 
+    (optional), then chapter
+    '''
+    cards = []
+    first_line_processed = False
+    
+    infile = open(file_name)
+    for line in infile:
+        card = Card()
+        if parts_of_speech:
+            card.english, card.arabic, card.part, card.chapter = line.strip().split(separator)
+        else:
+            card.english, card.arabic, card.chapter = line.strip().split(separator)
+        if first_line_processed == False:
+            if (card.english.lower() == 'english' and 
+                str(card.arabic.lower()) == 'arabic'):
+                # don't add headings to the list of cards
+                continue
+        cards.append(card)
+        
+    infile.close()
+        
+    return cards
 
 
 def compare_strings(string1, string2):
