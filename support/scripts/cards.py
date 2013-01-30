@@ -5,28 +5,6 @@ import pyfribidi
 
 '''
 class ArabicString(str):
-    def __init__(self):
-        self._value = None
-    def set(self, value):
-        self._value = value
-    def __repr__(self):
-        return self._value
-    def __str__(self):
-        return pyfribidi.log2vis(self._value)
-
-
-class Card(object):
-    def __init__(self):
-        self._arabic = ArabicString()
-    @property
-    def arabic(self):
-        return self._arabic
-    @arabic.setter
-    def arabic(self, value):
-        self._arabic.set(value)
-'''
-        
-class ArabicString(str):
     def __init__(self, value):
         self._value = value
     def __repr__(self):
@@ -43,11 +21,16 @@ class Card(object):
     @arabic.setter
     def arabic(self, value):
         self._arabic = ArabicString(value)
-
+        
 #c = Card()
 #c.arabic = 'الأَدَب'
 #c.arabic
 #print c.arabic
+'''
+
+
+class Card(object):
+    pass
 
 
 def process_cards_file(file_name, separator, parts_of_speech=False):
@@ -64,6 +47,9 @@ def process_cards_file(file_name, separator, parts_of_speech=False):
             card.english, card.arabic, card.part, card.chapter = line.strip().split(separator)
         else:
             card.english, card.arabic, card.chapter = line.strip().split(separator)
+        # iterate through each card attribute and remove whitespace
+        for attr in card.__dict__:
+            card.__setattr__(attr, card.__getattribute__(attr).strip())
         if first_line_processed == False:
             if (card.english.lower() == 'english' and 
                 str(card.arabic.lower()) == 'arabic'):
@@ -76,7 +62,10 @@ def process_cards_file(file_name, separator, parts_of_speech=False):
     return cards
 
 
-def compare_strings(string1, string2):
+def compare_strings(string1, string2, partial=False):
+    '''Compare two strings
+    If partial is True, look for partial matches as well 
+    '''
     # handle blanks in case for some reason we're comparing empty fields
     if string1 == '' and string2 == '':
         return False
@@ -90,20 +79,27 @@ def compare_strings(string1, string2):
     if string1 == '\xd9\x88\xd9\x86' and string2 == '\xd9\x88\xd9\x86':
         return False
     
-    separators = [',', ';', '(', ')', ' ']
-    
-    list1 = split_string(string1, separators)
-    list2 = split_string(string2, separators)
-    
-#    print list1
-#    print list2
-    
-    for item in list1:
-        if item in list2:
-            # match found
-            return True
+    if partial:
+        separators = [',', ';', '(', ')', ' ']
+        
+        list1 = split_string(string1, separators)
+        list2 = split_string(string2, separators)
+        
+    #    print list1
+    #    print list2
+        
+        for item in list1:
+            if item in list2:
+                # match found
+                return True
     
     return False
+
+
+def prep_arabic(string):
+    '''Prepares strings with arabic in them for being printed to the terminal
+    '''
+    return pyfribidi.log2vis(string)
 
 
 def split_string(string, separators):
