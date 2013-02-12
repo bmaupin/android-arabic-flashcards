@@ -30,8 +30,9 @@ class Card(object):
 
 
 class Card(object):
-    pass
-
+    def __str__(self):
+        return '%s\t%s' % (self.english, prep_arabic(self.arabic))
+        
 
 def process_cards_file(file_name, separator, parts_of_speech=False):
     '''Input file: english should come first, then arabic, then part of speech 
