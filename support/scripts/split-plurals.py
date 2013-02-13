@@ -4,6 +4,7 @@
 ''' Splits out arabic plurals into separate cards
 '''
 
+import re
 import sys
 
 import cards
@@ -27,7 +28,7 @@ def main():
             else:
                 arabic, arabic_plural = card.arabic.split(' \xd8\xac. ')
                 
-                english_plural = make_english_plural(card.english)
+                english_plural = make_english_words_plural(card.english)
                 print 'plural:\t%s' % (english_plural)
                 response = raw_input('Press enter if this is correct, '
                         'otherwise enter the correct plural: ')
@@ -59,13 +60,69 @@ def main():
     
     output_file.close()
 
+
+def make_english_words_plural(english):
+    def count_spaces_at_beginning(word, spaces = 0):
+        if word.startswith(' '):
+            spaces += 1
+            return count_spaces_at_beginning(word[1:], spaces)
+        else:
+            return spaces
+        
+    def count_spaces_at_end(word, spaces = 0):
+        if word.endswith(' '):
+            spaces += 1
+            return count_spaces_at_end(word[:-1], spaces)
+        else:
+            return spaces
+        
+    #separators = ' ;,/()'
+    separators = ';,/()'
     
+    # list to hold pluralized pieces
+    new_pieces = []
+    # if we're currently processing words in between parentheses
+    parentheses = False
+    old_pieces = re.split('([%s])' % (separators), english)
+    for piece in old_pieces:
+        if piece == '':
+            continue
+        if piece == '(':
+            parentheses = True
+        elif piece == ')':
+            parentheses = False
+        
+        if piece in separators or parentheses:
+        # don't pluralize separators or words between parentheses
+        #elif piece in separators or (
+        #        piece.startswith('(') and piece.endswith(')')):
+            new_pieces.append(piece)
+        else:
+            spaces_start = count_spaces_at_start(piece)
+            spaces_end = count_spaces_at_end(piece)
+            
+            if spaces_start == 0:
+                spaces_start = None
+            if spaces_end == 0:
+                spaces_end = None
+            else:
+                spaces_end = -spaces_end
+            
+            new_piece = make_english_word_plural(piece[spaces_start:spaces_end])
+            
+            if spaces > 0:
+                new_piece = make_english_word_plural(piece[:-spaces])
+                new_pieces.append(new_piece + ' ' * spaces)
+            else:
+                new_pieces.append(make_english_word_plural(piece))
+    
+    return ''.join(new_pieces)
 
 
-def make_english_plural(english):
+def make_english_word_plural(english):
     '''need to fix these:
 student (male)
-son, boy; children
+son, boy; child
 friend (male), boyfriend
 class, classroom; season
 area, region
@@ -76,43 +133,50 @@ friends (female)
 other (female)
 match, game (sports)
 state, province
-graduate fellow; teaching assistants
-grandfather/ ancestors
-hour; o'clock; clock, watches
+graduate fellow; teaching assistant
+grandfather/ ancestor
+hour; o'clock; clock, watch
 late
 wife
 science
     '''
     # these are words that we can't make a plural out of in english, but a 
     # plural exists in arabic
-    non_plurals = ['news',
+    non_plurals = ['big, large; old (in age)',
                    'eyeglasses',
-                   'literature',
-                   'married',
                    'first',
-                   'sole, only',
-                   'new',
-                   'tall',
-                   'short',
-                   'old, ancient',
-                   'big, large; old (in age)',
-                   'powerful, strong',
-                   'handsome',
                    'green',
+                   'handsome',
+                   'late',
+                   'literature',
+                   'many',
+                   'married',
+                   'new',
+                   'news',
+                   "o'clock",
+                   'old, ancient',
+                   'powerful, strong',
+                   'science',
+                   'short',
+                   'sole, only',
                    'snow',
+                   'tall',
                    'weather',
                   ]
-
-# FIXME, replaces many with meny    
-    special_plurals = {'woman': 'women',
+    
+    special_plurals = {'child': 'children',
                        'man': 'men',
-                       'child': 'children',
+                       'woman': 'women',
+                       'wife': 'wives',
                       }
     
+    if english in special_plurals:
+        return special_plurals[english]
+    '''
     for word in special_plurals:
         if english.find(word) != -1:
             return english.replace(word, special_plurals[word])
-    
+    '''
     if english in non_plurals:
         return '%s (pl)' % (english)
     elif english.endswith('y') and english[-2] != 'a' and english[-2] != 'e' \
