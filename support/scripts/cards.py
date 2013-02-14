@@ -34,9 +34,10 @@ class Card(object):
         return '%s\t%s' % (self.english, prep_arabic(self.arabic))
         
 
-def process_cards_file(file_name, separator, parts_of_speech=False):
+def process_cards_file(file_name, separator, parts_of_speech=False, 
+                       plurals=False):
     '''Input file: english should come first, then arabic, then part of speech 
-    (optional), then chapter
+    (optional), then chapter, then plural (optional)
     '''
     cards = []
     first_line_processed = False
@@ -45,9 +46,15 @@ def process_cards_file(file_name, separator, parts_of_speech=False):
     for line in infile:
         card = Card()
         if parts_of_speech:
-            card.english, card.arabic, card.part, card.chapter = line.strip().split(separator)
+            if plurals:
+                card.english, card.arabic, card.part, card.chapter, card.plural = line.strip().split(separator)
+            else:
+                card.english, card.arabic, card.part, card.chapter = line.strip().split(separator)
         else:
-            card.english, card.arabic, card.chapter = line.strip().split(separator)
+            if plurals:
+                card.english, card.arabic, card.chapter, card.plural = line.strip().split(separator)
+            else:
+                card.english, card.arabic, card.chapter = line.strip().split(separator)
         # iterate through each card attribute and remove whitespace
         for attr in card.__dict__:
             card.__setattr__(attr, card.__getattribute__(attr).strip())
