@@ -99,7 +99,7 @@ def make_english_words_plural(english):
             new_pieces.append(piece)
         else:
             # this is some horribly convoluted code to preserve spaces at the 
-            # beginning and end of words
+            # beginning and end of words.  look away!
             spaces_start = count_spaces_at_start(piece)
             spaces_end = count_spaces_at_end(piece)
             
@@ -129,6 +129,8 @@ def make_english_words_plural(english):
 
 def make_english_word_plural(english):
     '''need to fix these:
+once, (one) time
+
 graduate fellow; teaching assistant
 student (male)
 son, boy; child
@@ -145,17 +147,27 @@ friends (female)
 other (female)
 match, game (sports)
 state, province
-late
-wife
-science
+
+day off
+(an) experience
+(a) group of
+too busy (to have time) for
+young men
+(piece of) advice
     '''
     # these are words that we can't make a plural out of in english, but a 
     # plural exists in arabic
-    non_plurals = ['big, large; old (in age)',
+    non_plurals = ['actual',
+                   'big, large; old (in age)',
+                   'different',
                    'eyeglasses',
+                   'famous',
                    'first',
+                   'foreign',
                    'green',
                    'handsome',
+                   'important',
+                   'intelligent',
                    'late',
                    'literature',
                    'many',
@@ -164,17 +176,27 @@ science
                    'news',
                    "o'clock",
                    'old, ancient',
+                   'once',
+                   'outstanding',
                    'powerful, strong',
+                   'real',
                    'science',
+                   'series',
                    'short',
-                   'sole, only',
+                   'smart',
                    'snow',
+                   'sole, only',
+                   'superior',
                    'tall',
+                   'that',
+                   'true',
                    'weather',
+                   'which',
                   ]
     
     special_plurals = {'child': 'children',
                        'man': 'men',
+                       'person': 'people',
                        'woman': 'women',
                        'wife': 'wives',
                       }
