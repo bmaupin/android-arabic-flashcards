@@ -62,10 +62,10 @@ def main():
 
 
 def make_english_words_plural(english):
-    def count_spaces_at_beginning(word, spaces = 0):
+    def count_spaces_at_start(word, spaces = 0):
         if word.startswith(' '):
             spaces += 1
-            return count_spaces_at_beginning(word[1:], spaces)
+            return count_spaces_at_start(word[1:], spaces)
         else:
             return spaces
         
@@ -98,44 +98,53 @@ def make_english_words_plural(english):
         #        piece.startswith('(') and piece.endswith(')')):
             new_pieces.append(piece)
         else:
+            # this is some horribly convoluted code to preserve spaces at the 
+            # beginning and end of words
             spaces_start = count_spaces_at_start(piece)
             spaces_end = count_spaces_at_end(piece)
             
             if spaces_start == 0:
-                spaces_start = None
-            if spaces_end == 0:
-                spaces_end = None
+                spaces_start_index = None
             else:
-                spaces_end = -spaces_end
+                spaces_start_index = spaces_start
+            if spaces_end == 0:
+                spaces_end_index = None
+            else:
+                # make it negative for index
+                spaces_end_index = -spaces_end
             
-            new_piece = make_english_word_plural(piece[spaces_start:spaces_end])
+            new_piece = make_english_word_plural(piece[spaces_start_index:spaces_end_index])
+            new_pieces.append(' ' * spaces_start + new_piece + ' ' * spaces_end)
             
+            '''
             if spaces > 0:
                 new_piece = make_english_word_plural(piece[:-spaces])
                 new_pieces.append(new_piece + ' ' * spaces)
             else:
                 new_pieces.append(make_english_word_plural(piece))
+            '''
     
     return ''.join(new_pieces)
 
 
 def make_english_word_plural(english):
     '''need to fix these:
+graduate fellow; teaching assistant
 student (male)
 son, boy; child
 friend (male), boyfriend
-class, classroom; season
-area, region
 cousin (male, paternal)
 college, school (in a university)
+grandfather/ ancestor
+hour; o'clock; clock, watch
+
+class, classroom; season
+area, region
 classmate; colleague (male)
 friends (female)
 other (female)
 match, game (sports)
 state, province
-graduate fellow; teaching assistant
-grandfather/ ancestor
-hour; o'clock; clock, watch
 late
 wife
 science
