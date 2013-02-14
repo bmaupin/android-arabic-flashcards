@@ -5,8 +5,9 @@ import cards
 
 def main():
     ak12inorder = cards.process_cards_file(
-            '/home/bmaupin/Desktop/ak12inorder.tsv',
-            '\t')
+            '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/archive/ak12inorder-plurals.tsv',
+            '\t',
+            plurals=True)
     ak12linguastep = cards.process_cards_file(
             '/home/bmaupin/Desktop/ak12linguastep.tsv',
             '\t',
