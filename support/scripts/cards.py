@@ -103,6 +103,15 @@ def prep_arabic(string):
     return pyfribidi.log2vis(string)
 
 
+'''TODO: there's a much better way to do this using re.split()
+something like this:
+re.split('[;,]', "hour; o'clock; clock, watch")
+
+then run str.strip() on the individual words
+
+or re.split('[;, ]'...
+and drop words that == ''
+'''
 def split_string(string, separators):
     '''Splits a string by all of the provided separators, returning a list of
     the separated items
