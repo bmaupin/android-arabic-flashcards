@@ -130,6 +130,7 @@ def make_english_words_plural(english):
 def make_english_word_plural(english):
     '''need to fix these:
 once, (one) time
+human being, (plural) people
 
 graduate fellow; teaching assistant
 student (male)
