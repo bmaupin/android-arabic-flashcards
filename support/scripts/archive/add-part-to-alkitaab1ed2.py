@@ -12,6 +12,7 @@ def main():
             '/home/bmaupin/Desktop/ak12linguastep.tsv',
             '\t',
             parts_of_speech=True)
+    outfile = open('/home/bmaupin/Desktop/ak12inorder-plurals-part.tsv', 'w')
 #    print ak12inorder[0].english
 #    print ak12linguastep[0].english
 
@@ -52,6 +53,7 @@ def main():
                     print '%s\t%s\t%s' % (card.english, cards.prep_arabic(card.arabic), card.chapter)
                     print '%s\t%s\t%s\t%s' % (card_linguastep.english, cards.prep_arabic(card_linguastep.arabic), card_linguastep.part, card_linguastep.chapter)
                     match = raw_input('Is this a match (y/n)? ')
+                    print
                     if match.strip().lower == 'y':
                         # remove the card
                         ak12linguastep.remove(card_linguastep)
@@ -64,14 +66,32 @@ def main():
                 pass
 #                    print '%s\t%s\t%s' % (card.english, cards.prep_arabic(card.arabic), card.chapter)
 #                    print '%s\t%s\t%s\t%s' % (card_linguastep.english, cards.prep_arabic(card_linguastep.arabic), card_linguastep.part, card_linguastep.chapter) 
-                
-                 
+        
+        if not hasattr(card, 'part'):
+            card.part = ''
+        
+        outfile.write('%s\t%s\t%s\t%s\t%s\n' % (card.english, card.arabic, card.part, card.chapter, card.plural))
+        
+    outfile.close()             
 
         
     print len(ak12linguastep)
+    
+    outfile = open('/home/bmaupin/Desktop/ak12linguastep-output.txt', 'w')
+    outfile.write(str(len(ak12linguastep)))
+    outfile.write('\n\n')
+    for card in ak12linguastep:
+        outfile.write('%s\t%s\t%s\t%s\n' % (card.english, card.arabic, card.part, card.chapter))
+#    outfile.write('\n\n')
+#    outfile.write(str(ak12inorder))
+#    outfile.write('\n')
+    outfile.close()
+    
 #    for card_linguastep in ak12linguastep:
 #        print '%s\t%s\t%s\t%s' % (card_linguastep.english, cards.prep_arabic(card_linguastep.arabic), card_linguastep.part, card_linguastep.chapter)
 
+    
+        
     
     
     
