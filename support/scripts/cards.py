@@ -45,13 +45,13 @@ def process_cards_file(file_name, separator, parts_of_speech=False,
     infile = open(file_name)
     for line in infile:
         card = Card()
-        if parts_of_speech:
-            if plurals:
+        if parts_of_speech == True:
+            if plurals == True:
                 card.english, card.arabic, card.part, card.chapter, card.plural = line.strip().split(separator)
             else:
                 card.english, card.arabic, card.part, card.chapter = line.strip().split(separator)
         else:
-            if plurals:
+            if plurals == True:
                 card.english, card.arabic, card.chapter, card.plural = line.strip().split(separator)
             else:
                 card.english, card.arabic, card.chapter = line.strip().split(separator)
