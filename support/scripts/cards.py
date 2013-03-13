@@ -34,17 +34,43 @@ class Card(object):
         return '%s\t%s' % (self.english, prep_arabic(self.arabic))
         
 
-def process_cards_file(file_name, separator, parts_of_speech=False, 
-                       plurals=False):
+def process_cards_file(file_name, separator, categories = False, 
+        chapters = False, genders = False, parts_of_speech = False, 
+        plurals = False):
     '''Input file: english should come first, then arabic, then part of speech 
-    (optional), then chapter, then plural (optional)
+    (optional), then category (optional), then gender (optional), then plural 
+    (optional), then chapter (optional)
     '''
     cards = []
     first_line_processed = False
     
+    columns = ['english', 'arabic']
+    if parts_of_speech == True:
+        columns.append('part')
+    if categories == True:
+        columns.append('category')
+    if genders == True:
+        columns.append('gender')
+    if plurals == True:
+        columns.append('plural')
+    if chapters == True:
+        columns.append('chapter')
+    
     infile = open(file_name)
     for line in infile:
         card = Card()
+        
+        ''' strip whitespace of the line, split it by the separator, then 
+        enumerate through the generated list, returning the index of each item 
+        and the item
+        '''
+        for index, item in enumerate(line.strip().split(separator)):
+            ''' for each value of the input file line, set the attribute of the 
+            card object, removing whitespace
+            '''
+            setattr(card, columns[index], item.strip())
+
+        '''
         if parts_of_speech == True:
             if plurals == True:
                 card.english, card.arabic, card.part, card.chapter, card.plural = line.strip().split(separator)
@@ -55,9 +81,11 @@ def process_cards_file(file_name, separator, parts_of_speech=False,
                 card.english, card.arabic, card.chapter, card.plural = line.strip().split(separator)
             else:
                 card.english, card.arabic, card.chapter = line.strip().split(separator)
+        
         # iterate through each card attribute and remove whitespace
         for attr in card.__dict__:
             card.__setattr__(attr, card.__getattribute__(attr).strip())
+        '''
         if first_line_processed == False:
             if (card.english.lower() == 'english' and 
                 str(card.arabic.lower()) == 'arabic'):
