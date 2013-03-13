@@ -1,6 +1,8 @@
 #/usr/bin/env python
 # coding=utf8
 
+import re
+
 import pyfribidi
 
 '''
@@ -147,7 +149,7 @@ then run str.strip() on the individual words
 or re.split('[;, ]'...
 and drop words that == ''
 '''
-def split_string(string, separators):
+def split_string_old(string, separators):
     '''Splits a string by all of the provided separators, returning a list of
     the separated items
     '''
@@ -172,7 +174,17 @@ def split_string(string, separators):
     
     # don't modify the original separators list
     return split_strings_recursive([string], list(separators))
+
+
+def split_string(string, separators):
+    separators = '[%s]' % (separators)
+    split = []
+    for item in re.split(separators, string):
+        if item != '':
+            split.append(item)
     
+    return split
+
 
 def strip_arabic_vowels(line_with_vowels):
     diacritics = [u'\u064e',  # fatha, short a
