@@ -28,22 +28,62 @@ def main():
         old_cards.append(card)
         
     # read in file for that curriculum
-    curriculum_cards = []
     response = raw_input('Do you wish to read in an additional file for this curriculum? (y/n): ')
     if response == 'y':
         input_filename = raw_input('Enter the full path to the file: ')
+        separator = raw_input('What is the separator for this file: ')
         parts_of_speech = raw_input('Does this file contain parts of speech? (y/n): ')
         if parts_of_speech == 'y':
             parts_of_speech = True
+        categories = raw_input('Does this file contain categories? (y/n): ')
+        if categories == 'y':
+            categories = True
+        genders = raw_input('Does this file contain genders? (y/n): ')
+        if genders == 'y':
+            genders = True
         plurals = raw_input('Does this file contain plurals? (y/n): ')
         if plurals == 'y':
             plurals = True
-
         
-        infile = open(input_filename)
+        curriculum_cards = cards.process_cards_file(input_filename, separator, 
+                categories = categories, chapters = True, genders = genders, 
+                parts_of_speech = parts_of_speech, plurals = plurals)
         
+        '''
+        count = 0
+        for card in curriculum_cards:
+            if count == 10: break
+            count += 1
+            print( '%s\t%s\t%s\t%s\t%s' % (card.english, card.arabic, card.part, card.gender, card.chapter))
+        '''
         
+        for curriculum_card in curriculum_cards:
+            # look for duplicates
+            for current_card in current_cards:
+                if cards.compare_strings(curriculum_card.arabic, current_card.arabic):
+                    pass
+            
+            # look for matches in old_cards
+            for old_card in old_cards:
+                if cards.compare_strings(curriculum_card.arabic, current_card.arabic, partial = True):
     
+    
+    ''' comparison process:
+    look for an exact arabic match
+        yes: look for an exact english match
+            yes: prompt to fill in other details
+            no: show cards, prompt user for judgment
+                yes: prompt to fill in other details
+                no: move on
+        no: look for a partial arabic match
+            yes: show cards, prompt user for judgment
+                yes: prompt to fill in other details
+                no: move on
+            no: move on
+    '''
+    
+    
+                    
     # other files?
     
     # 1. two modes: manual input and input file
