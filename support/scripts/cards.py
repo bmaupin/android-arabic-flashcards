@@ -100,7 +100,7 @@ def process_cards_file(file_name, separator, categories = False,
     return cards
 
 
-def compare_strings(string1, string2, partial=False):
+def compare_strings(string1, string2, partial = False):
     '''Compare two strings
     If partial is True, look for partial matches as well 
     '''
