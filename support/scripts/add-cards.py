@@ -14,11 +14,11 @@ def main():
     curriculum_table = select_curriculum(c)
     
     # read in cards
-    current_cards = []
+    existing_cards = []
     for row in c.execute('SELECT * from cards'):
         card = cards.Card()
         card._id, card.english, card.arabic, card.part, card.category, card.gender, card.plural = row
-        current_cards.append(card)
+        existing_cards.append(card)
     
     # read in old_cards
     old_cards = []
@@ -45,28 +45,29 @@ def main():
         if plurals == 'y':
             plurals = True
         
-        curriculum_cards = cards.process_cards_file(input_filename, separator, 
+        new_cards = cards.process_cards_file(input_filename, separator, 
                 categories = categories, chapters = True, genders = genders, 
                 parts_of_speech = parts_of_speech, plurals = plurals)
         
         '''
         count = 0
-        for card in curriculum_cards:
+        for card in new_cards:
             if count == 10: break
             count += 1
             print( '%s\t%s\t%s\t%s\t%s' % (card.english, card.arabic, card.part, card.gender, card.chapter))
         '''
         
-        for curriculum_card in curriculum_cards:
+        for new_card in new_cards:
             # look for duplicates
-            for current_card in current_cards:
-                if cards.compare_strings(curriculum_card.arabic, current_card.arabic):
-                    pass
+            # HERE: we need code that will search using SQL; this will include
+#            for existing_card in existing_cards:
+#                if cards.compare_strings(new_card.arabic, existing_card.arabic):
+#                    pass
             
             # look for matches in old_cards
             for old_card in old_cards:
-                if cards.compare_strings(curriculum_card.arabic, current_card.arabic, partial = True):
-    
+                if cards.compare_strings(new_card.arabic, existing_card.arabic, partial = True):
+                    pass
     
     ''' comparison process:
     look for an exact arabic match
