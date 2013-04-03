@@ -73,6 +73,8 @@ def main():
         '''
         outfile.write('\t'.join((card.english, card.arabic, card.part, 
                 card.chapter, card.plural)))
+#        outfile.write('\t'.join((card.english, card.arabic, card.part, 
+#                card.plural, card.chapter)))
         outfile.write('\n')
     
     outfile.close()   
@@ -96,6 +98,7 @@ def fix_arabic_plural(plural, singular):
     response = raw_input('fix? (y/n): ')
 
     if response.lower() == 'y':
+#    if True:
         for preposition in prepositions_to_ignore:
             if singular.arabic.endswith(preposition):
                 # chop off the preposition
@@ -120,7 +123,7 @@ def fix_arabic_plural(plural, singular):
                 plural.arabic = singular.arabic + plural.arabic[1:]
                   
         elif plural.arabic == '-ون/ين' or plural.arabic == '-ون / ين':
-            pass
+            plural.arabic = singular.arabic + 'ون' + '/' + singular.arabic + 'ين'
     
     # if there's a preposition to add back, do it
     if preposition_to_add:
@@ -138,7 +141,5 @@ if __name__ == '__main__':
 
 
 ''' TODO:
- - handle -ون/ين
- - handle كَثير / ة
-        
+    
 '''
