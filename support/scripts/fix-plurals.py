@@ -29,48 +29,7 @@ def main():
         
         if card.arabic in plurals_to_fix:
             card = fix_arabic_plural(card, ak12inorder[index - 1])
-        
-        '''
-        if card.arabic == '-ات' or card.arabic == '-ون':
-            print 'current word: %s\t%s' % (card.english, 
-                    cards.prep_arabic(card.arabic))
-            print 'previous word: %s\t%s' % (ak12inorder[index - 1].english, 
-                    cards.prep_arabic(ak12inorder[index - 1].arabic))
-            response = raw_input('fix? (y/n): ')
-            
-            if response.lower() == 'y':
-                if card.arabic == '-ات':
-                    singular = ak12inorder[index - 1].arabic.decode('utf8')
-                    # if the arabic doesn't end in ة
-                    if singular[-1] != u'\u0629':
-#                        print 'WARNING: final character not taa marbuta'
-#                        print '\tcard not written to output file'
-#                        print '\t%s' % (ord(singular[-1]))
-#                        continue
-                        plural = singular.encode('utf8') + card.arabic[1:]
-                    else:
-                        # drop the ة
-                        plural = singular[:-1].encode('utf8') + card.arabic[1:]
-                        if debug:
-                            print '\tplural: %s' % (plural)
-                    
-                    outfile.write('\t'.join((card.english, plural, card.part, 
-                            card.chapter, card.plural)))
-                    outfile.write('\n')
-                    
-                elif card.arabic == '-ون':
-                    if debug:
-                        print '\tplural: %s' % (ak12inorder[index - 1].arabic + card.arabic[1:])
-                    outfile.write('\t'.join((card.english, 
-                            ak12inorder[index - 1].arabic + card.arabic[1:],
-                            card.part, card.chapter, card.plural)))
-                    outfile.write('\n')
-                      
-        elif card.arabic == '-ون/ين' or card.arabic == '-ون / ين':
-            pass
-        
-        else:
-        '''
+
         outfile.write('\t'.join((card.english, card.arabic, card.part, 
                 card.chapter, card.plural)))
 #        outfile.write('\t'.join((card.english, card.arabic, card.part, 
@@ -78,15 +37,7 @@ def main():
         outfile.write('\n')
     
     outfile.close()   
-        
-    '''
-        if card.arabic.find('-') != -1:
-            if card.arabic not in plurals:
-                plurals.append(card.arabic)
-    
-    print plurals
-    plurals
-    '''
+
 
 def fix_arabic_plural(plural, singular):
     preposition_to_add = False
@@ -110,10 +61,6 @@ def fix_arabic_plural(plural, singular):
                 singular = singular.arabic.decode('utf8')
                 # if the arabic doesn't end in ة
                 if singular[-1] != u'\u0629':
-#                        print 'WARNING: final character not taa marbuta'
-#                        print '\tcard not written to output file'
-#                        print '\t%s' % (ord(singular[-1]))
-#                        continue
                     plural.arabic = singular.encode('utf8') + plural.arabic[1:]
                 else:
                     # drop the ة
@@ -138,8 +85,3 @@ def fix_arabic_plural(plural, singular):
 # calls the main() function when the script runs
 if __name__ == '__main__':
     main()
-
-
-''' TODO:
-    
-'''
