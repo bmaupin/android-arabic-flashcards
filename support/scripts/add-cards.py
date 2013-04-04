@@ -5,6 +5,7 @@ import sys
 
 import cards
 
+debug = True
 cards_db = '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
 
 def main():
@@ -56,18 +57,34 @@ def main():
             count += 1
             print( '%s\t%s\t%s\t%s\t%s' % (card.english, card.arabic, card.part, card.gender, card.chapter))
         '''
+
         
         for new_card in new_cards:
             # look for duplicates
-            # HERE: we need code that will search using SQL; this will include
-#            for existing_card in existing_cards:
-#                if cards.compare_strings(new_card.arabic, existing_card.arabic):
-#                    pass
+            print 'Searching for duplicates...'
+            for existing_card in existing_cards:
+                if cards.compare_strings(new_card.arabic, existing_card.arabic):
+                    print 'new: %s\t%s' % (new_card.arabic, new_card.english)
+                    print 'match: %s\t%s' % (existing_card.arabic, existing_card.english)
+                    response = raw_input('Match? (y/n): ')
+                    if response.lower() == 'y':
+                        pass
             
             # look for matches in old_cards
             for old_card in old_cards:
                 if cards.compare_strings(new_card.arabic, existing_card.arabic, partial = True):
                     pass
+                
+    # other files?
+    
+    # 1. two modes: manual input and input file
+    
+    # 1. check cards for duplicates
+    # 2. see if we can fill in any details from old_cards
+
+    conn.commit()
+    conn.close()
+    
     
     ''' comparison process:
     look for an exact arabic match
@@ -82,21 +99,64 @@ def main():
                 no: move on
             no: move on
     '''
-    
-    
+def compare_cards(new, other):
+    def fill_in_details():
+        # iterate through the attributes of the other card
+        for attr in other.__dict__:
+            # if the new card doesn't have those attributes or if they are blank
+            if attr not in new.__dict__ or getattr(new, attr) == '':
+                # we don't want to update the chapter since it will be unique to each curriculum
+                if attr == 'chapter':
+                    continue
+                # copy them from the other card to the new card
+                if debug:
+                    print('adding %s: %s to new card' % (attr, getattr(other, attr)))
+                setattr(new, attr, getattr(other, attr))
+        
+        return new
                     
-    # other files?
+    def possible_match():
+        print 'possible match:'
+        print '\tnew: %s\t%s' % (new.arabic, new.english)
+        print '\tmatch: %s\t%s' % (other.arabic, other.english)
+        response = raw_input('\tMatch? (y/n): ')
+        if response.lower() == 'y':
+            print('1: Use arabic from new\n'
+                  '2: Use arabic from match\n'
+                  '3: Flag arabic')
+            response = raw_input('Selection: ')
+            if response == '2':
+                new.arabic = other.arabic
+            elif response == '3':
+                new.arabic += ' FLAG ' + other.arabic
+            print('1: Use english from new\n'
+                  '2: Use english from match\n'
+                  '3: Flag english')
+            response = raw_input('Selection: ')
+            if response == '2':
+                new.english = other.english
+            elif response == '3':
+                new.english += ' FLAG ' + other.english
+            print 'Filling in details...'
+            fill_in_details()
     
-    # 1. two modes: manual input and input file
+    if cards.compare_strings(new.arabic, other.arabic):
+        if cards.compare_strings(new.english, other.english):
+            print 'positive match:'
+            print '\tnew: %s\t%s' % (new.arabic, new.english)
+            print '\tmatch: %s\t%s' % (other.arabic, other.english)
+            response = raw_input('\tFill in details? (y/n): ')
+            if response.lower() == 'y':
+                fill_in_details()
+        else:
+            possible_match()
+    else:
+        if cards.compare_strings(new.arabic, other.arabic, partial = True):
+            possible_match()
     
-    # 1. check cards for duplicates
-    # 2. see if we can fill in any details from old_cards
-    
-    
-    
+    return False
+                    
 
-    conn.commit()
-    conn.close()
 
 def select_curriculum(c):
     # get all the tables
@@ -141,3 +201,19 @@ def select_curriculum(c):
 # calls the main() function when the script runs
 if __name__ == '__main__':
     main()
+
+''' TODO:
+ - make sure once we add a card, we add it to original_cards for searching dupes
+ 
+Process:
+ - Get script working, adding new cards to db, outputting a replacement file for new cards
+ - Once that's working, add functionality to search for dupes
+ - Then add functionality to deal with dupes
+ - Then add functionality to find matches
+ - Then add functionality to deal with matches...
+ 
+Dealing with dupes:
+ 1. Figure out the combination of data that we want (same logic for matches)
+ 2. Take that data, and update the original in the cards db with that data
+ 3. Update the curriculum table for that card
+'''
