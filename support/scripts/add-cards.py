@@ -59,21 +59,55 @@ def main():
         '''
 
         
-        for new_card in new_cards:
+        for index, new_card in enumerate(new_cards):
+            duplicate = False
+            
             # look for duplicates
             print 'Searching for duplicates...'
             for existing_card in existing_cards:
-                if cards.compare_strings(new_card.arabic, existing_card.arabic):
-                    print 'new: %s\t%s' % (new_card.arabic, new_card.english)
-                    print 'match: %s\t%s' % (existing_card.arabic, existing_card.english)
-                    response = raw_input('Match? (y/n): ')
-                    if response.lower() == 'y':
-                        pass
+                match = compare_cards(new_card, existing_card)
+                # duplicate found 
+                if match != False:
+                    # update the new card to add with the updated card
+                    new_cards[index] = match
+                    # update the card in memory
+                    new_card = match
+                    duplicate = existing_card._id
+                    # don't compare to any more cards
+                    break
             
             # look for matches in old_cards
             for old_card in old_cards:
-                if cards.compare_strings(new_card.arabic, existing_card.arabic, partial = True):
-                    pass
+                match = compare_cards(new_card, old_card)
+                # match found 
+                if match != False:
+                    # update the new card to add with the updated card
+                    new_cards[index] = match
+                    # update the card in memory
+                    new_card = match
+                    # don't compare to any more cards
+                    break
+            
+            if duplicate != False:
+# TODO
+                # code here to update the database using the id in the duplicate
+                # variable and the data from new_card
+                new_card._id = duplicate
+            
+            else:
+# TODO
+                # code here to add the new card to the database
+                # then get the id of the card just added
+#                new_card._id =
+                # add the new card to existing_cards to help find dupes within
+                # the same curriculum
+                existing_cards.append(new_card)
+
+# TODO            
+            # code here to add the card ID and chapter to curriculum
+            # new_card.chapter, card id from duplicate or card_id
+
+
                 
     # other files?
     
@@ -100,6 +134,11 @@ def main():
             no: move on
     '''
 def compare_cards(new, other):
+    '''
+    Returns: the new card (possibly updated) if a match was found, or False if 
+    no match was found
+    '''
+    
     def fill_in_details():
         # iterate through the attributes of the other card
         for attr in other.__dict__:
@@ -112,7 +151,8 @@ def compare_cards(new, other):
                 if debug:
                     print('adding %s: %s to new card' % (attr, getattr(other, attr)))
                 setattr(new, attr, getattr(other, attr))
-        
+        # if we got here, we found a match
+#        match = True
         return new
                     
     def possible_match():
@@ -204,16 +244,8 @@ if __name__ == '__main__':
 
 ''' TODO:
  - make sure once we add a card, we add it to original_cards for searching dupes
- 
-Process:
- - Get script working, adding new cards to db, outputting a replacement file for new cards
- - Once that's working, add functionality to search for dupes
- - Then add functionality to deal with dupes
- - Then add functionality to find matches
- - Then add functionality to deal with matches...
- 
-Dealing with dupes:
- 1. Figure out the combination of data that we want (same logic for matches)
- 2. Take that data, and update the original in the cards db with that data
- 3. Update the curriculum table for that card
+ - output a replacement file for new cards (in case we stop partially through so
+   we don't lose progress)
+ - add functionality to deal with dupes
+ - add functionality to deal with matches...
 '''
