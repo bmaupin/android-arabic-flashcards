@@ -73,7 +73,7 @@ def main():
                     # update the card in memory
                     new_card = match
                     duplicate = existing_card._id
-                    # don't compare to any more cards
+                    # don't compare to any more existing cards
                     break
             
             # look for matches in old_cards
@@ -85,7 +85,7 @@ def main():
                     new_cards[index] = match
                     # update the card in memory
                     new_card = match
-                    # don't compare to any more cards
+                    # don't compare to any more old cards
                     break
             
             if duplicate != False:
