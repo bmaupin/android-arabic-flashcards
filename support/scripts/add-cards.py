@@ -6,7 +6,8 @@ import sys
 import cards
 
 debug = True
-cards_db = '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
+#cards_db = '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
+cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
 
 def main():
     conn = sqlite3.connect(cards_db)
@@ -144,8 +145,9 @@ def compare_cards(new, other):
         for attr in other.__dict__:
             # if the new card doesn't have those attributes or if they are blank
             if attr not in new.__dict__ or getattr(new, attr) == '':
-                # we don't want to update the chapter since it will be unique to each curriculum
-                if attr == 'chapter':
+                # we don't want to update the chapter since it will be unique to
+                #  each curriculum or _id since we'll handle that elsewhere
+                if attr == 'chapter' or attr == '_id':
                     continue
                 # copy them from the other card to the new card
                 if debug:
@@ -161,25 +163,30 @@ def compare_cards(new, other):
         print '\tmatch: %s\t%s' % (other.arabic, other.english)
         response = raw_input('\tMatch? (y/n): ')
         if response.lower() == 'y':
-            print('1: Use arabic from new\n'
-                  '2: Use arabic from match\n'
-                  '3: Flag arabic')
-            response = raw_input('Selection: ')
-            if response == '2':
-                new.arabic = other.arabic
-            elif response == '3':
-                new.arabic += ' FLAG ' + other.arabic
-            print('1: Use english from new\n'
-                  '2: Use english from match\n'
-                  '3: Flag english')
-            response = raw_input('Selection: ')
-            if response == '2':
-                new.english = other.english
-            elif response == '3':
-                new.english += ' FLAG ' + other.english
+            # don't ask this if arabic is identical
+            if not cards.compare_strings(new.arabic, other.arabic):
+                print('1: Use arabic from new\n'
+                      '2: Use arabic from match\n'
+                      '3: Flag arabic')
+                response = raw_input('Selection: ')
+                if response == '2':
+                    new.arabic = other.arabic
+                elif response == '3':
+                    new.arabic += ' FLAG ' + other.arabic
+            # don't ask this if english is identical
+            if not cards.compare_strings(new.english, other.english):
+                print('1: Use english from new\n'
+                      '2: Use english from match\n'
+                      '3: Flag english')
+                response = raw_input('Selection: ')
+                if response == '2':
+                    new.english = other.english
+                elif response == '3':
+                    new.english += ' FLAG ' + other.english
             print 'Filling in details...'
             fill_in_details()
-    
+
+    # first, compare arabic without stripping vowels
     if cards.compare_strings(new.arabic, other.arabic):
         if cards.compare_strings(new.english, other.english):
             print 'positive match:'
@@ -190,6 +197,11 @@ def compare_cards(new, other):
                 fill_in_details()
         else:
             possible_match()
+    # then strip arabic vowels and try again
+    elif cards.compare_strings(new.arabic, other.arabic, strip_vowels = True):
+        possible_match()
+    elif cards.compare_strings(new.english, other.english):
+        possible_match()
     else:
         if cards.compare_strings(new.arabic, other.arabic, partial = True):
             possible_match()
