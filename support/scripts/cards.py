@@ -100,21 +100,32 @@ def process_cards_file(file_name, separator, categories = False,
     return cards
 
 
-def compare_strings(string1, string2, partial = False):
+def compare_strings(string1, string2, strip_vowels = False, partial = False):
     '''Compare two strings
     If partial is True, look for partial matches as well 
     '''
     # handle blanks in case for some reason we're comparing empty fields
     if string1 == '' and string2 == '':
         return False
-    # get rid of arabic vowels if the word is arabic
-    string1 = strip_arabic_vowels(string1)
-    string2 = strip_arabic_vowels(string2)
+    # strip whitespace just in case
+    string1 = string1.strip()
+    string2 = string2.strip()
+    # convert both strings to unicode for comparison
+    if not isinstance(string1, unicode):
+        string1 = string1.decode('utf8')
+    if not isinstance(string2, unicode):
+        string2 = string2.decode('utf8')
+    
+    if strip_vowels == True:
+        # get rid of arabic vowels if the word is arabic
+        string1 = strip_arabic_vowels(string1)
+        string2 = strip_arabic_vowels(string2)
     # save ourselves some work :P
     if string1 == string2:
         return True
     # skip 'ون' (plural ending by itself)
-    if string1 == '\xd9\x88\xd9\x86' and string2 == '\xd9\x88\xd9\x86':
+# TODO: somehow or other this keeps throwing warnings, as if string1 and 2 aren't unicode
+    if string1 == u'\u0648\u0646' and string2 == u'\u0648\u0646':
         return False
     
     if partial:
@@ -198,7 +209,9 @@ def strip_arabic_vowels(line_with_vowels):
                  ]
     
     line_without_vowels = ''
-    line_with_vowels = line_with_vowels.decode('utf8')
+    # don't try to decode a string that's already been decoded
+    if not isinstance(line_with_vowels, unicode):
+        line_with_vowels = line_with_vowels.decode('utf8')
     for char in line_with_vowels:
         if char not in diacritics:
             line_without_vowels += char
