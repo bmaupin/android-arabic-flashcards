@@ -126,7 +126,18 @@ def compare_strings(string1, string2, strip_vowels = False, partial = False):
     # skip 'ون' (plural ending by itself)
 # TODO: somehow or other this keeps throwing warnings, as if string1 and 2 aren't unicode
     print string1
-    
+    import sys
+    sys.stdout.write('string1: ')
+    for char in string1:
+        sys.stdout.write(ord(char))
+        sys.stdout.write(' ')
+    sys.stdout.write('\n')
+    sys.stdout.write('string2: ')
+    for char in string2:
+        sys.stdout.write(ord(char))
+        sys.stdout.write(' ')
+    sys.stdout.write('\n')
+
     if string1 == u'\u0648\u0646' and string2 == u'\u0648\u0646':
         return False
     
