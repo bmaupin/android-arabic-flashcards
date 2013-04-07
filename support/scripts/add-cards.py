@@ -46,7 +46,7 @@ def main():
         plurals = raw_input('Does this file contain plurals? (y/n): ')
         if plurals == 'y':
             plurals = True
-        
+    
         new_cards = cards.process_cards_file(input_filename, separator, 
                 categories = categories, chapters = True, genders = genders, 
                 parts_of_speech = parts_of_speech, plurals = plurals)
@@ -78,6 +78,7 @@ def main():
                     break
             
             # look for matches in old_cards
+            print 'Searching for matches...'
             for old_card in old_cards:
                 match = compare_cards(new_card, old_card)
                 # match found 
@@ -154,7 +155,6 @@ def compare_cards(new, other):
                     print('adding %s: %s to new card' % (attr, getattr(other, attr)))
                 setattr(new, attr, getattr(other, attr))
         # if we got here, we found a match
-#        match = True
         return new
                     
     def possible_match():
@@ -185,7 +185,7 @@ def compare_cards(new, other):
                     new.english += ' FLAG ' + other.english
             print 'Filling in details...'
             fill_in_details()
-
+            
     # first, compare arabic without stripping vowels
     if cards.compare_strings(new.arabic, other.arabic):
         if cards.compare_strings(new.english, other.english):
