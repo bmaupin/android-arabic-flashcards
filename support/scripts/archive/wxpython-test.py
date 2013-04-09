@@ -1,7 +1,87 @@
 #!/usr/bin/env python
+# coding=utf8
 
 import wx
+
 class Frame(wx.Frame):
+    def __init__(self):
+        super(Frame, self).__init__(title='', parent=None)
+        gridSizer = wx.GridSizer(rows=5, cols=3, hgap=5, vgap=5)
+        
+        
+        new_arabic = 'أخبار'
+        new_english = 'news'
+        match_arabic = 'أخْبار'
+        match_english = 'news stories'
+        
+        '''
+        vbox1 = wx.BoxSizer(wx.VERTICAL)
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        hbox1.Add(wx.TextCtrl(self), 1, wx.EXPAND)
+        vbox1.Add(hbox1, 1)
+        '''
+        
+        vbox1 = wx.BoxSizer(wx.VERTICAL)
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        vbox1.Add(wx.TextCtrl(self), 1, wx.EXPAND)
+        hbox1.Add(vbox1, 1, wx.ALIGN_CENTER)
+        
+        vbox2 = wx.BoxSizer(wx.VERTICAL)
+        hbox2 = wx.BoxSizer(wx.HORIZONTAL)
+        vbox2.Add(wx.TextCtrl(self), 1, wx.EXPAND)
+        hbox2.Add(vbox2, 1, wx.ALIGN_CENTER)
+        
+        gridSizer.AddMany( [
+                (0, 0),
+                (wx.StaticText(self, 1, label="Arabic:"), 0, wx.ALIGN_CENTER),
+                (wx.StaticText(self, 1, label="English"), 0, wx.ALIGN_CENTER),
+                (0, 0),
+                #(wx.TextCtrl(self), 0, wx.ALIGN_CENTER),
+                (hbox1, 1, wx.EXPAND),
+                #(wx.TextCtrl(self), 1, wx.ALIGN_CENTER),
+                (hbox2, 1, wx.EXPAND),
+                (wx.StaticText(self, 1, label="new:"), 0, wx.ALIGN_CENTER),
+                #(wx.StaticText(self, 1, label=new_arabic), 0, wx.ALIGN_CENTER),
+                (wx.Button(self, 1, new_arabic), 0, wx.ALIGN_CENTER),
+                #(wx.StaticText(self, 1, label=new_english), 0, wx.ALIGN_CENTER),
+                (wx.Button(self, 1, new_english), 0, wx.ALIGN_CENTER),
+                (wx.StaticText(self, 1, label="match:"), 0, wx.ALIGN_CENTER),
+                #(wx.StaticText(self, 1, label=match_arabic), 0, wx.ALIGN_CENTER),
+                (wx.Button(self, 1, match_arabic), 0, wx.ALIGN_CENTER),
+                #(wx.StaticText(self, 1, label=match_english), 0, wx.ALIGN_CENTER),
+                (wx.Button(self, 1, match_english), 0, wx.ALIGN_CENTER),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (0, 0),
+                (wx.Button(self, 1, 'OK'), 0, wx.ALIGN_CENTER),
+                ])
+        
+        '''
+        gridSizer.Add(wx.StaticText(self, 1, label="Arabic:"))
+        gridSizer.Add(wx.StaticText(self, 1, label="English"))
+        gridSizer.Add(wx.StaticText(self, 1))
+        gridSizer.Add(wx.StaticText(self, 1))
+        gridSizer.Add(wx.StaticText(self, 1))
+        gridSizer.Add(wx.StaticText(self, 1))
+        gridSizer.Add(wx.StaticText(self, 1, label="new:"))
+        '''
+        self.SetSizer(gridSizer)
+        self.Layout()
+
+
+app = wx.App(False)
+frame = Frame()
+frame.Show(True)
+app.MainLoop()
+
+import sys
+sys.exit()
+
+
+
+
+class OldFrame(wx.Frame):
     def __init__(self, passBack, title = ''):
         super(Frame, self).__init__(title=title, parent=None, size=(-1,100))
         self.passBack = passBack
@@ -29,7 +109,7 @@ class Frame(wx.Frame):
 class App(wx.App):
     def __init__ (self, parent=None):
         wx.App.__init__(self, False)
-        self.frame = Frame(passBack=self, title = 'frrp') #Pass this app in
+        self.frame = Frame(passBack=self, title = 'title') #Pass this app in
         self.outputFromFrame = "" #The output from my frame
         
     def getOutput(self):
@@ -38,8 +118,8 @@ class App(wx.App):
         return self.outputFromFrame
 
 app = App()
-app.getOutput()
+print app.getOutput()
 
 del(app)
 app = App()
-app.getOutput()
+print app.getOutput()
