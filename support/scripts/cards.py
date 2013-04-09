@@ -110,34 +110,37 @@ def compare_strings(string1, string2, strip_vowels = False, partial = False):
     # strip whitespace just in case
     string1 = string1.strip()
     string2 = string2.strip()
+    
+    if strip_vowels == True:
+        # get rid of arabic vowels if the word is arabic
+        string1 = strip_arabic_vowels(string1)
+        string2 = strip_arabic_vowels(string2)
+    
     # convert both strings to unicode for comparison
     if not isinstance(string1, unicode):
         string1 = string1.decode('utf8')
     if not isinstance(string2, unicode):
         string2 = string2.decode('utf8')
     
-    if strip_vowels == True:
-        # get rid of arabic vowels if the word is arabic
-        string1 = strip_arabic_vowels(string1)
-        string2 = strip_arabic_vowels(string2)
     # save ourselves some work :P
     if string1 == string2:
         return True
     # skip 'ون' (plural ending by itself)
-# TODO: somehow or other this keeps throwing warnings, as if string1 and 2 aren't unicode
+    '''
     print string1
     import sys
     sys.stdout.write('string1: ')
     for char in string1:
-        sys.stdout.write(ord(char))
+        sys.stdout.write(str(ord(char)))
         sys.stdout.write(' ')
     sys.stdout.write('\n')
+    print string2
     sys.stdout.write('string2: ')
     for char in string2:
-        sys.stdout.write(ord(char))
+        sys.stdout.write(str(ord(char)))
         sys.stdout.write(' ')
     sys.stdout.write('\n')
-
+    '''
     if string1 == u'\u0648\u0646' and string2 == u'\u0648\u0646':
         return False
     

@@ -6,8 +6,8 @@ import sys
 import cards
 
 debug = True
-#cards_db = '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
-cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
+cards_db = '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
+#cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
 
 def main():
     conn = sqlite3.connect(cards_db)
@@ -28,7 +28,7 @@ def main():
         card = cards.Card()
         card._id, card.english, card.arabic, card.part, card.category, card.gender, card.plural = row
         old_cards.append(card)
-        
+    
     # read in file for that curriculum
     response = raw_input('Do you wish to read in an additional file for this curriculum? (y/n): ')
     if response == 'y':
