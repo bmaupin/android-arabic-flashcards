@@ -13,6 +13,7 @@ class Frame(wx.Frame):
         new_english = 'news'
         match_arabic = 'أخْبار'
         match_english = 'news stories'
+        #match_english = 'news stories some really big huge string'
         
         '''
         vbox1 = wx.BoxSizer(wx.VERTICAL)
@@ -21,20 +22,34 @@ class Frame(wx.Frame):
         vbox1.Add(hbox1, 1)
         '''
         
+        font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL,
+                wx.FONTWEIGHT_NORMAL)
+        
+        updatedArabicControl = wx.TextCtrl(self)
+        updatedArabicControl.SetFont(font)
+        newArabicControl = wx.Button(self, 1, new_arabic)
+        newArabicControl.SetFont(font)
+        matchArabicControl = wx.Button(self, 1, match_arabic)
+        matchArabicControl.SetFont(font)
+        
+        updatedEnglishControl = wx.TextCtrl(self)
+        newEnglishControl = wx.Button(self, 1, new_english)
+        matchEnglishControl = wx.Button(self, 1, match_english)
+        
         vbox1 = wx.BoxSizer(wx.VERTICAL)
         hbox1 = wx.BoxSizer(wx.HORIZONTAL)
-        vbox1.Add(wx.TextCtrl(self), 1, wx.EXPAND)
+        vbox1.Add(updatedArabicControl, 1, wx.EXPAND)
         hbox1.Add(vbox1, 1, wx.ALIGN_CENTER)
         
         vbox2 = wx.BoxSizer(wx.VERTICAL)
         hbox2 = wx.BoxSizer(wx.HORIZONTAL)
-        vbox2.Add(wx.TextCtrl(self), 1, wx.EXPAND)
+        vbox2.Add(updatedEnglishControl, 1, wx.EXPAND)
         hbox2.Add(vbox2, 1, wx.ALIGN_CENTER)
-        
+
         gridSizer.AddMany( [
                 (0, 0),
                 (wx.StaticText(self, 1, label="Arabic:"), 0, wx.ALIGN_CENTER),
-                (wx.StaticText(self, 1, label="English"), 0, wx.ALIGN_CENTER),
+                (wx.StaticText(self, 1, label="English:"), 0, wx.ALIGN_CENTER),
                 (0, 0),
                 #(wx.TextCtrl(self), 0, wx.ALIGN_CENTER),
                 (hbox1, 1, wx.EXPAND),
@@ -42,14 +57,14 @@ class Frame(wx.Frame):
                 (hbox2, 1, wx.EXPAND),
                 (wx.StaticText(self, 1, label="new:"), 0, wx.ALIGN_CENTER),
                 #(wx.StaticText(self, 1, label=new_arabic), 0, wx.ALIGN_CENTER),
-                (wx.Button(self, 1, new_arabic), 0, wx.ALIGN_CENTER),
+                (newArabicControl, 0, wx.ALIGN_CENTER),
                 #(wx.StaticText(self, 1, label=new_english), 0, wx.ALIGN_CENTER),
-                (wx.Button(self, 1, new_english), 0, wx.ALIGN_CENTER),
+                (newEnglishControl, 0, wx.ALIGN_CENTER),
                 (wx.StaticText(self, 1, label="match:"), 0, wx.ALIGN_CENTER),
                 #(wx.StaticText(self, 1, label=match_arabic), 0, wx.ALIGN_CENTER),
-                (wx.Button(self, 1, match_arabic), 0, wx.ALIGN_CENTER),
+                (matchArabicControl, 0, wx.ALIGN_CENTER),
                 #(wx.StaticText(self, 1, label=match_english), 0, wx.ALIGN_CENTER),
-                (wx.Button(self, 1, match_english), 0, wx.ALIGN_CENTER),
+                (matchEnglishControl, 0, wx.ALIGN_CENTER),
                 (0, 0),
                 (0, 0),
                 (0, 0),
@@ -123,3 +138,9 @@ print app.getOutput()
 del(app)
 app = App()
 print app.getOutput()
+
+''' TODO:
+ - disable column if new and match are the same
+ - need to get whole column to stretch if text is long
+ - pass and retrieve values
+'''
