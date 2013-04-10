@@ -12,7 +12,9 @@ class Frame(wx.Frame):
         new_arabic = 'أخبار'
         new_english = 'news'
         match_arabic = 'أخْبار'
+        #match_arabic = new_arabic
         match_english = 'news stories'
+        #match_english = new_english
         #match_english = 'news stories some really big huge string'
         
         '''
@@ -32,9 +34,23 @@ class Frame(wx.Frame):
         matchArabicControl = wx.Button(self, 1, match_arabic)
         matchArabicControl.SetFont(font)
         
+
+        
         updatedEnglishControl = wx.TextCtrl(self)
         newEnglishControl = wx.Button(self, 1, new_english)
         matchEnglishControl = wx.Button(self, 1, match_english)
+        
+        if new_arabic == match_arabic:
+            updatedArabicControl.Disable()
+            updatedArabicControl.SetValue(new_arabic)
+            newArabicControl.Disable()
+            matchArabicControl.Disable()
+        
+        if new_english == match_english:
+            updatedEnglishControl.Disable()
+            updatedEnglishControl.SetValue(new_english)
+            newEnglishControl.Disable()
+            matchEnglishControl.Disable()
         
         vbox1 = wx.BoxSizer(wx.VERTICAL)
         hbox1 = wx.BoxSizer(wx.HORIZONTAL)
@@ -140,7 +156,7 @@ app = App()
 print app.getOutput()
 
 ''' TODO:
- - disable column if new and match are the same
+ - get the new and match buttons working
  - need to get whole column to stretch if text is long
  - pass and retrieve values
 '''
