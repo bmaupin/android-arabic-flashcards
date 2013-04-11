@@ -28,15 +28,15 @@ class Frame(wx.Frame):
                 wx.FONTWEIGHT_NORMAL)
         
         updatedArabicControl = wx.TextCtrl(self)
+        self.updatedArabicControl = updatedArabicControl
         updatedArabicControl.SetFont(font)
         newArabicControl = wx.Button(self, 1, new_arabic)
         newArabicControl.SetFont(font)
         matchArabicControl = wx.Button(self, 1, match_arabic)
         matchArabicControl.SetFont(font)
-        
 
-        
         updatedEnglishControl = wx.TextCtrl(self)
+        self.updatedEnglishControl = updatedEnglishControl
         newEnglishControl = wx.Button(self, 1, new_english)
         matchEnglishControl = wx.Button(self, 1, match_english)
         
@@ -45,12 +45,22 @@ class Frame(wx.Frame):
             updatedArabicControl.SetValue(new_arabic)
             newArabicControl.Disable()
             matchArabicControl.Disable()
+        else:
+            newArabicControl.language = 'arabic'
+            matchArabicControl.language = 'arabic'
+            newArabicControl.Bind(wx.EVT_BUTTON, self.onCardButtonClick)
+            matchArabicControl.Bind(wx.EVT_BUTTON, self.onCardButtonClick)
         
         if new_english == match_english:
             updatedEnglishControl.Disable()
             updatedEnglishControl.SetValue(new_english)
             newEnglishControl.Disable()
             matchEnglishControl.Disable()
+        else:
+            newEnglishControl.language = 'english'
+            matchEnglishControl.language = 'english'
+            newEnglishControl.Bind(wx.EVT_BUTTON, self.onCardButtonClick)
+            matchEnglishControl.Bind(wx.EVT_BUTTON, self.onCardButtonClick)
         
         vbox1 = wx.BoxSizer(wx.VERTICAL)
         hbox1 = wx.BoxSizer(wx.HORIZONTAL)
@@ -61,6 +71,9 @@ class Frame(wx.Frame):
         hbox2 = wx.BoxSizer(wx.HORIZONTAL)
         vbox2.Add(updatedEnglishControl, 1, wx.EXPAND)
         hbox2.Add(vbox2, 1, wx.ALIGN_CENTER)
+        
+        okButton = wx.Button(self, 1, 'OK')
+        okButton.Bind(wx.EVT_BUTTON, self.onOKButtonClick)
 
         gridSizer.AddMany( [
                 (0, 0),
@@ -85,7 +98,7 @@ class Frame(wx.Frame):
                 (0, 0),
                 (0, 0),
                 (0, 0),
-                (wx.Button(self, 1, 'OK'), 0, wx.ALIGN_CENTER),
+                (okButton, 0, wx.ALIGN_CENTER),
                 ])
         
         '''
@@ -99,6 +112,17 @@ class Frame(wx.Frame):
         '''
         self.SetSizer(gridSizer)
         self.Layout()
+    
+    def onCardButtonClick(self, event):
+        btn = event.GetEventObject()
+        if btn.language == 'arabic':
+            self.updatedArabicControl.SetValue(btn.GetLabelText())
+        elif btn.language == 'english':
+            self.updatedEnglishControl.SetValue(btn.GetLabelText())
+    
+    def onOKButtonClick(self, event):
+        self.Close()
+        
 
 
 app = wx.App(False)
@@ -156,7 +180,6 @@ app = App()
 print app.getOutput()
 
 ''' TODO:
- - get the new and match buttons working
  - need to get whole column to stretch if text is long
  - pass and retrieve values
 '''
