@@ -97,11 +97,6 @@ class Frame(wx.Frame):
                 (matchArabicControl, 0, wx.ALIGN_CENTER),
                 #(wx.StaticText(self, 1, label=match_english), 0, wx.ALIGN_CENTER),
                 (matchEnglishControl, 0, wx.ALIGN_CENTER),
-                (0, 0),
-                (0, 0),
-                (0, 0),
-                (0, 0),
-                (okButton, 0, wx.ALIGN_CENTER),
                 ])
         
         '''
@@ -120,9 +115,10 @@ class Frame(wx.Frame):
         #gridSizer.SetMinSize(self.GetSize())
         
         # one big sizer to fit everything else
-        sizer = wx.BoxSizer()
+        sizer = wx.BoxSizer( wx.VERTICAL)
         # add the gridsizer with a border (padding) of 20
         sizer.Add(gridSizer, 1, wx.ALL, 20)
+        sizer.Add(okButton, 0, wx.ALIGN_CENTER|wx.ALL, 20)
         
         # sets the sizer of the frame and the size/fit of the frame to the size of the sizer
         self.SetSizerAndFit(sizer)
@@ -194,7 +190,6 @@ del(app)
 app = App()
 print app.getOutput()
 
-''' TODO:
- - go ahead and create 
+''' TODO: 
  - pass and retrieve values
 '''
