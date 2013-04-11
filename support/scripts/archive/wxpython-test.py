@@ -6,8 +6,9 @@ import wx
 class Frame(wx.Frame):
     def __init__(self):
         super(Frame, self).__init__(title='', parent=None)
-        gridSizer = wx.GridSizer(rows=5, cols=3, hgap=5, vgap=5)
-        
+        gridSizer = wx.FlexGridSizer(rows=5, cols=3, hgap=10, vgap=10)
+        # allow horizontal resizing (but not vertical)
+        gridSizer.SetFlexibleDirection(wx.HORIZONTAL)
         
         new_arabic = 'أخبار'
         new_english = 'news'
@@ -27,6 +28,8 @@ class Frame(wx.Frame):
         font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL,
                 wx.FONTWEIGHT_NORMAL)
         
+        # if we ever need to make this wider than the button:
+        # http://stackoverflow.com/a/2455379/399105
         updatedArabicControl = wx.TextCtrl(self)
         self.updatedArabicControl = updatedArabicControl
         updatedArabicControl.SetFont(font)
@@ -110,7 +113,14 @@ class Frame(wx.Frame):
         gridSizer.Add(wx.StaticText(self, 1))
         gridSizer.Add(wx.StaticText(self, 1, label="new:"))
         '''
-        self.SetSizer(gridSizer)
+        
+        
+        # set the minimum size of the grid to the default size of the frame
+        # problem: still smushes everything to one side of the frame
+        #gridSizer.SetMinSize(self.GetSize())
+        
+        # sets the sizer of the frame and the size/fit of the frame to the size of the sizer
+        self.SetSizerAndFit(gridSizer)
         self.Layout()
     
     def onCardButtonClick(self, event):
@@ -180,6 +190,5 @@ app = App()
 print app.getOutput()
 
 ''' TODO:
- - need to get whole column to stretch if text is long
  - pass and retrieve values
 '''
