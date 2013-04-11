@@ -119,8 +119,13 @@ class Frame(wx.Frame):
         # problem: still smushes everything to one side of the frame
         #gridSizer.SetMinSize(self.GetSize())
         
+        # one big sizer to fit everything else
+        sizer = wx.BoxSizer()
+        # add the gridsizer with a border (padding) of 20
+        sizer.Add(gridSizer, 1, wx.ALL, 20)
+        
         # sets the sizer of the frame and the size/fit of the frame to the size of the sizer
-        self.SetSizerAndFit(gridSizer)
+        self.SetSizerAndFit(sizer)
         self.Layout()
     
     def onCardButtonClick(self, event):
@@ -190,5 +195,6 @@ app = App()
 print app.getOutput()
 
 ''' TODO:
+ - go ahead and create 
  - pass and retrieve values
 '''
