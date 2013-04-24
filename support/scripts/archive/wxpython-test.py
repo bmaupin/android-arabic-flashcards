@@ -4,21 +4,14 @@
 import wx
 
 class Frame(wx.Frame):
-    def __init__(self, passBack, title = ''):
+    def __init__(self, new_arabic, new_english, match_arabic, match_english, 
+                passBack, title = ''):
         super(Frame, self).__init__(title=title, parent=None)
         self.passBack = passBack
         
         gridSizer = wx.FlexGridSizer(rows=5, cols=3, hgap=10, vgap=10)
         # allow horizontal resizing (but not vertical)
         gridSizer.SetFlexibleDirection(wx.HORIZONTAL)
-        
-        new_arabic = 'أخبار'
-        new_english = 'news'
-        match_arabic = 'أخْبار'
-        #match_arabic = new_arabic
-        match_english = 'news stories'
-        #match_english = new_english
-        #match_english = 'news stories some really big huge string'
         
         '''
         vbox1 = wx.BoxSizer(wx.VERTICAL)
@@ -30,8 +23,6 @@ class Frame(wx.Frame):
         font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL,
                 wx.FONTWEIGHT_NORMAL)
         
-        # if we ever need to make this wider than the button:
-        # http://stackoverflow.com/a/2455379/399105
         updatedArabicControl = wx.TextCtrl(self)
         self.updatedArabicControl = updatedArabicControl
         updatedArabicControl.SetFont(font)
@@ -179,9 +170,11 @@ class OldFrame(wx.Frame):
         self.Close()
 
 class App(wx.App):
-    def __init__ (self, parent=None):
+    def __init__ (self, new_arabic, new_english, match_arabic, match_english, 
+                parent=None):
         wx.App.__init__(self, False)
-        self.frame = Frame(passBack=self, title = 'title') #Pass this app in
+        self.frame = Frame(new_arabic, new_english, match_arabic, match_english, 
+                passBack=self, title = 'title') #Pass this app in
         self.outputFromFrame = "" #The output from my frame
         
     def getOutput(self):
@@ -190,7 +183,15 @@ class App(wx.App):
         #return self.outputFromFrame
         return self.updatedArabic, self.updatedEnglish
 
-app = App()
+new_arabic = 'أخبار'
+new_english = 'news'
+match_arabic = 'أخْبار'
+#match_arabic = new_arabic
+match_english = 'news stories'
+#match_english = new_english
+#match_english = 'news stories some really big huge string'
+
+app = App(new_arabic, new_english, match_arabic, match_english)
 print app.getOutput()
 
 # to call it again:
@@ -201,5 +202,7 @@ print app.getOutput()
 '''
 
 ''' TODO: 
- - pass values
+ - Make updatedArabic/English slightly bigger for additional text
+     - We could just get the current width after all's said and done and add
+     - Or we could measure text (http://stackoverflow.com/a/2455379/399105)
 '''
