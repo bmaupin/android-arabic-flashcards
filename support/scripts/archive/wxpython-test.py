@@ -4,8 +4,10 @@
 import wx
 
 class Frame(wx.Frame):
-    def __init__(self):
-        super(Frame, self).__init__(title='', parent=None)
+    def __init__(self, passBack, title = ''):
+        super(Frame, self).__init__(title=title, parent=None)
+        self.passBack = passBack
+        
         gridSizer = wx.FlexGridSizer(rows=5, cols=3, hgap=10, vgap=10)
         # allow horizontal resizing (but not vertical)
         gridSizer.SetFlexibleDirection(wx.HORIZONTAL)
@@ -132,10 +134,13 @@ class Frame(wx.Frame):
             self.updatedEnglishControl.SetValue(btn.GetLabelText())
     
     def onOKButtonClick(self, event):
+        self.passBack.updatedArabic = self.updatedArabicControl.GetValue()
+        self.passBack.updatedEnglish = self.updatedEnglishControl.GetValue()
+        
         self.Close()
         
 
-
+'''
 app = wx.App(False)
 frame = Frame()
 frame.Show(True)
@@ -143,6 +148,7 @@ app.MainLoop()
 
 import sys
 sys.exit()
+'''
 
 
 
@@ -181,15 +187,19 @@ class App(wx.App):
     def getOutput(self):
         self.frame.Show()
         self.MainLoop()
-        return self.outputFromFrame
+        #return self.outputFromFrame
+        return self.updatedArabic, self.updatedEnglish
 
 app = App()
 print app.getOutput()
 
+# to call it again:
+'''
 del(app)
 app = App()
 print app.getOutput()
+'''
 
 ''' TODO: 
- - pass and retrieve values
+ - pass values
 '''
