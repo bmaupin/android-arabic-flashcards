@@ -92,7 +92,7 @@ class Frame(wx.Frame):
                 (matchEnglishControl, 0, wx.ALIGN_CENTER),
                 ])
         
-        # allow the third column to grow (horizontally)
+        # allow the sexond and third columns to grow (horizontally)
         gridSizer.AddGrowableCol(1)
         gridSizer.AddGrowableCol(2)
         
