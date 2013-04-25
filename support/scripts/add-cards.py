@@ -161,9 +161,11 @@ def compare_cards(new, other):
                     
     def possible_match():
         print 'possible match:'
-        print '\tnew: %s\t%s' % (new.arabic, new.english)
-        print '\tmatch: %s\t%s' % (other.arabic, other.english)
-        response = raw_input('\tMatch? (y/n): ')
+        print '\tnew: %s\t%s' % (cards.prep_arabic(new.arabic), new.english)
+        print '\tmatch: %s\t%s' % (cards.prep_arabic(other.arabic), other.english)
+        response = ''
+        while response.lower() != 'y' and response.lower() != 'n':
+            response = raw_input('\tMatch? (y/n): ')
         if response.lower() == 'y':
             app = App(new.arabic, new.english, other.arabic, other.english)
             new.arabic, new.english = app.getOutput()
@@ -199,9 +201,11 @@ def compare_cards(new, other):
     if cards.compare_strings(new.arabic, other.arabic):
         if cards.compare_strings(new.english, other.english):
             print 'positive match:'
-            print '\tnew: %s\t%s' % (new.arabic, new.english)
-            print '\tmatch: %s\t%s' % (other.arabic, other.english)
-            response = raw_input('\tFill in details? (y/n): ')
+            print '\tnew: %s\t%s' % (cards.prep_arabic(new.arabic), new.english)
+            print '\tmatch: %s\t%s' % (cards.prep_arabic(other.arabic), other.english)
+            response = ''
+            while response.lower() != 'y' and response.lower() != 'n':
+                response = raw_input('\tFill in details? (y/n): ')
             if response.lower() == 'y':
                 fill_in_details()
         else:
@@ -405,4 +409,7 @@ if __name__ == '__main__':
    we don't lose progress)
  - add functionality to deal with dupes
  - add functionality to deal with matches...
+ - improved functionality for match dialog
+     - cancel button?
+         - it could return false, and then the script could continue
 '''
