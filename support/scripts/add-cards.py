@@ -3,6 +3,8 @@
 import sqlite3
 import sys
 
+import wx
+
 import cards
 
 debug = True
@@ -163,6 +165,12 @@ def compare_cards(new, other):
         print '\tmatch: %s\t%s' % (other.arabic, other.english)
         response = raw_input('\tMatch? (y/n): ')
         if response.lower() == 'y':
+            app = App(new.arabic, new.english, other.arabic, other.english)
+            new.arabic, new.english = app.getOutput()
+            
+            
+            
+            '''
             # don't ask this if arabic is identical
             if not cards.compare_strings(new.arabic, other.arabic):
                 print('1: Use arabic from new\n'
@@ -183,6 +191,7 @@ def compare_cards(new, other):
                     new.english = other.english
                 elif response == '3':
                     new.english += ' FLAG ' + other.english
+            '''
             print 'Filling in details...'
             fill_in_details()
             
@@ -249,6 +258,142 @@ def select_curriculum(c):
             ');' % (curriculum_table))
     
     return select_curriculum(c)
+
+
+class Frame(wx.Frame):
+    def __init__(self, new_arabic, new_english, match_arabic, match_english, 
+                passBack, title = ''):
+        super(Frame, self).__init__(title=title, parent=None)
+        self.passBack = passBack
+        
+        gridSizer = wx.FlexGridSizer(rows=5, cols=3, hgap=10, vgap=10)
+        # allow horizontal resizing (but not vertical)
+        gridSizer.SetFlexibleDirection(wx.HORIZONTAL)
+        
+        # change the font size, providing default values for the rest
+        font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL,
+                wx.FONTWEIGHT_NORMAL)
+        
+        updatedArabicControl = wx.TextCtrl(self)
+        self.updatedArabicControl = updatedArabicControl
+        updatedArabicControl.SetFont(font)
+        newArabicControl = wx.Button(self, 1, new_arabic)
+        newArabicControl.SetFont(font)
+        matchArabicControl = wx.Button(self, 1, match_arabic)
+        matchArabicControl.SetFont(font)
+
+        updatedEnglishControl = wx.TextCtrl(self)
+        self.updatedEnglishControl = updatedEnglishControl
+        newEnglishControl = wx.Button(self, 1, new_english)
+        matchEnglishControl = wx.Button(self, 1, match_english)
+        
+        if new_arabic == match_arabic:
+            updatedArabicControl.Disable()
+            updatedArabicControl.SetValue(new_arabic)
+            newArabicControl.Disable()
+            matchArabicControl.Disable()
+        else:
+            newArabicControl.language = 'arabic'
+            matchArabicControl.language = 'arabic'
+            newArabicControl.Bind(wx.EVT_BUTTON, self.onCardButtonClick)
+            matchArabicControl.Bind(wx.EVT_BUTTON, self.onCardButtonClick)
+        
+        if new_english == match_english:
+            updatedEnglishControl.Disable()
+            updatedEnglishControl.SetValue(new_english)
+            newEnglishControl.Disable()
+            matchEnglishControl.Disable()
+        else:
+            newEnglishControl.language = 'english'
+            matchEnglishControl.language = 'english'
+            newEnglishControl.Bind(wx.EVT_BUTTON, self.onCardButtonClick)
+            matchEnglishControl.Bind(wx.EVT_BUTTON, self.onCardButtonClick)
+        
+        vbox1 = wx.BoxSizer(wx.VERTICAL)
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        vbox1.Add(updatedArabicControl, 1, wx.EXPAND)
+        hbox1.Add(vbox1, 1, wx.ALIGN_CENTER)
+        
+        vbox2 = wx.BoxSizer(wx.VERTICAL)
+        hbox2 = wx.BoxSizer(wx.HORIZONTAL)
+        vbox2.Add(updatedEnglishControl, 1, wx.EXPAND)
+        hbox2.Add(vbox2, 1, wx.ALIGN_CENTER)
+        
+        okButton = wx.Button(self, 1, 'OK')
+        okButton.Bind(wx.EVT_BUTTON, self.onOKButtonClick)
+
+        gridSizer.AddMany( [
+                (0, 0),
+                (wx.StaticText(self, 1, label="Arabic:"), 0, wx.ALIGN_CENTER),
+                (wx.StaticText(self, 1, label="English:"), 0, wx.ALIGN_CENTER),
+                (0, 0),
+                #(wx.TextCtrl(self), 0, wx.ALIGN_CENTER),
+                (hbox1, 1, wx.EXPAND),
+                #(wx.TextCtrl(self), 1, wx.ALIGN_CENTER),
+                (hbox2, 1, wx.EXPAND),
+                (wx.StaticText(self, 1, label="new:"), 0, wx.ALIGN_CENTER),
+                #(wx.StaticText(self, 1, label=new_arabic), 0, wx.ALIGN_CENTER),
+                (newArabicControl, 0, wx.ALIGN_CENTER),
+                #(wx.StaticText(self, 1, label=new_english), 0, wx.ALIGN_CENTER),
+                (newEnglishControl, 0, wx.ALIGN_CENTER),
+                (wx.StaticText(self, 1, label="match:"), 0, wx.ALIGN_CENTER),
+                #(wx.StaticText(self, 1, label=match_arabic), 0, wx.ALIGN_CENTER),
+                (matchArabicControl, 0, wx.ALIGN_CENTER),
+                #(wx.StaticText(self, 1, label=match_english), 0, wx.ALIGN_CENTER),
+                (matchEnglishControl, 0, wx.ALIGN_CENTER),
+                ])
+        
+        # allow the sexond and third columns to grow (horizontally)
+        gridSizer.AddGrowableCol(1)
+        gridSizer.AddGrowableCol(2)
+        
+        # set the minimum size of the grid to the default size of the frame
+        # problem: still smushes everything to one side of the frame
+        #gridSizer.SetMinSize(self.GetSize())
+        
+        # one big sizer to fit everything else
+        sizer = wx.BoxSizer( wx.VERTICAL)
+        # add the gridsizer with a border (padding) of 20, allow it to expand
+        sizer.Add(gridSizer, 1, wx.EXPAND|wx.ALL, 20)
+        sizer.Add(okButton, 0, wx.ALIGN_CENTER|wx.ALL, 20)
+        
+        # sets the sizer of the frame and the size/fit of the frame to the size of the sizer
+        self.SetSizerAndFit(sizer)
+        self.Layout()
+        
+        # increase the width of the frame for extra space 
+        self.SetSize(wx.Size(
+                self.GetSize().GetWidth() + 200,
+                self.GetSize().GetHeight()))
+    
+    def onCardButtonClick(self, event):
+        btn = event.GetEventObject()
+        if btn.language == 'arabic':
+            self.updatedArabicControl.SetValue(btn.GetLabelText())
+        elif btn.language == 'english':
+            self.updatedEnglishControl.SetValue(btn.GetLabelText())
+    
+    def onOKButtonClick(self, event):
+        self.passBack.updatedArabic = self.updatedArabicControl.GetValue()
+        self.passBack.updatedEnglish = self.updatedEnglishControl.GetValue()
+        
+        self.Close()
+
+
+class App(wx.App):
+    def __init__ (self, new_arabic, new_english, match_arabic, match_english, 
+                parent=None):
+        wx.App.__init__(self, False)
+        self.frame = Frame(new_arabic, new_english, match_arabic, match_english, 
+                passBack=self, title = 'title') #Pass this app in
+        self.outputFromFrame = "" #The output from my frame
+        
+    def getOutput(self):
+        self.frame.Show()
+        self.MainLoop()
+        #return self.outputFromFrame
+        return self.updatedArabic, self.updatedEnglish
+
 
 # calls the main() function when the script runs
 if __name__ == '__main__':
