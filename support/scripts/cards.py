@@ -71,6 +71,10 @@ def process_cards_file(file_name, separator, categories = False,
             card object, removing whitespace
             '''
             setattr(card, columns[index], item.strip())
+        
+        # force card.arabic to be unicode.  it saves us a lot of work...
+        if not isinstance(card.arabic, unicode):
+            card.arabic = card.arabic.decode('utf8')
 
         '''
         if parts_of_speech == True:
