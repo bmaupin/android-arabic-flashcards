@@ -92,6 +92,10 @@ class Frame(wx.Frame):
                 (matchEnglishControl, 0, wx.ALIGN_CENTER),
                 ])
         
+        # allow the third column to grow (horizontally)
+        gridSizer.AddGrowableCol(1)
+        gridSizer.AddGrowableCol(2)
+        
         '''
         gridSizer.Add(wx.StaticText(self, 1, label="Arabic:"))
         gridSizer.Add(wx.StaticText(self, 1, label="English"))
@@ -102,20 +106,24 @@ class Frame(wx.Frame):
         gridSizer.Add(wx.StaticText(self, 1, label="new:"))
         '''
         
-        
         # set the minimum size of the grid to the default size of the frame
         # problem: still smushes everything to one side of the frame
         #gridSizer.SetMinSize(self.GetSize())
         
         # one big sizer to fit everything else
         sizer = wx.BoxSizer( wx.VERTICAL)
-        # add the gridsizer with a border (padding) of 20
-        sizer.Add(gridSizer, 1, wx.ALL, 20)
+        # add the gridsizer with a border (padding) of 20, allow it to expand
+        sizer.Add(gridSizer, 1, wx.EXPAND|wx.ALL, 20)
         sizer.Add(okButton, 0, wx.ALIGN_CENTER|wx.ALL, 20)
-        
+
         # sets the sizer of the frame and the size/fit of the frame to the size of the sizer
-        self.SetSizerAndFit(sizer)
+        self.SetSizerAndFit(sizer)       
         self.Layout()
+        
+        # increase the width of the frame for extra space 
+        self.SetSize(wx.Size(
+                self.GetSize().GetWidth() + 200,
+                self.GetSize().GetHeight()))
     
     def onCardButtonClick(self, event):
         btn = event.GetEventObject()
@@ -140,9 +148,6 @@ app.MainLoop()
 import sys
 sys.exit()
 '''
-
-
-
 
 class OldFrame(wx.Frame):
     def __init__(self, passBack, title = ''):
@@ -199,10 +204,4 @@ print app.getOutput()
 del(app)
 app = App()
 print app.getOutput()
-'''
-
-''' TODO: 
- - Make updatedArabic/English slightly bigger for additional text
-     - We could just get the current width after all's said and done and add
-     - Or we could measure text (http://stackoverflow.com/a/2455379/399105)
 '''
