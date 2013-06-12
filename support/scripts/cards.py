@@ -34,6 +34,16 @@ class Card(object):
 class Card(object):
     def __str__(self):
         return '%s\t%s' % (self.english, prep_arabic(self.arabic))
+    
+    # all the possible attributes of the Card class
+    ATTRIBUTES = ['english',
+                  'arabic',
+                  'part',
+                  'category',
+                  'gender',
+                  'plural',
+                  'chapter',
+                  ]
         
 
 def process_cards_file(file_name, separator, categories = False, 
