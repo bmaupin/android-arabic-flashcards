@@ -81,7 +81,7 @@ public class CardQueryHelper {
             
         } else if (cardGroup.equals(context.getString(
                 R.string.card_group_parts_of_speech))) {
-            selection = CardDatabaseHelper.CARDS_TYPE + " = ? ";
+            selection = CardDatabaseHelper.CARDS_PART + " = ? ";
             selectionArgs = new String[] {cardSubgroup};
         }
     }

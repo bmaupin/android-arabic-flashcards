@@ -29,7 +29,7 @@ public class CardDatabaseHelper extends SQLiteOpenHelper {
     public static final String CARDS_ENGLISH = "english";
     public static final String CARDS_GENDER = "gender";
     public static final String CARDS_PLURAL = "plural";
-    public static final String CARDS_TYPE = "type";
+    public static final String CARDS_PART = "part";
     
     public static final String AWS_CHAPTERS_CHAPTER = "chapter";
     public static final String AWS_CHAPTERS_CARD_ID = "card_ID";
