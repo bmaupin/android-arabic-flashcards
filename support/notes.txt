@@ -115,7 +115,7 @@ drop table cards;
 CREATE TABLE temp (
     "english" TEXT NOT NULL,
     "arabic" TEXT NOT NULL,
-    "type" TEXT,
+    "part" TEXT,
     "category" TEXT,
     "gender" TEXT,
     "plural" TEXT
@@ -125,7 +125,7 @@ CREATE TABLE cards (
     "_id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "english" TEXT NOT NULL,
     "arabic" TEXT NOT NULL,
-    "type" TEXT,
+    "part" TEXT,
     "category" TEXT COLLATE NOCASE,
     "gender" TEXT,
     "plural" TEXT
@@ -133,7 +133,7 @@ CREATE TABLE cards (
 
 --then import the data into temp
 
-insert into cards (english, arabic, type, category, gender, plural) select english, arabic, type, category, gender, plural from temp;
+insert into cards (english, arabic, part, category, gender, plural) select english, arabic, part, category, gender, plural from temp;
 
 drop table temp;
 
@@ -163,7 +163,7 @@ drop table temp;
 
 
 
-type: adj, adv, conj, interj, noun, prep, pronoun, verb, particle, phrase
+part: adj, adv, conj, interj, noun, prep, pronoun, verb, particle, phrase
 gender: m, f
 proper: 0/1/null (integer)
 
