@@ -8,8 +8,8 @@ import wx
 import cards
 
 debug = True
-cards_db = '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
-#cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
+#cards_db = '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
+cards_db = '/home/bmaupin/workspace/android-arabic-flashcards/support/cards/cards.db'
 
 def main():
     conn = sqlite3.connect(cards_db)
@@ -94,6 +94,15 @@ def main():
             
             if duplicate != False:
 # TODO
+
+                for attr in cards.Card.ATTRIBUTES:
+                    if attr == 'chapter':
+                        continue
+                    if hasattr(new_card, attr):
+                        c.execute('UPDATE cards SET %s = "%s" WHERE card_id = '
+                                  '"%s"')
+                        
+                
                 # code here to update the database using the id in the duplicate
                 # variable and the data from new_card
                 new_card._id = duplicate
