@@ -9,7 +9,8 @@ import cards
 
 debug = True
 #cards_db = '/home/user/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
-cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
+#cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
+cards_db = '/home/user/Desktop/cards.db'
 
 def main():
     conn = sqlite3.connect(cards_db)
@@ -102,21 +103,47 @@ def main():
                     if attr == 'chapter' or attr == '_id':
                         continue
                     if hasattr(new_card, attr):
-                        c.execute('UPDATE cards SET %s = "%s" WHERE _id = '
-                                '"%s"' % (attr, 
-                                getattr(new_card, attr),
-                                duplicate_id))
-                        
+                        # don't bother adding blank attributes
+                        if getattr(new_card, attr) != '':
+                            c.execute('UPDATE cards SET %s = "%s" WHERE _id = '
+                                    '"%s"' % (attr, 
+                                    getattr(new_card, attr),
+                                    duplicate_id))
+                
+                conn.commit()        
                 new_card._id = duplicate_id
             
+            # card is new, so add it to the database
             else:
-# TODO
-                # code here to add the new card to the database
-                # then get the id of the card just added
-#                new_card._id =
+                # add the required attributes for the new card to the database
+                c.execute('INSERT INTO cards (english, arabic) VALUES ("%s", '
+                        '"%s")' % (new_card.english, new_card.arabic))
+                conn.commit()
+                # get the id of the card just added
+                c.execute('SELECT _id FROM cards ORDER BY _id DESC LIMIT 1')
+                row = c.fetchone()
+                new_card._id = row[0]
+                
+                # add optional attributes for the new card to the database
+                for attr in cards.Card.ATTRIBUTES:
+                    # of course we don't want to update _id, chapter is 
+                    # handled elsewhere, and we've already added english and arabic
+                    if (attr == 'chapter' or attr == '_id' or attr == 'english'
+                            or attr == 'arabic'): 
+                        continue
+                    if hasattr(new_card, attr):
+                        # don't bother adding blank attributes
+                        if getattr(new_card, attr) != '':
+                            c.execute('UPDATE cards SET %s = "%s" WHERE _id = '
+                                    '"%s"' % (attr, 
+                                    getattr(new_card, attr),
+                                    new_card._id))
+                conn.commit()   
+                
                 # add the new card to existing_cards to help find dupes within
                 # the same curriculum
                 existing_cards.append(new_card)
+
 
 # TODO            
             # code here to add the card ID and chapter to curriculum
@@ -418,8 +445,7 @@ if __name__ == '__main__':
  - make sure once we add a card, we add it to original_cards for searching dupes
  - output a replacement file for new cards (in case we stop partially through so
    we don't lose progress)
- - add functionality to deal with dupes
- - add functionality to deal with matches...
+ - add functionality for adding chapters
  - improved functionality for match dialog
      - cancel button?
          - it could return false, and then the script could continue
