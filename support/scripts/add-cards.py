@@ -63,19 +63,19 @@ def main():
 
         
         for index, new_card in enumerate(new_cards):
-            duplicate = False
+            duplicate_id = False
             
             # look for duplicates
             print 'Searching for duplicates...'
             for existing_card in existing_cards:
                 match = compare_cards(new_card, existing_card)
-                # duplicate found 
+                # duplicate_id found 
                 if match != False:
                     # update the new card to add with the updated card
                     new_cards[index] = match
                     # update the card in memory
                     new_card = match
-                    duplicate = existing_card._id
+                    duplicate_id = existing_card._id
                     # don't compare to any more existing cards
                     break
             
@@ -92,20 +92,22 @@ def main():
                     # don't compare to any more old cards
                     break
             
-            if duplicate != False:
-# TODO
-
+            # card is a duplicate, so update the existing card
+            if duplicate_id != False:
+                # update the database using the id in the duplicate_id
+                # variable and the data from new_card
                 for attr in cards.Card.ATTRIBUTES:
-                    if attr == 'chapter':
+                    # of course we don't want to update _id, and chapter is 
+                    # handled elsewhere
+                    if attr == 'chapter' or attr == '_id':
                         continue
                     if hasattr(new_card, attr):
-                        c.execute('UPDATE cards SET %s = "%s" WHERE card_id = '
-                                  '"%s"')
+                        c.execute('UPDATE cards SET %s = "%s" WHERE _id = '
+                                '"%s"' % (attr, 
+                                getattr(new_card, attr),
+                                duplicate_id))
                         
-                
-                # code here to update the database using the id in the duplicate
-                # variable and the data from new_card
-                new_card._id = duplicate
+                new_card._id = duplicate_id
             
             else:
 # TODO
@@ -118,7 +120,7 @@ def main():
 
 # TODO            
             # code here to add the card ID and chapter to curriculum
-            # new_card.chapter, card id from duplicate or card_id
+            # new_card.chapter, card id from duplicate_id or card_id
 
 
                 
