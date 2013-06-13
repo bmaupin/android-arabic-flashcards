@@ -12,6 +12,9 @@ debug = True
 #cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
 cards_db = '/home/user/Desktop/cards.db'
 
+CHAPTERS_CHAPTER = 'chapter'
+CHAPTERS_CARDID = 'card_ID'
+
 def main():
     conn = sqlite3.connect(cards_db)
     c = conn.cursor()
@@ -144,6 +147,13 @@ def main():
                 # the same curriculum
                 existing_cards.append(new_card)
 
+            c.execute('INSERT INTO %s (%s, %s) VALUES ("%s", "%s")' % (
+                    curriculum_table,
+                    CHAPTERS_CHAPTER,
+                    CHAPTERS_CARDID,
+                    new_card.chapter,
+                    new_card._id
+                    ))
 
 # TODO            
             # code here to add the card ID and chapter to curriculum
