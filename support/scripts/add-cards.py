@@ -8,8 +8,8 @@ import wx
 import cards
 
 debug = True
-#cards_db = '/home/bmaupin/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
-cards_db = '/home/bmaupin/workspace/android-arabic-flashcards/support/cards/cards.db'
+#cards_db = '/home/user/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
+cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
 
 def main():
     conn = sqlite3.connect(cards_db)
