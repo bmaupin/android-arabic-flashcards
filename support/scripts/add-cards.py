@@ -9,8 +9,8 @@ import cards
 
 debug = True
 #cards_db = '/home/user/Documents/personal/android/android-arabic-flashcards/support/cards/cards.db'
-#cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
-cards_db = '/home/user/Desktop/cards.db'
+cards_db = '/home/user/workspace/android-arabic-flashcards/support/cards/cards.db'
+#cards_db = '/home/user/Desktop/cards.db'
 
 CHAPTERS_CHAPTER = 'chapter'
 CHAPTERS_CARDID = 'card_ID'
@@ -239,7 +239,7 @@ def compare_cards(new, other):
                     new.english += ' FLAG ' + other.english
             '''
             print 'Filling in details...'
-            fill_in_details()
+            return fill_in_details()
             
     # first, compare arabic without stripping vowels
     if cards.compare_strings(new.arabic, other.arabic):
@@ -251,17 +251,17 @@ def compare_cards(new, other):
             while response.lower() != 'y' and response.lower() != 'n':
                 response = raw_input('\tFill in details? (y/n): ')
             if response.lower() == 'y':
-                fill_in_details()
+                return fill_in_details()
         else:
-            possible_match()
+            return possible_match()
     # then strip arabic vowels and try again
     elif cards.compare_strings(new.arabic, other.arabic, strip_vowels = True):
-        possible_match()
+        return possible_match()
     elif cards.compare_strings(new.english, other.english):
-        possible_match()
+        return possible_match()
     else:
         if cards.compare_strings(new.arabic, other.arabic, partial = True):
-            possible_match()
+            return possible_match()
     
     return False
 
@@ -445,11 +445,18 @@ class App(wx.App):
 # calls the main() function when the script runs
 if __name__ == '__main__':
     main()
+    
+    print('test')
 
 ''' TODO:
  - make sure once we add a card, we add it to original_cards for searching dupes
  - output a replacement file for new cards (in case we stop partially through so
    we don't lose progress)
+       - Intercept Ctrl-C/KeyboardInterrupt?
+       - How important is this?
+           - It might be better to hold off on this for now. If we need this, 
+             we can always just look for the last added card (in the curriculum)
+             and modify the input file to start after that. 
  - improved functionality for match dialog
      - cancel button?
          - it could return false, and then the script could continue
