@@ -113,7 +113,7 @@ def main():
                                     getattr(new_card, attr),
                                     duplicate_id))
                 
-                conn.commit()        
+                conn.commit()
                 new_card._id = duplicate_id
             
             # card is new, so add it to the database
@@ -240,6 +240,8 @@ def compare_cards(new, other):
             '''
             print 'Filling in details...'
             return fill_in_details()
+        else:
+            return False
             
     # first, compare arabic without stripping vowels
     if cards.compare_strings(new.arabic, other.arabic):
