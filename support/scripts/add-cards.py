@@ -146,7 +146,8 @@ def main():
                 # add the new card to existing_cards to help find dupes within
                 # the same curriculum
                 existing_cards.append(new_card)
-
+            
+            # add the card ID and chapter to curriculum
             c.execute('INSERT INTO %s (%s, %s) VALUES ("%s", "%s")' % (
                     curriculum_table,
                     CHAPTERS_CHAPTER,
@@ -154,12 +155,7 @@ def main():
                     new_card.chapter,
                     new_card._id
                     ))
-
-# TODO            
-            # code here to add the card ID and chapter to curriculum
-            # new_card.chapter, card id from duplicate_id or card_id
-
-
+            conn.commit()
                 
     # other files?
     
@@ -268,7 +264,6 @@ def compare_cards(new, other):
             possible_match()
     
     return False
-                    
 
 
 def select_curriculum(c):
@@ -455,7 +450,6 @@ if __name__ == '__main__':
  - make sure once we add a card, we add it to original_cards for searching dupes
  - output a replacement file for new cards (in case we stop partially through so
    we don't lose progress)
- - add functionality for adding chapters
  - improved functionality for match dialog
      - cancel button?
          - it could return false, and then the script could continue
