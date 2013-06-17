@@ -118,6 +118,15 @@ def compare_strings(string1, string2, strip_vowels = False, partial = False):
     '''Compare two strings
     If partial is True, look for partial matches as well 
     '''
+    
+    separators = [',', ';', '(', ')', ' ']
+    # list of words to skip when doing partial matches
+    partial_skip = ['a',
+                    'an',
+                    'the',
+                    'to',
+                    ]
+    
     # handle blanks in case for some reason we're comparing empty fields
     if string1 == '' and string2 == '':
         return False
@@ -159,8 +168,6 @@ def compare_strings(string1, string2, strip_vowels = False, partial = False):
         return False
     
     if partial:
-        separators = [',', ';', '(', ')', ' ']
-        
         list1 = split_string(string1, separators)
         list2 = split_string(string2, separators)
         
@@ -168,6 +175,8 @@ def compare_strings(string1, string2, strip_vowels = False, partial = False):
     #    print list2
         
         for item in list1:
+            if item in partial_skip:
+                continue
             if item in list2:
                 # match found
                 return True
