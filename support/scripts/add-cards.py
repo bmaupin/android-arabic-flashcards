@@ -203,8 +203,11 @@ def compare_cards(new, other):
         # if we got here, we found a match
         return new
                     
-    def possible_match():
-        print 'possible match:'
+    def possible_match(match_text = ''):
+        if match_text != '':
+            print 'possible match (%s):' % (match_text)
+        else:
+            print 'possible match:'
         print '\tnew: %s\t%s' % (cards.prep_arabic(new.arabic), new.english)
         print '\tmatch: %s\t%s' % (cards.prep_arabic(other.arabic), other.english)
         response = ''
@@ -255,15 +258,15 @@ def compare_cards(new, other):
             if response.lower() == 'y':
                 return fill_in_details()
         else:
-            return possible_match()
+            return possible_match('Arabic matches')
     # then strip arabic vowels and try again
     elif cards.compare_strings(new.arabic, other.arabic, strip_vowels = True):
-        return possible_match()
+        return possible_match('Arabic matches without harakat')
     elif cards.compare_strings(new.english, other.english):
-        return possible_match()
+        return possible_match('English matches')
     else:
         if cards.compare_strings(new.arabic, other.arabic, partial = True):
-            return possible_match()
+            return possible_match('partial Arabic match')
     
     return False
 
@@ -447,10 +450,9 @@ class App(wx.App):
 # calls the main() function when the script runs
 if __name__ == '__main__':
     main()
-    
-    print('test')
 
 ''' TODO:
+ - make possible/positive match text bold
  - make sure once we add a card, we add it to original_cards for searching dupes
  - output a replacement file for new cards (in case we stop partially through so
    we don't lose progress)
