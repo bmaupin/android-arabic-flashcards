@@ -218,7 +218,7 @@ def split_string_old(string, separators):
 
 
 def split_string(string, separators):
-    separators = '[%s]' % (separators)
+    separators = '[%s]' % (''.join(separators))
     split = []
     for item in re.split(separators, string):
         if item != '':
